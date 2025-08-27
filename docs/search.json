@@ -67,7 +67,7 @@
     "href": "workshop.html#comments-on-tools",
     "title": "Workshop",
     "section": "Comments on Tools",
-    "text": "Comments on Tools\n\nYou may use whatever software helps you design and run an excellent workshop.\nI highly recommend Quarto rendered to HTML or PDF for your take-home handout.\nIt’s easier to make excellent slides with a WYSIWYG program like PowerPoint, but harder to update and maintain those slides. Software like Revealjs make it really easy to convert a take-home handout written in Quarto to easy to create and maintain.\nIf you like, you can post materials to the web (HTML or PDF) or share materials (data, scripts, and documents) in a zipped directory via email."
+    "text": "Comments on Tools\n\nYou may use whatever software helps you design and run an excellent workshop.\nI highly recommend Quarto rendered to HTML or PDF for your take-home handout.\nIt’s easier to make excellent slides with a WYSIWYG program like PowerPoint, but harder to update and maintain those slides. Software like Revealjs make it really easy to convert a take-home handout written in Quarto to an easy to create and maintain set of slides.\nYou can post materials to the web (HTML or PDF) or share materials (data, scripts, and documents) in a zipped directory via email."
   },
   {
     "objectID": "workshop.html#resources",
