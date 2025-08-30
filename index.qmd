@@ -5,22 +5,15 @@ editor:
     wrap: 72
 ---
 
-::: callout-important
-## Important Announcements for Week 1
 
--   Read the posted notes *after* the associated class. I think of the lecture as an introduction and motivation for the material. The notes contain more material and more detail than the lecture, so please read them carefully after class.
--   Complete the exercises *after* reviewing the notes and examples (and after the associated class). The exercises often build on the examples in the notes.
--   Begin the [research project](research-project.html). I created four optional assignments for the first four weeks to help orient you. Reading the three articles cited in the assignment "Descriptive Research in Your Field."
-:::
-
-aug 27 · **review** · \[slides\]
+aug 27 · **review** · \[[slides](slides/wk01-slides.pdf)\]
 \[[notes](https://pos5747.github.io/notes/wk01/frac-exp-log.html)\]
 \[[exercises](exr/wk01-exr.pdf)\] [fractions, logarithms, and exponents;
 calculus; matrices; probability theory]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 03 · **ml** · \[slides\]
+sep 03 · **ml** · \[[slides](slides/wk02-slides.pdf)\]
 \[[notes](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html)\]
 \[[exercises](exr/wk02-exr.pdf)\] [*maximum likelihood; invariance
 principle; predictive distribution*]{.topics}
