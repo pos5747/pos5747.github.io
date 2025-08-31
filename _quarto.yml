@@ -7,7 +7,7 @@ project:
 website:
   title: "Modern Statistical Modeling"
   site-url: https://pos5747.github.io/
-  google-analytics: "G-F57WQLHH67"
+  google-analytics: "G-ZV1MJ9E632"
   navbar:
     left:
       - href: index.qmd
