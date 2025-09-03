@@ -8,12 +8,12 @@ editor:
 
 aug 27 · **review** · \[[slides](slides/wk01-slides.pdf)\]
 \[[notes](https://pos5747.github.io/notes/wk01/frac-exp-log.html)\]
-\[[exercises](exr/wk01-exr.pdf)\] [fractions, logarithms, and exponents;
+\[[solutions](exr/wk01-exr-sol.pdf)\] [fractions, logarithms, and exponents;
 calculus; matrices; probability theory]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 03 · **ml** · \[[slides](slides/wk02-slides.pdf)\]
+sep 03 · **ml** · \[slides\]
 \[[notes](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html)\]
 \[[exercises](exr/wk02-exr.pdf)\] [*maximum likelihood; invariance
 principle; predictive distribution*]{.topics}
