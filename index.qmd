@@ -13,7 +13,7 @@ calculus; matrices; probability theory]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 03 · **ml** · \[slides\]
+sep 03 · **ml** · \[[slides](slides/wk02-slides.pdf)\]
 \[[notes](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html)\]
 \[[exercises](exr/wk02-exr.pdf)\] [*maximum likelihood; invariance
 principle; predictive distribution*]{.topics}
