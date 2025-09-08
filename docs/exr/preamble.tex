@@ -1,0 +1,25 @@
+% make the subsections (i.e., the exercises) numbered
+%   sequentially throughout the whole document
+\usepackage{chngcntr}
+\counterwithout{subsection}{section}
+
+% add an "Exercise" label to each subheading number
+\renewcommand{\thesubsection}{Exercise \arabic{subsection}}
+
+% custom subsection format: bold label, italic title, large sans-serif
+
+\usepackage{titlesec}
+\titleformat{\section}[hang]
+  {\sffamily\LARGE\bfseries}   % Sans-serif, large, bold
+  {\thesection}                % Label
+  {1em}                        % Space between label and title
+  {}                           % Title content
+\titleformat{\subsection}[hang]
+  {\sffamily\Large}              % base font: sans-serif + large
+  {\textbf{\thesubsection}}      % label only: bold
+  {1em}                          % space between label and title
+  {}                             % title only: italic
+
+% for tinytable
+\usepackage{booktabs}
+\usepackage{float}

@@ -18,9 +18,10 @@ sep 03 · **ml** · \[[slides](slides/wk02-slides.pdf)\]
 \[[exercises](exr/wk02-exr.pdf)\] [*maximum likelihood; invariance
 principle; predictive distribution*]{.topics}
 
+
 ------------------------------------------------------------------------
 
-sep 10 · **se** · \[slides\] \[notes\] \[exercises\] [sampling
+sep 10 · **se** · \[slides\] \[[notes](https://pos5747.github.io/notes/wk03/01-sampling-distribution.html)\] \[[exercises](exr/wk03-exr.pdf)\] [sampling
 distribution; parametric bootstrap; variance and standard error; delta
 method]{.topics}
 

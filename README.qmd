@@ -1,0 +1,3 @@
+## Revisions
+
+- [ ] There's a mistake in the slides (and therefor probably in the notes) where I use $\alpha$ rather than $(\alpha - 1)$ as a term in the beta log-likelihood. I need to review these and fix.
