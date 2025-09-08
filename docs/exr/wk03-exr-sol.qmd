@@ -1190,17 +1190,17 @@ hist_data +
 
 ## Two CIs
 
-**Part 1.** Wald confidence interval.
+Consider a simple Bernoulli model for $y \in \{0,1\}$ with parameter $\pi \in [0,1]$. Create a small sample with a rare event: take $N = 20$ trials with exactly one success.
 
-Consider a simple Bernoulli model for $y \in \{0,1\}$ with parameter $\pi \in [0,1]$. Create a small sample with a rare event: take $N = 20$ trials with exactly one success. Compute the ML estimate $\hat \pi = \operatorname{avg}(y)$, the Wald SE $\widehat{\mathrm{SE}}(\hat p) = \sqrt{\hat p(1-\hat p)/N}$, and the usual $95\%$ Wald confidence interval $\hat p \pm 1.96 \cdot\widehat{\mathrm{SE}}(\hat p)$. 
+**Part 1.** *Wald confidence interval.*
 
-What do you notice about the interval relative to the parameter space $[0,1]$?
+Compute the ML estimate $\hat \pi = \operatorname{avg}(y)$, the Wald SE $\widehat{\mathrm{SE}}(\hat \pi) = \sqrt{\hat \pi(1-\hat \pi)/N}$, and the usual $95\%$ Wald confidence interval $\hat \pi \pm 1.96 \cdot\widehat{\mathrm{SE}}(\hat \pi)$. What do you notice about the interval relative to the parameter space $[0,1]$?
 
-**Part 2.** Parametric bootstrap confidence interval.
+**Part 2.** *Parametric bootstrap confidence interval.*
 
-Use a *parametric bootstrap* to obtain a $95\%$ percentile confidence interval for $p$ based on the fitted model $\text{Bernoulli}(\hat p)$. Compare the bootstrap interval with the Wald interval. What stands out? Briefly explain.
+Use a *parametric bootstrap* to obtain a $95\%$ percentile confidence interval for $\pi$ based on the fitted model $\text{Bernoulli}(\hat \pi)$. Compare the bootstrap interval with the Wald interval. What stands out? Briefly explain.
 
-*Hint:* For the bootstrap, repeatedly simulate $y^{*(b)}_1,\dots,y^{*(b)}_N \stackrel{iid}{\sim} \text{Bernoulli}(\hat p)$, recompute $\hat \pi^{*(b)} = \operatorname{avg}(y^{*(b)})$, and then take the empirical $2.5^\text{th}$ and $97.5^\text{th}$ percentiles of $\{\hat p^{*(b)}\}$.
+*Hint:* For the bootstrap, repeatedly simulate $y^{*(b)}_1,\dots,y^{*(b)}_N \stackrel{iid}{\sim} \text{Bernoulli}(\hat \pi)$, recompute $\hat \pi^{*(b)} = \operatorname{avg}(y^{*(b)})$, and then take the empirical $2.5^\text{th}$ and $97.5^\text{th}$ percentiles of $\{\hat \pi^{*(b)}\}$.
 
 ::: {.content-visible when-meta="solutions"}
 
