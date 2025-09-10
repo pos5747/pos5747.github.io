@@ -3,9 +3,7 @@ project:
   output-dir: docs
   pre-render:
     - exr/build-pdfs.R
-
-
-
+    
 
 website:
   title: "Modern Statistical Modeling"
@@ -35,6 +33,7 @@ resources:
   - syllabus.pdf
   - exr/
   - files/
+  - slides/
 
 
 

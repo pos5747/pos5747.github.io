@@ -7,11 +7,11 @@
     "text": "Answer the questions in a Quarto document that compiles to PDF. Make sure that all your code is neat and readable, equations are typeset nicely with LaTeX, and figures render nicely. The Quarto documentation is excellent.\n\nFor mathematical problems, work out the answers with paper-and-pencil first, then move the answers to a Quarto document (while simultaneously reviewing and polishing).\nFor coding problems, write and debug the code in a standalone .R script first, then move the code to a Quarto code chunk.\n\nAt the beginning of the semester, start a new R project called exr/. Each week, create a new .qmd document named 01-exr.qmd, 02-exr.qmd, …, to exr/. (You can adjust these names if you like.) Throughout the semester you’ll have several PDFs that you can revise and review as you prepare for the exams.\nMake sure to render often as you work in a .qmd file (e.g., every time you add a new part).\nUse the tinytable to automate table creation.\nThe default output of tt(), modelsummary(), ggplot(), etc. is almost always “good enough” for our purposes. Don’t spend lots of time polishing your tables, plots, and output. Use that time and energy to focus on understanding the ideas, math, and code.\nAn exception to the rule above is carefully controlling the output of code chunks. In most cases, you want messages: false and warnings: false. You don’t want a lot of junk in your rendered documents, but it’s fine if your column and axis labels have the raw variable names."
   },
   {
-    "objectID": "wk03-r.html",
-    "href": "wk03-r.html",
-    "title": "R Code",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Schedule",
     "section": "",
-    "text": "Poisson sampling distribution Gist.\nparametric bootstrap for toothpaste cap problem Gist.\noptim() for Fisher information and grad() for delta method Gist."
+    "text": "aug 27 · review · [slides] [notes] [solutions] fractions, logarithms, and exponents; calculus; matrices; probability theory\n\nsep 03 · ml · [slides] [notes] [solutions] maximum likelihood; invariance principle; predictive distribution\n\nsep 10 · se · [slides] [materials] [notes] [exercises] sampling distribution; parametric bootstrap; variance and standard error; delta method\n\nsep 17 · X · [slides] [notes] [exercises] adding covariates; logistic regression, Poisson regression, exponential regression\n\nsep 24 · bayes · [slides] [notes] [exercises] Bayesian inference; acceptance sampling\n\noct 01 · mcmc · [slides] [notes] [exercises] Metropolis algorithm; Hamiltonian Monte Carlo and Stan; {rstan}, {cmdstanr}, and {brms} Due: prospectus for research paper.\n\noct 08 · {marginaleffects} · [slides] [notes] [exercises] computing quantities of interest with the {marginal effects pacakge}\n\noct 15 · midterm exam\n\noct 22 · hierarchical models · [slides] [notes] [exercises] Due: (1) first draft of research paper due and (2) initial outline of take-home workshop handout.\n\noct 29 · irt · [slides] [notes] [exercises] Due: (1) peer-review memo and (2) first drafts of all workshop materials.\n\nnov 05 · mrp · [slides] [notes] [exercises] Due: workshop rehearsal\n\nnov 12 · case study: fowler et al. (2023) · [slides] [notes] [exercises]\n\nnov 19 · case study: fariss (2014) · [slides] [notes] [exercises]\n\nnov 26 · thanksgiving break Due by Tuesday: (1) second draft of research paper and (2) hold workshop.\n\ndec 03 · wrap · [slides] [notes] [exercises] Poster presentation this week.\n\ndec 10 · final exam\nDue: Final draft of research paper."
   },
   {
     "objectID": "workshop.html",
@@ -126,10 +126,24 @@
     "text": "Required Assignments\n\nProspectus (Required; due by Oct. 1) A memo describing your project in as much detail as possible. This should resemble the structure of a paper, though it will still be an early, developing version. Instructor comments, ASAP.\nFirst Draft (Required; due by Oct. 22) Submit the first full draft of your paper. This should include a working version of all major sections, figures, and tables. Feedback from 2 peers, ASAP.\nSecond Draft (Required; due by Nov. 25 (Tuesday!)) Submit a substantially revised draft of your paper that incorporates peer feedback. Instructor comments ASAP.\nPoster Presentation (Required; done week of Dec. 3) Present your research in a short, conference-style poster session. This is a low-stakes chance to get feedback and practice communicating your work.\nFinal Project (Required; due by Dec. 10) Submit the final version of your research paper. You must submit a PDF of the final version of the paper and the data and computer code to reproduce your work. This version should reflect feedback from both the poster session and instructor comments. This version should be polished."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Schedule",
+    "objectID": "files/wk03-r.html",
+    "href": "files/wk03-r.html",
+    "title": "Materials",
     "section": "",
-    "text": "aug 27 · review · [slides] [notes] [solutions] fractions, logarithms, and exponents; calculus; matrices; probability theory\n\nsep 03 · ml · [slides] [notes] [exercises] maximum likelihood; invariance principle; predictive distribution\n\nsep 10 · se · [slides] [R code] [notes] [exercises] sampling distribution; parametric bootstrap; variance and standard error; delta method\n\nsep 17 · X · [slides] [notes] [exercises] adding covariates; logistic regression, Poisson regression, exponential regression\n\nsep 24 · bayes · [slides] [notes] [exercises] Bayesian inference; acceptance sampling\n\noct 01 · mcmc · [slides] [notes] [exercises] Metropolis algorithm; Hamiltonian Monte Carlo and Stan; {rstan}, {cmdstanr}, and {brms} Due: prospectus for research paper.\n\noct 08 · {marginaleffects} · [slides] [notes] [exercises] computing quantities of interest with the {marginal effects pacakge}\n\noct 15 · midterm exam\n\noct 22 · hierarchical models · [slides] [notes] [exercises] Due: (1) first draft of research paper due and (2) initial outline of take-home workshop handout.\n\noct 29 · irt · [slides] [notes] [exercises] Due: (1) peer-review memo and (2) first drafts of all workshop materials.\n\nnov 05 · mrp · [slides] [notes] [exercises] Due: workshop rehearsal\n\nnov 12 · case study: fowler et al. (2023) · [slides] [notes] [exercises]\n\nnov 19 · case study: fariss (2014) · [slides] [notes] [exercises]\n\nnov 26 · thanksgiving break Due by Tuesday: (1) second draft of research paper and (2) hold workshop.\n\ndec 03 · wrap · [slides] [notes] [exercises] Poster presentation this week.\n\ndec 10 · final exam\nDue: Final draft of research paper."
+    "text": "Poisson sampling distribution Gist.\nparametric bootstrap for toothpaste cap problem Gist.\noptim() for Fisher information and grad() for delta method Gist."
+  },
+  {
+    "objectID": "files/wk03-r.html#r-scripts",
+    "href": "files/wk03-r.html#r-scripts",
+    "title": "Materials",
+    "section": "",
+    "text": "Poisson sampling distribution Gist.\nparametric bootstrap for toothpaste cap problem Gist.\noptim() for Fisher information and grad() for delta method Gist."
+  },
+  {
+    "objectID": "files/wk03-r.html#dry-erase-board",
+    "href": "files/wk03-r.html#dry-erase-board",
+    "title": "Materials",
+    "section": "Dry Erase Board",
+    "text": "Dry Erase Board\n\nstylized normal\nBernoulli w/ obs. info. and delta methods"
   }
 ]

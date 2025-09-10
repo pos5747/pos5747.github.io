@@ -1,0 +1,9 @@
+# yaml specifically for slides and associated materials
+project:
+  type: default
+  output-dir: "slides/"
+  render: []
+
+format: pdf
+
+

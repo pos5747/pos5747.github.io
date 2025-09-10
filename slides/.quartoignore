@@ -1,0 +1,4 @@
+# .quartoignore
+exr/
+data/
+slides/

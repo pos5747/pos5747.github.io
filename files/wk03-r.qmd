@@ -1,0 +1,14 @@
+---
+title: "Materials"
+---
+
+## R scripts
+
+- Poisson sampling distribution [Gist](https://gist.github.com/carlislerainey/ae1e37fe392f69017a4ce5909c4bbd29).
+- parametric bootstrap for toothpaste cap problem [Gist](https://gist.github.com/carlislerainey/edb70a6f0da2d27f1116cc2b7606330d).
+- `optim()` for Fisher information and `grad()` for delta method [Gist](https://gist.github.com/carlislerainey/60d47883a470687f10d5f632e243ddaf).
+
+## Dry Erase Board
+
+- [stylized normal](../slides/wk03-slides-material/lecture-example-04-stylized-normal.pdf)
+- [Bernoulli w/ obs. info. and delta methods](../slides/wk03-slides-material/lecture-example-05-fisher-delta-by-hand-toothpaste.pdf)

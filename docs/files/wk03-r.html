@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>R Code – Modern Statistical Modeling</title>
+<title>Materials – Modern Statistical Modeling</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,22 +23,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7ad6542725e80d1433b1f8ee26c2a1fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7ad6542725e80d1433b1f8ee26c2a1fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,7 +77,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 </script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -87,7 +87,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Modern Statistical Modeling</span>
     </a>
   </div>
@@ -98,7 +98,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Schedule</span></a>
   </li>  
   <li class="nav-item">
@@ -106,15 +106,15 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./research-project.html"> 
+    <a class="nav-link" href="../research-project.html"> 
 <span class="menu-text">Research Project</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./workshop.html"> 
+    <a class="nav-link" href="../workshop.html"> 
 <span class="menu-text">Workshop</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./syllabus.pdf"> 
+    <a class="nav-link" href="../syllabus.pdf"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
 </ul>
@@ -128,15 +128,22 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#r-scripts" id="toc-r-scripts" class="nav-link active" data-scroll-target="#r-scripts">R scripts</a></li>
+  <li><a href="#dry-erase-board" id="toc-dry-erase-board" class="nav-link" data-scroll-target="#dry-erase-board">Dry Erase Board</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">R Code</h1>
+<h1 class="title">Materials</h1>
 </div>
 
 
@@ -153,13 +160,23 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 </header>
 
 
+<section id="r-scripts" class="level2">
+<h2 class="anchored" data-anchor-id="r-scripts">R scripts</h2>
 <ul>
 <li>Poisson sampling distribution <a href="https://gist.github.com/carlislerainey/ae1e37fe392f69017a4ce5909c4bbd29">Gist</a>.</li>
 <li>parametric bootstrap for toothpaste cap problem <a href="https://gist.github.com/carlislerainey/edb70a6f0da2d27f1116cc2b7606330d">Gist</a>.</li>
 <li><code>optim()</code> for Fisher information and <code>grad()</code> for delta method <a href="https://gist.github.com/carlislerainey/60d47883a470687f10d5f632e243ddaf">Gist</a>.</li>
 </ul>
+</section>
+<section id="dry-erase-board" class="level2">
+<h2 class="anchored" data-anchor-id="dry-erase-board">Dry Erase Board</h2>
+<ul>
+<li><a href="../slides/wk03-slides-material/lecture-example-04-stylized-normal.pdf">stylized normal</a></li>
+<li><a href="../slides/wk03-slides-material/lecture-example-05-fisher-delta-by-hand-toothpaste.pdf">Bernoulli w/ obs. info. and delta methods</a></li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
