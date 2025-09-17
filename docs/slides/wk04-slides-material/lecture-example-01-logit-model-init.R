@@ -8,6 +8,15 @@ turnout <- ZeligData::turnout
 # formula
 f <- vote ~ age + educate + income + race
 
+# fit model
+fit <- glm(f, data = turnout, family = binomial)
+
+# coefficient estimates
+coef(fit)
+
+# variance estimates
+vcov(fit)
+
 # make X and y
 mf <- model.frame(f, data = turnout)
 X <- model.matrix(f, data = mf)
