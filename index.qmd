@@ -21,14 +21,14 @@ principle; predictive distribution*]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 10 · **se** · \[[slides](slides/wk03-slides.pdf)\] [[materials](files/wk03-r.qmd)] \[[notes](https://pos5747.github.io/notes/wk03/01-sampling-distribution.html)\] \[[exercises](exr/wk03-exr.pdf)\] [sampling
+sep 10 · **se** · \[[slides](slides/wk03-slides.pdf)\] [[materials](files/wk03-r.qmd)] \[[notes](https://pos5747.github.io/notes/wk03/01-sampling-distribution.html)\] \[[solutions](exr/wk03-exr-sol.pdf)\] [sampling
 distribution; parametric bootstrap; variance and standard error; delta
 method]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 17 · **X** · \[slides\] \[notes\] \[exercises\] [adding covariates;
-logistic regression, Poisson regression, exponential
+sep 17 · **X** · \[slides\] [[materials](files/wk04-r.qmd)] [[notes](https://pos5747.github.io/notes/wk04/01-design-matrix.html)] \[[exercises](exr/wk04-exr.pdf)\] [adding covariates;
+logistic regression, Poisson regression, negative binomial regression
 regression]{.topics}
 
 ------------------------------------------------------------------------

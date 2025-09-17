@@ -1,9 +1,9 @@
 project:
   type: website
   output-dir: docs
-  pre-render:
-    - exr/build-pdfs.R
-    
+
+execute:
+  freeze: auto
 
 website:
   title: "Modern Statistical Modeling"

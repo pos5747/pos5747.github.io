@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <style>
+.hljs {
+  background: transparent;
+  color: black;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-variable {
+  color: #e41a1c;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: #377eb8;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+  color: #4daf4a;
+}
+
+.hljs-deletion,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-meta {
+  color: #377eb8;
+}
+
+.hljs-doctag {
+  color: #808080;
+}
+
+.hljs-attr {
+  color: #e41a1c;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link {
+  color: #377eb8;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+<html>
+  <body>
+    <pre><code class="language-r">
+# ---- fit logit model with optim() ----
+
+# data 
+devtools::install_github("jrnold/ZeligData")
+turnout <- ZeligData::turnout
+
+# formula
+f <- vote ~ age + educate + income + race
+
+# make X and y
+mf <- model.frame(f, data = turnout)
+X <- model.matrix(f, data = mf)
+y <- model.response(mf)
+
+# log-likelihood function
+logit_ll <- function(beta, y, X) {
+  linpred <- X%*%beta  # perhaps denoted eta
+  p <- plogis(linpred) # pi is special in R, so I use p
+  ll <- sum(dbinom(y, size = 1, prob = p, log = TRUE))
+  return(ll)
+}
+
+# use optim
+par_start <- rep(0, ncol(X))
+opt <- optim(par_start, 
+             fn = logit_ll, 
+             y = y, 
+             X = X, # <e2><86><90> covariates! <f0><9f><8e><89>
+             method = "BFGS",
+             hessian = TRUE,
+             control = list(fnscale = -1))
+opt$par</code></pre>
+  </body>
+</html>
+</html>

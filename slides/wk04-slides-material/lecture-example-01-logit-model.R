@@ -1,0 +1,163 @@
+
+# ---- fit logit model with optim() ----
+
+# data 
+devtools::install_github("jrnold/ZeligData")
+turnout <- ZeligData::turnout
+
+# formula
+f <- vote ~ age + educate + income + race
+
+# ---- create a function to fit the model ----
+
+# log-likelihood function
+logit_ll <- function(beta, y, X) {
+  linpred <- X%*%beta  # perhaps denoted eta
+  p <- plogis(linpred) # pi is special in R, so I use p
+  ll <- sum(dbinom(y, size = 1, prob = p, log = TRUE))
+  return(ll)
+}
+
+# function to fit model
+est_logit <- function(f, data) {
+  
+  # make X and y
+  mf <- model.frame(f, data = data)
+  X <- model.matrix(f, data = mf)
+  y <- model.response(mf)
+  
+  # create starting values
+  par_start <- rep(0, ncol(X))
+  
+  # run optim()
+  est <- optim(par_start, 
+               fn = logit_ll, 
+               y = y,
+               X = X,
+               hessian = TRUE, # for SEs!
+               control = list(fnscale = -1),
+               method = "BFGS") 
+  
+  # check convergence; print warning if not
+  if (est$convergence != 0) print("Model did not converge!")
+  
+  # create list of objects to return
+  res <- list(beta_hat = est$par,
+              var_hat = solve(-est$hessian))
+  
+  # return the list
+  return(res)
+}
+
+# fit model
+fit <- est_logit(f, data = turnout)
+print(fit, digits = 2)
+
+# ---- compute the expected value given X_c ----
+
+# create chosen values for X
+# note 1: naming columns helps a bit later
+# note 2: can also do with f, model.matrix(..., newdata = ...)
+X_c <- cbind(
+  "constant" = 1, # intercept
+  "age"      = median(turnout$age), 
+  "educate"  = median(turnout$educate),
+  "income"   = median(turnout$income),
+  "white"    = 1 # white indicators = 1 
+)
+
+# function to compute qi
+ev_fn <- function(beta, X) {
+  plogis(X%*%beta)
+}
+
+# invariance property
+ev_hat <- ev_fn(fit$beta_hat, X_c)
+
+# delta method
+library(numDeriv)  # for grad()
+grad <- grad(
+  func = ev_fn,     # what function are we taking the derivative of?
+  x = fit$beta_hat, # what variable(s) are we taking the derivative w.r.t.?
+  X = X_c)          # what other values are needed?
+se_ev_hat <- sqrt(grad %*% fit$var_hat %*% grad)
+
+# ---- compute the ev given X_c (w/ range of values) ----
+
+# create chosen values for X
+X_c <- cbind(
+  "constant" = 1, # intercept
+  "age"      = min(turnout$age):max(turnout$age), 
+  "educate"  = median(turnout$educate),
+  "income"   = median(turnout$income),
+  "white"    = 1 # white indicators = 1 
+)
+
+# containers for estimated quantities of interest and ses
+ev_hat <- numeric(nrow(X_c))
+se_ev_hat <- numeric(nrow(X_c))
+
+# loop over each row of X_c and compute qi and se
+for (i in 1:nrow(X_c)) {   # for the ith row of X...
+  # invariance property
+  ev_hat[i] <- ev_fn(fit$beta_hat, X_c[i, ])
+  # delta method
+  grad <- grad(
+    func = ev_fn, 
+    x = fit$beta_hat, 
+    X = X_c[i, ]) 
+  se_ev_hat[i] <- sqrt(grad %*% fit$var_hat %*% grad)
+}
+
+# put X_c, qi estimates, and se estimates in data frame
+qi <- cbind(X_c, ev_hat, se_ev_hat) |>
+  data.frame() |>
+  glimpse()
+
+# plot
+ggplot(qi, aes(x = age, y = ev_hat, 
+               ymin = ev_hat - 1.64*se_ev_hat, 
+               ymax = ev_hat + 1.64*se_ev_hat)) + 
+  geom_ribbon() + 
+  geom_line()
+
+# ---- compute first difference ----
+
+# make X_lo
+X_lo <- cbind(
+  "constant" = 1, # intercept
+  "age"      = quantile(turnout$age, probs = 0.25), # 31 years old; 25th percentile
+  "educate"  = median(turnout$educate),
+  "income"   = median(turnout$income),
+  "white"    = 1 # white indicators = 1 
+)
+
+# make X_hi by modifying the relevant value of X_lo
+X_hi <- X_lo
+X_hi[, "age"] <- quantile(turnout$age, probs = 0.75) # 59 years old; 75th percentile
+
+# function to compute first difference
+fd_fn <- function(beta, hi, lo) {
+  plogis(hi%*%beta) - plogis(lo%*%beta)
+}
+
+# invariance property
+fd_hat <- fd_fn(fit$beta_hat, X_hi, X_lo)
+
+# delta method
+grad <- grad(
+  func = fd_fn, 
+  x = fit$beta_hat, 
+  hi = X_hi,
+  lo = X_lo)  
+se_fd_hat <- sqrt(grad %*% fit$var_hat %*% grad)
+
+# estimated fd
+fd_hat
+
+# estimated se
+se_fd_hat
+
+# 90% ci
+fd_hat - 1.64*se_fd_hat  # lower
+fd_hat + 1.64*se_fd_hat  # upper

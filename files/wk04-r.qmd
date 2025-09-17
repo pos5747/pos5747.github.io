@@ -1,0 +1,12 @@
+---
+title: "Materials"
+---
+
+## Scripts
+
+- Logit model script is [here](https://gist.github.com/carlislerainey/7798659a9d5d8decb87352068a2d1655).
+
+## Diffs
+
+- Logit versus Poisson diff is [here](https://www.diffchecker.com/u0EHewB1/).
+- Poisson versus NB diff is [here](https://www.diffchecker.com/67AIcHV3/).
