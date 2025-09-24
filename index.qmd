@@ -33,18 +33,18 @@ logit models; expected value and first difference]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 24 · **{marginaleffects}** · \[slides\] [[materials](files/wk05-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk05/01-marginaleffects.html)] \[[exercises](exr/wk05-exr.pdf)\]
+sep 24 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\] [[materials](files/wk05-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk05/01-marginaleffects.html)] \[[exercises](exr/wk05-exr.pdf)\]
 [{marginaleffects}; information criteria; zero inflation]{.topics}
 
 ------------------------------------------------------------------------
 
 oct 01 · **bayes** · \[slides\] \[notes\] \[exercises\] [Bayesian
-inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics}
+inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics} [Due Oct. 1: prospectus for research paper.]{.remarks}
 
 ------------------------------------------------------------------------
 
 oct 08 · **mcmc** · \[slides\] \[notes\] \[exercises\] [Metropolis
-algorithm; HMC + Stan and its R ecosystem; ordered and unordered logit]{.topics} [Due: prospectus for research paper.]{.remarks}
+algorithm; HMC + Stan and its R ecosystem; ordered and unordered logit]{.topics} 
 
 ------------------------------------------------------------------------
 

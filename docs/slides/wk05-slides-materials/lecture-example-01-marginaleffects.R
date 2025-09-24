@@ -11,10 +11,14 @@ f <- vote ~ age + educate + income + race
 fit <- glm(f, family = binomial, data = turnout)
 
 # ev as age ranges from 18 to 90; others at mean/mode
-predictions(fit, datagrid(age = 18:90)) 
+predictions(fit, newdata = datagrid(age = 18:90)) |>
+  glimpse()
 
 # fd as age moves across iqr; others at every observed value
-comparisons(fit, variables = list(age = "iqr")) 
+fd <- comparisons(fit, variables = list(age = "iqr")) |>
+  glimpse()
+
+hist(fd$estimate)
 
 # avg of the fds above
 avg_comparisons(fit, variables = list(age = "iqr")) 
