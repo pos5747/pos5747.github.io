@@ -1,0 +1,121 @@
+\documentclass[12pt]{article}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage[T1]{fontenc}   % better ASCII glyphs
+\usepackage{inconsolata}   % nicer monospaced font (zi4)
+
+\begin{document}
+
+\begin{center}
+\LARGE\textbf{Practice Exam Questions}
+\end{center}
+
+\normalsize
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+\item Write a clear one--sentence definition of Level I, Level II, and Level III regression as described by Berk (2010).
+\newpage
+% Solution: Level I: descriptive, summarize associations; 
+% Level II: inference to population with SEs/CIs, no causality; 
+% Level III: causal inference with credible identification.
+
+\item Suppose you have a fitted logit model. Define a first difference using both words and equations. Be precise! Describe how to interpret the first difference.
+
+% Solution: FD = E(y | X_hi) - E(y | X_lo) = Pr(y=1 | X_hi) - Pr(y=1 | X_lo).
+
+\newpage
+
+\item In the Clark and Golder (2006) normal model exercise, you fit the normal model by maximum likelihood using \verb|optim()|. The parameter vector \(\theta\) stacks the \(k\) regression coefficients \(\beta\) (for the \(k\) columns in the design matrix \(X\)) and then the scalar \(\sigma\). Which extraction is correct?
+\begin{itemize}
+  \item[A.] \verb|beta <- theta[1:(k-1)]; sigma <- theta[k]|
+  \item[B.] \verb|beta <- theta[1:k]; sigma <- theta[k+1]| % correct
+  \item[C.] \verb|beta <- theta[2:(k+1)]; sigma <- theta[1]|
+  \item[D.] \verb|beta <- theta; sigma <- 1|
+\end{itemize}
+
+\item \textit{Select all that apply.} Which of the following formulas \textbf{exclude} or \textbf{omit} an intercept term from the design matrix?
+\begin{itemize}
+  \item[A.] \verb|~ 1 + x1 + x2| % correct
+  \item[B.] \verb|~ -1 + x1 + x2|
+  \item[C.] \verb|~ 0 + x1 + x2|
+  \item[D.] \verb|~ x1 + x2| % correct
+\end{itemize}
+
+\item Suppose \verb|species| is a factor with 3 categories. By default, \verb|model.matrix(~ species)| creates:
+\begin{itemize}
+  \item[A.] Three indicator columns, one for each category
+  \item[B.] Two indicator columns (treatment coding), with one category as the baseline % correct
+  \item[C.] No columns unless you manually expand
+  \item[D.] A single numeric column with levels 1, 2, 3
+\end{itemize}
+
+\item Including \verb|poly(x, 2)| in a formula adds columns \(x\) and \(x^2\) to the design matrix.
+\begin{itemize}
+  \item[A.] TRUE
+  \item[B.] FALSE
+\end{itemize}
+
+\item Consider the formula \verb|y ~ x * z|. What predictors does this generate in the design matrix?
+\begin{itemize}
+  \item[A.] Only the product term \verb|x| $\times$ \verb|z|
+  \item[B.] \verb|x|, \verb|z|, and their product \verb|x| $\times$ \verb|z|% correct
+\end{itemize}
+
+\item Suppose \verb|f| is a formula. Which pipeline ensures that \(X\) and \(y\) are properly constructed on the same rows (e.g., after dropping missing values from variables used in the model)?
+\begin{itemize}
+
+  \item[A.]
+  \begin{verbatim}
+X <- model.matrix(f, turnout)
+y <- turnout$vote
+  \end{verbatim}
+
+  \item[B.]
+  \begin{verbatim}
+mf <- model.frame(f, data = turnout)
+X  <- model.matrix(f, mf)
+y  <- model.response(mf)
+  \end{verbatim} % correct
+
+  \item[C.]
+  \begin{verbatim}
+X <- model.matrix(f, na.omit(turnout))
+y <- na.omit(turnout)$vote
+  \end{verbatim}
+
+\end{itemize}
+
+
+\item When fitting the logit model via \verb|optim()| with design matrix \(X\), what is a correct choice for the starting parameter vector?
+\begin{itemize}
+  \item[A.] \verb|par_start <- rep(0, nrow(X))|
+  \item[B.] \verb|par_start <- rep(0, ncol(X))| % correct
+  \item[C.] \verb|par_start <- 0|
+  \item[D.] \verb|par_start <- rnorm(nrow(X))|
+\end{itemize}
+
+\item In the probit--logit comparison exercise, you learned the ``\(\approx 1.6\) rule-of-thumb.'' The \underline{\hspace{2cm}} are about 1.6 times larger in
+\underline{\hspace{2cm}} models compared to \underline{\hspace{2cm}} models.
+
+\begin{itemize}
+  \item[A.] coefficients; logit; probit % correct
+  \item[B.] coefficients; probit; logit
+  \item[C.] first differences; logit; probit
+  \item[D.] first differences; probit; logit
+\end{itemize}
+
+\item \textit{Choose all that apply.} In the Clark and Golder (2006) \textit{t}-model, you estimated \((\beta,\sigma,\nu)\) with ML using a location--scale \textit{t} distribution. Which statements are true?
+\begin{itemize}
+  \item[A.] With small \(\nu\) the \textit{t} has heavier tails than the normal, reducing outlier influence. % correct
+  \item[B.] As \(\nu \to \infty\), the \textit{t} approaches the normal as a limiting case. % correct
+  \item[C.] In a location--scale \textit{t} regression, the link for \(\mu = X\beta\) is still the identity; no special inverse link is introduced. % correct
+  \item[D.] The \textit{t} model introduces an additional parameter \(\nu\); the normal model is effectively the \textit{t} model with \(\nu = \infty\). % correct
+  \item[E.] The \textit{t} model always yields identical \(\hat{\beta}\) to OLS.
+  \item[F.] Smaller \(\nu\) implies lighter tails than the normal.
+\end{itemize}
+
+\end{enumerate}
+
+\end{document}

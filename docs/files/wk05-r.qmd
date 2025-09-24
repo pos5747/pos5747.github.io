@@ -1,0 +1,10 @@
+---
+title: "Materials"
+---
+
+## Scripts
+
+- Illustrating {marginaleffects} with `turnout` [here](https://gist.github.com/carlislerainey/507332fe1f30ea097f3513ad2d195404).
+- Illustrating IC with `turnout` [here](https://gist.github.com/carlislerainey/12b3d0e97b918099573ae2c42cc312eb).
+- Illustrating zero-inflation with `holland` [here](https://gist.github.com/carlislerainey/85180ee05c6f4566b2262f0dcc1f9117).
+

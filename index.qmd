@@ -27,26 +27,24 @@ method]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 17 · **X** · \[[slides](slides/wk04-slides.pdf)\] [[materials](files/wk04-r.qmd)] [[notes](https://pos5747.github.io/notes/wk04/01-design-matrix.html)] \[[exercises](exr/wk04-exr.pdf)\] [adding covariates;
-logistic regression, Poisson regression, negative binomial regression
-regression]{.topics}
+sep 17 · **X** · \[[slides](slides/wk04-slides.pdf)\] [[materials](files/wk04-r.qmd)] [[notes](https://pos5747.github.io/notes/wk04/01-design-matrix.html)] \[[solutions](exr/wk04-exr-sol.pdf)\] [adding covariates;
+logit models; expected value and first difference]{.topics}
+
 
 ------------------------------------------------------------------------
 
-sep 24 · **bayes** · \[slides\] \[notes\] \[exercises\] [Bayesian
-inference; acceptance sampling]{.topics}
+sep 24 · **{marginaleffects}** · \[slides\] [[materials](files/wk05-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk05/01-marginaleffects.html)] \[[exercises](exr/wk05-exr.pdf)\]
+[{marginaleffects}; information criteria; zero inflation]{.topics}
 
 ------------------------------------------------------------------------
 
-oct 01 · **mcmc** · \[slides\] \[notes\] \[exercises\] [Metropolis
-algorithm; Hamiltonian Monte Carlo and Stan; {rstan}, {cmdstanr}, and
-{brms}]{.topics} [Due: prospectus for research paper.]{.remarks}
+oct 01 · **bayes** · \[slides\] \[notes\] \[exercises\] [Bayesian
+inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics}
 
 ------------------------------------------------------------------------
 
-oct 08 · **{marginaleffects}** · \[slides\] \[notes\] \[exercises\]
-[computing quantities of interest with the {marginal effects
-pacakge}]{.topics}
+oct 08 · **mcmc** · \[slides\] \[notes\] \[exercises\] [Metropolis
+algorithm; HMC + Stan and its R ecosystem; ordered and unordered logit]{.topics} [Due: prospectus for research paper.]{.remarks}
 
 ------------------------------------------------------------------------
 

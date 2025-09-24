@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <style>
+.hljs {
+  background: transparent;
+  color: black;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-variable {
+  color: #e41a1c;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: #377eb8;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+  color: #4daf4a;
+}
+
+.hljs-deletion,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-meta {
+  color: #377eb8;
+}
+
+.hljs-doctag {
+  color: #808080;
+}
+
+.hljs-attr {
+  color: #e41a1c;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link {
+  color: #377eb8;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+<html>
+  <body>
+    <pre><code class="language-r">library(tidyverse)
+library(marginaleffects)
+
+# data 
+devtools::install_github("jrnold/ZeligData")
+turnout <- ZeligData::turnout
+
+# fit model
+f <- vote ~ age + educate + income + race
+fit <- glm(f, family = binomial, data = turnout)
+
+# ev as age ranges from 18 to 90; others at mean/mode
+predictions(fit, datagrid(age = 18:90)) 
+
+# fd as age moves across iqr; others at every observed value
+comparisons(fit, variables = list(age = "iqr")) 
+
+# avg of the fds above
+avg_comparisons(fit, variables = list(age = "iqr")) 
+</code></pre>
+  </body>
+</html>
+</html>
