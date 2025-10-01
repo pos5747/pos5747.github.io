@@ -24,7 +24,6 @@ I suggest the following topics:
 
 1. Modeling **unordered categorical** outcomes.
 1. Modeling **ordered categorical** outcomes.
-1. Modeling **count** outcomes.
 1. Modeling **time-to-event** (i.e., continuous and non-negative) outcomes semi-parametrically.
 
 ## Materials
@@ -82,7 +81,7 @@ I want to students to take the lead on choosing the exact time and place for the
 
 - **Oct. 21**: *Initial outline* (10%). Sketch out the take-home handout. Have 2-3 ideas for examples. Summarize the material you plan to include (and, implicitly, exclude). Graded as pass/fall.
 - **Oct. 28**: *Submit drafts of all materials* (25%). Read-ahead document, slides, and take-home handout. Graded using rubric below (where applicable).
-- **Nov. 04**: *Rehearsal* (15%). Before class on Nov. 5, arrange for a rehearsal of your workshop. I suggest recruiting some or all of your classmates. Graded as pass/fail
+- **Nov. 04**: *Rehearsal* (15%). Before class on Nov. 5, arrange for a rehearsal of your workshop. I suggest recruiting some or all of your classmates. Graded as pass/fail.
 - **Nov. 25**: *Workshop* (50%). Give your workshop before Thanksgiving break, ideally between Nov. 05 and Nov. 19. Graded using rubric below.
 
 ## Workshop Rubric

@@ -33,12 +33,12 @@ logit models; expected value and first difference]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 24 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\] [[materials](files/wk05-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk05/01-marginaleffects.html)] \[[exercises](exr/wk05-exr.pdf)\]
+sep 24 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\] [[materials](files/wk05-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk05/01-marginaleffects.html)] \[[solutions](exr/wk05-exr-sol.pdf)\]
 [{marginaleffects}; information criteria; zero inflation]{.topics}
 
 ------------------------------------------------------------------------
 
-oct 01 · **bayes** · \[slides\] \[notes\] \[exercises\] [Bayesian
+oct 01 · **bayes** · [slides] [[materials](files/wk06-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk06/01-bayes.html) [[exercises](exr/wk06-exr.pdf)] [Bayesian
 inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics} [Due Oct. 1: prospectus for research paper.]{.remarks}
 
 ------------------------------------------------------------------------

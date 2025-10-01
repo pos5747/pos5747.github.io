@@ -1,0 +1,18 @@
+---
+title: "Materials"
+---
+
+## Bayes
+
+- A Shiny app to explore the beta distribution is [here](https://carlislerainey.shinyapps.io/shiny-beta/).
+- An R script to understand your prior is [here](https://gist.github.com/carlislerainey/45414e0d9f22e4e1960449402e6a8048).
+- A R script to plot **all** our priors (and then posteriors) is [here](https://gist.github.com/carlislerainey/155e2fee1c01620736120c9a8bbccd6d).
+- An R script to plot your posterior is [here](https://gist.github.com/carlislerainey/5064ecde24ea764817da73b037e7a18b).
+
+## Rejection
+
+- An R script to illustrate the rejection algorithm via a weird example is [here](https://gist.github.com/carlislerainey/813b09bce0a9f1d8cc688d3217abb700)
+
+## Duration Models
+
+- An R script to illustrate fitting duration models is [here](https://gist.github.com/carlislerainey/c7cff60219bf4b484673523bfc3a347e). 
