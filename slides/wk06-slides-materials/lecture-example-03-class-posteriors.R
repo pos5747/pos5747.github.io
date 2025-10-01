@@ -12,6 +12,12 @@ priors <- tribble(
   "Strange", 0.5, 0.5,
   "Carlisle's Anti-Prior", 15, 3, 
   "Carlisle",   3,          15,
+  "Shaka", 11.25, 42.79,
+  "David", 2.13, 14.80,
+  "Bryson", 3.58, 17.47,
+  "Taylor", 1.76, 9.91,
+  "Sarah", 3.71, 13.13,
+  "Caroline", 9.42, 46.02
 ) %>% na.omit() %>%
   mutate(name = factor(name, levels = name))
 

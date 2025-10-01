@@ -38,7 +38,7 @@ sep 24 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\] [[materi
 
 ------------------------------------------------------------------------
 
-oct 01 · **bayes** · [slides] [[materials](files/wk06-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk06/01-bayes.html) [[exercises](exr/wk06-exr.pdf)] [Bayesian
+oct 01 · **bayes** · [[slides](slides/wk06-slides.pdf)] [[materials](files/wk06-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk06/01-bayes.html)] [[exercises](exr/wk06-exr.pdf)] [Bayesian
 inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics} [Due Oct. 1: prospectus for research paper.]{.remarks}
 
 ------------------------------------------------------------------------
