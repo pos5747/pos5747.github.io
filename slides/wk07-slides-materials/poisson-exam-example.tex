@@ -1,0 +1,149 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\setlist[enumerate]{itemsep=0.5em}
+\setlength{\parskip}{0.6em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+% ============================ QUESTIONS ============================
+\section*{Posterior for Poisson Likelihood with Gamma Prior}
+
+\textbf{Goal.} Derive the posterior distribution for the Poisson rate parameter $\lambda$ for a Poisson likelihood and Gamma prior on $\lambda$.
+
+\textbf{Likelihood.} We observe $N$ independent counts $x = \{x_1, x_2, \dots, x_N\}$, and we model
+\[
+X_i \mid \lambda \;\sim\; \text{Poisson}(\lambda)\quad\text{independently for }i=1,\dots,N.
+\]
+The Poisson pmf is
+\[
+\Pr(X_i = x_i \mid \lambda) \;=\; \frac{\lambda^{x_i} e^{-\lambda}}{x_i!},\qquad x_i \in \{0,1,2,\dots\},\ \lambda>0.
+\]
+Under independence, the \emph{likelihood} of $\lambda$ given the data is
+\[
+f(x \mid \lambda)\;=\;\prod_{i=1}^N \frac{\lambda^{x_i} e^{-\lambda}}{x_i!}
+\;=\; \left[\frac{1}{\prod_{i=1}^N x_i!}\right] e^{-N\lambda}\,\lambda^{\sum_{i=1}^N x_i}.
+\]
+
+\textbf{Prior.} Place a Gamma prior on $\lambda$ with shape $\alpha^*>0$ and rate $\beta^*>0$.
+\[
+\lambda \;\sim\; \text{Gamma}(\alpha^*, \beta^*),\qquad
+f(\lambda) \;=\; \frac{(\beta^*)^{\alpha^*}}{\Gamma(\alpha^*)}\,\lambda^{\alpha^*-1} e^{-\beta^* \lambda},\quad \lambda>0.
+\]
+
+\textbf{Task.} Find the posterior distribution $f(\lambda \mid x)$, identifying it by name and parameters. (Hint: \textit{The Gamma distribution is conjugate to the Poisson likelihood.})
+
+\newpage
+
+\section*{Explaining the Rejection Algorithm}
+
+\textbf{Task.} In your own words, explain the logic of the \emph{rejection algorithm} to someone who has never seen it before. Assume:
+\begin{itemize}
+\item The target distribution has support on $[0,1]$ and is known up to a proportionality constant; denote its (possibly unnormalized) density by $f(z)$ for $z \in [0,1]$.
+\item We use a \emph{uniform} proposal on $[0,1]$, i.e., propose $Z \sim \text{Uniform}(0,1)$.
+\item We have an \emph{envelope constant} $M>0$ satisfying $M \ge \sup_{z\in[0,1]} f(z)$.
+\end{itemize}
+Explain why the algorithm works and what the output represents. You may use sentences or bullet points, but explain with words rather than equations. And explain \textit{why} it works rather than what it does.
+
+\newpage
+
+% ============================ SOLUTIONS ============================
+\begin{center}
+{\Large Solutions}\\[2pt]
+\end{center}
+
+\section*{Solution to Question 1}
+
+\textbf{Step 1: Write down the pieces explicitly.}
+
+From the pmf and independence,
+\[
+\begin{aligned}
+f(x \mid \lambda)
+&=\prod_{i=1}^N \frac{\lambda^{x_i} e^{-\lambda}}{x_i!}
+= \left[\frac{1}{\prod_{i=1}^N x_i!}\right]
+\left(\prod_{i=1}^N \lambda^{x_i}\right)
+\left(\prod_{i=1}^N e^{-\lambda}\right) \\
+&= \underbrace{\left[\frac{1}{\prod_{i=1}^N x_i!}\right]}_{\text{constant in }\lambda}\;
+\lambda^{\sum_{i=1}^N x_i}\; e^{-N\lambda}.
+\end{aligned}
+\]
+The Gamma prior density (shape--rate) is
+\[
+f(\lambda)=\underbrace{\frac{(\beta^*)^{\alpha^*}}{\Gamma(\alpha^*)}}_{\text{constant in }\lambda}\;
+\lambda^{\alpha^*-1} e^{-\beta^* \lambda},\qquad \lambda>0.
+\]
+
+\textbf{Step 2: Multiply likelihood and prior (Bayes up to proportionality).}
+
+Ignoring constants that do not depend on $\lambda$,
+\[
+\begin{aligned}
+f(\lambda \mid x) &\propto f(x\mid \lambda)\,f(\lambda) \\
+&\propto \Big(\lambda^{\sum_{i=1}^N x_i} e^{-N\lambda}\Big)\;
+\Big(\lambda^{\alpha^*-1} e^{-\beta^* \lambda}\Big).
+\end{aligned}
+\]
+
+\textbf{Step 3: Collect like terms carefully (same base $\lambda$ and same base $e$).}
+
+For powers of $\lambda$:
+\[
+\lambda^{\sum_{i=1}^N x_i}\times \lambda^{\alpha^*-1}
+= \lambda^{\left(\sum_{i=1}^N x_i + \alpha^* - 1\right)}.
+\]
+For exponentials:
+\[
+e^{-N\lambda}\times e^{-\beta^*\lambda}=e^{-(N+\beta^*)\lambda}.
+\]
+Therefore,
+\[
+f(\lambda \mid x) \propto \lambda^{\left(\alpha^*+\sum_{i=1}^N x_i\right)-1}\; e^{-(\beta^*+N)\lambda}.
+\]
+
+\textbf{Step 4: Name the updated parameters and recognize the family.}
+
+Define
+\[
+\alpha' = \alpha^* + \sum_{i=1}^N x_i,\qquad \beta' = \beta^* + N.
+\]
+Then
+\[
+f(\lambda \mid x) \propto \lambda^{\alpha'-1} e^{-\beta' \lambda},
+\]
+which is the \emph{kernel} of a $\text{Gamma}(\alpha',\beta')$ density.
+
+\textbf{Step 5: Restore the normalizing constant (to make it a proper density).}
+
+The normalized Gamma density with shape $\alpha'$ and rate $\beta'$ is
+\[
+f(\lambda \mid x)=\frac{(\beta')^{\alpha'}}{\Gamma(\alpha')}\;\lambda^{\alpha'-1} e^{-\beta'\lambda},\qquad \lambda>0.
+\]
+Hence the posterior is
+\[
+\boxed{\ \lambda \mid x \sim \text{Gamma}\!\left(\alpha^* + \sum_{i=1}^N x_i,\; \beta^* + N\right). \ }
+\]
+
+\textbf{Why this makes sense (quick checks).}
+\begin{itemize}
+\item \emph{Conjugacy:} Gamma prior + Poisson likelihood $\Rightarrow$ Gamma posterior.
+\item \emph{Learning from data:} More events (large $\sum x_i$) increase the posterior shape; more observations ($N$) increase the rate, shrinking toward stable estimates.
+\end{itemize}
+
+\section*{Solution to Question 2}
+
+
+\textbf{Paragraph explanation}  
+Think of the target distribution as a wavy “height” curve drawn above the interval $[0,1]$, and imagine a flat roof set high enough to sit above that entire curve. We first spread candidate points evenly across the floor from 0 to 1 (uniform proposals), which means every location is tried equally often. Then we keep each candidate with a chance that depends only on how tall the target curve is at that spot relative to the roof: where the curve is tall, candidates are kept often; where it is short, they are kept rarely. 
+
+This “shape-based thinning” turns an even carpet of proposals into a pile of kept points whose density mirrors the curve itself. The unknown normalizing constant of the target never matters, because we only compare relative heights; stretching or shrinking the entire curve by a common factor just changes how many proposals are kept overall, not \emph{where} they are kept. The roof guarantees the keep–discard chance is valid everywhere and also determines efficiency (a lower roof, just above the peak, wastes fewer proposals). 
+
+The accepted $z$’s are thus independent draws that behave as if they were generated directly from the target distribution, ready for summaries like means, quantiles, and credible intervals.
+
+\end{document}

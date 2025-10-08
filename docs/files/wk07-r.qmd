@@ -1,0 +1,8 @@
+---
+title: "Materials"
+---
+
+- An R script to run Metropolis for the toothpaste cap problem is [here](https://gist.github.com/carlislerainey/37521a4fed2ca7d3c74b6408c35ccf24).
+- An R script to run Metropolis for the `turnout` logistic regression is [here](https://gist.github.com/carlislerainey/3147faeecf88fa92a897cf4a8f1ec3e2).
+- An R script to run Stan for the `turnout` logistic regression is [here](https://gist.github.com/carlislerainey/3f59c3eb5cadfd35fa064083b92d7dab).
+- An R script to use {brms} for the `turnout` logistic regression is [here](https://gist.github.com/carlislerainey/a0b5cb6e92ded08d6f70bfc426e6610f).

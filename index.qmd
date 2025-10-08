@@ -43,7 +43,7 @@ inference; rejection sampling; a Bayesian invariance property; censoring; durati
 
 ------------------------------------------------------------------------
 
-oct 08 · **mcmc** · \[slides\] \[notes\] \[exercises\] [Metropolis
+oct 08 · **mcmc** · \[slides\] [[materials](files/wk07-r.qmd)]  \[notes\] \[exercises\] [Metropolis
 algorithm; HMC + Stan and its R ecosystem; ordered and unordered logit]{.topics} 
 
 ------------------------------------------------------------------------
