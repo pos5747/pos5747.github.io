@@ -16,7 +16,8 @@ turnout <- ZeligData::turnout  |>
 f  <- vote ~ rs_age + rs_educate + rs_income + race
 
 # fit model with brms
-fit <- brm(f, data = turnout, family = bernoulli)
+fit <- brm(f, data = turnout, family = bernoulli, 
+           chains = 10, cores = 10)
 
 # compute qi
 comparisons(fit, variables = list(rs_age = c(-0.5, 0.5)), 

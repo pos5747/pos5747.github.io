@@ -128,7 +128,7 @@ log_posterior <- function(beta, y, X) {
 # ---- running the algorithm ----
 
 # sample with metropolis
-S <- 1000
+S <- 10000
 m1 <- metrop(log_posterior, S = S, tau = 0.1, theta_start = rep(-2, ncol(X)), y = y, X = X, progress_bar = TRUE)
 m2 <- metrop(log_posterior, S = S, tau = 0.1, theta_start = rep(-1, ncol(X)), y = y, X = X, progress_bar = TRUE)
 m3 <- metrop(log_posterior, S = S, tau = 0.1, theta_start = rep(1, ncol(X)), y = y, X = X, progress_bar = TRUE)
@@ -140,10 +140,10 @@ m4 <- metrop(log_posterior, S = S, tau = 0.1, theta_start = rep(2, ncol(X)), y =
 start <- .2*S + 1
 end <-   S
 matrix_of_chains <- cbind(
-  m1$samples[start:end, 1],
-  m2$samples[start:end, 1],
-  m3$samples[start:end, 1],
-  m4$samples[start:end, 1]
+  m1$samples[start:end, 2],
+  m2$samples[start:end, 2],
+  m3$samples[start:end, 2],
+  m4$samples[start:end, 2]
 )
 
 # compute r-hat (for intercept)
@@ -175,6 +175,8 @@ gg1 + gg2
 # compare to arm::display(fit)
 mean(matrix_of_chains)
 sd(matrix_of_chains)
+
+arm::display(fit)
 
 # ---- quantities of interest ----
 

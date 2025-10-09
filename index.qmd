@@ -38,13 +38,13 @@ sep 24 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\] [[materi
 
 ------------------------------------------------------------------------
 
-oct 01 · **bayes** · [[slides](slides/wk06-slides.pdf)] [[materials](files/wk06-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk06/01-bayes.html)] [[exercises](exr/wk06-exr.pdf)] [Bayesian
+oct 01 · **bayes** · [[slides](slides/wk06-slides.pdf)] [[materials](files/wk06-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk06/01-bayes.html)] [[solutions](exr/wk06-exr-sol.pdf)] [Bayesian
 inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics} [Due Oct. 1: prospectus for research paper.]{.remarks}
 
 ------------------------------------------------------------------------
 
-oct 08 · **mcmc** · \[slides\] [[materials](files/wk07-r.qmd)]  \[notes\] \[exercises\] [Metropolis
-algorithm; HMC + Stan and its R ecosystem; ordered and unordered logit]{.topics} 
+oct 08 · **mcmc** · [[slides](slides/wk07-slides.pdf)] [[materials](files/wk07-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk07/01-metrop.html)] [[solutions (soon)](exr/wk07-exr-sol.pdf)] [Metropolis
+algorithm; HMC + Stan and its R ecosystem]{.topics} 
 
 ------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 # ---- setup ----
 
 # nice printing
-options(digits = 3)
+options(digits = 5)
 
 # load packages
 library(tidyverse)
@@ -85,7 +85,9 @@ metrop <- function(logf, theta_start, S = 10000, tau = 0.1, progress_bar = FALSE
 
 # log-posterior distribution
 logf <- function(p) {
-  ifelse(p <= 0 | p >= 1, -Inf, dbeta(p, 11, 165, log = TRUE))
+  ifelse(p <= 0 | p >= 1, 
+         -Inf, 
+         dbeta(p, 11, 165, log = TRUE))
 }
 
 # run metrop
@@ -97,8 +99,8 @@ m <- metrop(
   progress_bar = TRUE)
 
 # closed-form vs simulation mean
-beta_mean_cf <- 11 / (11 + 165)
-beta_mean_sim_all <- mean(m$samples)
+11 / (11 + 165)
+mean(m$samples)
 
 # ---- plotting the samples ----
 
