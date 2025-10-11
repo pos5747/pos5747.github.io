@@ -1,0 +1,39 @@
+---
+title: "Comments on preparation for exam 1"
+---
+
+**Oct. 11 Update:** 
+
+- Be familiar with the various distributions you've seen throughout the exercises and notes. You should be able to recognize the key features of the plotted pmfs or pdfs, for example. (There's no need to memorize their mathematical formulas.)
+- Don't forget the readings assigned in the exercises! You should know the key ideas from each reading, especially the portions the exercise mentions or focuses on.
+- I'm now thinking the exam will be about 50% multiple choice (or similar, like fill in the blank) and 50% open ended.
+
+---
+
+As I write the exam, I'm focus on the notes and the exercises. 
+
+- Make sure you understand the ideas in the notes and the examples.
+- Make sure you understand each exercise.
+- Make sure you are familiar with the readings (assigned in the exercise).
+
+Don't forget about the mathematical foundations we did in week one!
+
+The exam will be organized by types of questions (e.g., short-answer questions, then long-answer questions). Within these sections, I'll organize them roughly chronologically (i.e., starting math basics and ending with MCMC).
+
+The exam will have a mix of long-answer and short-answer questions. 
+
+## Short Questions
+
+My goal with the short-answer questions is that you can see the correct answer immediately without any or much work. Many of these questions are multiple choice. These cover definitions, principles, and simple calculations.
+
+## Long Questions
+
+Some long-answer questions require you to write several sentences. Others require a chain of math.
+
+1. Descriptive v. causal claims
+1. Find an ML estimator for a given model.
+1. Find the posterior for a given model and conjugate prior.
+1. The conceptual relationship between Bayesian and ML estimators. In competition? Interchangeable alternatives? What's the unifying principle, if any?
+1. First difference as a unifier.
+1. How to use obtain point and interval estimates to obtain posterior simulations.
+1. Comparing the key features of different distributions we've encountered.

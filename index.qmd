@@ -48,7 +48,7 @@ algorithm; HMC + Stan and its R ecosystem]{.topics}
 
 ------------------------------------------------------------------------
 
-oct 15 · [**midterm exam**]{.text-warning}
+oct 15 · [**midterm exam**]{.text-warning} [[comments](exam1-comments.qmd)]
 
 ------------------------------------------------------------------------
 
