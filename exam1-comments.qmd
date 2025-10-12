@@ -2,6 +2,13 @@
 title: "Comments on preparation for exam 1"
 ---
 
+Think of these comments as a "study guide." As I noted at the beginning of the semester, the exam is based on the notes and exercises, but this document offers a "big picture" overview of the important themes. See especially the open-ended questions at the bottom.
+
+
+**Oct. 12 Update:** 
+
+- Define a sampling distribution. Describe how we can use a simulation to study a sampling distribution.
+
 **Oct. 11 Update:** 
 
 - Be familiar with the various distributions you've seen throughout the exercises and notes. You should be able to recognize the key features of the plotted pmfs or pdfs, for example. (There's no need to memorize their mathematical formulas.)
@@ -10,7 +17,7 @@ title: "Comments on preparation for exam 1"
 
 ---
 
-As I write the exam, I'm focus on the notes and the exercises. 
+As I write the exam, I'm focused on the notes and the exercises. 
 
 - Make sure you understand the ideas in the notes and the examples.
 - Make sure you understand each exercise.
@@ -37,3 +44,21 @@ Some long-answer questions require you to write several sentences. Others requir
 1. First difference as a unifier.
 1. How to use obtain point and interval estimates to obtain posterior simulations.
 1. Comparing the key features of different distributions we've encountered.
+
+## Reflections
+
+At least one of the following questions will appear on the exam. I have at least advocated for a particular position on each. It's fine to disagree with my stance, but defend your position well.
+
+### Bayes v. ML
+
+We have examined two general engines for producing point and interval estimates: maximum likelihood and Bayesian. How should we think about the relationship between the two? Are they best understood as competing, incompatible alternatives? Or simply as interchangeable tools? If they compete, which approach is right, and why? If they are interchangeable, what is the unifying principle?
+
+### Description
+
+As quantitative social scientists, we have tools to test descriptive and causal claims.
+
+- Define descriptive and causal claims. 
+- Assess the current state of quantitative political science with respect to descriptive and causal claims. Would you say that causal questions are *over*-emphasized in this moment? Or under-emphasized? Logically, must claims fall in one bin or the other? 
+- In practice, do authors clearly locate their claims in one bin or the other? 
+
+Defend your answers.  

@@ -46,7 +46,7 @@
     "href": "exam1-comments.html",
     "title": "Comments on preparation for exam 1",
     "section": "",
-    "text": "Oct. 11 Update:\nAs I write the exam, I’m focus on the notes and the exercises.\nDon’t forget about the mathematical foundations we did in week one!\nThe exam will be organized by types of questions (e.g., short-answer questions, then long-answer questions). Within these sections, I’ll organize them roughly chronologically (i.e., starting math basics and ending with MCMC).\nThe exam will have a mix of long-answer and short-answer questions."
+    "text": "Think of these comments as a “study guide.” As I noted at the beginning of the semester, the exam is based on the notes and exercises, but this document offers a “big picture” overview of the important themes. See especially the open-ended questions at the bottom.\nOct. 12 Update:\nOct. 11 Update:\nAs I write the exam, I’m focused on the notes and the exercises.\nDon’t forget about the mathematical foundations we did in week one!\nThe exam will be organized by types of questions (e.g., short-answer questions, then long-answer questions). Within these sections, I’ll organize them roughly chronologically (i.e., starting math basics and ending with MCMC).\nThe exam will have a mix of long-answer and short-answer questions."
   },
   {
     "objectID": "exam1-comments.html#short-questions",
@@ -61,6 +61,13 @@
     "title": "Comments on preparation for exam 1",
     "section": "Long Questions",
     "text": "Long Questions\nSome long-answer questions require you to write several sentences. Others require a chain of math.\n\nDescriptive v. causal claims\nFind an ML estimator for a given model.\nFind the posterior for a given model and conjugate prior.\nThe conceptual relationship between Bayesian and ML estimators. In competition? Interchangeable alternatives? What’s the unifying principle, if any?\nFirst difference as a unifier.\nHow to use obtain point and interval estimates to obtain posterior simulations.\nComparing the key features of different distributions we’ve encountered."
+  },
+  {
+    "objectID": "exam1-comments.html#reflections",
+    "href": "exam1-comments.html#reflections",
+    "title": "Comments on preparation for exam 1",
+    "section": "Reflections",
+    "text": "Reflections\nAt least one of the following questions will appear on the exam. I have at least advocated for a particular position on each. It’s fine to disagree with my stance, but defend your position well.\n\nBayes v. ML\nWe have examined two general engines for producing point and interval estimates: maximum likelihood and Bayesian. How should we think about the relationship between the two? Are they best understood as competing, incompatible alternatives? Or simply as interchangeable tools? If they compete, which approach is right, and why? If they are interchangeable, what is the unifying principle?\n\n\nDescription\nAs quantitative social scientists, we have tools to test descriptive and causal claims.\n\nDefine descriptive and causal claims.\nAssess the current state of quantitative political science with respect to descriptive and causal claims. Would you say that causal questions are over-emphasized in this moment? Or under-emphasized? Logically, must claims fall in one bin or the other?\nIn practice, do authors clearly locate their claims in one bin or the other?\n\nDefend your answers."
   },
   {
     "objectID": "workshop.html",
