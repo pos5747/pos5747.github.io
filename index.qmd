@@ -52,7 +52,7 @@ oct 15 · [**midterm exam**]{.text-warning}
 
 ------------------------------------------------------------------------
 
-oct 22 · **hierarchical models, 1** · \[slides\] [[exercises](exr/wk09-exr.pdf)]
+oct 22 · **hierarchical models, 1** · [[slides](slides/wk09-slides/wk09-slides.html)] [[exercises](exr/wk09-exr.pdf)]
 [Due: (1) first draft of research paper due and (2) initial outline of
 take-home workshop handout.]{.remarks}
 
