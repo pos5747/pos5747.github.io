@@ -43,16 +43,16 @@ inference; rejection sampling; a Bayesian invariance property; censoring; durati
 
 ------------------------------------------------------------------------
 
-oct 08 · **mcmc** · [[slides](slides/wk07-slides.pdf)] [[materials](files/wk07-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk07/01-metrop.html)] [[exerices + solutions](exr/wk07-exr-sol.pdf)] [Metropolis
+oct 08 · **mcmc** · [[slides](slides/wk07-slides.pdf)] [[materials](files/wk07-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk07/01-metrop.html)] [[exercises + solutions](exr/wk07-exr-sol.pdf)] [Metropolis
 algorithm; HMC + Stan and its R ecosystem]{.topics} 
 
 ------------------------------------------------------------------------
 
-oct 15 · [**midterm exam**]{.text-warning} [[comments](exam1-comments.qmd)]
+oct 15 · [**midterm exam**]{.text-warning} 
 
 ------------------------------------------------------------------------
 
-oct 22 · **hierarchical models** · \[slides\] \[notes\] \[exercises\]
+oct 22 · **hierarchical models, 1** · \[slides\] [[exercises](exr/wk09-exr.pdf)]
 [Due: (1) first draft of research paper due and (2) initial outline of
 take-home workshop handout.]{.remarks}
 
