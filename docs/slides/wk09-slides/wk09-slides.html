@@ -1093,7 +1093,7 @@ deviance = 5347.5 </code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a>end_time <span class="sc">-</span> start_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time difference of 1.96 mins</code></pre>
+<pre><code>Time difference of 1.75 mins</code></pre>
 </div>
 </div>
 </div>
@@ -1113,29 +1113,29 @@ Formula: contacted ~ district_competitiveness * electoral_rules + (1 | district_
 Multilevel Hyperparameters:
 ~district_id (Number of levels: 567) 
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sd(Intercept)     0.53      0.08     0.37     0.69 1.00      253      240
+sd(Intercept)     0.53      0.08     0.39     0.68 1.00      523     1074
 
 ~election_id (Number of levels: 5) 
                                         Estimate Est.Error l-95% CI u-95% CI Rhat
-sd(Intercept)                               0.65      0.55     0.03     2.04 1.00
-sd(district_competitiveness)                0.90      0.68     0.05     2.71 1.00
-cor(Intercept,district_competitiveness)    -0.06      0.57    -0.95     0.94 1.00
+sd(Intercept)                               0.67      0.59     0.03     2.19 1.01
+sd(district_competitiveness)                0.84      0.73     0.04     2.63 1.00
+cor(Intercept,district_competitiveness)    -0.03      0.58    -0.95     0.94 1.00
                                         Bulk_ESS Tail_ESS
-sd(Intercept)                                449      576
-sd(district_competitiveness)                 456      663
-cor(Intercept,district_competitiveness)      679      686
+sd(Intercept)                                645      553
+sd(district_competitiveness)                 737      883
+cor(Intercept,district_competitiveness)      992      861
 
 Regression Coefficients:
                                             Estimate Est.Error l-95% CI u-95% CI Rhat
-Intercept                                      -2.40      0.81    -4.00    -0.89 1.01
-district_competitiveness                        1.32      1.10    -0.80     3.62 1.00
-electoral_rulesSMD                             -0.74      1.10    -2.86     1.33 1.01
-district_competitiveness:electoral_rulesSMD     3.07      1.49     0.12     6.07 1.00
+Intercept                                      -2.38      0.75    -3.81    -0.92 1.00
+district_competitiveness                        1.31      1.02    -0.68     3.31 1.00
+electoral_rulesSMD                             -0.73      1.04    -2.82     1.28 1.00
+district_competitiveness:electoral_rulesSMD     2.98      1.45    -0.02     5.68 1.00
                                             Bulk_ESS Tail_ESS
-Intercept                                        307      309
-district_competitiveness                         266      397
-electoral_rulesSMD                               330      446
-district_competitiveness:electoral_rulesSMD      307      299
+Intercept                                        915      846
+district_competitiveness                         727      701
+electoral_rulesSMD                              1065      905
+district_competitiveness:electoral_rulesSMD      732      544
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1158,29 +1158,29 @@ Formula: contacted ~ district_competitiveness * electoral_rules + (1 | district_
 Multilevel Hyperparameters:
 ~district_id (Number of levels: 567) 
               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sd(Intercept)     0.53      0.08     0.37     0.69 1.00      253      240
+sd(Intercept)     0.53      0.08     0.39     0.68 1.00      523     1074
 
 ~election_id (Number of levels: 5) 
                                         Estimate Est.Error l-95% CI u-95% CI Rhat
-sd(Intercept)                               0.65      0.55     0.03     2.04 1.00
-sd(district_competitiveness)                0.90      0.68     0.05     2.71 1.00
-cor(Intercept,district_competitiveness)    -0.06      0.57    -0.95     0.94 1.00
+sd(Intercept)                               0.67      0.59     0.03     2.19 1.01
+sd(district_competitiveness)                0.84      0.73     0.04     2.63 1.00
+cor(Intercept,district_competitiveness)    -0.03      0.58    -0.95     0.94 1.00
                                         Bulk_ESS Tail_ESS
-sd(Intercept)                                449      576
-sd(district_competitiveness)                 456      663
-cor(Intercept,district_competitiveness)      679      686
+sd(Intercept)                                645      553
+sd(district_competitiveness)                 737      883
+cor(Intercept,district_competitiveness)      992      861
 
 Regression Coefficients:
                                             Estimate Est.Error l-95% CI u-95% CI Rhat
-Intercept                                      -2.40      0.81    -4.00    -0.89 1.01
-district_competitiveness                        1.32      1.10    -0.80     3.62 1.00
-electoral_rulesSMD                             -0.74      1.10    -2.86     1.33 1.01
-district_competitiveness:electoral_rulesSMD     3.07      1.49     0.12     6.07 1.00
+Intercept                                      -2.38      0.75    -3.81    -0.92 1.00
+district_competitiveness                        1.31      1.02    -0.68     3.31 1.00
+electoral_rulesSMD                             -0.73      1.04    -2.82     1.28 1.00
+district_competitiveness:electoral_rulesSMD     2.98      1.45    -0.02     5.68 1.00
                                             Bulk_ESS Tail_ESS
-Intercept                                        307      309
-district_competitiveness                         266      397
-electoral_rulesSMD                               330      446
-district_competitiveness:electoral_rulesSMD      307      299
+Intercept                                        915      846
+district_competitiveness                         727      701
+electoral_rulesSMD                              1065      905
+district_competitiveness:electoral_rulesSMD      732      544
 
 Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1224,7 +1224,7 @@ $ election_id              &lt;chr&gt; "Canada", "Canada", "Canada", "Canada", "
 $ district_competitiveness &lt;dbl&gt; 0.610, 0.607, 0.765, 0.624, 0.440, 0.572, 0.750, 0.433,…
 $ electoral_rules          &lt;fct&gt; SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, …
 $ .row                     &lt;int&gt; 4, 11, 41, 46, 59, 62, 43, 52, 168, 176, 131, 10, 103, …
-$ post_avg                 &lt;dbl&gt; 0.565, 0.485, 0.594, 0.552, 0.292, 0.444, 0.606, 0.309,…</code></pre>
+$ post_avg                 &lt;dbl&gt; 0.562, 0.479, 0.595, 0.555, 0.297, 0.450, 0.604, 0.301,…</code></pre>
 </div>
 </div>
 </div>
@@ -1252,7 +1252,7 @@ $ election_id              &lt;chr&gt; "Canada", "Canada", "Canada", "Canada", "
 $ district_competitiveness &lt;dbl&gt; 0.610, 0.607, 0.765, 0.624, 0.440, 0.572, 0.750, 0.433,…
 $ electoral_rules          &lt;fct&gt; SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, SMD, …
 $ .row                     &lt;int&gt; 4, 11, 41, 46, 59, 62, 43, 52, 168, 176, 131, 10, 103, …
-$ post_avg                 &lt;dbl&gt; 0.511, 0.507, 0.685, 0.527, 0.318, 0.466, 0.669, 0.311,…</code></pre>
+$ post_avg                 &lt;dbl&gt; 0.511, 0.508, 0.684, 0.527, 0.320, 0.467, 0.668, 0.313,…</code></pre>
 </div>
 </div>
 </section>
@@ -1265,7 +1265,7 @@ $ post_avg                 &lt;dbl&gt; 0.511, 0.507, 0.685, 0.527, 0.318, 0.466,
 <span id="cb81-4"><a></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> pred_country, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="wk09-slides_files/figure-revealjs/unnamed-chunk-51-1.png" width="768" class="r-stretch"></section>
+<img data-src="wk09-slides_files/figure-revealjs/unnamed-chunk-50-1.png" width="768" class="r-stretch"></section>
 <section class="slide level2">
 
 <div class="cell">
@@ -1282,9 +1282,9 @@ $ post_avg                 &lt;dbl&gt; 0.511, 0.507, 0.685, 0.527, 0.318, 0.466,
 <pre><code>Rows: 5,126
 Columns: 9
 $ rowid                    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …
-$ estimate                 &lt;dbl&gt; 0.694, 0.320, 0.562, 0.562, 0.570, 0.632, 0.632, 0.632,…
-$ conf.low                 &lt;dbl&gt; 0.457, 0.143, 0.322, 0.322, 0.338, 0.399, 0.399, 0.399,…
-$ conf.high                &lt;dbl&gt; 0.865, 0.571, 0.769, 0.769, 0.788, 0.817, 0.817, 0.817,…
+$ estimate                 &lt;dbl&gt; 0.693, 0.321, 0.565, 0.565, 0.565, 0.629, 0.629, 0.629,…
+$ conf.low                 &lt;dbl&gt; 0.467, 0.145, 0.328, 0.328, 0.331, 0.391, 0.391, 0.391,…
+$ conf.high                &lt;dbl&gt; 0.871, 0.575, 0.760, 0.760, 0.776, 0.813, 0.813, 0.813,…
 $ district_id              &lt;chr&gt; "Canada; District 7", "Canada; District 4", "Canada; Di…
 $ election_id              &lt;chr&gt; "Canada", "Canada", "Canada", "Canada", "Canada", "Cana…
 $ district_competitiveness &lt;dbl&gt; 0.740, 0.420, 0.692, 0.692, 0.610, 0.742, 0.742, 0.742,…
@@ -1306,9 +1306,9 @@ $ df                       &lt;dbl&gt; Inf, Inf, Inf, Inf, Inf, Inf, Inf, Inf, I
 <pre><code>Rows: 5,126
 Columns: 9
 $ rowid                    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …
-$ estimate                 &lt;dbl&gt; 0.659, 0.296, 0.606, 0.606, 0.511, 0.661, 0.661, 0.661,…
-$ conf.low                 &lt;dbl&gt; 0.609, 0.230, 0.562, 0.562, 0.467, 0.611, 0.611, 0.611,…
-$ conf.high                &lt;dbl&gt; 0.709, 0.376, 0.650, 0.650, 0.554, 0.711, 0.711, 0.711,…
+$ estimate                 &lt;dbl&gt; 0.659, 0.300, 0.606, 0.606, 0.511, 0.661, 0.661, 0.661,…
+$ conf.low                 &lt;dbl&gt; 0.604, 0.227, 0.558, 0.558, 0.464, 0.606, 0.606, 0.606,…
+$ conf.high                &lt;dbl&gt; 0.710, 0.376, 0.652, 0.652, 0.555, 0.712, 0.712, 0.712,…
 $ district_id              &lt;chr&gt; "Canada; District 7", "Canada; District 4", "Canada; Di…
 $ election_id              &lt;chr&gt; "Canada", "Canada", "Canada", "Canada", "Canada", "Cana…
 $ district_competitiveness &lt;dbl&gt; 0.740, 0.420, 0.692, 0.692, 0.610, 0.742, 0.742, 0.742,…
@@ -1328,7 +1328,7 @@ $ df                       &lt;dbl&gt; Inf, Inf, Inf, Inf, Inf, Inf, Inf, Inf, I
 </div>
 
 
-<img data-src="wk09-slides_files/figure-revealjs/unnamed-chunk-54-1.png" width="768" class="r-stretch"></section></section>
+<img data-src="wk09-slides_files/figure-revealjs/unnamed-chunk-53-1.png" width="768" class="r-stretch"></section></section>
 
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

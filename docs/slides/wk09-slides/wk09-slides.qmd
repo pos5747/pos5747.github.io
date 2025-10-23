@@ -715,6 +715,7 @@ arm::display(fit, detail = TRUE)
 Using the `lmer()`-like formula, we can fit the hiearchical model with Stan.
   
 ```{r, results='hide', cache = TRUE}
+#| label: "fit-brm-model"
 start_time <- Sys.time()
 stan_fit <- brm(contacted ~ district_competitiveness*electoral_rules +
                   (1 | district_id) + 
@@ -781,7 +782,6 @@ pred_district <- grid |>
 ```{r}
 #| warning: false
 #| message: false
-#| cache: true
 
 # compute posterior average for each country (in a 'typical' district)
 pred_country <- rainey %>%
