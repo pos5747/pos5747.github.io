@@ -781,7 +781,6 @@ pred_district <- grid |>
 ```{r}
 #| warning: false
 #| message: false
-#| cache: true
 
 # compute posterior average for each country (in a 'typical' district)
 pred_country <- rainey %>%
@@ -811,7 +810,6 @@ ggplot(pred_district, aes(x = district_competitiveness, y = post_avg)) +
 ---
 
 ```{r}
-#| cache: true
 grid <- rainey %>%
   select(district_id, 
          election_id, 
