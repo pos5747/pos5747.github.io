@@ -1,47 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pos5747.github.io/suggestions-for-exercises.html</loc>
-    <lastmod>2025-08-20T16:23:09.000Z</lastmod>
+    <loc>https://pos5747.github.io/workshop.html</loc>
+    <lastmod>2025-09-30T09:15:03.875Z</lastmod>
+  </url>
+  <url>
+    <loc>https://pos5747.github.io/research-project.html</loc>
+    <lastmod>2025-10-23T08:34:56.537Z</lastmod>
   </url>
   <url>
     <loc>https://pos5747.github.io/files/wk07-r.html</loc>
     <lastmod>2025-10-08T12:34:03.727Z</lastmod>
   </url>
   <url>
-    <loc>https://pos5747.github.io/files/wk06-r.html</loc>
-    <lastmod>2025-10-01T12:05:47.098Z</lastmod>
-  </url>
-  <url>
-    <loc>https://pos5747.github.io/exam1-comments.html</loc>
-    <lastmod>2025-10-12T18:40:53.102Z</lastmod>
-  </url>
-  <url>
-    <loc>https://pos5747.github.io/index.html</loc>
-    <lastmod>2025-10-22T21:11:49.901Z</lastmod>
-  </url>
-  <url>
-    <loc>https://pos5747.github.io/research-project.html</loc>
-    <lastmod>2025-09-24T17:50:21.573Z</lastmod>
-  </url>
-  <url>
-    <loc>https://pos5747.github.io/workshop.html</loc>
-    <lastmod>2025-09-30T09:15:03.875Z</lastmod>
-  </url>
-  <url>
-    <loc>https://pos5747.github.io/slides/wk09-slides/wk09-slides.html</loc>
-    <lastmod>2025-10-23T00:53:10.506Z</lastmod>
-  </url>
-  <url>
-    <loc>https://pos5747.github.io/files/wk04-r.html</loc>
-    <lastmod>2025-09-17T08:56:36.768Z</lastmod>
+    <loc>https://pos5747.github.io/files/wk05-r.html</loc>
+    <lastmod>2025-09-24T10:23:29.049Z</lastmod>
   </url>
   <url>
     <loc>https://pos5747.github.io/files/wk03-r.html</loc>
     <lastmod>2025-09-10T16:26:26.506Z</lastmod>
   </url>
   <url>
-    <loc>https://pos5747.github.io/files/wk05-r.html</loc>
-    <lastmod>2025-09-24T10:23:29.049Z</lastmod>
+    <loc>https://pos5747.github.io/exam1-comments.html</loc>
+    <lastmod>2025-10-12T18:40:53.102Z</lastmod>
+  </url>
+  <url>
+    <loc>https://pos5747.github.io/files/wk04-r.html</loc>
+    <lastmod>2025-09-17T08:56:36.768Z</lastmod>
+  </url>
+  <url>
+    <loc>https://pos5747.github.io/files/wk06-r.html</loc>
+    <lastmod>2025-10-01T12:05:47.098Z</lastmod>
+  </url>
+  <url>
+    <loc>https://pos5747.github.io/index.html</loc>
+    <lastmod>2025-10-22T21:11:49.901Z</lastmod>
+  </url>
+  <url>
+    <loc>https://pos5747.github.io/suggestions-for-exercises.html</loc>
+    <lastmod>2025-08-20T16:23:09.000Z</lastmod>
   </url>
 </urlset>

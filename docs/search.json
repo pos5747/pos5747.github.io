@@ -1,124 +1,5 @@
 [
   {
-    "objectID": "suggestions-for-exercises.html",
-    "href": "suggestions-for-exercises.html",
-    "title": "Suggestions for the Exercises",
-    "section": "",
-    "text": "Answer the questions in a Quarto document that compiles to PDF. Make sure that all your code is neat and readable, equations are typeset nicely with LaTeX, and figures render nicely. The Quarto documentation is excellent.\n\nFor mathematical problems, work out the answers with paper-and-pencil first, then move the answers to a Quarto document (while simultaneously reviewing and polishing).\nFor coding problems, write and debug the code in a standalone .R script first, then move the code to a Quarto code chunk.\n\nAt the beginning of the semester, start a new R project called exr/. Each week, create a new .qmd document named 01-exr.qmd, 02-exr.qmd, …, to exr/. (You can adjust these names if you like.) Throughout the semester you’ll have several PDFs that you can revise and review as you prepare for the exams.\nMake sure to render often as you work in a .qmd file (e.g., every time you add a new part).\nUse the tinytable to automate table creation.\nThe default output of tt(), modelsummary(), ggplot(), etc. is almost always “good enough” for our purposes. Don’t spend lots of time polishing your tables, plots, and output. Use that time and energy to focus on understanding the ideas, math, and code.\nAn exception to the rule above is carefully controlling the output of code chunks. In most cases, you want messages: false and warnings: false. You don’t want a lot of junk in your rendered documents, but it’s fine if your column and axis labels have the raw variable names."
-  },
-  {
-    "objectID": "files/wk07-r.html",
-    "href": "files/wk07-r.html",
-    "title": "Materials",
-    "section": "",
-    "text": "An R script to run Metropolis for the toothpaste cap problem is here.\nAn R script to run Metropolis for the turnout logistic regression is here.\nAn R script to run Stan for the turnout logistic regression is here.\nAn R script to use {brms} for the turnout logistic regression is here."
-  },
-  {
-    "objectID": "files/wk06-r.html",
-    "href": "files/wk06-r.html",
-    "title": "Materials",
-    "section": "",
-    "text": "A Shiny app to explore the beta distribution is here.\nAn R script to understand your prior is here.\nA R script to plot all our priors (and then posteriors) is here.\nAn R script to plot your posterior is here."
-  },
-  {
-    "objectID": "files/wk06-r.html#bayes",
-    "href": "files/wk06-r.html#bayes",
-    "title": "Materials",
-    "section": "",
-    "text": "A Shiny app to explore the beta distribution is here.\nAn R script to understand your prior is here.\nA R script to plot all our priors (and then posteriors) is here.\nAn R script to plot your posterior is here."
-  },
-  {
-    "objectID": "files/wk06-r.html#rejection",
-    "href": "files/wk06-r.html#rejection",
-    "title": "Materials",
-    "section": "Rejection",
-    "text": "Rejection\n\nAn R script to illustrate the rejection algorithm via a weird example is here"
-  },
-  {
-    "objectID": "files/wk06-r.html#duration-models",
-    "href": "files/wk06-r.html#duration-models",
-    "title": "Materials",
-    "section": "Duration Models",
-    "text": "Duration Models\n\nAn R script to illustrate fitting duration models is here."
-  },
-  {
-    "objectID": "exam1-comments.html",
-    "href": "exam1-comments.html",
-    "title": "Comments on preparation for exam 1",
-    "section": "",
-    "text": "The exam will be about 50% multiple choice and 50% open ended questions of various types. I’m trying to allocate points and time so that it’s 50/50 between multiple choice and open ended. About half of your time will be spent on multiple choice questions and about half on open-ended questions.\nThe questions range in difficult from quite easy to very challenging.\nIn all cases, I try to follow the notes and exercises closely.\nThink of these comments as a “study guide.” As I noted at the beginning of the semester, the exam is based on the notes and exercises, but this document offers a “big picture” overview of the important themes. See especially the open-ended questions at the bottom.\nOct. 12 Update:\nOct. 11 Update:\nAs I write the exam, I’m focused on the notes and the exercises.\nDon’t forget about the mathematical foundations we did in week one!\nThe exam will be organized by types of questions (e.g., short-answer questions, then long-answer questions). Within these sections, I’ll organize them roughly chronologically (i.e., starting math basics and ending with MCMC).\nThe exam will have a mix of long-answer and short-answer questions."
-  },
-  {
-    "objectID": "exam1-comments.html#short-questions",
-    "href": "exam1-comments.html#short-questions",
-    "title": "Comments on preparation for exam 1",
-    "section": "Short Questions",
-    "text": "Short Questions\nMy goal with the short-answer questions is that you can see the correct answer immediately without any or much work. Many of these questions are multiple choice. These cover definitions, principles, and simple calculations."
-  },
-  {
-    "objectID": "exam1-comments.html#long-questions",
-    "href": "exam1-comments.html#long-questions",
-    "title": "Comments on preparation for exam 1",
-    "section": "Long Questions",
-    "text": "Long Questions\nSome long-answer questions require you to write several sentences. Others require a chain of math.\n\nDescriptive v. causal claims\nFind an ML estimator for a given model.\nFind the posterior for a given model and conjugate prior.\nThe conceptual relationship between Bayesian and ML estimators. In competition? Interchangeable alternatives? What’s the unifying principle, if any?\nFirst difference as a unifier.\nHow to use obtain point and interval estimates to obtain posterior simulations.\nComparing the key features of different distributions we’ve encountered."
-  },
-  {
-    "objectID": "exam1-comments.html#reflections",
-    "href": "exam1-comments.html#reflections",
-    "title": "Comments on preparation for exam 1",
-    "section": "Reflections",
-    "text": "Reflections\nAt least one of the following questions will appear on the exam. I have at least advocated for a particular position on each. It’s fine to disagree with my stance, but defend your position well.\n\nBayes v. ML\nWe have examined two general engines for producing point and interval estimates: maximum likelihood and Bayesian. How should we think about the relationship between the two? Are they best understood as competing, incompatible alternatives? Or simply as interchangeable tools? If they compete, which approach is right, and why? If they are interchangeable, what is the unifying principle?\n\n\nDescription\nAs quantitative social scientists, we have tools to test descriptive and causal claims.\n\nDefine descriptive and causal claims.\nAssess the current state of quantitative political science with respect to descriptive and causal claims. Would you say that causal questions are over-emphasized in this moment? Or under-emphasized? Logically, must claims fall in one bin or the other?\nIn practice, do authors clearly locate their claims in one bin or the other?\n\nDefend your answers."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Schedule",
-    "section": "",
-    "text": "aug 27 · review · [slides] [notes] [solutions] fractions, logarithms, and exponents; calculus; matrices; probability theory\n\nsep 03 · ml · [slides] [notes] [solutions] maximum likelihood; invariance principle; predictive distribution\n\nsep 10 · se · [slides] [materials] [notes] [solutions] sampling distribution; parametric bootstrap; variance and standard error; delta method\n\nsep 17 · X · [slides] [materials] [notes] [solutions] adding covariates; logit models; expected value and first difference\n\nsep 24 · {marginaleffects} · [slides] [materials] [notes] [solutions] {marginaleffects}; information criteria; zero inflation\n\noct 01 · bayes · [slides] [materials] [notes] [solutions] Bayesian inference; rejection sampling; a Bayesian invariance property; censoring; duration models Due Oct. 1: prospectus for research paper.\n\noct 08 · mcmc · [slides] [materials] [notes] [exercises + solutions] Metropolis algorithm; HMC + Stan and its R ecosystem\n\noct 15 · midterm exam\n\noct 22 · hierarchical models, 1 · [slides] [exercises] Due: (1) first draft of research paper due and (2) initial outline of take-home workshop handout.\n\noct 29 · irt · [slides] [notes] [exercises] Due: (1) peer-review memo and (2) first drafts of all workshop materials.\n\nnov 05 · mrp · [slides] [notes] [exercises] Due: workshop rehearsal\n\nnov 12 · case study: fowler et al. (2023) · [slides] [notes] [exercises]\n\nnov 19 · case study: fariss (2014) · [slides] [notes] [exercises]\n\nnov 26 · thanksgiving break Due by Tuesday: (1) second draft of research paper and (2) hold workshop.\n\ndec 03 · wrap · [slides] [notes] [exercises] Poster presentation this week.\n\ndec 10 · final exam\nDue: Final draft of research paper."
-  },
-  {
-    "objectID": "research-project.html",
-    "href": "research-project.html",
-    "title": "Research Project",
-    "section": "",
-    "text": "Your task this semester: write a paper of modest ambition and exceptional quality that makes a descriptive argument about politics."
-  },
-  {
-    "objectID": "research-project.html#overview",
-    "href": "research-project.html#overview",
-    "title": "Research Project",
-    "section": "Overview",
-    "text": "Overview\nWe’ll borrow Gerring’s (2012, 722) definition of a descriptive argument:\n\nA descriptive argument describes some aspect of the world. In doing so, it aims to answer what questions (e.g., when, whom, out of what, in what manner) about a phenomenon or a set of phenomena. Descriptive arguments are about what is/was. For example: ‘Over the course of the past two centuries there have been three major waves of democratization.’\n\nYou might feel confused. After all, Gerring writes that description “has come to be employed as a euphemism for a failed, or not yet proven, causal inference.” At best, we might think that description only serves to support the primary task of causal inference. Indeed, King, Keohane, and Verba (1994, 34) write that “description, in turn, loses most of its interest unless linked to some causal relationships.”\nHowever, description is an essential component of social science. de Kadt and Grzymala-Busse (2025) argue that description is “a fundamental component of the social scientific enterprise” (2) that “engages theory by invoking existing theories, motivating new theoretical models and their refinement, and in some cases even evaluating theory” (24). Gerring writes that “description can be written out of the discipline only at great cost to our understandings of the world” (744). And Holmes et al. (2024) write that “answering questions of ‘who,’ ‘what,’ ‘when,’ ‘where,’ and ‘how’—in concert with but also independent from causal inquiry—is vital to the continued relevance and coherence of our discipline in both scholarly and public-facing work” (54).\nAs a whole, I suggest that social science asks: how can we intervene to make the world a better place? This implies three parts.\n\nFirst, what does the world look like now?\nSecond, what worlds would be better?\nAnd third, what are the effects of potential interventions?\n\nI view answers the the first question—a description of the world as it exists—as a difficult and worthwhile challenge. It seems difficult to even entertain the second and third questions without a thorough understanding of the world as it exists.\nAnd you may think that description is easy, and establishing causality is hard. I think you’ll find that description is easier statistically, but a more difficult struggle overall.1\n1 My thinking is something like this. When you randomly assign \\(T\\) and you measure \\(Y\\) afterward, you’ve established that \\(T\\) causes \\(X\\). But suppose that you just measure \\(Y\\). It isn’t clear what you’ve just measured or whether it’s meaningful. Of course, these same questions lay hiding in the shadows in the randomized experiment. But the randomization guarantees a “causal inference” that is sufficient to strike our fancy. The descriptive argument brings the subtler questions of measures and their meanings into the broad daylight. Fuzzy concepts and measurements can’t hide behind a “compelling identification strategy” when you are making a descriptive argument.Examples of the struggle to describe are easy to find. Consider two ideas that are central to political science: “democracy” or “political ideology.” If a reporter from the New York Times asked whether democracy was in decline around the world, the answer isn’t easy or obvious. Political scientists are not in agreement. If that reporter asked you whether there are many or few moderate voters in the US, the answer isn’t obvious or easy. Again, political scientists are not in agreement."
-  },
-  {
-    "objectID": "research-project.html#a-recent-debate-about-moderates",
-    "href": "research-project.html#a-recent-debate-about-moderates",
-    "title": "Research Project",
-    "section": "A Recent Debate About Moderates",
-    "text": "A Recent Debate About Moderates\nA recent exchange in the American Political Science Review centers on how best to characterize ideological moderation in the American public. In the original article, Fowler et al. (2023) develop a statistical model to distinguish among types of moderates, finding that while a single ideological dimension captures most Americans’ policy views, moderates—especially those not neatly aligned—remain central to electoral accountability. In response, Broockman and Lauderdale (2025) critique this approach, arguing that it overestimates the number of genuinely one-dimensional voters and fails to account for individuals with cross-pressured or multidimensional views. Finally, Fowler et al. (2024) reply by showing that Broockman and Lauderdale’s visual and simulation-based critiques do not invalidate their main conclusions, reaffirming that most Americans’ policy preferences are well summarized by a single ideological dimension and that most such individuals are ideologically moderate."
-  },
-  {
-    "objectID": "research-project.html#a-recent-debate-about-backsliding",
-    "href": "research-project.html#a-recent-debate-about-backsliding",
-    "title": "Research Project",
-    "section": "A Recent Debate About Backsliding",
-    "text": "A Recent Debate About Backsliding\n\nLittle and Meng (2024a) argue that objective indicators (e.g., electoral outcomes) show little evidence of global democratic decline over the past decade, challenging findings based on subjective expert assessments.\n\nNumerous authors offered responses published in the same issue of PS. For example:\n\nKnutsen et al. (2024) critique Little and Meng’s reliance on objective measures, highlighting issues in conceptualization, indicator selection, and aggregation that may overlook nuanced democratic erosion.\nGorokhovskaia (2024) emphasizes the importance of disaggregating data, noting that while electoral indicators may remain stable, other areas like media freedom show signs of backsliding.\nMiller (2024) contends that objective indicators fail to detect democratic erosion within established democracies, missing subtle but significant declines.\n\nIn a reply, Little and Meng (2024b) acknowledge the critiques and emphasize the need for improved measurement tools to better understand democratic backsliding."
-  },
-  {
-    "objectID": "research-project.html#optional-early-assignments",
-    "href": "research-project.html#optional-early-assignments",
-    "title": "Research Project",
-    "section": "Optional Early Assignments",
-    "text": "Optional Early Assignments\n\nDescriptive Research in Your Field (Optional; due by Sep. 3) Reflect on what descriptive research looks like in your field and identify examples of high-quality description. Consider the following prompts as starting points:\n\nEngage with Gerring (2012), de Kadt and Grzymala-Busse (2025), and Holmes et al. (2024).2 What parts of their arguments do you find most compelling?\nWhat is the value of description in your research area? Take one or two papers that you admire—the kinds of papers that you’d like to write—and ask yourself “what would this project have looked like if the authors had instead focused on carefully describing their critical concepts (rather than looking for their effects and/or causes)?”\n\nData Sets (Optional; due by Sep. 10) Identify publicly available data sets relevant to your general area of interest. For each data set, briefly describe the variables, cases, and time periods included. Flag any variables that seem especially important. Realize there is lots of data available—search deep and wide! And talk to other students and faculty.\nConcepts (Optional; due by Sep. 17) Explore and explain the major theoretical or empirical concepts scholars focus on in your area.\nNarrowing Your Topics (Optional; due by Sep. 24) Narrow your focus by choosing a few concepts you find interesting. Identify FSU faculty working in these areas. Sketch 3–5 potential research questions.\n\n2 See also Part II of Gerring’s Social Science Methodology for a supplement to Gerrying (2012)."
-  },
-  {
-    "objectID": "research-project.html#required-assignments",
-    "href": "research-project.html#required-assignments",
-    "title": "Research Project",
-    "section": "Required Assignments",
-    "text": "Required Assignments\n\nProspectus (Required; due by Oct. 1) A memo describing your project in as much detail as possible. This should resemble the structure of a paper, though it will still be an early, developing version. At a minimum, the prospectus should: (1) clearly state the descriptive claim or question; (2) explain why the claim is important, independent of any causal links between the focal variables; (3) demonstrate the feasibility of the data collection (e.g., collected 20% or ideally all of the data); and include an initial data analysis (scatterplots and averages might be sufficient). Instructor comments, ASAP.\nFirst Draft (Required; due by Oct. 22) Submit the first full draft of your paper. This should include a working version of all major sections, figures, and tables. Feedback from 2 peers, ASAP.\nSecond Draft (Required; due by Nov. 25 (Tuesday!)) Submit a substantially revised draft of your paper that incorporates peer feedback. Instructor comments ASAP.\nPoster Presentation (Required; done week of Dec. 3) Present your research in a short, conference-style poster session. This is a low-stakes chance to get feedback and practice communicating your work.\nFinal Project (Required; due by Dec. 10) Submit the final version of your research paper. You must submit a PDF of the final version of the paper and the data and computer code to reproduce your work. This version should reflect feedback from both the poster session and instructor comments. This version should be polished."
-  },
-  {
     "objectID": "workshop.html",
     "href": "workshop.html",
     "title": "Workshop",
@@ -189,25 +70,67 @@
     "text": "Resources\n\nTufte’s “The Cognitive Style of PowerPoint.” [pdf]\nAsher’s Even a Geek Can Speak [Amazon] and 15 Minutes Including Q&A [Amazon]"
   },
   {
-    "objectID": "files/wk04-r.html",
-    "href": "files/wk04-r.html",
-    "title": "Materials",
+    "objectID": "research-project.html",
+    "href": "research-project.html",
+    "title": "Research Project",
     "section": "",
-    "text": "Logit model script is here."
+    "text": "Your task this semester: write a paper of modest ambition and exceptional quality that makes a descriptive argument about politics."
   },
   {
-    "objectID": "files/wk04-r.html#scripts",
-    "href": "files/wk04-r.html#scripts",
-    "title": "Materials",
-    "section": "",
-    "text": "Logit model script is here."
+    "objectID": "research-project.html#overview",
+    "href": "research-project.html#overview",
+    "title": "Research Project",
+    "section": "Overview",
+    "text": "Overview\nWe’ll borrow Gerring’s (2012, 722) definition of a descriptive argument:\n\nA descriptive argument describes some aspect of the world. In doing so, it aims to answer what questions (e.g., when, whom, out of what, in what manner) about a phenomenon or a set of phenomena. Descriptive arguments are about what is/was. For example: ‘Over the course of the past two centuries there have been three major waves of democratization.’\n\nYou might feel confused. After all, Gerring writes that description “has come to be employed as a euphemism for a failed, or not yet proven, causal inference.” At best, we might think that description only serves to support the primary task of causal inference. Indeed, King, Keohane, and Verba (1994, 34) write that “description, in turn, loses most of its interest unless linked to some causal relationships.”\nHowever, description is an essential component of social science. de Kadt and Grzymala-Busse (2025) argue that description is “a fundamental component of the social scientific enterprise” (2) that “engages theory by invoking existing theories, motivating new theoretical models and their refinement, and in some cases even evaluating theory” (24). Gerring writes that “description can be written out of the discipline only at great cost to our understandings of the world” (744). And Holmes et al. (2024) write that “answering questions of ‘who,’ ‘what,’ ‘when,’ ‘where,’ and ‘how’—in concert with but also independent from causal inquiry—is vital to the continued relevance and coherence of our discipline in both scholarly and public-facing work” (54).\nAs a whole, I suggest that social science asks: how can we intervene to make the world a better place? This implies three parts.\n\nFirst, what does the world look like now?\nSecond, what worlds would be better?\nAnd third, what are the effects of potential interventions?\n\nI view answers the the first question—a description of the world as it exists—as a difficult and worthwhile challenge. It seems difficult to even entertain the second and third questions without a thorough understanding of the world as it exists.\nAnd you may think that description is easy, and establishing causality is hard. I think you’ll find that description is easier statistically, but a more difficult struggle overall.1\n1 My thinking is something like this. When you randomly assign \\(T\\) and you measure \\(Y\\) afterward, you’ve established that \\(T\\) causes \\(X\\). But suppose that you just measure \\(Y\\). It isn’t clear what you’ve just measured or whether it’s meaningful. Of course, these same questions lay hiding in the shadows in the randomized experiment. But the randomization guarantees a “causal inference” that is sufficient to strike our fancy. The descriptive argument brings the subtler questions of measures and their meanings into the broad daylight. Fuzzy concepts and measurements can’t hide behind a “compelling identification strategy” when you are making a descriptive argument.Examples of the struggle to describe are easy to find. Consider two ideas that are central to political science: “democracy” or “political ideology.” If a reporter from the New York Times asked whether democracy was in decline around the world, the answer isn’t easy or obvious. Political scientists are not in agreement. If that reporter asked you whether there are many or few moderate voters in the US, the answer isn’t obvious or easy. Again, political scientists are not in agreement."
   },
   {
-    "objectID": "files/wk04-r.html#diffs",
-    "href": "files/wk04-r.html#diffs",
+    "objectID": "research-project.html#a-recent-debate-about-moderates",
+    "href": "research-project.html#a-recent-debate-about-moderates",
+    "title": "Research Project",
+    "section": "A Recent Debate About Moderates",
+    "text": "A Recent Debate About Moderates\nA recent exchange in the American Political Science Review centers on how best to characterize ideological moderation in the American public. In the original article, Fowler et al. (2023) develop a statistical model to distinguish among types of moderates, finding that while a single ideological dimension captures most Americans’ policy views, moderates—especially those not neatly aligned—remain central to electoral accountability. In response, Broockman and Lauderdale (2025) critique this approach, arguing that it overestimates the number of genuinely one-dimensional voters and fails to account for individuals with cross-pressured or multidimensional views. Finally, Fowler et al. (2024) reply by showing that Broockman and Lauderdale’s visual and simulation-based critiques do not invalidate their main conclusions, reaffirming that most Americans’ policy preferences are well summarized by a single ideological dimension and that most such individuals are ideologically moderate."
+  },
+  {
+    "objectID": "research-project.html#a-recent-debate-about-backsliding",
+    "href": "research-project.html#a-recent-debate-about-backsliding",
+    "title": "Research Project",
+    "section": "A Recent Debate About Backsliding",
+    "text": "A Recent Debate About Backsliding\n\nLittle and Meng (2024a) argue that objective indicators (e.g., electoral outcomes) show little evidence of global democratic decline over the past decade, challenging findings based on subjective expert assessments.\n\nNumerous authors offered responses published in the same issue of PS. For example:\n\nKnutsen et al. (2024) critique Little and Meng’s reliance on objective measures, highlighting issues in conceptualization, indicator selection, and aggregation that may overlook nuanced democratic erosion.\nGorokhovskaia (2024) emphasizes the importance of disaggregating data, noting that while electoral indicators may remain stable, other areas like media freedom show signs of backsliding.\nMiller (2024) contends that objective indicators fail to detect democratic erosion within established democracies, missing subtle but significant declines.\n\nIn a reply, Little and Meng (2024b) acknowledge the critiques and emphasize the need for improved measurement tools to better understand democratic backsliding."
+  },
+  {
+    "objectID": "research-project.html#optional-early-assignments",
+    "href": "research-project.html#optional-early-assignments",
+    "title": "Research Project",
+    "section": "Optional Early Assignments",
+    "text": "Optional Early Assignments\n\nDescriptive Research in Your Field (Optional; due by Sep. 3) Reflect on what descriptive research looks like in your field and identify examples of high-quality description. Consider the following prompts as starting points:\n\nEngage with Gerring (2012), de Kadt and Grzymala-Busse (2025), and Holmes et al. (2024).2 What parts of their arguments do you find most compelling?\nWhat is the value of description in your research area? Take one or two papers that you admire—the kinds of papers that you’d like to write—and ask yourself “what would this project have looked like if the authors had instead focused on carefully describing their critical concepts (rather than looking for their effects and/or causes)?”\n\nData Sets (Optional; due by Sep. 10) Identify publicly available data sets relevant to your general area of interest. For each data set, briefly describe the variables, cases, and time periods included. Flag any variables that seem especially important. Realize there is lots of data available—search deep and wide! And talk to other students and faculty.\nConcepts (Optional; due by Sep. 17) Explore and explain the major theoretical or empirical concepts scholars focus on in your area.\nNarrowing Your Topics (Optional; due by Sep. 24) Narrow your focus by choosing a few concepts you find interesting. Identify FSU faculty working in these areas. Sketch 3–5 potential research questions.\n\n2 See also Part II of Gerring’s Social Science Methodology for a supplement to Gerrying (2012)."
+  },
+  {
+    "objectID": "research-project.html#required-assignments",
+    "href": "research-project.html#required-assignments",
+    "title": "Research Project",
+    "section": "Required Assignments",
+    "text": "Required Assignments\n\nProspectus (Required; due by Oct. 1) A memo describing your project in as much detail as possible. This should resemble the structure of a paper, though it will still be an early, developing version. At a minimum, the prospectus should: (1) clearly state the descriptive claim or question; (2) explain why the claim is important, independent of any causal links between the focal variables; (3) demonstrate the feasibility of the data collection (e.g., collected 20% or ideally all of the data); and include an initial data analysis (scatterplots and averages might be sufficient). Instructor comments, ASAP.\nFirst Draft (Required; due by Oct. 22) Submit the first full draft of your paper. This should include a working version of all major sections, figures, and tables. Feedback from a peer, ASAP.\nSecond Draft (Required; due by Nov. 25 (Tuesday!)) Submit a substantially revised draft of your paper that incorporates peer feedback. Instructor comments ASAP.\nPoster Presentation (Required; done week of Dec. 3) Present your research in a short, conference-style poster session. This is a low-stakes chance to get feedback and practice communicating your work.\nFinal Project (Required; due by Dec. 10) Submit the final version of your research paper. You must submit a PDF of the final version of the paper and the data and computer code to reproduce your work. This version should reflect feedback from both the poster session and instructor comments. This version should be polished."
+  },
+  {
+    "objectID": "files/wk07-r.html",
+    "href": "files/wk07-r.html",
     "title": "Materials",
-    "section": "Diffs",
-    "text": "Diffs\n\nLogit versus Poisson diff is here. See bottom right of page for code you can copy.\nPoisson versus NB diff is here. See bottom right of page for code you can copy."
+    "section": "",
+    "text": "An R script to run Metropolis for the toothpaste cap problem is here.\nAn R script to run Metropolis for the turnout logistic regression is here.\nAn R script to run Stan for the turnout logistic regression is here.\nAn R script to use {brms} for the turnout logistic regression is here."
+  },
+  {
+    "objectID": "files/wk05-r.html",
+    "href": "files/wk05-r.html",
+    "title": "Materials",
+    "section": "",
+    "text": "Illustrating {marginaleffects} with turnout here.\nIllustrating IC with turnout here.\nIllustrating zero-inflation with holland here."
+  },
+  {
+    "objectID": "files/wk05-r.html#scripts",
+    "href": "files/wk05-r.html#scripts",
+    "title": "Materials",
+    "section": "",
+    "text": "Illustrating {marginaleffects} with turnout here.\nIllustrating IC with turnout here.\nIllustrating zero-inflation with holland here."
   },
   {
     "objectID": "files/wk03-r.html",
@@ -231,17 +154,94 @@
     "text": "Dry Erase Board\n\nstylized normal\nBernoulli w/ obs. info. and delta methods"
   },
   {
-    "objectID": "files/wk05-r.html",
-    "href": "files/wk05-r.html",
-    "title": "Materials",
+    "objectID": "exam1-comments.html",
+    "href": "exam1-comments.html",
+    "title": "Comments on preparation for exam 1",
     "section": "",
-    "text": "Illustrating {marginaleffects} with turnout here.\nIllustrating IC with turnout here.\nIllustrating zero-inflation with holland here."
+    "text": "The exam will be about 50% multiple choice and 50% open ended questions of various types. I’m trying to allocate points and time so that it’s 50/50 between multiple choice and open ended. About half of your time will be spent on multiple choice questions and about half on open-ended questions.\nThe questions range in difficult from quite easy to very challenging.\nIn all cases, I try to follow the notes and exercises closely.\nThink of these comments as a “study guide.” As I noted at the beginning of the semester, the exam is based on the notes and exercises, but this document offers a “big picture” overview of the important themes. See especially the open-ended questions at the bottom.\nOct. 12 Update:\nOct. 11 Update:\nAs I write the exam, I’m focused on the notes and the exercises.\nDon’t forget about the mathematical foundations we did in week one!\nThe exam will be organized by types of questions (e.g., short-answer questions, then long-answer questions). Within these sections, I’ll organize them roughly chronologically (i.e., starting math basics and ending with MCMC).\nThe exam will have a mix of long-answer and short-answer questions."
   },
   {
-    "objectID": "files/wk05-r.html#scripts",
-    "href": "files/wk05-r.html#scripts",
+    "objectID": "exam1-comments.html#short-questions",
+    "href": "exam1-comments.html#short-questions",
+    "title": "Comments on preparation for exam 1",
+    "section": "Short Questions",
+    "text": "Short Questions\nMy goal with the short-answer questions is that you can see the correct answer immediately without any or much work. Many of these questions are multiple choice. These cover definitions, principles, and simple calculations."
+  },
+  {
+    "objectID": "exam1-comments.html#long-questions",
+    "href": "exam1-comments.html#long-questions",
+    "title": "Comments on preparation for exam 1",
+    "section": "Long Questions",
+    "text": "Long Questions\nSome long-answer questions require you to write several sentences. Others require a chain of math.\n\nDescriptive v. causal claims\nFind an ML estimator for a given model.\nFind the posterior for a given model and conjugate prior.\nThe conceptual relationship between Bayesian and ML estimators. In competition? Interchangeable alternatives? What’s the unifying principle, if any?\nFirst difference as a unifier.\nHow to use obtain point and interval estimates to obtain posterior simulations.\nComparing the key features of different distributions we’ve encountered."
+  },
+  {
+    "objectID": "exam1-comments.html#reflections",
+    "href": "exam1-comments.html#reflections",
+    "title": "Comments on preparation for exam 1",
+    "section": "Reflections",
+    "text": "Reflections\nAt least one of the following questions will appear on the exam. I have at least advocated for a particular position on each. It’s fine to disagree with my stance, but defend your position well.\n\nBayes v. ML\nWe have examined two general engines for producing point and interval estimates: maximum likelihood and Bayesian. How should we think about the relationship between the two? Are they best understood as competing, incompatible alternatives? Or simply as interchangeable tools? If they compete, which approach is right, and why? If they are interchangeable, what is the unifying principle?\n\n\nDescription\nAs quantitative social scientists, we have tools to test descriptive and causal claims.\n\nDefine descriptive and causal claims.\nAssess the current state of quantitative political science with respect to descriptive and causal claims. Would you say that causal questions are over-emphasized in this moment? Or under-emphasized? Logically, must claims fall in one bin or the other?\nIn practice, do authors clearly locate their claims in one bin or the other?\n\nDefend your answers."
+  },
+  {
+    "objectID": "files/wk04-r.html",
+    "href": "files/wk04-r.html",
     "title": "Materials",
     "section": "",
-    "text": "Illustrating {marginaleffects} with turnout here.\nIllustrating IC with turnout here.\nIllustrating zero-inflation with holland here."
+    "text": "Logit model script is here."
+  },
+  {
+    "objectID": "files/wk04-r.html#scripts",
+    "href": "files/wk04-r.html#scripts",
+    "title": "Materials",
+    "section": "",
+    "text": "Logit model script is here."
+  },
+  {
+    "objectID": "files/wk04-r.html#diffs",
+    "href": "files/wk04-r.html#diffs",
+    "title": "Materials",
+    "section": "Diffs",
+    "text": "Diffs\n\nLogit versus Poisson diff is here. See bottom right of page for code you can copy.\nPoisson versus NB diff is here. See bottom right of page for code you can copy."
+  },
+  {
+    "objectID": "files/wk06-r.html",
+    "href": "files/wk06-r.html",
+    "title": "Materials",
+    "section": "",
+    "text": "A Shiny app to explore the beta distribution is here.\nAn R script to understand your prior is here.\nA R script to plot all our priors (and then posteriors) is here.\nAn R script to plot your posterior is here."
+  },
+  {
+    "objectID": "files/wk06-r.html#bayes",
+    "href": "files/wk06-r.html#bayes",
+    "title": "Materials",
+    "section": "",
+    "text": "A Shiny app to explore the beta distribution is here.\nAn R script to understand your prior is here.\nA R script to plot all our priors (and then posteriors) is here.\nAn R script to plot your posterior is here."
+  },
+  {
+    "objectID": "files/wk06-r.html#rejection",
+    "href": "files/wk06-r.html#rejection",
+    "title": "Materials",
+    "section": "Rejection",
+    "text": "Rejection\n\nAn R script to illustrate the rejection algorithm via a weird example is here"
+  },
+  {
+    "objectID": "files/wk06-r.html#duration-models",
+    "href": "files/wk06-r.html#duration-models",
+    "title": "Materials",
+    "section": "Duration Models",
+    "text": "Duration Models\n\nAn R script to illustrate fitting duration models is here."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "aug 27 · review · [slides] [notes] [solutions] fractions, logarithms, and exponents; calculus; matrices; probability theory\n\nsep 03 · ml · [slides] [notes] [solutions] maximum likelihood; invariance principle; predictive distribution\n\nsep 10 · se · [slides] [materials] [notes] [solutions] sampling distribution; parametric bootstrap; variance and standard error; delta method\n\nsep 17 · X · [slides] [materials] [notes] [solutions] adding covariates; logit models; expected value and first difference\n\nsep 24 · {marginaleffects} · [slides] [materials] [notes] [solutions] {marginaleffects}; information criteria; zero inflation\n\noct 01 · bayes · [slides] [materials] [notes] [solutions] Bayesian inference; rejection sampling; a Bayesian invariance property; censoring; duration models Due Oct. 1: prospectus for research paper.\n\noct 08 · mcmc · [slides] [materials] [notes] [exercises + solutions] Metropolis algorithm; HMC + Stan and its R ecosystem\n\noct 15 · midterm exam\n\noct 22 · hierarchical models, 1 · [slides] [exercises] Due: (1) first draft of research paper due and (2) initial outline of take-home workshop handout.\n\noct 29 · irt · [slides] [notes] [exercises] Due: (1) peer-review memo and (2) first drafts of all workshop materials.\n\nnov 05 · mrp · [slides] [notes] [exercises] Due: workshop rehearsal\n\nnov 12 · case study: fowler et al. (2023) · [slides] [notes] [exercises]\n\nnov 19 · case study: fariss (2014) · [slides] [notes] [exercises]\n\nnov 26 · thanksgiving break Due by Tuesday: (1) second draft of research paper and (2) hold workshop.\n\ndec 03 · wrap · [slides] [notes] [exercises] Poster presentation this week.\n\ndec 10 · final exam\nDue: Final draft of research paper."
+  },
+  {
+    "objectID": "suggestions-for-exercises.html",
+    "href": "suggestions-for-exercises.html",
+    "title": "Suggestions for the Exercises",
+    "section": "",
+    "text": "Answer the questions in a Quarto document that compiles to PDF. Make sure that all your code is neat and readable, equations are typeset nicely with LaTeX, and figures render nicely. The Quarto documentation is excellent.\n\nFor mathematical problems, work out the answers with paper-and-pencil first, then move the answers to a Quarto document (while simultaneously reviewing and polishing).\nFor coding problems, write and debug the code in a standalone .R script first, then move the code to a Quarto code chunk.\n\nAt the beginning of the semester, start a new R project called exr/. Each week, create a new .qmd document named 01-exr.qmd, 02-exr.qmd, …, to exr/. (You can adjust these names if you like.) Throughout the semester you’ll have several PDFs that you can revise and review as you prepare for the exams.\nMake sure to render often as you work in a .qmd file (e.g., every time you add a new part).\nUse the tinytable to automate table creation.\nThe default output of tt(), modelsummary(), ggplot(), etc. is almost always “good enough” for our purposes. Don’t spend lots of time polishing your tables, plots, and output. Use that time and energy to focus on understanding the ideas, math, and code.\nAn exception to the rule above is carefully controlling the output of code chunks. In most cases, you want messages: false and warnings: false. You don’t want a lot of junk in your rendered documents, but it’s fine if your column and axis labels have the raw variable names."
   }
 ]
