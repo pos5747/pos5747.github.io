@@ -63,7 +63,8 @@ This is just *one specific type* of hierarchical model.
 ---
 
 ```{r}
-answers <- read_csv()
+answers <- read_csv("https://pos5747.github.io/data/example-answers.csv") |>
+  glimpse()
 ```
 
 
