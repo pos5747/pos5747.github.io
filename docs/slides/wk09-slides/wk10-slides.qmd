@@ -1,0 +1,69 @@
+---
+title: "IRT Models"
+format:
+  revealjs:
+    css: styles.css
+    transition: fade
+    slide-number: true
+    width: 1600
+    height: 900
+    mathjax: true  
+execute:
+  echo: true
+fig-align: center
+fig-width: 8
+fig-asp: 0.5
+---
+
+
+# Opening Comments
+
+- Exam
+- Workshop
+- Paper
+
+```{r echo=FALSE}
+#| message: false
+#| warning: false
+options(width = 90)
+options(digits = 3)
+
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+---
+
+Here are the packages we're using:
+
+```{r}
+#| message: false
+#| warning: false
+
+# generally useful packages
+library(tidyverse)
+library(marginaleffects)
+library(modelsummary)
+
+# for fitting hierarchical models
+library(lme4)
+library(brms)  # see also rstanarm::stan_lmer()
+
+# for post-processing simulations
+library(tidybayes)
+```
+
+
+---
+
+This week, I introduce the idea of a IRT model. 
+
+This is just *one specific type* of hierarchical model.
+
+---
+
+```{r}
+answers <- read_csv()
+```
+
+
