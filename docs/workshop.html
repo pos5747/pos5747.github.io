@@ -214,9 +214,27 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="two-examples">Two Examples</h3>
 <p>Two diverse examples from political science.</p>
 <ol type="1">
-<li>Use the first example as a live-coding example for your workshop.</li>
-<li>Use the second example as a hands-on exercise for your participants.</li>
+<li>Use the first example as a live-coding example for your workshop. <em>Introduce all the code for the second example here.</em></li>
+<li>Use the second example as a hands-on exercise for your participants. <em>Participants should be able to adapt the code from the first example here.</em></li>
 </ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advice on examples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given that you only have a few minutes, these examples need to be simple.</p>
+<p>The bit below seems about right</p>
+<pre><code>fit &lt;- ...
+predictions(...)  # of some sort
+comparisions(..., newdata = datagrid(grid_type = "mean_or_mode"))</code></pre>
+<p>Regardless, it cannot be 100 lines of R code.</p>
+</div>
+</div>
 </section>
 <section id="a-take-home-handout" class="level3">
 <h3 class="anchored" data-anchor-id="a-take-home-handout">A Take-Home Handout</h3>
@@ -236,9 +254,9 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="suggested-workshop-structure">Suggested Workshop Structure</h2>
 <ol type="1">
 <li><strong>5 min</strong>: <em>Opening.</em> Introduce good example. Give the audience a question.</li>
-<li><strong>15 min</strong>: <em>Lecture.</em></li>
-<li><strong>15 min</strong>: <em>Example 1.</em> Cover a numerical example in detail. Discuss concepts, R code, and substantive conclusions. Recommend live coding.</li>
-<li><strong>20 min</strong>: <em>Example 2.</em> Allow the audience to work through an example on their own. You’ll need to keep this example minimal, simple, and brief so that participants can ask questions, troubleshoot, and still finish. Perhaps supply starter or skeleton code.</li>
+<li><strong>15 min</strong>: <em>Lecture.</em> Discuss any important conceptual ideas.</li>
+<li><strong>15 min</strong>: <em>Example 1.</em> Cover a numerical example in detail. Discuss concepts, R code, and substantive conclusions. Recommend live coding. Remember to do relatively little here, but do it thoroughly. Fit a model, do one <code>predictions()</code>, and do one <code>comparisons()</code>. That’s five minutes per tasks, which seems about right if you explain things slowly and carefully.</li>
+<li><strong>20 min</strong>: <em>Example 2.</em> Allow the audience to work through an example on their own. You’ll need to keep this example minimal, simple, and brief so that participants can ask questions, troubleshoot, and still finish. Perhaps supply starter or skeleton code. This example should be adaptable from Example 1.</li>
 <li><strong>5 min</strong>. <em>Wrap.</em> Revisit and reemphasize the big ideas.</li>
 </ol>
 </section>

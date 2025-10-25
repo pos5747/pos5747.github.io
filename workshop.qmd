@@ -54,8 +54,26 @@ The slides do not need to be comprehensive.^[The take-home notes can include the
 
 Two diverse examples from political science.
 
-1. Use the first example as a live-coding example for your workshop.
-1. Use the second example as a hands-on exercise for your participants.
+1. Use the first example as a live-coding example for your workshop. *Introduce all the code for the second example here.*
+1. Use the second example as a hands-on exercise for your participants. *Participants should be able to adapt the code from the first example here.*
+
+
+::: callout-warning
+
+## Advice on examples
+
+Given that you only have a few minutes, these examples need to be simple.
+
+The bit below seems about right
+
+```
+fit <- ...
+predictions(...)  # of some sort
+comparisions(..., newdata = datagrid(grid_type = "mean_or_mode"))
+```
+
+Regardless, it cannot be 100 lines of R code.
+:::
 
 ### A Take-Home Handout
 
@@ -72,9 +90,9 @@ I want to students to take the lead on choosing the exact time and place for the
 ## Suggested Workshop Structure
 
 1. **5 min**: *Opening.* Introduce good example. Give the audience a question.
-1. **15 min**: *Lecture.* 
-1. **15 min**: *Example 1.* Cover a numerical example in detail. Discuss concepts, R code, and substantive conclusions. Recommend live coding.
-1. **20 min**: *Example 2.* Allow the audience to work through an example on their own. You'll need to keep this example minimal, simple, and brief so that participants can ask questions, troubleshoot, and still finish. Perhaps supply starter or skeleton code. 
+1. **15 min**: *Lecture.* Discuss any important conceptual ideas. 
+1. **15 min**: *Example 1.* Cover a numerical example in detail. Discuss concepts, R code, and substantive conclusions. Recommend live coding. Remember to do relatively little here, but do it thoroughly. Fit a model, do one `predictions()`, and do one `comparisons()`. That's five minutes per tasks, which seems about right if you explain things slowly and carefully.
+1. **20 min**: *Example 2.* Allow the audience to work through an example on their own. You'll need to keep this example minimal, simple, and brief so that participants can ask questions, troubleshoot, and still finish. Perhaps supply starter or skeleton code. This example should be adaptable from Example 1.
 1. **5 min**. *Wrap.* Revisit and reemphasize the big ideas.
 
 ## Scaffolding, Due Dates, and Weights
