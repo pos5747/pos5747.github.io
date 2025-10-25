@@ -7,6 +7,7 @@ format:
     slide-number: true
     width: 1600
     height: 900
+    code-block-height:  900px
     mathjax: true  
 execute:
   echo: true
@@ -48,6 +49,7 @@ library(modelsummary)
 # for fitting hierarchical models
 library(lme4)
 library(brms)  # see also rstanarm::stan_lmer()
+library(rstan)
 
 # for post-processing simulations
 library(tidybayes)
@@ -62,9 +64,440 @@ This is just *one specific type* of hierarchical model.
 
 ---
 
+The `answers` dataset has answers from hypothetical students to real questions from a recent exam.
+
+- `question_id_num` indexes the 55 questions on the exam.
+- `student_id_num` idexes the 100 students who took the exam.
+- `correct_answer` indicates (0/1) where the student answered the question correctly.
+
 ```{r}
 answers <- read_csv("https://pos5747.github.io/data/example-answers.csv") |>
   glimpse()
 ```
+
+---
+
+```{r}
+grades <- answers %>% 
+  group_by(student_id_num) %>%
+  summarize(proportion_correct = mean(correct_answer)) %>%
+  mutate(
+    letter_grade = cut(
+      proportion_correct,
+      breaks = c(-Inf, 0.60, 0.63, 0.67, 0.70, 0.73, 0.77, 0.80, 0.83, 0.87, 0.90, 0.93, Inf),
+      labels = c("F",  "D-", "D",  "D+", "C-", "C",  "C+", "B-", "B",  "B+", "A-", "A"),
+      ordered_result = TRUE
+    )
+  )
+
+grades |> filter(student_id_num <= 10)
+```
+
+---
+
+## Rasch / 1-PL model {.smaller}
+
+*Indices*
+
+- Answers: $n = 1, \dots, N$. <span class="gray-text">($N = 55 \times 100 = 5{,}500$ in our data.)</span>  
+- Students: $j = 1, \dots, J$. <span class="gray-text">($J = 100$ in our data.)</span> 
+- Questions: $k = 1, \dots, K$. <span class="gray-text">($K = 55$ in our data.)</span> 
+
+
+*Outcome*: $y_{n} \in \{0, 1\}$ indicates whether the $n$th answer is correct.
+
+$$
+y_n \sim \mathrm{Bernoulli}(\pi_n) \\
+\pi_n = \text{logit}^{-1} \left( \mu + \alpha_{j[n]} - \beta_{k[n]} \right).
+$$
+
+*Parameters*
+
+- $\pi_n$: the probability that answer $n$ is correct
+- $\alpha_{j[n]}$: the **ability** of student $j$ [who is giving the $n$th answer]. 
+   - Higher $\alpha_j$ ⇒ more likely to answer correctly; more knowledgeable student.
+- $\beta_{k[n]}$: the **difficulty** of question $k$ [which is associated with the $n$th answer]. 
+   - Higher $\beta_k$ ⇒ less likely to answer correctly; harder item.
+- $\mu$: average difficulty across questions
+
+---
+
+## Hierarchical Model
+
+$$
+\alpha_j \sim N(0,\sigma_\alpha^2)\\
+\beta_k \sim N(0,\sigma_\beta^2)
+$$
+
+## Priors 
+
+$$
+\sigma_\alpha \sim \mathrm{half\text{-}Cauchy}(0,1)\\
+\sigma_\beta \sim \mathrm{half\text{-}Cauchy}(0,1)
+$$
+
+$$
+\mu \sim \mathrm{Cauchy}(0,1).
+$$
+
+::: {.aside}
+- A change from 0 to 1 on the logit scale increase the chance of success from 50% to 73%. A change from 1 to 2 increases the chance of success from 73% to 88%.
+```{r}
+plogis(0); plogis(1); plogis(2)
+```
+- $\sigma_\alpha = 1$ means that the "give or take" on the abilities is about 1. 
+- Suppose an average student has a 73% change of answering a given question correctly. If $\sigma_\alpha = 1$, then "most" (68%) students have between a 50% and 88% chance of answering correctly. This seems "about right" to me, so I expect $\sigma_\alpha$ to be about 1 (i.e., not 0.1 or 10). 
+- The median of a half-Cauchy is the scale, so I set the scale to the $\sigma_\alpha$ that seems "about right." 
+- This is a somewhat aggressive prior that polls the variances toward zero---I want to treat bias the model toward treating students and questions as "similar". Setting the scale to 2.5 or 5 is more conservative.
+:::
+
+
+---
+
+```{stan}
+#| output.var: irt
+#| eval: false
+data {
+  int<lower=1> N;  // number of answers
+  int<lower=1> J;  // number of students
+  int<lower=1> K;  // number of questions
+  int<lower=1, upper=J> jj[N];  // student index for answer n
+  int<lower=1, upper=K> kk[N];  // question index for answer n
+  int<lower=0, upper=1> y[N];  // answer n is correct (0/1)
+}
+
+parameters {
+  real mu;  // mean difficulty
+  vector[J] alpha;  // abilities; one per student
+  vector[K] beta;  // difficulties; one per question
+  real<lower=0> sigma_beta;  // SD of difficulties
+  real<lower=0> sigma_alpha;  // SD of abilities
+}
+
+model {
+  sigma_beta ~ cauchy(0, 1);  // prior for SD of difficulties
+  sigma_alpha ~ cauchy(0, 1);  // prior for SD of abilities
+  mu ~ cauchy(0, 1);  // prior for mean difficulty
+  alpha ~ normal(0, sigma_alpha);  // abilities
+  beta ~ normal(0, sigma_beta);  // difficulties
+  for (n in 1:N) {
+    y[n] ~ bernoulli_logit(mu + alpha[jj[n]] - beta[kk[n]]);  // likelihood
+  }
+}
+```
+
+---
+
+```{r}
+# make data for stan
+data_list <- list(
+  # upper bounds of indices
+  N = nrow(answers),                 # - n in {1,...,N} indexes answers
+  J = max(answers$student_id_num),   # - j in {1,...,J} indexes students
+  K = max(answers$question_id_num),  # - k in {1,...,K} indexes questions
+  # indices for each respondent
+  jj = answers$student_id_num,   # jj is a vector of student indices for each answer
+  kk = answers$question_id_num,  # kk is a vector of question indices for each answer
+  # observed answers
+  y = answers$correct_answer
+)
+```
+
+`jj` and `kk` are subtle!
+
+- Because all students answer all questions, we have $N = 100 \times 55 = 5,500$ answers.
+- `jj` and `kk` are both length-$N$ vectors.
+- `jj[n]` tells us the student who gave the $n$th answer.
+- `kk[n]` tells us the question that goes with the $n$th answer.
+
+---
+
+```{r}
+n <- 1:5500
+look_at_n <- c(1, 10, 55, 100, 1000, 2000, 5500) # answers to look at
+cbind("n" = n, "jj" = data_list$jj, "kk" = data_list$kk, "y" = data_list$y)[look_at_n, ] 
+```
+
+---
+
+I like to create a character string that has the Stan model, so that it's right in my R script. (Or you can create a file.)
+
+```{r}
+stan_code <- "
+data {
+  int<lower=1> N;  // number of answers
+  int<lower=1> J;  // number of students
+  int<lower=1> K;  // number of questions
+  int<lower=1, upper=J> jj[N];  // student index for answer n
+  int<lower=1, upper=K> kk[N];  // question index for answer n
+  int<lower=0, upper=1> y[N];  // answer n is correct (0/1)
+}
+
+parameters {
+  real mu;  // mean difficulty
+  vector[J] alpha;  // abilities; one per student
+  vector[K] beta;  // difficulties; one per question
+  real<lower=0> sigma_beta;  // SD of difficulties
+  real<lower=0> sigma_alpha;  // SD of abilities
+}
+
+model {
+  sigma_beta ~ cauchy(0, 1);  // prior for SD of difficulties
+  sigma_alpha ~ cauchy(0, 1);  // prior for SD of abilities
+  mu ~ cauchy(0, 1);  // prior for mean difficulty
+  alpha ~ normal(0, sigma_alpha);  // abilities
+  beta ~ normal(0, sigma_beta);  // difficulties
+  for (n in 1:N) {
+    y[n] ~ bernoulli_logit(mu + alpha[jj[n]] - beta[kk[n]]);  // likelihood
+  }
+}
+"
+```
+
+---
+
+```{r}
+#| message: false
+#| warning: false
+#| results: hide
+#| cache: true
+
+start_time <- Sys.time()
+
+fit <- stan(model_code = stan_code, 
+            data = data_list,
+            iter = 1000, 
+            warmup = 500,
+            chains = 3, 
+            cores = 3)
+            
+end_time <- Sys.time()
+```
+
+
+::: {.aside}
+This model took `r format(difftime(end_time, start_time, units = "auto"), digits = 1)` to fit.
+:::
+---
+
+```{r}
+print(fit)
+```
+
+---
+
+```{r}
+fit %>%
+  spread_draws(alpha[student_id_num])
+```
+
+---
+
+```{r}
+fit %>%
+  spread_draws(alpha[student_id_num]) %>%
+  median_qi()  # works like group_by() |> summarize()
+```
+
+---
+
+```{r}
+#| code-fold: true
+fit %>%
+  spread_draws(alpha[student_id_num], ndraws = 100) %>%
+  median_qi() %>%
+  left_join(grades) %>%
+  slice_sample(n = 25) %>%
+  ggplot(aes(x = alpha, xmin = .lower, xmax = .upper, 
+             y = reorder(student_id_num, alpha), 
+             color = letter_grade)) +
+  #geom_label(aes(label = scales::percent(proportion_correct, accuracy = 1)), vjust = -0.3) + 
+  geom_pointinterval(linewidth = 0.5, size = 0.5) + 
+  theme_minimal() + 
+  labs(y = "random sample of 25 students", 
+       color = "letter grade")
+```
+
+--- 
+
+```{r}
+spread_draws(fit, beta[question_id_num]) 
+```
+
+--- 
+
+```{r}
+spread_draws(fit, beta[question_id_num]) |>
+  median_qi()
+```
+
+--- 
+
+```{r}
+spread_draws(fit, beta[question_id_num]) |>
+  median_qi() |>
+  arrange(desc(beta)) 
+```
+
+---
+
+```{r}
+#| code-fold: true
+#| fig-asp: .35
+#| fig-width: 12
+fit %>%
+  spread_draws(beta[question_id_num]) %>%
+  median_qi() %>%
+  ggplot(aes(x = beta, xmin = .lower, xmax = .upper, 
+             y = reorder(question_id_num, beta))) +
+  geom_pointinterval(linewidth = 0.5, size = 0.5) + 
+  theme_minimal() + 
+  coord_flip() + 
+  labs(x = "question")
+```
+
+---
+
+## Fitting with `brm()`
+
+```{r}
+#| results: hide
+#| cache: true
+f <- correct_answer ~ (1 | question_id_num) + (1 | student_id_num)
+brm_fit <- brm(f, data = answers, family = bernoulli, chains = 4, cores = 4)
+```
+
+The list of output from `brm()` includes a fit that is just the output from `stan()` above. We can use this element if we want, but the parameters have less nice names.
+
+```{r}
+print(brm_fit$fit)
+```
+
+--- 
+
+```{r}
+# brm()'s "r_question_id_num" is our "beta"
+spread_draws(brm_fit, r_question_id_num[question_id_num, ]) |>
+  median_qi() |> 
+  arrange(desc(-r_question_id_num)) 
+```
+
+Notice anything different?
+
+---
+
+### And \{marginaleffects\}!
+
+```{r}
+#| fig-asp: .35
+#| fig-width: 12
+p <- predictions(brm_fit)
+ggplot(p, aes(y = estimate, x = reorder(question_id_num, estimate))) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(aes(group = student_id_num), alpha = 0.2) + 
+  labs(x = "question")
+```
+
+---
+
+## Fitting with `lmer()`
+
+```{r}
+# fit model
+f <- correct_answer ~ (1 | question_id_num) + (1 | student_id_num)
+lmer_fit <- glmer(f, data = answers, family = binomial)
+
+# grab "difficulties"
+ranef(lmer_fit)$question_id_num |>
+  as_tibble(rownames = "question_id_num") |> 
+  rename(beta = "(Intercept)") |>
+  arrange(beta)
+```
+
+---
+
+### And \{marginaleffects\}!
+
+::: {.aside}
+- We talked about how `predictions()` and `comparisons()` **unify** diverse statistical models.
+- But it also unifies diverse estimation routines. 
+- Here it unifies `brm()` and `lmer()` output. The code below only changes the fit I give `predictions()`.
+:::
+
+```{r}
+#| fig-asp: .35
+#| fig-width: 12
+p <- predictions(lmer_fit)
+ggplot(p, aes(y = estimate, x = reorder(question_id_num, estimate))) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(aes(group = student_id_num), alpha = 0.2) + 
+  labs(x = "question")
+```
+
+---
+
+### What if no partial pooling?
+
+```{r}
+#| fig-asp: .35
+#| fig-width: 12
+# fit model
+f <- correct_answer ~ factor(question_id_num) + factor(student_id_num)
+glm_fit <- glm(f, data = answers, family = binomial)
+
+# marginaleffects
+p1 <- predictions(glm_fit)
+ggplot(p1, aes(y = estimate, x = reorder(question_id_num, estimate))) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(aes(group = student_id_num), alpha = 0.2) + 
+  labs(x = "question")
+```
+
+---
+
+```{r}
+#| code-fold: true
+#| fig-asp: .75
+#| fig-width: 12
+comb <- bind_rows(
+  mutate(p, model = "lmer"), 
+  mutate(p1, model = "glm")) |>
+mutate(question_id_num = reorder(factor(question_id_num), estimate))
+
+ggplot(comb, aes(x = estimate, y = model)) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(aes(group = rowid), alpha = 0.2) + 
+  facet_wrap(vars(question_id_num))
+```
+
+## What if the exam had Students 1 through 10 had Questions 7, 28, 13, 49, and 43?
+
+```{r}
+#| code-fold: true
+#| fig-asp: .75
+#| fig-width: 8
+sub <- filter(answers, question_id_num %in% c(27, 28, 13, 49, 43), student_id_num <= 10)
+
+# lmer
+f <- correct_answer ~ (1 | question_id_num) + (1 | student_id_num)
+lmer_fit <- glmer(f, data = sub, family = binomial)
+p <- predictions(lmer_fit)
+
+# glm
+f <- correct_answer ~ factor(question_id_num) + factor(student_id_num)
+glm_fit <- glm(f, data = sub, family = binomial)
+p1 <- predictions(glm_fit)
+
+comb <- bind_rows(
+  mutate(p, model = "lmer"), 
+  mutate(p1, model = "glm")) |>
+mutate(question_id_num = reorder(factor(question_id_num), estimate))
+
+ggplot(comb, aes(x = estimate, y = model)) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(aes(group = rowid), alpha = 0.2) + 
+  facet_wrap(vars(question_id_num))
+```
+
 
 

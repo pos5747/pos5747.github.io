@@ -57,23 +57,57 @@ Two diverse examples from political science.
 1. Use the first example as a live-coding example for your workshop. *Introduce all the code for the second example here.*
 1. Use the second example as a hands-on exercise for your participants. *Participants should be able to adapt the code from the first example here.*
 
+Given that you only have a few minutes, these examples need to be *simple*.
 
-::: callout-warning
+The bit below seems about right for the Cox model, for example. Regardless, it cannot be 300 lines of R code or 10+ commands. Fit, EV, and FD seems about right.
 
-## Advice on examples
+```{r}
+#| message: false
+#| warning: false
+#| fig-asp: 0.35
+# load packages
+library(tidyverse)
+library(survival)
+library(marginaleffects)
 
-Given that you only have a few minutes, these examples need to be simple.
+# load data
+cancer <- survival::cancer |> 
+  glimpse()
 
-The bit below seems about right
+# fit cox model
+f <- Surv(time, status) ~ age + sex + pat.karno
+fit <- coxph(f, data = cancer)
+summary(fit)
 
+# generate predictions
+p <- predictions(
+  fit, 
+  variables = list(time = unique, pat.karno = c(50, 100)), 
+  newdata = datagrid(grid_type = "mean_or_mode"),
+  type = "survival"  # <---- this is important!
+  )
+ggplot(p, aes(x = time, 
+              y = estimate, 
+              ymax = conf.high, 
+              ymin = conf.low)) +
+  geom_ribbon(fill = "grey80") + 
+  geom_line() + 
+  facet_wrap(vars(pat.karno))
+
+# generate comparisons
+c <- comparisons(
+  fit,
+  variables = list(pat.karno = c(50, 100)), 
+  newdata = datagrid(time = unique),
+  type = "survival"
+  )
+ggplot(c, aes(x = time, 
+              y = estimate, 
+              ymax = conf.high, 
+              ymin = conf.low)) +
+  geom_ribbon(fill = "grey80") + 
+  geom_line()
 ```
-fit <- ...
-predictions(...)  # of some sort
-comparisions(..., newdata = datagrid(grid_type = "mean_or_mode"))
-```
-
-Regardless, it cannot be 100 lines of R code.
-:::
 
 ### A Take-Home Handout
 
