@@ -3,6 +3,8 @@ library(MCMCpack)
 
 data(SupremeCourt)
 
+glimpse(SupremeCourt)
+
 sc <- SupremeCourt |>
   mutate(case_id = 1:n()) |>
   pivot_longer(Rehnquist:Breyer, 

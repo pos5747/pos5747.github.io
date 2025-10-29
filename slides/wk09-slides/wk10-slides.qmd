@@ -67,7 +67,7 @@ This is just *one specific type* of hierarchical model.
 The `answers` dataset has answers from hypothetical students to real questions from a recent exam.
 
 - `question_id_num` indexes the 55 questions on the exam.
-- `student_id_num` idexes the 100 students who took the exam.
+- `student_id_num` indexes the 100 students who took the exam.
 - `correct_answer` indicates (0/1) where the student answered the question correctly.
 
 ```{r}
@@ -93,9 +93,7 @@ grades <- answers %>%
 grades |> filter(student_id_num <= 10)
 ```
 
----
-
-## Rasch / 1-PL model {.smaller}
+# Rasch / 1-PL model {.smaller}
 
 *Indices*
 
@@ -119,8 +117,6 @@ $$
 - $\beta_{k[n]}$: the **difficulty** of question $k$ [which is associated with the $n$th answer]. 
    - Higher $\beta_k$ ⇒ less likely to answer correctly; harder item.
 - $\mu$: average difficulty across questions
-
----
 
 ## Hierarchical Model
 
@@ -356,15 +352,14 @@ fit %>%
   labs(x = "question")
 ```
 
----
-
 ## Fitting with `brm()`
 
 ```{r}
 #| results: hide
 #| cache: true
 f <- correct_answer ~ (1 | question_id_num) + (1 | student_id_num)
-brm_fit <- brm(f, data = answers, family = bernoulli, chains = 4, cores = 4)
+brm_fit <- brm(f, data = answers, family = bernoulli, chains = 4, cores = 4, 
+               iter = 1000, warmup = 500)
 ```
 
 The list of output from `brm()` includes a fit that is just the output from `stan()` above. We can use this element if we want, but the parameters have less nice names.
@@ -384,9 +379,7 @@ spread_draws(brm_fit, r_question_id_num[question_id_num, ]) |>
 
 Notice anything different?
 
----
-
-### And \{marginaleffects\}!
+## And \{marginaleffects\}!
 
 ```{r}
 #| fig-asp: .35
@@ -397,8 +390,6 @@ ggplot(p, aes(y = estimate, x = reorder(question_id_num, estimate))) +
   geom_line(aes(group = student_id_num), alpha = 0.2) + 
   labs(x = "question")
 ```
-
----
 
 ## Fitting with `lmer()`
 
@@ -414,9 +405,7 @@ ranef(lmer_fit)$question_id_num |>
   arrange(beta)
 ```
 
----
-
-### And \{marginaleffects\}!
+## And more \{marginaleffects\}!
 
 ::: {.aside}
 - We talked about how `predictions()` and `comparisons()` **unify** diverse statistical models.
@@ -434,9 +423,7 @@ ggplot(p, aes(y = estimate, x = reorder(question_id_num, estimate))) +
   labs(x = "question")
 ```
 
----
-
-### What if no partial pooling?
+## What if no partial pooling?
 
 ```{r}
 #| fig-asp: .35
@@ -470,34 +457,209 @@ ggplot(comb, aes(x = estimate, y = model)) +
   facet_wrap(vars(question_id_num))
 ```
 
-## What if the exam had Students 1 through 10 had Questions 7, 28, 13, 49, and 43?
+## What if we gave each student 5 random questions?
+
+- If we give each student 5 random questions, this is really unfair! Some students will get hard questions. Other students will get easy questions.
+- BUT! We can use a IRT model to estimate the difficulty of each question and the ability of each student. 
+- Even if the students don't answer the same questions, we can put them on the same scale.
+- This won't work super-great, each student answers only 5 question and each question is asked only about 9 times. But it will help a little!
+
+---
+
+```{r}
+random <- answers |>
+  group_by(student_id_num) |>
+  slice_sample(n = 5) %>% 
+  ungroup() %>%
+  glimpse()
+```
+
+---
 
 ```{r}
 #| code-fold: true
-#| fig-asp: .75
-#| fig-width: 8
-sub <- filter(answers, question_id_num %in% c(27, 28, 13, 49, 43), student_id_num <= 10)
 
-# lmer
 f <- correct_answer ~ (1 | question_id_num) + (1 | student_id_num)
-lmer_fit <- glmer(f, data = sub, family = binomial)
-p <- predictions(lmer_fit)
+lmer_fit <- glmer(f, data = answers, family = binomial)
 
-# glm
-f <- correct_answer ~ factor(question_id_num) + factor(student_id_num)
-glm_fit <- glm(f, data = sub, family = binomial)
-p1 <- predictions(glm_fit)
+full_results <- answers |>
+  group_by(student_id_num) |>
+  summarize(score_on_full_exam = mean(correct_answer))
 
-comb <- bind_rows(
-  mutate(p, model = "lmer"), 
-  mutate(p1, model = "glm")) |>
-mutate(question_id_num = reorder(factor(question_id_num), estimate))
+random_results <- random %>%
+  mutate(pred = predict(lmer_fit, newdata = ., type = "response")) |>
+  group_by(student_id_num) |>
+  summarize(score_on_random5_exam = mean(correct_answer),
+            expected_score_on_random5_exam = mean(pred))
 
-ggplot(comb, aes(x = estimate, y = model)) + 
-  geom_point(alpha = 0.2) + 
-  geom_line(aes(group = rowid), alpha = 0.2) + 
-  facet_wrap(vars(question_id_num))
+comb <- full_results |>
+  left_join(random_results) |>
+  arrange(desc(abs(score_on_full_exam - expected_score_on_random5_exam)))
+
+print(comb)
 ```
 
+---
 
+```{r}
+#| code-fold: true
+gg1 <- ggplot(comb, aes(x = score_on_full_exam, y = score_on_random5_exam)) + 
+  geom_jitter(height = 0.01, width = 0.01, alpha = 0.8, shape = 21)
+gg2 <- ggplot(comb, aes(x = score_on_full_exam, y = expected_score_on_random5_exam)) + 
+  geom_jitter(height = 0.01, width = 0.01, alpha = 0.8, shape = 21)
+
+library(patchwork)
+gg1 + gg2
+```
+
+---
+
+```{r}
+
+# make a data frame with all observed and unobserved combos
+# - each student *could have* been asked 55 questions; 50 answers a missing
+all <- crossing(student_id_num = random$student_id_num,
+                question_id_num = random$question_id_num) |>
+  glimpse()
+```
+
+---
+
+```{r}
+# fit irt model to observed answer
+f <- correct_answer ~ (1 | question_id_num) + (1 | student_id_num)
+random_lmer_fit <- glmer(f, data = random, family = binomial)
+
+# fill in "answers" to the unanswered questions
+modeled_answers <- all %>%
+  mutate(pred = predict(random_lmer_fit, newdata = ., type = "response")) |>
+  left_join(random) |> 
+  mutate(filled_correct_answer = case_when(is.na(correct_answer) ~ pred, 
+                                           TRUE ~ correct_answer)) |>
+  glimpse()
+
+```
+
+---
+
+```{r}
+
+# compute scores
+modeled_results <- modeled_answers |>
+  group_by(student_id_num) |>
+  summarize(modeled_score_on_random5_exam = mean(filled_correct_answer)) |>
+  glimpse()
+```
+
+---
+
+```{r}
+comb <- full_results |>
+  left_join(random_results) |>
+  left_join(modeled_results) |>
+  mutate(score_error = score_on_random5_exam - score_on_full_exam,
+         modeled_score_error = modeled_score_on_random5_exam - score_on_full_exam) |>
+  glimpse()
+```
+
+Modeling reduces median abs. error by about 18%.
+
+
+```{r}
+median(abs(comb$score_error))
+median(abs(comb$modeled_score_error))
+```
+
+---
+
+```{r}
+#| code-fold: true
+gg1 <- ggplot(comb, aes(x = score_on_full_exam, y = score_on_random5_exam)) + 
+  geom_jitter(height = 0.01, width = 0.01, alpha = 0.8, shape = 21) + 
+  geom_abline(intercept = 0, slope = 1)
+
+gg2 <- ggplot(comb, aes(x = score_on_full_exam, y = modeled_score_on_random5_exam)) + 
+  geom_jitter(height = 0.01, width = 0.01, alpha = 0.8, shape = 21) + 
+  geom_abline(intercept = 0, slope = 1)
+
+gg1 + gg2 + 
+  scale_y_continuous(limits = c(0, 1))
+```
+
+- If you knew you were the **worst** student in the class, what method would you want the instructor to use? **Best**? **Median**?
+- Why does this happen?!? Is is good?
+
+
+# 2-PL model {.evensmaller}
+
+*Indices*
+
+- Answers: $n = 1, \dots, N$. <span class="gray-text">($N = 55 \times 100 = 5{,}500$ in our data.)</span>  
+- Students: $j = 1, \dots, J$. <span class="gray-text">($J = 100$ in our data.)</span> 
+- Questions: $k = 1, \dots, K$. <span class="gray-text">($K = 55$ in our data.)</span> 
+
+
+*Outcome*: $y_{n} \in \{0, 1\}$ indicates whether the $n$th answer is correct.
+
+$$
+y_n \sim \mathrm{Bernoulli}(\pi_n) \\
+\pi_n = \text{logit}^{-1} \left( \gamma_{k[n]} \left( \alpha_{j[n]} - \beta_{k[n]} \right) \right).
+$$
+
+*Parameters*
+
+- $\pi_n$: the probability that answer $n$ is correct  
+- $\alpha_{j[n]}$: the **ability** of student $j$ [who is giving the $n$th answer]  
+  - Higher $\alpha_j$ ⇒ more likely to answer correctly; more knowledgeable student  
+- $\beta_{k[n]}$: the **difficulty** of question $k$ [which is associated with the $n$th answer]  
+  - Higher $\beta_k$ ⇒ less likely to answer correctly; harder item  
+- $\gamma_{k[n]}$: the **discrimination** of question $k$  
+  - Larger $\gamma_k$ ⇒ steeper item response curve; item better differentiates high- vs low-ability students  
+
+
+## Identifiability in the 2-PL Model {.smaller}
+
+::: columns
+
+::: column
+#### Original Parameterization
+
+| student | question | $\gamma_k$ | $\alpha_j$ | $\beta_k$ | $\pi_{jk}$ |
+|:------:|:--------:|:----------:|:----------:|:----------:|:----------:|
+| 1 | 1 | 0.5 | -1.0 | -1.0 | 0.500 |
+| 1 | 2 | 1.0 | -1.0 | -0.5 | 0.378 |
+| 1 | 3 | 1.5 | -1.0 | 0.5 | 0.095 |
+| 1 | 4 | 2.0 | -1.0 | 1.0 | 0.018 |
+| 2 | 1 | 0.5 | 0.0 | -1.0 | 0.622 |
+| 2 | 2 | 1.0 | 0.0 | -0.5 | 0.622 |
+| 2 | 3 | 1.5 | 0.0 | 0.5 | 0.321 |
+| 2 | 4 | 2.0 | 0.0 | 1.0 | 0.119 |
+| 3 | 1 | 0.5 | 1.0 | -1.0 | 0.731 |
+| 3 | 2 | 1.0 | 1.0 | -0.5 | 0.818 |
+| 3 | 3 | 1.5 | 1.0 | 0.5 | 0.679 |
+| 3 | 4 | 2.0 | 1.0 | 1.0 | 0.500 |
+
+:::
+
+::: column
+#### Reparameterized Version
+
+| student | question | $\gamma_k'$ | $\alpha_{jk}'$ | $\beta_{jk}'$ | $\pi_{jk}$ |
+|:------:|:--------:|:-----------:|:--------------:|:--------------:|:----------:|
+| 1 | 1 | -0.5 | -1.0 | -1.0 | 0.500 |
+| 1 | 2 | -1.0 | -0.5 | -1.0 | 0.378 |
+| 1 | 3 | -1.5 | 0.5 | -1.0 | 0.095 |
+| 1 | 4 | -2.0 | 1.0 | -1.0 | 0.018 |
+| 2 | 1 | -0.5 | -1.0 | 0.0 | 0.622 |
+| 2 | 2 | -1.0 | -0.5 | 0.0 | 0.622 |
+| 2 | 3 | -1.5 | 0.5 | 0.0 | 0.321 |
+| 2 | 4 | -2.0 | 1.0 | 0.0 | 0.119 |
+| 3 | 1 | -0.5 | -1.0 | 1.0 | 0.731 |
+| 3 | 2 | -1.0 | -0.5 | 1.0 | 0.818 |
+| 3 | 3 | -1.5 | 0.5 | 1.0 | 0.679 |
+| 3 | 4 | -2.0 | 1.0 | 1.0 | 0.500 |
+
+:::
+
+:::
 

@@ -17,6 +17,10 @@
   font-size: 80% !important;
 }
 
+.evensmaller {
+  font-size: 65% !important;
+}
+
 .gray-text {
   color: #aaa !important; /* medium grey */
 }
