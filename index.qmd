@@ -52,28 +52,28 @@ oct 15 · [**midterm exam**]{.text-warning}
 
 ------------------------------------------------------------------------
 
-oct 22 · **hierarchical models, 1** · [[slides](slides/wk09-slides/wk09-slides.html)] [[exercises](exr/wk09-exr.pdf)]
+oct 22 · **hierarchical models, 1** · [[slides](slides/wk09-slides/wk09-slides.html)] [[exercises](exr/wk09-exr-sol.pdf)]
 [Due: (1) first draft of research paper due and (2) initial outline of
 take-home workshop handout.]{.remarks}
 
 ------------------------------------------------------------------------
 
-oct 29 · **irt** · \[slides\] \[notes\] \[exercises\] [Due: (1) peer-review memo and (2) first drafts
-of all workshop materials.]{.remarks}
+oct 29 · ** hierarchical models, 1** · \[slides--see above\]  [[exercises](exr/wk10-exr.pdf)] [Due: (1) peer-review memo and (2) first drafts of all workshop materials.]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 05 · **mrp** · \[slides\] \[notes\] \[exercises\] [Due: workshop
+nov 05 · **irt** · \[slides\] \[notes\] \[exercises\] [Due: workshop
 rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 12 · **case study: fowler et al. (2023)** · \[slides\] \[notes\]
-\[exercises\]
+nov 12 · **case study: fariss (2014)** · \[slides\] \[notes\]
+\[exercises\] [Due: workshop
+rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 19 · **case study: fariss (2014)** · \[slides\] \[notes\]
+nov 19 · **case study: arel-bundock et al. (2014)** · \[slides\] \[notes\]
 \[exercises\]
 
 ------------------------------------------------------------------------
