@@ -62,8 +62,7 @@ oct 29 · ** hierarchical models, 1** · \[slides--see above\]  [[exercises](exr
 
 ------------------------------------------------------------------------
 
-nov 05 · **irt** · \[slides\] \[notes\] \[exercises\] [Due: workshop
-rehearsal]{.remarks}
+nov 05 · **irt** · \[slides\] \[notes\] \[exercises\] 
 
 ------------------------------------------------------------------------
 
