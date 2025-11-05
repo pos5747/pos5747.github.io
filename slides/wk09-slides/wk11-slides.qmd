@@ -54,6 +54,13 @@ library(rstan)
 
 # for post-processing simulations
 library(tidybayes)
+
+# handle future conflicts
+# - MASS v. dplyr for filter()
+conflicted::conflict_prefer("filter", "dplyr")
+# - MASS v. dplyr for select()
+conflicted::conflict_prefer("select", "dplyr")
+
 ```
 
 # Ideal Point Models
@@ -169,7 +176,7 @@ f <- cons_vote ~ (1 | justice) + (1 | case_id)
 fit <- glmer(f, data = sc, family = binomial)
 ```
 
----
+## Print the "abilities"
 
 ```{r}
 ranef(fit)$justice |>
@@ -178,7 +185,7 @@ ranef(fit)$justice |>
   arrange(ideal_point)
 ```
 
----
+## Plot the abilities
 
 ```{r}
 #| message: false
@@ -215,6 +222,8 @@ ggplot(ip, aes(x = ideal_point, y = 0)) +
   scale_y_continuous(limits = c(-.1, .1))
 ```
 
+## Add cases
+
 ```{r}
 #| message: false
 #| warning: false
@@ -227,7 +236,6 @@ cases <- data.frame(case = as.numeric(ranef(fit)$case_id[, "(Intercept)"]))
 
 set.seed(1234)
 ggplot(ip, aes(y = ideal_point, x = 0)) +
-  
   geom_vline(xintercept = 0) +
   geom_beeswarm(data = cases, aes( y = case, x = 0), shape = 18, alpha = 0.3, color = "red") + 
   geom_beeswarm(size = 2, alpha = 0.5) +
@@ -252,14 +260,18 @@ ggplot(ip, aes(y = ideal_point, x = 0)) +
   coord_flip()
 ```
 
----
+## Plot the logit curve
 
 ```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| fig-asp: 0.4
 mu <- as.numeric(fixef(fit))
+
 beta <- ranef(fit)$case_id |>
   as_tibble(rownames = "case_id") |>
-  rename(beta = `(Intercept)`) |>
-  glimpse()
+  rename(beta = `(Intercept)`)
 
 cases_to_keep <- c("Case 20", "Case 5", "Case 2", "Case 42", "Case 22", "Case 33")
 
@@ -268,16 +280,14 @@ pred_lines <- crossing(justice_ideology = seq(-2, 2, length.out = 100),
   left_join(beta) |>
   mutate(pr_cons_vote = plogis(mu + justice_ideology - beta)) |>
   mutate(case_id = reorder(case_id, pr_cons_vote)) |>
-  filter(case_id %in% cases_to_keep) |>
-  glimpse()
+  filter(case_id %in% cases_to_keep)
 
 pred_points <- sc |>
   left_join(beta) |> 
   left_join(ip) |>
   mutate(pr_cons_vote = plogis(mu + ideal_point - beta)) |>
   mutate(case_id = reorder(case_id, pr_cons_vote)) |>
-    filter(case_id %in% cases_to_keep) |>
-  glimpse()
+    filter(case_id %in% cases_to_keep)
 
 ggplot(pred_lines, aes(x = justice_ideology, y = pr_cons_vote)) + 
   geom_vline(xintercept = ip$ideal_point, color = "grey50", linewidth = 0.2) + 

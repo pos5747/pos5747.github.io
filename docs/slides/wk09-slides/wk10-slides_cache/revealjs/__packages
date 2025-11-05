@@ -17,3 +17,10 @@ brms
 StanHeaders
 rstan
 tidybayes
+coda
+conflicted
+patchwork
+MASS
+MCMCpack
+ggrepel
+ggbeeswarm

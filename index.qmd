@@ -62,7 +62,7 @@ oct 29 · ** hierarchical models, 1** · \[slides--see above\]  [[exercises](exr
 
 ------------------------------------------------------------------------
 
-nov 05 · **irt** · \[slides\] \[notes\] \[exercises\] 
+nov 05 · **irt** · [[slides](slides/wk09-slides/wk010-slides.html)] \[exercises\] 
 
 ------------------------------------------------------------------------
 
