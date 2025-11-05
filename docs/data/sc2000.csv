@@ -1,0 +1,388 @@
+case_id,justice,appointed_by,cons_vote
+Case 1,Rehnquist,Nixon,1
+Case 1,Stevens,Ford,0
+Case 1,O'Connor,Reagan,0
+Case 1,Scalia,Reagan,1
+Case 1,Kennedy,Reagan,0
+Case 1,Souter,Bush (41),0
+Case 1,Thomas,Bush (41),1
+Case 1,Ginsburg,Clinton,0
+Case 1,Breyer,Clinton,0
+Case 2,Rehnquist,Nixon,1
+Case 2,Stevens,Ford,0
+Case 2,O'Connor,Reagan,1
+Case 2,Scalia,Reagan,1
+Case 2,Kennedy,Reagan,1
+Case 2,Souter,Bush (41),0
+Case 2,Thomas,Bush (41),1
+Case 2,Ginsburg,Clinton,0
+Case 2,Breyer,Clinton,0
+Case 3,Rehnquist,Nixon,1
+Case 3,Stevens,Ford,0
+Case 3,O'Connor,Reagan,1
+Case 3,Scalia,Reagan,1
+Case 3,Kennedy,Reagan,1
+Case 3,Souter,Bush (41),0
+Case 3,Thomas,Bush (41),1
+Case 3,Ginsburg,Clinton,0
+Case 3,Breyer,Clinton,0
+Case 4,Rehnquist,Nixon,1
+Case 4,Stevens,Ford,1
+Case 4,O'Connor,Reagan,1
+Case 4,Scalia,Reagan,1
+Case 4,Kennedy,Reagan,1
+Case 4,Souter,Bush (41),1
+Case 4,Thomas,Bush (41),1
+Case 4,Ginsburg,Clinton,1
+Case 4,Breyer,Clinton,0
+Case 5,Rehnquist,Nixon,0
+Case 5,Stevens,Ford,0
+Case 5,O'Connor,Reagan,1
+Case 5,Scalia,Reagan,1
+Case 5,Kennedy,Reagan,0
+Case 5,Souter,Bush (41),1
+Case 5,Thomas,Bush (41),1
+Case 5,Ginsburg,Clinton,1
+Case 5,Breyer,Clinton,1
+Case 6,Rehnquist,Nixon,1
+Case 6,Stevens,Ford,0
+Case 6,O'Connor,Reagan,1
+Case 6,Scalia,Reagan,1
+Case 6,Kennedy,Reagan,1
+Case 6,Souter,Bush (41),1
+Case 6,Thomas,Bush (41),1
+Case 6,Ginsburg,Clinton,1
+Case 6,Breyer,Clinton,1
+Case 7,Rehnquist,Nixon,1
+Case 7,Stevens,Ford,0
+Case 7,O'Connor,Reagan,0
+Case 7,Scalia,Reagan,1
+Case 7,Kennedy,Reagan,1
+Case 7,Souter,Bush (41),0
+Case 7,Thomas,Bush (41),1
+Case 7,Ginsburg,Clinton,0
+Case 7,Breyer,Clinton,0
+Case 8,Rehnquist,Nixon,1
+Case 8,Stevens,Ford,0
+Case 8,O'Connor,Reagan,1
+Case 8,Scalia,Reagan,1
+Case 8,Kennedy,Reagan,1
+Case 8,Souter,Bush (41),1
+Case 8,Thomas,Bush (41),1
+Case 8,Ginsburg,Clinton,1
+Case 8,Breyer,Clinton,1
+Case 9,Rehnquist,Nixon,1
+Case 9,Stevens,Ford,0
+Case 9,O'Connor,Reagan,1
+Case 9,Scalia,Reagan,1
+Case 9,Kennedy,Reagan,0
+Case 9,Souter,Bush (41),0
+Case 9,Thomas,Bush (41),1
+Case 9,Ginsburg,Clinton,0
+Case 9,Breyer,Clinton,0
+Case 10,Rehnquist,Nixon,0
+Case 10,Stevens,Ford,0
+Case 10,O'Connor,Reagan,0
+Case 10,Scalia,Reagan,1
+Case 10,Kennedy,Reagan,0
+Case 10,Souter,Bush (41),0
+Case 10,Thomas,Bush (41),1
+Case 10,Ginsburg,Clinton,0
+Case 10,Breyer,Clinton,0
+Case 11,Rehnquist,Nixon,1
+Case 11,Stevens,Ford,0
+Case 11,O'Connor,Reagan,0
+Case 11,Scalia,Reagan,1
+Case 11,Kennedy,Reagan,0
+Case 11,Souter,Bush (41),0
+Case 11,Thomas,Bush (41),1
+Case 11,Ginsburg,Clinton,0
+Case 11,Breyer,Clinton,0
+Case 12,Rehnquist,Nixon,1
+Case 12,Stevens,Ford,0
+Case 12,O'Connor,Reagan,1
+Case 12,Scalia,Reagan,1
+Case 12,Kennedy,Reagan,1
+Case 12,Souter,Bush (41),0
+Case 12,Thomas,Bush (41),1
+Case 12,Ginsburg,Clinton,0
+Case 12,Breyer,Clinton,0
+Case 13,Rehnquist,Nixon,0
+Case 13,Stevens,Ford,1
+Case 13,O'Connor,Reagan,0
+Case 13,Scalia,Reagan,0
+Case 13,Kennedy,Reagan,0
+Case 13,Souter,Bush (41),0
+Case 13,Thomas,Bush (41),0
+Case 13,Ginsburg,Clinton,0
+Case 13,Breyer,Clinton,1
+Case 14,Rehnquist,Nixon,1
+Case 14,Stevens,Ford,0
+Case 14,O'Connor,Reagan,1
+Case 14,Scalia,Reagan,1
+Case 14,Kennedy,Reagan,1
+Case 14,Souter,Bush (41),0
+Case 14,Thomas,Bush (41),1
+Case 14,Ginsburg,Clinton,0
+Case 14,Breyer,Clinton,0
+Case 15,Rehnquist,Nixon,1
+Case 15,Stevens,Ford,0
+Case 15,O'Connor,Reagan,0
+Case 15,Scalia,Reagan,1
+Case 15,Kennedy,Reagan,1
+Case 15,Souter,Bush (41),0
+Case 15,Thomas,Bush (41),1
+Case 15,Ginsburg,Clinton,0
+Case 15,Breyer,Clinton,0
+Case 16,Rehnquist,Nixon,1
+Case 16,Stevens,Ford,0
+Case 16,O'Connor,Reagan,1
+Case 16,Scalia,Reagan,1
+Case 16,Kennedy,Reagan,1
+Case 16,Souter,Bush (41),0
+Case 16,Thomas,Bush (41),1
+Case 16,Ginsburg,Clinton,0
+Case 16,Breyer,Clinton,0
+Case 17,Rehnquist,Nixon,1
+Case 17,Stevens,Ford,0
+Case 17,O'Connor,Reagan,0
+Case 17,Scalia,Reagan,1
+Case 17,Kennedy,Reagan,1
+Case 17,Souter,Bush (41),1
+Case 17,Thomas,Bush (41),1
+Case 17,Ginsburg,Clinton,0
+Case 17,Breyer,Clinton,0
+Case 18,Rehnquist,Nixon,1
+Case 18,Stevens,Ford,0
+Case 18,O'Connor,Reagan,1
+Case 18,Scalia,Reagan,1
+Case 18,Kennedy,Reagan,1
+Case 18,Souter,Bush (41),0
+Case 18,Thomas,Bush (41),1
+Case 18,Ginsburg,Clinton,0
+Case 18,Breyer,Clinton,0
+Case 19,Rehnquist,Nixon,1
+Case 19,Stevens,Ford,0
+Case 19,O'Connor,Reagan,1
+Case 19,Scalia,Reagan,1
+Case 19,Kennedy,Reagan,1
+Case 19,Souter,Bush (41),0
+Case 19,Thomas,Bush (41),1
+Case 19,Ginsburg,Clinton,0
+Case 19,Breyer,Clinton,0
+Case 20,Rehnquist,Nixon,1
+Case 20,Stevens,Ford,1
+Case 20,O'Connor,Reagan,1
+Case 20,Scalia,Reagan,1
+Case 20,Kennedy,Reagan,1
+Case 20,Souter,Bush (41),1
+Case 20,Thomas,Bush (41),1
+Case 20,Ginsburg,Clinton,0
+Case 20,Breyer,Clinton,1
+Case 21,Rehnquist,Nixon,1
+Case 21,Stevens,Ford,0
+Case 21,O'Connor,Reagan,1
+Case 21,Scalia,Reagan,0
+Case 21,Kennedy,Reagan,1
+Case 21,Souter,Bush (41),1
+Case 21,Thomas,Bush (41),0
+Case 21,Ginsburg,Clinton,1
+Case 21,Breyer,Clinton,0
+Case 22,Rehnquist,Nixon,1
+Case 22,Stevens,Ford,0
+Case 22,O'Connor,Reagan,0
+Case 22,Scalia,Reagan,1
+Case 22,Kennedy,Reagan,0
+Case 22,Souter,Bush (41),0
+Case 22,Thomas,Bush (41),1
+Case 22,Ginsburg,Clinton,0
+Case 22,Breyer,Clinton,0
+Case 23,Rehnquist,Nixon,0
+Case 23,Stevens,Ford,NA
+Case 23,O'Connor,Reagan,NA
+Case 23,Scalia,Reagan,1
+Case 23,Kennedy,Reagan,0
+Case 23,Souter,Bush (41),0
+Case 23,Thomas,Bush (41),1
+Case 23,Ginsburg,Clinton,0
+Case 23,Breyer,Clinton,0
+Case 24,Rehnquist,Nixon,1
+Case 24,Stevens,Ford,0
+Case 24,O'Connor,Reagan,1
+Case 24,Scalia,Reagan,1
+Case 24,Kennedy,Reagan,1
+Case 24,Souter,Bush (41),0
+Case 24,Thomas,Bush (41),1
+Case 24,Ginsburg,Clinton,0
+Case 24,Breyer,Clinton,0
+Case 25,Rehnquist,Nixon,0
+Case 25,Stevens,Ford,0
+Case 25,O'Connor,Reagan,0
+Case 25,Scalia,Reagan,1
+Case 25,Kennedy,Reagan,0
+Case 25,Souter,Bush (41),0
+Case 25,Thomas,Bush (41),1
+Case 25,Ginsburg,Clinton,0
+Case 25,Breyer,Clinton,0
+Case 26,Rehnquist,Nixon,1
+Case 26,Stevens,Ford,0
+Case 26,O'Connor,Reagan,1
+Case 26,Scalia,Reagan,1
+Case 26,Kennedy,Reagan,1
+Case 26,Souter,Bush (41),0
+Case 26,Thomas,Bush (41),1
+Case 26,Ginsburg,Clinton,0
+Case 26,Breyer,Clinton,0
+Case 27,Rehnquist,Nixon,1
+Case 27,Stevens,Ford,0
+Case 27,O'Connor,Reagan,0
+Case 27,Scalia,Reagan,1
+Case 27,Kennedy,Reagan,0
+Case 27,Souter,Bush (41),0
+Case 27,Thomas,Bush (41),1
+Case 27,Ginsburg,Clinton,0
+Case 27,Breyer,Clinton,0
+Case 28,Rehnquist,Nixon,1
+Case 28,Stevens,Ford,0
+Case 28,O'Connor,Reagan,1
+Case 28,Scalia,Reagan,1
+Case 28,Kennedy,Reagan,1
+Case 28,Souter,Bush (41),1
+Case 28,Thomas,Bush (41),1
+Case 28,Ginsburg,Clinton,1
+Case 28,Breyer,Clinton,1
+Case 29,Rehnquist,Nixon,1
+Case 29,Stevens,Ford,1
+Case 29,O'Connor,Reagan,1
+Case 29,Scalia,Reagan,0
+Case 29,Kennedy,Reagan,1
+Case 29,Souter,Bush (41),0
+Case 29,Thomas,Bush (41),0
+Case 29,Ginsburg,Clinton,0
+Case 29,Breyer,Clinton,0
+Case 30,Rehnquist,Nixon,1
+Case 30,Stevens,Ford,1
+Case 30,O'Connor,Reagan,0
+Case 30,Scalia,Reagan,1
+Case 30,Kennedy,Reagan,1
+Case 30,Souter,Bush (41),0
+Case 30,Thomas,Bush (41),1
+Case 30,Ginsburg,Clinton,0
+Case 30,Breyer,Clinton,0
+Case 31,Rehnquist,Nixon,1
+Case 31,Stevens,Ford,0
+Case 31,O'Connor,Reagan,1
+Case 31,Scalia,Reagan,1
+Case 31,Kennedy,Reagan,1
+Case 31,Souter,Bush (41),0
+Case 31,Thomas,Bush (41),1
+Case 31,Ginsburg,Clinton,0
+Case 31,Breyer,Clinton,1
+Case 32,Rehnquist,Nixon,1
+Case 32,Stevens,Ford,1
+Case 32,O'Connor,Reagan,1
+Case 32,Scalia,Reagan,1
+Case 32,Kennedy,Reagan,1
+Case 32,Souter,Bush (41),1
+Case 32,Thomas,Bush (41),1
+Case 32,Ginsburg,Clinton,0
+Case 32,Breyer,Clinton,0
+Case 33,Rehnquist,Nixon,0
+Case 33,Stevens,Ford,0
+Case 33,O'Connor,Reagan,0
+Case 33,Scalia,Reagan,1
+Case 33,Kennedy,Reagan,0
+Case 33,Souter,Bush (41),0
+Case 33,Thomas,Bush (41),0
+Case 33,Ginsburg,Clinton,0
+Case 33,Breyer,Clinton,0
+Case 34,Rehnquist,Nixon,1
+Case 34,Stevens,Ford,0
+Case 34,O'Connor,Reagan,0
+Case 34,Scalia,Reagan,1
+Case 34,Kennedy,Reagan,1
+Case 34,Souter,Bush (41),0
+Case 34,Thomas,Bush (41),1
+Case 34,Ginsburg,Clinton,0
+Case 34,Breyer,Clinton,0
+Case 35,Rehnquist,Nixon,1
+Case 35,Stevens,Ford,0
+Case 35,O'Connor,Reagan,1
+Case 35,Scalia,Reagan,1
+Case 35,Kennedy,Reagan,0
+Case 35,Souter,Bush (41),0
+Case 35,Thomas,Bush (41),1
+Case 35,Ginsburg,Clinton,0
+Case 35,Breyer,Clinton,0
+Case 36,Rehnquist,Nixon,1
+Case 36,Stevens,Ford,0
+Case 36,O'Connor,Reagan,1
+Case 36,Scalia,Reagan,1
+Case 36,Kennedy,Reagan,0
+Case 36,Souter,Bush (41),0
+Case 36,Thomas,Bush (41),1
+Case 36,Ginsburg,Clinton,0
+Case 36,Breyer,Clinton,0
+Case 37,Rehnquist,Nixon,0
+Case 37,Stevens,Ford,0
+Case 37,O'Connor,Reagan,1
+Case 37,Scalia,Reagan,0
+Case 37,Kennedy,Reagan,0
+Case 37,Souter,Bush (41),0
+Case 37,Thomas,Bush (41),0
+Case 37,Ginsburg,Clinton,1
+Case 37,Breyer,Clinton,1
+Case 38,Rehnquist,Nixon,1
+Case 38,Stevens,Ford,0
+Case 38,O'Connor,Reagan,0
+Case 38,Scalia,Reagan,1
+Case 38,Kennedy,Reagan,1
+Case 38,Souter,Bush (41),0
+Case 38,Thomas,Bush (41),1
+Case 38,Ginsburg,Clinton,0
+Case 38,Breyer,Clinton,0
+Case 39,Rehnquist,Nixon,0
+Case 39,Stevens,Ford,1
+Case 39,O'Connor,Reagan,0
+Case 39,Scalia,Reagan,0
+Case 39,Kennedy,Reagan,0
+Case 39,Souter,Bush (41),0
+Case 39,Thomas,Bush (41),0
+Case 39,Ginsburg,Clinton,0
+Case 39,Breyer,Clinton,1
+Case 40,Rehnquist,Nixon,0
+Case 40,Stevens,Ford,1
+Case 40,O'Connor,Reagan,0
+Case 40,Scalia,Reagan,0
+Case 40,Kennedy,Reagan,0
+Case 40,Souter,Bush (41),1
+Case 40,Thomas,Bush (41),0
+Case 40,Ginsburg,Clinton,1
+Case 40,Breyer,Clinton,1
+Case 41,Rehnquist,Nixon,1
+Case 41,Stevens,Ford,0
+Case 41,O'Connor,Reagan,1
+Case 41,Scalia,Reagan,1
+Case 41,Kennedy,Reagan,1
+Case 41,Souter,Bush (41),0
+Case 41,Thomas,Bush (41),1
+Case 41,Ginsburg,Clinton,0
+Case 41,Breyer,Clinton,0
+Case 42,Rehnquist,Nixon,1
+Case 42,Stevens,Ford,0
+Case 42,O'Connor,Reagan,1
+Case 42,Scalia,Reagan,1
+Case 42,Kennedy,Reagan,1
+Case 42,Souter,Bush (41),0
+Case 42,Thomas,Bush (41),1
+Case 42,Ginsburg,Clinton,0
+Case 42,Breyer,Clinton,0
+Case 43,Rehnquist,Nixon,1
+Case 43,Stevens,Ford,0
+Case 43,O'Connor,Reagan,0
+Case 43,Scalia,Reagan,1
+Case 43,Kennedy,Reagan,1
+Case 43,Souter,Bush (41),0
+Case 43,Thomas,Bush (41),1
+Case 43,Ginsburg,Clinton,0
+Case 43,Breyer,Clinton,0
