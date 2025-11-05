@@ -58,11 +58,11 @@ take-home workshop handout.]{.remarks}
 
 ------------------------------------------------------------------------
 
-oct 29 · **hierarchical models, 1** · \[slides--see above\]  [[exercises](exr/wk10-exr.pdf)] [Due: (1) peer-review memo and (2) first drafts of all workshop materials.]{.remarks}
+oct 29 · **hierarchical models, 2** · [[exercises](exr/wk10-exr-sol.pdf)] [Due: (1) peer-review memo and (2) first drafts of all workshop materials.]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 05 · **irt** · [[slides](slides/wk09-slides/wk10-slides.html)] \[exercises\] 
+nov 05 · **irt** · [[slides](slides/wk09-slides/wk10-slides.html)] [[exercises](exr/wk11-exr.pdf)]
 
 ------------------------------------------------------------------------
 
