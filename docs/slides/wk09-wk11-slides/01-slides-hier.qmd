@@ -1,0 +1,727 @@
+---
+title: "Hierarchical Models"
+format:
+  revealjs:
+    css: styles.css
+    transition: fade
+    slide-number: true
+    width: 1600
+    height: 900
+    mathjax: true  
+execute:
+  echo: true
+fig-align: center
+fig-width: 8
+fig-asp: 0.5
+---
+
+
+# Opening Comments
+
+- Exam
+- Workshop
+- Paper
+
+```{r echo=FALSE}
+#| message: false
+#| warning: false
+options(width = 90)
+options(digits = 3)
+
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+---
+
+Here are the packages we're using:
+
+```{r}
+#| message: false
+#| warning: false
+
+# generally useful packages
+library(tidyverse)
+library(marginaleffects)
+library(modelsummary)
+
+# for fitting hierarchical models
+library(lme4)
+library(brms)  # see also rstanarm::stan_lmer()
+
+# for post-processing simulations
+library(tidybayes)
+```
+
+
+---
+
+## Where we're headed
+
+This week, I introduce the idea of a hierarchical model. 
+
+These fall squarely within our probability modeling framework---but with an exciting new twist.
+
+Before: $x_i \sim f(x_i; \theta)$
+
+Now: $x_i \sim f(x_i; \theta_{j[i]})$, where $\theta_j \sim f(\theta_j; \phi)$
+
+We have models of parameters $\theta_j \sim f(\theta_j; \phi)$ analogous to a previous models of data.
+
+# Contact in Finland
+
+In my dissertation, I was interested in how survey self-reports of **being contacted** by a political party varies across electoral districts. 
+
+
+You can see [here](http://www.carlislerainey.com/papers/stratmob.pdf) for the details. 
+
+## The `finland` data
+
+For now, let's just estimate the proportion of people in each district that are contacted by a party.
+
+Let's start with Finland.
+
+```{r}
+# load data
+finland <- crdata::finland |>
+  glimpse()
+```
+
+It will be convenient in later steps to have `contacted` be an indicator and `district_id` be a nice factor, so let's do that now.
+
+1. Remove "District" from the strings.
+1. `reorder()` the levels by the average of `contacted`. (Important sneaky trick).
+
+## The `finland` data, tidied up
+
+```{r}
+# load data
+finland <- crdata::finland |>
+  # make contacted an indicator
+  mutate(contacted = as.numeric(contacted == "Contacted")) |>
+  # mutate district_id to factor ordered by contact rate
+  mutate(district_id = str_remove(district_id, "District "),
+         district_id = reorder(district_id, contacted)) |>
+  glimpse()
+```
+
+## Always scatterplot your data
+
+A scatterplot is a safe and potentially informative way to start.
+
+```{r}
+gg1 <- ggplot(finland, aes(x = district_id, y = contacted)) + 
+  geom_jitter(shape = 21, alpha = 0.5, size = 1)
+print(gg1)
+```
+
+## Model, part 1
+
+Now let's estimate the probability of being contacted by a political party in each district.
+
+Start by writing down a probability model for being contacted. This is a binary outcome, so if we're going to assume (conditional) independence, it must be Bernoulli.
+
+$$
+\text{Contacted}_i \sim \text{Bernoulli}(\pi_j),
+$$
+
+where $i$ indexes the respondent and $j$ indexes the electoral district.
+
+Remember that the ML estimate of $\pi$ is just the sample mean (or sample proportion). 
+
+## Estimating $\pi_j$: a crude first cut 
+
+We can do this easily for each district with `group_by()` and `summarize()`. 
+
+Let's also add an estimate of the standard error using $\widehat{\text{SE}}(\hat{\pi}_j) = \frac{\sqrt{\hat{\pi}_j(1 - \hat{\pi}_j)}}{\sqrt{n}}$.
+
+```{r}
+estimates <- finland %>%
+  group_by(district_id) %>%
+  summarize(pi_hat = mean(contacted),
+            n = n(),
+            se_hat = sqrt(pi_hat*(1 - pi_hat))/sqrt(n)) %>%
+  glimpse()
+```
+
+## Adding the estimates to the scatterplot
+
+Now let's add these estimates to the scatterplot.
+
+```{r}
+gg2 <- gg1 + 
+  geom_errorbar(data = estimates, aes(ymin = pi_hat - 1.64*se_hat,
+                                      ymax = pi_hat + 1.64*se_hat, 
+                                      y = NULL),
+                width = .2, color = "#1b9e77") + 
+  geom_point(data = estimates, aes(y = pi_hat), 
+             color = "#1b9e77", size = 2)
+print(gg2)
+```
+
+
+## Adding the sample size
+
+You can see that the confidence intervals (and sample size) varies by district, so let's add that information to the plot.
+
+```{r}
+#| fig-asp: 0.5
+gg3 <- gg2 + 
+  geom_label(data = estimates, aes(y = pi_hat + 1.64*se_hat, label = n),
+             color = "#1b9e77", vjust = -0.2)
+print(gg3)
+```
+
+Great! Now we're done. We've got ML estimates of the contact rate for all districts. 
+
+But wait... can we do better?
+
+## Looking carefully at 309
+
+Let's look at district 309 on the far right. We our estimate of the contact rate in this district is the highest.
+
+```{r}
+#| fig-asp: 0.5
+#| echo: false
+print(gg3)
+```
+
+Our estimator $\hat\pi$ is unbiased, but **if you had to say**, would you say that the turnout rate in district 309 was higher or lower than $\hat{\pi}_{309} = 0.40$?
+
+If your intuition matches mine, you will say *lower*. Why? This "why?" is an important question.
+
+## Why?
+
+- If you think that $\hat{\pi}$ is a good estimator, but you suddenly want to adjust this particular estimate, you must have additional information coming from somewhere. Where?
+- The answer: the *other districts*. We admit that the contact rate will be different across districts, but it also seems reasonable to assume they will be similar (that's "different, but similar"). Given that 309 has a small sample and looks relatively unlike the other estimates, we want to pull it down *slightly* toward the other estimates.
+
+**This is exactly the intuition of hierarchical models.** 
+
+Let's write down this "different, but similar" intuition. 
+
+To do this, it will be convenient to have our $\pi_j$s on the logit scale.
+
+## Model, part 2a
+
+Start with the likelihood.
+
+$$
+\text{Contacted}_i \sim \text{Bernoulli}(\pi_j)
+$$
+
+Now translate the $\pi$s to the logit scale.
+
+$$
+\pi_j = \text{logit}^{-1}(\alpha_j)
+$$
+
+Each of these $\alpha_j$s is like a constant term in a logit model with no covariates. (We could add covariates, but that makes the example less clear.)
+
+## Model, part 2b
+
+Now for the hierarchical part: we want to capture the notion that these $\alpha_j$s are different *but similar*. 
+
+We can do that by modeling them as draws from normal distribution.
+
+$$
+\alpha_j \sim N(\mu, \sigma^2)
+$$
+
+- We can estimate $\mu$ (the "typical" $\alpha$) and $\sigma$ (the degree of similarity) from the data. This is "hierarchical piece."
+
+- We sometimes refer to batches of parameters modeled as draws from a distribution as "random effects."
+
+## Estimating the model
+
+To estimate the hierarchical model: 
+
+- use ML via the `lme4::lmer()`/`lme4::glmer()` function. Fast, fragile, approximate.
+- use MCMC via the `brm()` function. Slow(er), robust, exact.^[Also `rstanarm::stan_lmer()`.]
+- also Stan via \{rstan`} or \{cmdstanr\}.
+
+We're going to start with `lmer()` because I don't want to juggle posterior simulation and hierarchical models simultaneously, but you should always use `brm()` (or Stan some other way) *always* unless you simply need a quick fit.
+
+## `lmer()`
+
+We can fit the model with `glmer()`.
+
+```{r}
+#| code-line-numbers: "|2"
+library(lme4)
+f <- contacted ~ (1 | district_id)
+fit <- glmer(f, data = finland, family = binomial)
+```
+
+And we can summarize the results.
+
+```{r}
+arm::display(fit)
+```
+
+From the output above, we estimate $\mu$ as -1.37 and $\sigma$ as 0.31. That is, the $\alpha_j$s are about -1.37 give-or-take 0.31 or so.
+
+## Extracting the group-level effects
+
+**group-level effects 👉 "random effects"**
+
+But here's the useful part: we can take this $\hat{\mu}$ and $\hat{\sigma}$ and use them as a Bayesian prior for the individual $\alpha_j$s. 
+
+Each $\alpha_j$ has a likelihood (using the data from that district) and a prior (using $\hat{\mu}$ and $\hat{\sigma}$).
+
+```{r}
+fixef(fit)
+ranef(fit)
+```
+
+## Working with the group-level effects
+
+```{r}
+# mu
+# - fixed part
+# - "typical" intercept across districts
+fe <- fixef(fit)["(Intercept)"]  
+fe
+
+# (alpha - mu) 
+# - random part
+# - deviation from the typical intercept for each district
+re <- ranef(fit)$district_id[, "(Intercept)"] # ️👈 "random effects"‼️
+re
+
+# alpha
+alpha_hat <- fe + re  # district-level linear predictors
+alpha_hat
+
+# pi
+pi_hat <- plogis(fe + re)  # district-level probabilities
+pi_hat
+```
+
+## Using `predict()` 
+
+In this case, it's easy to use `predict()` to get this same estimates. (The `predict()` approach is a little safer because it's easier to keep the `pi_hat` and the `district_id` label together.)
+
+```{r}
+hier_estimates <- tibble(district_id = unique(finland$district_id)) %>%
+  mutate(pi_hat = predict(fit, newdata = ., type = "response")) %>%
+  arrange(district_id) %>%
+  glimpse()
+```
+
+## Using \{marginaleffects\}
+
+We can also do this with \{marginaleffects\}.
+
+```{r}
+predictions(fit,
+            newdata = datagrid(district_id = unique)) |>
+  select(district_id, estimate) |>
+  arrange(district_id) |>  # comparisons() arranges predictions differently
+  glimpse()
+```
+
+## Comparing the ML and hierarchical estimates
+
+We can add this to our plot to see how the estimates changed. 
+
+```{r}
+gg4 <- gg3 + 
+  geom_point(data = hier_estimates,
+             aes(y = pi_hat), 
+             color = "#d95f02",
+             shape = 10, size = 3)
+print(gg4)
+```
+
+::: {.aside}
+- Notice that our new estimate for 309 is now at the very bottom of our initial confidence interval.
+- Notice the differences between the original ML estimates and CIs and the new estimates from the hierarchical model.
+:::
+
+## A plot of the partial pooling
+
+We can compare the initial ML estimates to the hierarchical model estimates.
+
+```{r}
+#| code-fold: true
+comb <- bind_rows(list("initial ML" = estimates,
+                       "hierarchical" = hier_estimates), 
+                  .id = "type") %>%
+  glimpse()
+gg_comb <- ggplot(comb, aes(x = pi_hat, y = type)) + 
+  geom_point(alpha = 0.5) + 
+  geom_line(aes(group = district_id), alpha = 0.5)
+print(gg_comb)
+```
+
+## Two approaches, plus a compromise
+
+It's helpful to think of these approaches in terms of the amount of information they borrow across groups.
+
+::: {.fragment .fade-up}
+1. **No Pooling.** Assume the groups are different, and that nothing can be learned from the other groups. Estimate each group separately. 
+:::
+::: {.fragment .fade-up}
+2. **Complete Pooling**. Assume the groups are identical. Collapse all the groups together to estimate the single, common estimate.
+:::
+::: {.fragment .fade-up}
+3. **Partial Pooling**. A compromise between the two extremes above. Assume the groups are different, *but similar*. Estimate the amount of similarity using the data, and pool the estimates toward a common estimate accordingly.
+:::
+
+---
+
+We did not implement complete pooling above, but we can do it here to compare the three approaches. 
+
+```{r}
+#| code-fold: true
+# use the overall rate for each district
+common_estimate <- tibble(district_id = unique(finland$district_id)) %>%
+  mutate(pi_hat = mean(finland$contacted))
+
+# combine the three types
+comb <- bind_rows(list("No Pooling" = estimates,
+                       "Partial Pooling" = hier_estimates,
+                       "Complete Pooling" = common_estimate), 
+                  .id = "type") %>%
+  mutate(type = reorder(type, pi_hat, var)) 
+
+gg_comb2 <- ggplot(comb, aes(x = pi_hat, y = type)) + 
+  geom_point(alpha = 0.5) + 
+  geom_line(aes(group = district_id), alpha = 0.5)
+print(gg_comb2)  
+```
+
+# Key things
+
+First, the 309 problem.
+
+Second, $\mu_i = \alpha_{j[i]} + \beta x_i$, where $\alpha_j \sim N(0, \sigma^2_\alpha)$.
+
+Third, the figure below.
+
+```{r}
+#| fig-asp: 0.5
+#| echo: false
+print(gg_comb2)  
+```
+
+# We stopped here on 10/21; we'll pick up here next time.
+
+# Start with the simulate and recover exercise
+
+# Contact in the UK
+
+```{r}
+uk <- crdata::uk |>
+  # make contacted an indicator
+  mutate(contacted = as.numeric(contacted == "Contacted")) |>
+  # mutate district_id to factor ordered by contact rate
+  mutate(district_id = str_remove(district_id, "District "), 
+         district_id = reorder(district_id, contacted)) |>
+  glimpse()
+```
+
+---
+
+```{r}
+gg1_uk <- ggplot(uk, aes(x = district_id, y = contacted)) + 
+  geom_jitter(shape = 21, alpha = 0.5, size = 1)
+print(gg1_uk)
+```
+
+---
+
+```{r}
+estimates <- uk %>%
+  group_by(district_id) %>%
+  summarize(pi_hat = mean(contacted),
+            n = n(),
+            se_hat = sqrt(pi_hat*(1 - pi_hat))/sqrt(n)) %>%
+  glimpse()
+```
+
+---
+
+
+```{r}
+#| fig-asp: 0.5
+gg2_uk <- gg1_uk + 
+  geom_errorbar(data = estimates, aes(ymin = pi_hat - 1.64*se_hat,
+                                      ymax = pi_hat + 1.64*se_hat, 
+                                      y = NULL),
+                width = .2, color = "#1b9e77") + 
+  geom_point(data = estimates, aes(y = pi_hat), 
+             color = "#1b9e77", size = 2)
+print(gg2_uk)
+```
+
+---
+
+```{r}
+no_pooling <-  uk %>%
+  group_by(district_id) %>%
+  summarize(pi_hat = mean(contacted))  %>%
+  glimpse()
+```
+
+---
+
+
+```{r}
+complete_pooling <- tibble(district_id = unique(uk$district_id)) %>%
+  mutate(pi_hat = mean(uk$contacted)) %>%
+  glimpse()
+```
+
+---
+
+```{r}
+#| code-line-numbers: "|1"
+f <- contacted ~ (1 | district_id)
+fit <- glmer(f, data = uk, family = binomial)
+
+arm::display(fit)
+```
+
+---
+
+```{r}
+partial_pooling <- tibble(district_id = unique(uk$district_id)) %>%
+  mutate(pi_hat = predict(fit, newdata = ., type = "response")) %>%
+  arrange(district_id) %>%
+  glimpse()
+```
+
+---
+
+```{r}
+comb <- bind_rows(list("No Pooling" = no_pooling,
+                       "Partial Pooling" = partial_pooling,
+                       "Complete Pooling" = complete_pooling), 
+                  .id = "type") %>%
+  mutate(type = reorder(type, pi_hat, var)) %>%
+  arrange(district_id) %>%
+  glimpse()
+```
+
+---
+
+```{r}
+#| fig-asp: 0.5
+ggplot(comb, aes(x = pi_hat, y = type)) + 
+  geom_point(alpha = 0.5) + 
+  geom_line(aes(group = district_id), alpha = 0.5)
+```
+
+# Contact in the UK (w/ predictors!)
+
+We can also add predictors of the random parameters, such as the competitiveness of the district.
+
+```{r}
+glimpse(uk)
+```
+
+---
+
+```{r}
+uk_districts <- uk %>% 
+  select(district_id, district_competitiveness) %>%
+  distinct() %>%
+  glimpse()
+
+w_comp <- partial_pooling |>
+  left_join(uk_districts) |>
+  glimpse()
+```
+
+---
+
+```{r}
+ggplot(w_comp, aes(x = district_competitiveness, y = pi_hat)) + 
+  geom_point() 
+```
+
+---
+
+```{r}
+ggplot(w_comp, aes(x = district_competitiveness, y = pi_hat)) + 
+  geom_point() + 
+  geom_smooth(method = lm, se = FALSE, color = "#1b9e77")
+```
+
+---
+
+Hey! We should build this directly into our model.
+
+```{r}
+#| code-line-numbers: "|1"
+f <- contacted ~ district_competitiveness + (1 | district_id)
+fit <- glmer(f, data = uk, family = binomial)
+
+arm::display(fit)
+```
+
+---
+
+```{r}
+partial_pooling <- uk %>%
+  select(district_id, district_competitiveness) %>%
+  distinct() %>%
+  mutate(pi_hat = predict(fit, newdata = ., type = "response")) %>%
+  glimpse()
+```
+
+---
+
+```{r}
+ggplot(partial_pooling, aes(x = district_competitiveness, y = pi_hat)) + 
+  geom_point()
+```
+
+---
+
+```{r}
+comb <- bind_rows(list("No Pooling" = no_pooling,
+                       "Partial Pooling" = partial_pooling,
+                       "Complete Pooling" = complete_pooling), 
+                  .id = "type") %>%
+  mutate(type = reorder(type, pi_hat, var)) %>%
+  glimpse()
+```
+  
+---  
+
+```{r}
+ggplot(comb, aes(x = pi_hat, y = type)) + 
+  geom_point(alpha = 0.5) + 
+  geom_line(aes(group = district_id), alpha = 0.5)
+```
+
+# A simulation exercise in R
+
+# Contact in Several Countries
+
+$$
+\text{Pr}(\text{Contacted}_{i} = 1) = \text{logit}^{-1}(\alpha_{jk} + {\bf X}_i\beta)
+$$
+$$
+\alpha_{jk} \sim N(\gamma_{0k} + \gamma_{1k}\text{Competitiveness}_j, \sigma^2_{\alpha}) \text{ for } j = 1, 2,..., J
+$$
+
+$$
+\begin{pmatrix} \gamma_{0k} \\ \gamma_{1k} \end{pmatrix} 
+\sim 
+{\large} N\begin{pmatrix}  \begin{pmatrix} \mu_{\gamma_{0}} \\ \mu_{\gamma_{1}} \end{pmatrix}, 
+\begin{pmatrix}         \sigma^2_{\gamma_{0}}                                           &                 \rho\sigma_{\gamma_{0}}\sigma_{\gamma_{1}} \\
+\rho\sigma_{\gamma_{0}}\sigma_{\gamma_{1}}         &                \sigma^2_{\gamma_{1}}
+\end{pmatrix}\end{pmatrix} \text{ , for }k = 1, 2, ..., K
+$$
+
+$$
+\mu_{\gamma_{0}} = \delta_{00} + \delta_{01}\text{Proportional Rules}_k
+$$
+
+$$
+\mu_{\gamma_{1}} = \delta_{10} + \delta_{11}\text{Proportional Rules}_k
+$$
+
+---
+  
+```{r}
+rainey <- crdata::rainey2015 |>
+  glimpse()
+```
+
+---
+
+We can fit this model with `lmer()`, but this *relatively small* model is too big or complex. 
+
+```{r}
+#| code-line-numbers: "|2,3,4"
+# model is fragile
+f <- contacted ~ district_competitiveness*electoral_rules +
+               (1 | district_id) +
+               (1 + district_competitiveness | election_id)
+fit <- glmer(f, data = rainey, family = binomial)
+```
+
+Stan would have no problems with this one...
+
+---
+
+And show the estimates.
+
+```{r}
+arm::display(fit, detail = TRUE)
+```
+
+---
+
+Using the `lmer()`-like formula, we can fit the hiearchical model with Stan.
+  
+```{r, results='hide', cache = TRUE}
+#| label: "fit-brm-model"
+start_time <- Sys.time()
+stan_fit <- brm(contacted ~ district_competitiveness*electoral_rules +
+                  (1 | district_id) + 
+                  (1 + district_competitiveness | election_id),
+                data = rainey, 
+                family = bernoulli, 
+                chains = 10,
+                cores = 10,
+                iter = 4000, 
+                backend = "cmdstanr")
+end_time <- Sys.time()
+```
+
+And it fits in less than 10 minutes. This took hours or days in 2012 with JAGS.
+
+```{r}
+end_time - start_time
+```
+
+---
+
+```{r}
+print(stan_fit)
+```
+
+---
+  
+```{r}
+summary(stan_fit)
+```
+
+---
+
+```{r}
+grid <- rainey %>%
+  select(district_id, 
+         election_id, 
+         district_competitiveness, 
+         electoral_rules)
+
+p <- predictions(stan_fit,
+                 newdata = grid) |>
+  glimpse()
+```
+
+---
+
+```{r}
+p_typical <- predictions(
+  stan_fit,
+  newdata = grid, 
+  re_formula = ~ (1 + district_competitiveness | election_id)
+  ) |>
+  glimpse()
+```
+
+---
+
+```{r}
+ggplot(p, aes(x = district_competitiveness, y = estimate)) +
+  facet_wrap(vars(election_id)) +
+  geom_point() +
+  geom_line(data = p_typical, color = "red", size = 1.5)
+```

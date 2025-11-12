@@ -866,7 +866,9 @@ Transformation: $\alpha_j'=-2\,\alpha_j,\quad \beta_k'=-2\,\beta_k,\quad \gamma_
 **Key Idea:**\
 Flipping the *sign* and *scale* of the latent ability (and compensating in the item and discrimination) parameters leaves the predicted probabilities $\pi_{jk}$ identical.
 
-$\Rightarrow$ The 2-PL model is invariant to linear transformations of the latent ability scale: $$
+$\Rightarrow$ The 2-PL model is invariant to linear transformations of the latent ability scale: 
+
+$$
 \alpha_j' = c(\alpha_j - d), \quad
 \gamma_k' = \frac{\gamma_k}{c}, \quad
 \beta_k' = \beta_k - d.

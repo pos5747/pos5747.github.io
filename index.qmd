@@ -52,7 +52,7 @@ oct 15 · [**midterm exam**]{.text-warning}
 
 ------------------------------------------------------------------------
 
-oct 22 · **hierarchical models, 1** · [[slides](slides/wk09-slides/wk09-slides.html)] [[solutions](exr/wk09-exr-sol.pdf)]
+oct 22 · **hierarchical models, 1** · [[slides](slides//wk09-wk11-slides/01-slides-hier.html)] [[solutions](exr/wk09-exr-sol.pdf)]
 [Due: (1) first draft of research paper due and (2) initial outline of
 take-home workshop handout.]{.remarks}
 
@@ -62,17 +62,17 @@ oct 29 · **hierarchical models, 2** · [[solutions](exr/wk10-exr-sol.pdf)] [Due
 
 ------------------------------------------------------------------------
 
-nov 05 · **irt** · [[slides](slides/wk09-slides/wk10-slides.html)] [[exercises](exr/wk11-exr.pdf)]
+nov 05 · **irt** · [[slides](slides/wk09-wk11-slides/02-slides-irt.html)] [[exercises](exr/wk11-exr.pdf)]
 
 ------------------------------------------------------------------------
 
-nov 12 · **case study: fariss (2014)** · \[slides\] \[notes\]
+nov 12 · **a final perspective** · [[ideal points slides](slides/wk09-wk11-slides/03-slides-ideal-points.html)] [[mrp slides](slides/wk09-wk11-slides/04-slides-mrp.html)] [[slides](slides/wk12-slides/testing.html)]
 \[exercises\] [Due: workshop
 rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 19 · **case study: arel-bundock et al. (2014)** · \[slides\] \[notes\]
+nov 19 · **case study: schnakenberg and fariss (2014)** · \[slides\] \[notes\]
 \[exercises\]
 
 ------------------------------------------------------------------------
@@ -82,10 +82,10 @@ second draft of research paper and (2) hold workshop.]{.remarks}
 
 ------------------------------------------------------------------------
 
-dec 03 · **wrap** · \[slides\] \[notes\] \[exercises\] [Poster
+dec 03 · **wrap/review** · \[slides\] \[notes\] \[exercises\] [Poster
 presentation this week.]{.remarks}
 
 ------------------------------------------------------------------------
 
-dec 10 · [**final exam**]{.text-warning}\
+dec 10 · [**final exam**] [[comments](exam2-comments.qmd)]{.text-warning}\
 [Due: Final draft of research paper.]{.remarks}

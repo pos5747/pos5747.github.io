@@ -1,0 +1,85 @@
+---
+title: "Comments on preparation for exam 2"
+---
+
+The exam will be about 50% multiple choice and 50% open ended questions of various types. I'm trying to allocate **points** and **time** so that it's 50/50 between multiple choice and open ended. About half of your time will be spent on multiple choice questions and about half on open-ended questions.
+
+The questions range in difficult from quite easy to very challenging.
+
+In all cases, I try to follow the notes and exercises closely.
+
+---
+
+Think of these comments as a "study guide." As I noted at the beginning of the semester, the exam is based on the notes and exercises, but this document offers a "big picture" overview of the important themes. See especially the open-ended questions at the bottom.
+
+---
+
+As I write the exam, I'm focused on the notes and the exercises. 
+
+- Make sure you understand the ideas in the notes/slides and the examples.
+- Make sure you understand each exercise.
+- Make sure you are familiar with the readings (assigned in the exercise).
+
+Don't forget about the mathematical foundations we did in week one!
+
+The exam will be organized by types of questions (e.g., short-answer questions, then long-answer questions). Within these sections, I'll organize them roughly chronologically (i.e., starting math basics and ending with MCMC).
+
+## Models
+
+We've covered a large range of statistical models:
+
+1. Normal linear
+1. Logit
+1. Multinomial Logit
+1. Ordered Logit
+1. Parametric duration models, especially exponential, log-normal, and Weibull. *(Cox PH not covered on exam.)*
+1. Count models, including Poisson, NB, and ZINB.
+1. Hierarchical variants of the above.
+
+We covered several specific applications of hierarchical models:
+
+1. The Finland and UK examples.
+1. The eight-schools problem.
+1. A hierarchical model of Tappin's experiment.
+1. An updated look at the "Red State, Blue State" pattern.
+1. An example of IRT using simulated students and real exam questions.
+1. An example of ideal point estimation using 2000 Supreme Court votes.
+1. An example of MRP on reducing funding for police.
+1. A replication of Schnakenberg and Fariss (2014).
+
+## Potential Essay Questions
+
+### Bayes v. ML
+
+We have examined two general engines for producing point and interval estimates: maximum likelihood and Bayesian. How should we think about the relationship between the two? Are they best understood as competing, incompatible alternatives? Or simply as interchangeable tools? If they compete, which approach is right, and why? If they are interchangeable, what is the unifying principle?
+
+### Description
+
+As quantitative social scientists, we have tools to test descriptive and causal claims.
+
+- Define descriptive and causal claims. 
+- Assess the current state of quantitative political science with respect to descriptive and causal claims. Would you say that causal questions are *over*-emphasized in this moment? Or under-emphasized? Logically, must claims fall in one bin or the other? 
+- In practice, do authors clearly locate their claims in one bin or the other? 
+
+Defend your answers.  
+
+### Power
+
+You are an editor of a journal and have received two thoughtful reviews for a well-done survey experiment. While previous work suggests that a treatment should have a positive effect, this new paper on your desk suggests that the treatment has a *negative* effect and they find a statistically significant negative effect.
+
+-   Reviewer A notes that the sample size is small. They cite @gelman2014 and @arel-bundock2025 and suggest that the journal shouldn't publish underpowered work.
+-   Reviewer B notes that while the sample size is small, the authors' test protects them against Type I errors as usual (in the sense that $\Pr(\text{make claim} \mid \text{claim is false}) \leq 0.05$). (Recall that power relates to Type II errors, which the authors definitely haven't made here.)
+
+1. Explain each perspective more fully. 
+1. How do you adjudicate between these perspectives? Describe the tradeoffs between a policy of (1) requiring that all papers be well-powered and (2) not considering the power once data have been collected. Which of these policies would you advocate for?
+1. Years later, you are no longer an editor, but have accumulated some formal and informal power in the discipline. You decide to return to this issue. What norms, practices, or rules might you change to address this issue?
+
+### Testing and Claims
+I like to say: "Only make a claim if the claim is hold for the entire confidence interval.” 
+
+Using the arguments from Rainey (2014) and McCaskey and Rainey (2015), give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two situations.
+
+Examples of common incorrect habits:
+
+- McCaskey and Rainey (2015): Claiming "substantively significant" if point estimate is meaningful (and statistically significant).
+- Rainey (2014): Claiming "no effect" when an estimate is not statistically significant.

@@ -1,0 +1,367 @@
+---
+title: "Ideal Points and MRP"
+format:
+  revealjs:
+    css: styles.css
+    transition: fade
+    slide-number: true
+    width: 1600
+    height: 900
+    code-block-height:  900px
+    mathjax: true  
+execute:
+  echo: true
+fig-align: center
+fig-width: 8
+fig-asp: 0.5
+---
+
+# Opening Comments
+
+- Exam
+- Workshop
+- Paper
+
+```{r echo=FALSE}
+#| message: false
+#| warning: false
+options(width = 90)
+options(digits = 3)
+
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+---
+
+Here are the packages we're using:
+
+```{r}
+#| message: false
+#| warning: false
+
+# generally useful packages
+library(tidyverse)
+library(marginaleffects)
+library(modelsummary)
+library(ggrepel)
+
+# for fitting hierarchical models
+library(lme4)
+library(brms)  # see also rstanarm::stan_lmer()
+library(rstan)
+
+# for post-processing simulations
+library(tidybayes)
+
+# handle future conflicts
+# - MASS v. dplyr for filter()
+conflicted::conflict_prefer("filter", "dplyr")
+# - MASS v. dplyr for select()
+conflicted::conflict_prefer("select", "dplyr")
+
+```
+
+
+# Ideal Point Models
+
+## `SupremeCourt` data
+
+```{r}
+#| message: false
+#| warning: false
+sc <- read_csv("https://pos5747.github.io/data/sc2000.csv") |>
+glimpse()
+```
+
+## Summarize
+
+```{r}
+sc |> 
+  group_by(justice, appointed_by) |>
+  summarize(prop_cons_votes = mean(cons_vote, na.rm = TRUE)) |>
+  arrange(prop_cons_votes)
+```
+
+## Plot 1
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| fig-asp: 0.5
+
+sc_summary <- sc |> 
+  group_by(justice, appointed_by) |>
+  summarize(prop_cons_votes = mean(cons_vote, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(justice = reorder(justice, prop_cons_votes)) |>
+  arrange(prop_cons_votes)
+
+ggplot(sc_summary, aes(x = justice, y = prop_cons_votes)) + 
+  geom_col(width = 0.5) + 
+  geom_label(aes(label = scales::percent(prop_cons_votes, accuracy = 1)), hjust = 1.2) + 
+  coord_flip()
+```
+
+## Plot 2
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| fig-asp: 0.4
+library(ggrepel)
+
+set.seed(1234)
+ggplot(sc_summary, aes(x = prop_cons_votes, y = 0)) +
+  geom_hline(yintercept = 0) +
+  geom_point(size = 3) +
+  geom_label_repel(
+    aes(label = justice),
+    nudge_y = rep_len(c(-1, 1)*0.035, 9),
+    segment.color = "grey50",
+    direction = "y",
+    point.padding = 0.5, 
+    min.segment.length = 0.0
+  ) +
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.ticks.y = element_blank()
+  ) +
+  labs(
+    x = "Proportion of Conserative Votes"  
+    ) + 
+  scale_y_continuous(limits = c(-.1, .1))
+```
+
+## Estimate "abilities" of justices and "difficulties" of cases
+
+-   ability is analagous to a justice's ideology.
+-   difficulty is analogous to a case's ideology.
+
+```{r}
+f <- cons_vote ~ (1 | justice) + (1 | case_id)
+fit <- glmer(f, data = sc, family = binomial)
+```
+
+## Print the "abilities"
+
+```{r}
+ranef(fit)$justice |>
+  as_tibble(rownames = "justice") |>
+  rename(ideal_point = `(Intercept)`) |>
+  arrange(ideal_point)
+```
+
+## Plot the abilities
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| fig-asp: 0.4
+
+ip <- ranef(fit)$justice |>
+  as_tibble(rownames = "justice") |>
+  rename(ideal_point = `(Intercept)`) |>
+  arrange(ideal_point)
+
+set.seed(1234)
+ggplot(ip, aes(x = ideal_point, y = 0)) +
+  geom_hline(yintercept = 0) +
+  geom_point(size = 3) +
+  geom_label_repel(
+    aes(label = justice),
+    nudge_y = rep_len(c(-1, 1)*0.035, 9),
+    segment.color = "grey50",
+    direction = "y",
+    point.padding = 0.5, 
+    min.segment.length = 0.0
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.ticks.y = element_blank()
+  ) +
+  labs(
+    x = "Ideal Point"  
+    ) + 
+  scale_y_continuous(limits = c(-.1, .1))
+```
+
+## Add cases
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| fig-asp: 0.4
+
+library(ggbeeswarm)
+
+cases <- data.frame(case = as.numeric(ranef(fit)$case_id[, "(Intercept)"])) 
+
+set.seed(1234)
+ggplot(ip, aes(y = ideal_point, x = 0)) +
+  geom_vline(xintercept = 0) +
+  geom_beeswarm(data = cases, aes( y = case, x = 0), shape = 18, alpha = 0.3, color = "red") + 
+  geom_beeswarm(size = 2, alpha = 0.5) +
+  geom_label_repel(
+    aes(label = justice),
+    nudge_x = rep_len(c(-1, 1)*0.035, 9),
+    segment.color = "grey50",
+    direction = "x",
+    point.padding = 0.5, 
+    min.segment.length = 0.0
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.ticks.y = element_blank()
+  ) +
+  labs(
+    x = "Ideal Point"  
+    ) + 
+  scale_x_continuous(limits = c(-.1, .1)) + 
+  coord_flip()
+```
+
+## Plot the logit curve
+
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+#| fig-asp: 0.4
+mu <- as.numeric(fixef(fit))
+
+beta <- ranef(fit)$case_id |>
+  as_tibble(rownames = "case_id") |>
+  rename(beta = `(Intercept)`)
+
+cases_to_keep <- c("Case 20", "Case 5", "Case 2", "Case 42", "Case 22", "Case 33")
+
+pred_lines <- crossing(justice_ideology = seq(-2, 2, length.out = 100), 
+                      case_id = unique(sc$case_id)) |>
+  left_join(beta) |>
+  mutate(pr_cons_vote = plogis(mu + justice_ideology - beta)) |>
+  mutate(case_id = reorder(case_id, pr_cons_vote)) |>
+  filter(case_id %in% cases_to_keep)
+
+pred_points <- sc |>
+  left_join(beta) |> 
+  left_join(ip) |>
+  mutate(pr_cons_vote = plogis(mu + ideal_point - beta)) |>
+  mutate(case_id = reorder(case_id, pr_cons_vote)) |>
+    filter(case_id %in% cases_to_keep)
+
+ggplot(pred_lines, aes(x = justice_ideology, y = pr_cons_vote)) + 
+  geom_vline(xintercept = ip$ideal_point, color = "grey50", linewidth = 0.2) + 
+  geom_line() + 
+  geom_point(data = pred_points, aes(x = ideal_point, y = pr_cons_vote, shape = factor(cons_vote)), fill = "white") + 
+  facet_wrap(vars(case_id)) + 
+  scale_shape_manual(values = c(19, 21)) + 
+  labs(subtitle = "Selected cases", 
+       shape = "Conservative Vote", 
+       y = "Probability of a Conservative Vote", 
+       x = "Justice Ideal Point")
+```
+
+## Exercise
+
+Fit a 2-PL model to these data.
+
+
+# MRP
+
+## MRP
+
+-   "Multilevel regression with poststratification" or "Mister P"
+-   We have sufficiently large polls to estimate national opinion well, but how can we use these to estimate state-level opinion well across the fifty states?
+
+## Two-step process
+
+1.  Use a **national survey data** (e.g., N = 2,000) and **a hierarchical model** to estimate public opinion within small subgroups defined by state and demographic variables. *Example: Men age 18-29 without military experience and no HS degree living in Alabama.*
+2.  Look up the fraction of each state that falls into each demographic category. Weight the predictions for each state-demographic groups by these fractions to obtain an estimate of state-level opion.
+
+## Two-step process: Step 2(a)
+
+Find the populations of demographic subgroups in each state.
+
+This might come from the Census or CPS.
+
+Here's an example [packaged with](https://marginaleffects.com/chapters/mrp.html) {marginaleffects}.
+
+```{r}
+demographics <- get_dataset("ces_demographics") |>
+  glimpse()
+```
+
+## Two-step process: Step 1
+
+Use a **national survey data** (e.g., N = 2,000) and a hierarchical model to estimate public opinion within each each subgroup.
+
+```{r}
+survey <- get_dataset("ces_survey") |>
+  glimpse()
+```
+
+## Two-step process: Step 2(b)
+
+Fit the model.
+
+```{r}
+#| label: mrp-model
+#| message: false
+#| warning: false
+#| cache: true
+#| results: hide
+# fit model
+f <- defund ~ age + education + military + gender + (1 + gender | state)
+model <- brm(f, family = bernoulli, data = survey, chains = 4, cores = 4)
+```
+
+## Two-step process: Step 2(c)
+
+Create the predictions.
+
+```{r}
+p <- predictions(model, newdata = demographics) |>
+  glimpse()
+```
+
+## Two-step process: Step 2(d)
+
+Weight the predictions.
+
+```{r}
+ests <- p |>
+  mutate(w_ests = estimate * percent) |>
+  group_by(state) |>
+  summarize(mrp_est = sum(w_ests)) |>
+  ungroup() |>
+  glimpse()
+```
+
+## Plot
+
+```{r}
+gg_ests <- ests |>
+  mutate(state = reorder(state, mrp_est))
+ggplot(gg_ests, aes(x = mrp_est, y = state)) + 
+  geom_point()
+```
+
+## Question
+
+We used this model. What is it? What others might we have used?
+
+```         
+defund ~ age + education + military + gender + (1 + gender | state)
+```
