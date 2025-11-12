@@ -113,8 +113,6 @@ ggplot(j, aes(x = model, y = estimate, group = state)) +
   geom_point() + 
   geom_line()
 
-
-
 # compute and store loo inside the models
 model  <- add_criterion(model,  "loo")
 model2 <- add_criterion(model2, "loo")

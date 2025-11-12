@@ -52,11 +52,11 @@ data_list <- list(
   y = answers$correct_answer
 )
 
-# fit <- stan(model_code = stan_code, 
+# fit <- stan(model_code = stan_code,
 #             data = data_list,
-#             iter = 4000, 
+#             iter = 4000,
 #             warmup = 2000,
-#             chains = 4, 
+#             chains = 4,
 #             cores = 4)
 # 
 # # save the fitted model
@@ -156,11 +156,11 @@ model {
 }
 "
 
-# fit2 <- stan(model_code = stan_code2, 
+# fit2 <- stan(model_code = stan_code2,
 #             data = data_list,
-#             iter = 4000, 
+#             iter = 4000,
 #             warmup = 200,
-#             chains = 4, 
+#             chains = 4,
 #             cores = 4)
 # 
 # # save the fitted model

@@ -39,7 +39,7 @@ library(tidyverse)
 
 -   @iyengar2019: "Ordinary Americans increasingly dislike and distrust those from the other party."
 -   @holliday2024: "Democrats and Republicans overwhelmingly and consistently oppose norm violations and partisan violence—even when their own representatives engage in antidemocratic actions."
--   @fowler2023: We find there are many genuine moderates in the American electorate. Nearly three in four survey respondents' issue positions are well described by a single left–right dimension, and most of those individuals have centrist views."
+-   @fowler2023: "We find there are many genuine moderates in the American electorate. Nearly three in four survey respondents' issue positions are well described by a single left–right dimension, and most of those individuals have centrist views."
 -   @little2024: "Despite the general narrative that the world is in a period of democratic decline \[around the world\], there have been surprisingly few empirical studies that assess whether this is systematically true."
 
 ------------------------------------------------------------------------
@@ -60,7 +60,7 @@ Avoid the *race to a regression.*
 
 **Claim 3**: As a discipline, we should be more mindful of noise.
 
--   Important consequences for *you*. You want to conduct studies hat allow you to make meangingful claims at the end. (After all, they take hundreds of hours!)
+-   Important consequences for *you*. You want to conduct studies that allow you to make meaningful claims at the end. (After all, they take hundreds of hours!)
 -   Important consequences for *literatures*.
 
 # The Importance of Claims and Tests
@@ -126,7 +126,7 @@ A **hypothesis test** divides possible values of $T$ into:
 -   **Rejection region** $R$ → reject $H_0$
 -   **Non-rejection region** $R^C$ → fail to reject $H_0$
 
-**Important**: Failure to reject $H_0$ mean *ambiguous evidence*, not evidence that $H_0$ is true.
+**Important**: Failure to reject $H_0$ means *ambiguous evidence*, not evidence that $H_0$ is true.
 
 ------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ Given a test statistic $T$ (larger values → more evidence against $H_0$):
 $p\text{-value} = \max_{\theta \in B^C} P(T(\mathbf{X}) \ge T(\mathbf{x}))$
 :::
 
-"The probability of obtaining data *more extreme* that the data we actually obtained if the null hypothesis were true."
+"The probability of obtaining data *more extreme* than the data we actually obtained if the null hypothesis were true."
 
 Reject $H_0$ if and only if $p \le \alpha$ (e.g., $\alpha = 0.05$).
 
@@ -237,14 +237,14 @@ For example, suppose a hypothesis $H_r: \theta > m$.
 -   For any particular $m$, we can compute a $p$-value and will either reject the null hypothesis or not.
 -   We can collect the $m$ for which we rejected the null hypothesis into a collection; and collect the $m$ for which we *did not* reject the null hypothesis into a separate collection.
 -   For the usual *z*-test (or *t*-test), there will be a single value $m^*$ that partitions the parameter space $\Theta$ into those (smaller) $m \leq m^*$ that can be rejected and those (larger) $m > m^*$ that cannot be rejected.
--   If we set $m^* = L$, the $[L, \infty)$ is a 95% *one-sided* confidence interval.
+-   If we set $m^* = L$, then $[L, \infty)$ is a 95% *one-sided* confidence interval.
 -   $L$ tells us the smallest $\theta$ that we cannot reject with a one-sided, size-0.05 test.
 
 ------------------------------------------------------------------------
 
 We could similarly do this for $H_r: \theta < m$.
 
--   Find 95% *one-sided* confidence interval the $(-\infty, U]$.
+-   Find 95% *one-sided* confidence interval $(-\infty, U]$.
 -   $U$ tells us the largest $\theta$ that we cannot reject with a one-sided, size-0.05 test.
 
 ------------------------------------------------------------------------
@@ -275,18 +275,18 @@ Be careful of your claim!
 ::: callout-tip
 ## Advice
 
-Only make a claim if the claim is hold for the *entire* confidence interval.
+Only make a claim if the claim holds for the *entire* confidence interval.
 :::
 
 Read @rainey2014 and @mccaskey2015.
 
 **Exam Question**
 
-I like to say: "Only make a claim if the claim is hold for the *entire* confidence interval." Using the arguments from @rainey2014 and @mccaskey2015, give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two sitations.
+I like to say: "Only make a claim if the claim holds for the *entire* confidence interval." Using the arguments from @rainey2014 and @mccaskey2015, give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two sitations.
 
 Examples:
 
-1.  @mccaskey2015: Claiming "substantively sign9ficant" if point estimate is meaningful (and the statistically significant).
+1.  @mccaskey2015: Claiming "substantively significant" if the point estimate is meaningful (and statistically significant).
 2.  @rainey2014: Claiming "no effect" when an estimate is not statistically significant.
 
 ::: aside
@@ -312,7 +312,7 @@ $H_0 : \theta \le -m \text{ or } \theta \ge m$ = effect is meaningfully large (+
 Use the **two one-sided tests (TOST)** procedure.
 
 -   Test both $H_{r1}: \theta < m$ and $H_{r2}: \theta > -m$.
--   We need to reject *both* null hypothesis.
+-   We need to reject *both* null hypotheses.
 
 We **reject** $H_0$ if the $(1-2\alpha)$ confidence interval lies entirely inside $(-m,m)$. A 90% CI gives you a size-0.05 equivalence test.
 
@@ -321,7 +321,7 @@ We **reject** $H_0$ if the $(1-2\alpha)$ confidence interval lies entirely insid
 ------------------------------------------------------------------------
 
 -   You spend years on a study.
--   The chance that your are wasting your time is non-trivial.
+-   The chance that you are wasting your time is non-trivial.
 -   But... this chance can be investigated beforehand.
 
 How to compute power?
@@ -364,7 +364,7 @@ You want your standard error to be about $\frac{m}{3.3}$.
 For your research area, you should have this diagram in mind, an $m$ in mind, and the implied target SE in mind.
 
 ::: aside
-In talks, you might have heard me ask about the scale of the estimates. I usually asked how an estimate should be interpreted. But I'm looking at the SE when I ask that question, because I'm constructed this picture in my mind and I want to know how the SE compares to $m$.
+In talks, you might have heard me ask about the scale of the estimates. I usually ask how an estimate should be interpreted. But I'm looking at *the SE* when I ask that question, because I'm constructing this picture in my mind---I want to know how the SE compares to $m$.
 :::
 
 ## The Consequences of Power
