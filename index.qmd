@@ -67,7 +67,7 @@ nov 05 · **irt** · [[slides](slides/wk09-wk11-slides/02-slides-irt.html)] [[ex
 ------------------------------------------------------------------------
 
 nov 12 · **a final perspective** · [[ideal points slides](slides/wk09-wk11-slides/03-slides-ideal-points.html)] [[mrp slides](slides/wk09-wk11-slides/04-slides-mrp.html)] [[slides](slides/wk12-slides/testing.html)]
-\[exercises\] [Due: workshop
+[[exercises](exr/wk12-exr.pdf)] [Due: workshop
 rehearsal]{.remarks}
 
 ------------------------------------------------------------------------

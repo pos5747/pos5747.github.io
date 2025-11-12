@@ -87,7 +87,7 @@ ggplot(plot_df, aes(x = long, y = lat, group = group, fill = estimate)) +
 
 # fit model
 model2 <- brm(
-  defund ~ age + education*gender + military + (1 + age | state),
+  defund ~ as.numeric(age) + as.numeric(education)*gender + military + (1 + as.numeric(age) | state),
   family = bernoulli,
   data = survey, 
   chains = 4, 

@@ -250,14 +250,14 @@ cases_to_keep <- c("Case 20", "Case 5", "Case 2", "Case 42", "Case 22", "Case 33
 pred_lines <- crossing(justice_ideology = seq(-2, 2, length.out = 100), 
                       case_id = unique(sc$case_id)) |>
   left_join(beta) |>
-  mutate(pr_cons_vote = plogis(mu + justice_ideology - beta)) |>
+  mutate(pr_cons_vote = plogis(mu + justice_ideology + beta)) |>
   mutate(case_id = reorder(case_id, pr_cons_vote)) |>
   filter(case_id %in% cases_to_keep)
 
 pred_points <- sc |>
   left_join(beta) |> 
   left_join(ip) |>
-  mutate(pr_cons_vote = plogis(mu + ideal_point - beta)) |>
+  mutate(pr_cons_vote = plogis(mu + ideal_point + beta)) |>
   mutate(case_id = reorder(case_id, pr_cons_vote)) |>
     filter(case_id %in% cases_to_keep)
 

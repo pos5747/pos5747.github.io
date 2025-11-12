@@ -453,14 +453,14 @@ $ cons_vote    &lt;dbl&gt; 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0,
 <span id="cb13-9"><a href=""></a>pred_lines <span class="ot">&lt;-</span> <span class="fu">crossing</span>(<span class="at">justice_ideology =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="at">length.out =</span> <span class="dv">100</span>), </span>
 <span id="cb13-10"><a href=""></a>                      <span class="at">case_id =</span> <span class="fu">unique</span>(sc<span class="sc">$</span>case_id)) <span class="sc">|&gt;</span></span>
 <span id="cb13-11"><a href=""></a>  <span class="fu">left_join</span>(beta) <span class="sc">|&gt;</span></span>
-<span id="cb13-12"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">pr_cons_vote =</span> <span class="fu">plogis</span>(mu <span class="sc">+</span> justice_ideology <span class="sc">-</span> beta)) <span class="sc">|&gt;</span></span>
+<span id="cb13-12"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">pr_cons_vote =</span> <span class="fu">plogis</span>(mu <span class="sc">+</span> justice_ideology <span class="sc">+</span> beta)) <span class="sc">|&gt;</span></span>
 <span id="cb13-13"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">case_id =</span> <span class="fu">reorder</span>(case_id, pr_cons_vote)) <span class="sc">|&gt;</span></span>
 <span id="cb13-14"><a href=""></a>  <span class="fu">filter</span>(case_id <span class="sc">%in%</span> cases_to_keep)</span>
 <span id="cb13-15"><a href=""></a></span>
 <span id="cb13-16"><a href=""></a>pred_points <span class="ot">&lt;-</span> sc <span class="sc">|&gt;</span></span>
 <span id="cb13-17"><a href=""></a>  <span class="fu">left_join</span>(beta) <span class="sc">|&gt;</span> </span>
 <span id="cb13-18"><a href=""></a>  <span class="fu">left_join</span>(ip) <span class="sc">|&gt;</span></span>
-<span id="cb13-19"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">pr_cons_vote =</span> <span class="fu">plogis</span>(mu <span class="sc">+</span> ideal_point <span class="sc">-</span> beta)) <span class="sc">|&gt;</span></span>
+<span id="cb13-19"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">pr_cons_vote =</span> <span class="fu">plogis</span>(mu <span class="sc">+</span> ideal_point <span class="sc">+</span> beta)) <span class="sc">|&gt;</span></span>
 <span id="cb13-20"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">case_id =</span> <span class="fu">reorder</span>(case_id, pr_cons_vote)) <span class="sc">|&gt;</span></span>
 <span id="cb13-21"><a href=""></a>    <span class="fu">filter</span>(case_id <span class="sc">%in%</span> cases_to_keep)</span>
 <span id="cb13-22"><a href=""></a></span>
