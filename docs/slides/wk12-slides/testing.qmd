@@ -380,6 +380,8 @@ se <- 2*sd_y/(sqrt(N))  # rule 3 from "power rules"
 pwr <- 1-pnorm(1.64 - ate/se); pwr  # rule 2
 ```
 
+## MC Simulation {.evensmaller}
+
 ```{r}
 #| cache: true
 
@@ -501,7 +503,7 @@ Is this okay? Tragic? Desirable?
 
 ------------------------------------------------------------------------
 
-## Exam Question
+## Exam Question {.smaller}
 
 You are an editor of a journal and have received two thoughtful reviews for a well-done survey experiment. While previous work suggests that a treatment should have a positive effect, this new paper on your desk suggests that the treatment has a *negative* effect and they find a statistically significant negative effect.
 

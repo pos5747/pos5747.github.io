@@ -72,13 +72,14 @@ rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 19 · **case study: schnakenberg and fariss (2014)** · \[slides\] \[notes\]
+nov 19 · **case study: schnakenberg and fariss (2014)** · [[ordered slides](slides/wk12-slides/ordered.html)] [[unordered slides](slides/wk12-slides/unordered.html)]
 \[exercises\]
 
 ------------------------------------------------------------------------
 
-nov 26 · [**thanksgiving break**]{.text-info} [Due by Tuesday: (1)
-second draft of research paper and (2) hold workshop.]{.remarks}
+nov 26 · [**thanksgiving break**]{.text-info}  
+[Due by Tuesday: **poster** and
+**second draft** of research paper.]{.text-warning}
 
 ------------------------------------------------------------------------
 

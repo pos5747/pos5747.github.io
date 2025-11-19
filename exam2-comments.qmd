@@ -36,6 +36,14 @@ We've covered a large range of statistical models:
 1. Count models, including Poisson, NB, and ZINB.
 1. Hierarchical variants of the above.
 
+You should be comfortable with the simulate-and-recover exercise with each. It will probably be helpful to be familiar with the examples in the notes, slides, and exercises.
+
+## Quantitities of interest
+
+We talked about `predictions()`, `comparisons()`, and `avg_comparisons()` in \{marginaleffects\}. We should be very familiar with these and the quantites they compute.
+
+## Applications of Hierarchical Models
+
 We covered several specific applications of hierarchical models:
 
 1. The Finland and UK examples.
@@ -75,6 +83,7 @@ You are an editor of a journal and have received two thoughtful reviews for a we
 1. Years later, you are no longer an editor, but have accumulated some formal and informal power in the discipline. You decide to return to this issue. What norms, practices, or rules might you change to address this issue?
 
 ### Testing and Claims
+
 I like to say: "Only make a claim if the claim is hold for the entire confidence interval.” 
 
 Using the arguments from Rainey (2014) and McCaskey and Rainey (2015), give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two situations.
