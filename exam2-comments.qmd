@@ -2,6 +2,8 @@
 title: "Comments on preparation for exam 2"
 ---
 
+The exam will be cumulative, with something like a 70/30 balance toward newer material.
+
 The exam will be about 50% multiple choice and 50% open ended questions of various types. I'm trying to allocate **points** and **time** so that it's 50/50 between multiple choice and open ended. About half of your time will be spent on multiple choice questions and about half on open-ended questions.
 
 The questions range in difficult from quite easy to very challenging.
@@ -40,7 +42,11 @@ You should be comfortable with the simulate-and-recover exercise with each. It w
 
 ## Quantitities of interest
 
-We talked about `predictions()`, `comparisons()`, and `avg_comparisons()` in \{marginaleffects\}. We should be very familiar with these and the quantites they compute.
+We should be very familiar with `predictions()`, `comparisons()`, and `avg_comparisons()` in \{marginaleffects\} and very familiar with the quantities they compute.
+
+- For a verbal description of a quantity of interest, you should be able to write the `predictions()`, `comparisons()`, or `avg_comparisons()` command to compute it.
+- For a given `predictions()`, `comparisons()`, or `avg_comparisons()`, you should be able to *precisely* describe the quantity of interest.
+
 
 ## Applications of Hierarchical Models
 
