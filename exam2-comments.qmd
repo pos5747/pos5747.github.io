@@ -32,8 +32,8 @@ We've covered a large range of statistical models:
 
 1. Normal linear
 1. Logit
-1. Multinomial Logit
-1. Ordered Logit
+1. Multinomial Logit (see my slides)
+1. Ordered Logit (see my sides)
 1. Parametric duration models, especially exponential, log-normal, and Weibull. *(Cox PH not covered on exam.)*
 1. Count models, including Poisson, NB, and ZINB.
 1. Hierarchical variants of the above.
@@ -62,6 +62,12 @@ We covered several specific applications of hierarchical models:
 1. A replication of Schnakenberg and Fariss (2014).
 
 ## Potential Essay Questions
+
+### Interaction
+
+Interaction is complicated to measure and test in models with non-linear inverse-link functions, like logit. Describe the two approaches to testing for interaction (i.e., the two potential quantities of interest). Describe when it is *definitely* preferable to use each? How often do these clear scenarios occur? When things are less clear, what should be our default approach?
+
+*You may argue for either approach as a default, but make your argument in a logical, principled way.*
 
 ### Bayes v. ML
 

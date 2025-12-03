@@ -8,23 +8,23 @@ reference-location: margin
 
 Your task this semester: *design and run a 60-minute workshop on a particular statistical model.*
 
-You will complete this task in (ideally) teams of two.^[If we have an odd number, I will likely want one person to work alone rather than have a team of three.]
+You will complete this task in (ideally) teams of two.^[If we have an odd number, I will likely want one team of three person rather than one person work alone, but we should discuss.]
 
 ## Why?
 
-I designed this project to help you develop as a researcher and teacher. As PhD students, you aren't just learning statistical models to so you can pass my exams. You're preparing to explain them to others, whether in conference presentations, your job talk, or classroom lectures. 
+I designed this project to help you develop as a researcher and teacher. 
 
-Teaching a concept deepens your own mastery. It forces you to develop a thorough understanding of an idea and constantly re-engage with your understanding. 
-
-The workshop also mirrors important professional activities: conference presentations and job talks, teaching, collaboration, and reproducible research. It's easy to think of a polished presentation as "mere aesthetics," but communication is important for scientists!
+1. As PhD students, you aren't just learning statistical models so you can pass my exams. You're preparing to explain them to others, whether in conference presentations, your job talk, or classroom lectures. 
+1. Teaching a concept deepens your own mastery. It forces you to develop a thorough understanding of an idea and constantly re-engage with your understanding. 
+1. The workshop also mirrors important professional activities: conference presentations and job talks, teaching, collaboration, and reproducible research. It's easy to think of a polished presentation as "mere aesthetics," but communication is important for scientists!
 
 ## Topics
 
 I suggest the following topics:
 
+1. Modeling **binary categorical outcomes**.
 1. Modeling **unordered categorical** outcomes.
 1. Modeling **ordered categorical** outcomes.
-1. Modeling **time-to-event** (i.e., continuous and non-negative) outcomes semi-parametrically.
 
 ## Materials
 
@@ -32,12 +32,21 @@ Your workshop should consist of the following materials:
 
 ### A Read-Ahead Document
 
-A document (HTML or PDF) that participants can read in 5-10 minutes before attending the workshop. 
+A document (HTML or PDF) that participants can read and code they can run in 5-10 minutes before attending the workshop. 
 
 This document serves two purposes. 
 
 1. First, it orients participants to the material and sparks interest and curiosity. 
 1. Second, it describes how to install any software needed for the workshop so that folks can set up their computers before attending. You should give instructions for installing the software and code they can use to test the installation (i.e., "make sure the following code runs and produces _____".) 
+
+You should write a script and ask them to run it so that it sets up their computer with everything they need. For example, if you want to use \{crdata\}, then you need to have them run:
+
+```
+install.packages("devtools")
+devtools::install_github("carlislerainey/crdata")
+```
+
+Be aware that some students might use RStudio via Posit Cloud rather than locally.
 
 This document is not a substitute for the workshop. It is lightweight document that reduces friction and builds interest.
 
@@ -60,6 +69,8 @@ Two diverse examples from political science.
 Given that you only have a few minutes, these examples need to be *simple*.
 
 The bit below seems about right for the Cox model, for example. Regardless, it cannot be 300 lines of R code or 10+ commands. Fit, EV, and FD seems about right.
+
+**I want to replace this Cox PH model with a logit model.**
 
 ```{r}
 #| message: false
@@ -155,6 +166,7 @@ The rubric below characterizes an excellent (100% credit), acceptable (80%), and
 - It's easier to make excellent slides with a WYSIWYG program like PowerPoint, but harder to update and maintain those slides. Software like [Revealjs](https://quarto.org/docs/presentations/revealjs/) make it really easy to convert a take-home handout written in Quarto to an easy to create and maintain set of slides.
 - You can post materials to the web (HTML or PDF) or share materials (data, scripts, and documents) in a zipped directory via email.
 
+Be aware that some RIBC students might use RStudio via Posit Cloud rather than locally.
 
 ## Resources
 

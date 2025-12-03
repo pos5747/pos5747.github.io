@@ -72,8 +72,7 @@ rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 19 · **case study: schnakenberg and fariss (2014)** · [[ordered slides](slides/wk12-slides/ordered.html)] [[unordered slides](slides/wk12-slides/unordered.html)]
-[[exercises](exr/wk13-exr.pdf)]
+nov 19 · **a final perspective, continued** · [[exercises](exr/wk13-exr.pdf)]
 
 ------------------------------------------------------------------------
 
@@ -83,7 +82,7 @@ nov 26 · [**thanksgiving break**]{.text-info}
 
 ------------------------------------------------------------------------
 
-dec 03 · **wrap/review** · \[slides\] \[notes\] \[exercises\] [Poster
+dec 03 · **wrap/review** · [[ordered slides](slides/wk12-slides/ordered.html)] [[unordered slides](slides/wk12-slides/unordered.html)] [[interaction slides](slides/wk12-slides/interaction.html)] [[ATE slides](slides/wk12-slides/ate.pdf)] [Poster
 presentation this week.]{.remarks}
 
 ------------------------------------------------------------------------

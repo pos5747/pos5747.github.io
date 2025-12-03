@@ -1,0 +1,320 @@
+---
+title: "Interaction"
+format:
+  revealjs:
+    css: styles.css
+    transition: fade
+    slide-number: true
+    width: 1600
+    height: 900
+    code-block-height:  900px
+    mathjax: true  
+bibliography: references.bib
+citations-hover: true
+reference-location: document
+warning: false
+message: false
+cache: false
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+```
+
+## Interaction
+
+Interaction means: the effect\* of $X$ on $Y$ depends on the value of some moderating variable $Z$.
+
+<div style="height: 4rem;"></div>
+
+
+The problem: 
+
+- we can have interaction on the scale of the linear predictor $\eta = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k$.
+- we can have interaction on the scale of the outcome $E(Y) = g^{-1}(\eta)$.
+
+<div style="height: 4rem;"></div>
+
+
+1. It isn't clear which we should care about.
+1. One does not imply the other.
+1. They can even go in opposite directions.
+
+::: {.aside}
+
+The same sorts of arguments apply to any model with a non-linear link function, but logit serves as a good example.
+
+:::
+
+
+# Why the Distinction Matters
+
+---
+
+## Latent Scale $\eta_i$
+
+- $\eta_i$ is **unbounded** and **linear** in the parameters.  
+- Only the **product term** can create interaction on this scale.  
+- For the model $\eta_i = \beta_0 + \beta_1 X_i + \beta_2 Z_i + \beta_3 (X_i Z_i) + \dots$, interaction only exists when $\frac{\partial^2 \eta_i}{\partial X \partial Z} = \beta_3 \neq 0$.
+
+---
+
+## Probability Scale $\Pr(Y_i=1)$
+
+- The inverse link $g^{-1}(\cdot)$ is **nonlinear** and S-shaped.  
+- Even if $\beta_3 = 0$ (or no product term is included), the effect of $X$ on $\Pr(Y)$ varies with $Z$ because $\frac{\partial \Pr(Y_i)}{\partial X} = \frac{d g^{-1}(\eta_i)}{d\eta_i} \cdot \frac{\partial \eta_i}{\partial X}$.
+- Since $\frac{d g^{-1}(\eta)}{d\eta}$ depends on $\eta$, any variable that shifts $\eta$ affects instantaneous marginal effects.  
+- This follows from **compression**, where effects shrink as $\Pr(Y)$ approaches $0$ or $1$.
+- Thus, interaction on the probability scale may occur **with or without** a product term. It can even have the opposite effect as the product term.
+
+---
+
+## Interaction on the Latent Scale
+
+This scale corresponds to hypotheses explicitly about the latent index (e.g., linear effects on an underlying utility or propensity).
+
+This works *just like* linear regression, where $\eta_i = \beta_0 + \beta_1 X_i + \beta_2 Z_i + \beta_3 (X_i Z_i) + \dots$
+
+### Definition
+
+Interaction on the latent scale exists when $\frac{\partial^2 \eta_i}{\partial X \partial Z} = \beta_3 \neq 0$.
+
+### Instantaneous Marginal Effect of $X$ on $\eta_i$
+
+$$
+\frac{\partial \eta_i}{\partial X}
+  = \beta_1 + \beta_3 Z_i.
+$$
+
+### First Difference
+
+For a discrete change in $X$, 
+
+$$
+\Delta \eta_i = \beta_3(Z_{hi} - Z_{lo}).
+$$
+
+---
+
+## Interaction on the Probability Scale 
+
+We can measure interaction on the probability scale with 
+
+1. second derivatives (cross-partials)
+2. second differences 
+
+---
+
+## Approach I: Using Derivatives
+
+### Definition of Interaction I (Derivatives)
+
+Interaction on the probability scale is present when
+
+$$
+\frac{\partial^2 \Pr(Y_i)}{\partial X \partial Z} \neq 0.
+$$
+
+Depends on the mixture of:
+
+1. Latent interaction ($\beta_3 \neq 0$) 
+2. Nonlinearity of the inverse link ($g^{-1}$).
+
+**I don't find these instantaneous marginal effects useful, except when they are constant.**
+
+---
+
+## Approach II: Using Differences
+
+For a discrete change in $X$ at a fixed value of $Z$, define the **first difference** as
+
+$$
+\Delta_X(Z) =
+\Pr(Y=1 \mid X_{hi}, Z) -
+\Pr(Y=1 \mid X_{lo}, Z).
+$$
+
+And define the **second difference** as
+
+$$
+\Delta\Delta =
+\big[ \Pr(Y \mid X_{hi}, Z_{hi}) - \Pr(Y \mid X_{lo}, Z_{hi}) \big]
+-
+\big[ \Pr(Y \mid X_{hi}, Z_{lo}) - \Pr(Y \mid X_{lo}, Z_{lo}) \big].
+$$
+
+### Definition of Interaction II (Differences)**
+
+If $\Delta\Delta \neq 0$, the effect of $X$ changes when $Z$ changes.
+
+---
+
+## Theoretical Rationale
+
+### When to Theorize on the Latent Scale
+
+The theory concerns an **unobserved continuous index** (e.g., utility, evaluation, propensity).  
+
+### When to Theorize on the Probability Scale
+
+The theory concerns **changes in probability**, not the latent index.  
+
+Important: the model's compression *must be part of the theory*---you must theorize interaction *because* of ceiling and floor effects.
+
+---
+
+## My Take {.smaller}
+
+We are left with no good default.
+
+- Theories are rarely precise enough to distinguish between these in any obvious way.
+- To the extent they do, they either: 
+   - Build in floor or ceiling effects in not-super-interesting ways (e.g., contiguity and democracy).
+   - Have an explicit latent utility interpretation (e.g., spatial voting).
+   
+   
+
+**Two Claims**
+
+These pull us in opposite directions.
+   
+   
+- **Most theories** (in my view) vaguely refer to unbounded notions of the outcome.
+- **Most readers** expect estimates on the scale of the outcome (probability scale, in this case).
+
+
+**Suggestion**
+
+- When you are computing quantities of interest, work on the scale of the outcome *unless you have a great reason to do otherwise* (e.g., spatial models).
+- When you are theorizing, remain mindful of compression. Go out of your way to explicitly think about what happens as events become very likely or unlikely.
+
+# Example
+
+In order to turn out to vote, you need to feel like you have a stake in society. 
+
+There are two ways to obtain this feeling:
+
+1. A **financial stake**.
+2. A **civic stake**, mainly developed from education.
+
+If you lack a stake in society, then you tend not to vote. If you have a stake in society, then you tend to vote. Importantly, these two stakes are substitutes---you just need one.
+
+---
+
+Load our data.
+
+```{r}
+turnout <- ZeligData::turnout |>
+  glimpse()
+```
+
+And fit two models.
+
+```{r}
+# no product term; scale sets mean = 0 and SD = 1
+f <- vote ~ educate + income
+fit <- glm(f, data = turnout, family = binomial)
+
+# product term
+f2 <- vote ~ educate*income
+fit2 <- glm(f2, data = turnout, family = binomial)
+```
+
+---
+
+```{r}
+library(marginaleffects)
+
+grid <- crossing(educate = unique(turnout$educate), 
+                 income = unique(turnout$income)) |>
+  glimpse()
+```
+
+---
+
+```{r}
+p <- predictions(fit2, newdata = grid) |>
+  glimpse()
+```
+
+--- 
+
+```{r}
+ggplot(p, aes(x = income, y = estimate, color = educate, group = educate)) + 
+  geom_line()
+```
+
+---
+
+```{r}
+# effect of educate moving from 25th to 75th percentile
+c <- comparisons(fit2, 
+                 variables = list(educate = "iqr"),
+                 newdata = datagrid(income = unique)) |>
+  glimpse()
+```
+
+---
+
+```{r}
+ggplot(c, aes(x = income, y = estimate, ymin = conf.low, ymax = conf.high)) + 
+  geom_ribbon(fill = "grey80") + 
+  geom_line()
+```
+---
+
+## A Formal Test
+
+We need to actually compute the second difference and test whether it's difference from zero.
+
+- Confidence interval.
+- *p*-value
+
+```{r}
+p <- predictions(fit2, 
+                 variables = list(educate = "iqr", income = "iqr"),
+                 newdata = datagrid()) |>
+  glimpse()
+```
+
+---
+
+```{r}
+p |> 
+  select(educate, income, estimate, conf.low, conf.high) |>
+  tinytable::tt()
+```
+
+
+```{r}
+# compute the ci and p-value for the 2nd difference
+# this is a formal test for interaction on the probability scale
+hypotheses(p, hypothesis = "(b4 - b2) - (b3 - b1) = 0")
+```
+
+::: {.callout-warning}
+`"b4"` isn't the hi-hi-scenario. It's just the 4th row in `p`. If the rows in `p` change, so to does the meaning of `"b4"`. Be careful!
+:::
+
+
+## But...
+
+Here is the test for the model *without* a product term.
+
+```{r}
+p <- predictions(fit, 
+                 variables = list(educate = "iqr", income = "iqr"),
+                 newdata = datagrid())
+
+hypotheses(p, hypothesis = "(b4 - b2) - (b3 - b1) = 0")
+```
+
+**How can this happen?!?**
+
+## Also but...
+
+```{r}
+
+modelsummary::modelsummary(list("No Prod." = fit, "Prod" = fit2))
+```

@@ -250,7 +250,7 @@
 <section id="ordered-logit" class="slide level2">
 <h2>Ordered Logit</h2>
 <ul>
-<li>Let linear predictor <span class="math inline">\(\eta_i\)</span> be our usual linear predictor so that <span class="math inline">\(\eta_i = X_i^\beta\)</span>, except <em>without an intercept</em> <span class="math inline">\(\beta_0\)</span>.</li>
+<li>Let linear predictor <span class="math inline">\(\eta_i\)</span> be our usual linear predictor so that <span class="math inline">\(\eta_i = X_i \beta\)</span>, except <em>without an intercept</em> <span class="math inline">\(\beta_0\)</span>.</li>
 <li>Now define <span class="math inline">\(J-1\)</span> “cutpoints” <span class="math inline">\(\alpha_1 &lt; \alpha_2 &lt; \cdots &lt; \alpha_{J-1}\)</span> that act as a separate intercept for each category.</li>
 <li>The <strong>ordered logit</strong> defines the the <em>cumulative</em> probabilities as</li>
 </ul>
@@ -266,7 +266,7 @@
 \begin{align}
 \Pr(Y_i = 1) &amp;= \text{logit}^{-1}(\alpha_1 - \eta_i) \\
 \Pr(Y_i = 2) &amp;= \text{logit}^{-1}(\alpha_2 - \eta_i) - \text{logit}^{-1}(\alpha_{1} - \eta_i) \\
-\Pr(Y_i = 3) &amp;= \text{logit}^{-1}(\alpha_3 - \eta_i) - \text{logit}^{-1}(\alpha_{3} - \eta_i) \\
+\Pr(Y_i = 3) &amp;= \text{logit}^{-1}(\alpha_3 - \eta_i) - \text{logit}^{-1}(\alpha_{2} - \eta_i) \\
              &amp;\vdots\\
 \Pr(Y_i = j) &amp;= \overbrace{\text{logit}^{-1}(\alpha_j - \eta_i)}^{\Pr(Y_i \leq j)} - \overbrace{\text{logit}^{-1}(\alpha_{j-1} - \eta_i)}^{\Pr(Y_i \leq j-1)}, \qquad j = 2, \ldots, J-1 \\
              &amp;\vdots\\

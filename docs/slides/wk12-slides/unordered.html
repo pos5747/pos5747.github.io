@@ -501,6 +501,9 @@ y_i \in \{1, 2, \ldots, J\}.
 \frac{1}
      {1 + \sum_{k=1}^{J-1} \exp(X_i \beta_k)}.
 \]</span></p>
+</section>
+<section class="slide level2">
+
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># load data</span></span>
 <span id="cb3-2"><a href=""></a>anes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/data/red-state-pid.csv"</span>) <span class="sc">|&gt;</span></span>
@@ -526,6 +529,9 @@ $ pid                    &lt;ord&gt; 7. Strong Republican, 4. Independent, 1. St
 $ pid3                   &lt;chr&gt; "R", "I", "D", "R", "I", "I", "I", "I", "D", "D…</code></pre>
 </div>
 </div>
+</section>
+<section class="slide level2">
+
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">library</span>(nnet)</span>
 <span id="cb5-2"><a href=""></a>fit <span class="ot">&lt;-</span> <span class="fu">multinom</span>(pid3 <span class="sc">~</span> income, <span class="at">data =</span> anes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -645,9 +651,20 @@ $ df        &lt;dbl&gt; Inf, Inf, Inf, Inf, Inf, Inf, Inf, Inf, Inf, Inf, Inf, I
 <section id="an-observation-worth-remembering" class="slide level2">
 <h2>An observation worth remembering</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>f <span class="ot">&lt;-</span> pid <span class="sc">~</span> income</span>
-<span id="cb14-2"><a href=""></a>fit1 <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">polr</span>(f, <span class="at">data =</span> anes)</span>
-<span id="cb14-3"><a href=""></a>fit2 <span class="ot">&lt;-</span> <span class="fu">multinom</span>(f, <span class="at">data =</span> anes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">glimpse</span>(anes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 4,596
+Columns: 6
+$ state_name             &lt;chr&gt; "Oklahoma", "Idaho", "Virginia", "California", …
+$ state_median_income    &lt;dbl&gt; 66.1, 81.2, 92.1, 100.1, 97.1, 79.7, 77.5, 100.…
+$ rs_state_median_income &lt;dbl&gt; -0.595342224, -0.010181986, 0.412218451, 0.7222…
+$ income                 &lt;dbl&gt; 1.5, 1.5, 1.5, -0.5, -0.5, -0.5, -0.5, -2.5, 0.…
+$ pid                    &lt;ord&gt; 7. Strong Republican, 4. Independent, 1. Strong…
+$ pid3                   &lt;chr&gt; "R", "I", "D", "R", "I", "I", "I", "I", "D", "D…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>f <span class="ot">&lt;-</span> pid <span class="sc">~</span> income</span>
+<span id="cb16-2"><a href=""></a>fit1 <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">polr</span>(f, <span class="at">data =</span> anes)</span>
+<span id="cb16-3"><a href=""></a>fit2 <span class="ot">&lt;-</span> <span class="fu">multinom</span>(f, <span class="at">data =</span> anes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># weights:  21 (12 variable)
 initial  value 8943.403045 
@@ -655,7 +672,7 @@ iter  10 value 8445.069398
 final  value 8432.049880 
 converged</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">BIC</span>(fit1, fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">BIC</span>(fit1, fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     df      BIC
 fit1  7 17011.54
