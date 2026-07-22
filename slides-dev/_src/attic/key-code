@@ -1,0 +1,195 @@
+#!/Users/carlislerainey/.local/pipx/venvs/pygments/bin/python
+"""
+key-code — update a colored-code TEXT BOX inside a Keynote deck, in place.
+
+The text box keeps its position, size, font, and font size; the code text is
+replaced from the master .R file and re-colored with the course convention
+(comments red, keywords/functions blue, strings/TRUE green, numbers black).
+No clipboard, no pasting — the deck is edited and saved directly.
+
+Usage:
+  key-code deck.key script.R                    whole file
+  key-code deck.key script.R 10 24              lines 10-24 (a slide excerpt)
+  key-code deck.key script.R 10 24 --slide 29 --item 1   explicit target
+
+Targeting: by default the tool finds the text box whose FIRST LINE matches
+the snippet's first line (make the leading `# comment` of each snippet
+unique — it acts as the link, like a file name does for images). Use
+--slide/--item when you need to be explicit (e.g., the first line changed).
+"""
+
+import os
+import subprocess
+import sys
+
+from pygments.lexers import get_lexer_by_name
+from pygments.token import Comment, Keyword, Name, Number, String, Literal
+
+BASE = "#1a1a1a"
+
+TOKEN_COLORS = [
+    (Comment, "#e41a1c"),
+    (Keyword.Constant, "#4daf4a"),
+    (Keyword, "#377eb8"),
+    (Name.Function, "#377eb8"),
+    (Name.Builtin, "#377eb8"),
+    (Number, BASE),
+    (String, "#4daf4a"),
+    (Literal, "#4daf4a"),
+]
+
+
+def color_for(token):
+    for tok_type, color in TOKEN_COLORS:
+        if token in tok_type:
+            return color
+    return BASE
+
+
+def hex_to_as(hexcolor):
+    h = hexcolor.lstrip("#")
+    return "{%d, %d, %d}" % tuple(int(h[i : i + 2], 16) * 257 for i in (0, 2, 4))
+
+
+def color_runs(code):
+    """Merged 1-indexed inclusive (start, end, hex) runs, skipping base color."""
+    runs = []
+    pos = 0
+    for token, value in get_lexer_by_name("r").get_tokens(code):
+        if not value:
+            continue
+        start, end = pos, pos + len(value)
+        pos = end
+        c = color_for(token)
+        if runs and runs[-1][2] == c and runs[-1][1] == start:
+            runs[-1] = (runs[-1][0], end, c)
+        else:
+            runs.append((start, end, c))
+    # pygments appends a trailing newline; clamp to the code we actually set
+    n = len(code)
+    out = []
+    for start, end, c in runs:
+        if c == BASE or start >= n:
+            continue
+        out.append((start + 1, min(end, n), c))
+    return out
+
+
+def main():
+    args = sys.argv[1:]
+    if len(args) < 2 or args[0] in ("-h", "--help"):
+        print(__doc__)
+        sys.exit(0)
+
+    slide_n = item_n = 0
+    if "--slide" in args:
+        i = args.index("--slide")
+        slide_n = int(args[i + 1])
+        args = args[:i] + args[i + 2 :]
+    if "--item" in args:
+        i = args.index("--item")
+        item_n = int(args[i + 1])
+        args = args[:i] + args[i + 2 :]
+
+    deck, path = os.path.abspath(args[0]), args[1]
+    with open(path) as f:
+        code = f.read()
+    if len(args) == 4:
+        first, last = int(args[2]), int(args[3])
+        code = "\n".join(code.splitlines()[first - 1 : last])
+    code = code.rstrip()
+
+    runs_as = ", ".join(
+        "{%d, %d, %s}" % (s, e, hex_to_as(c)) for s, e, c in color_runs(code)
+    )
+    first_line = code.splitlines()[0] if code else ""
+
+    script = f"""
+on openDeck(deckPath)
+	tell application "Keynote"
+		set doc to open (POSIX file deckPath)
+		if doc is missing value then
+			repeat 100 times
+				repeat with d in documents
+					try
+						if POSIX path of (file of d) is deckPath then
+							set doc to contents of d
+							exit repeat
+						end if
+					end try
+				end repeat
+				if doc is not missing value then exit repeat
+				delay 0.1
+			end repeat
+		end if
+		if doc is missing value then error "could not open " & deckPath
+	end tell
+	return doc
+end openDeck
+
+on run argv
+	set deckPath to item 1 of argv
+	set newCode to item 2 of argv
+	set firstLine to item 3 of argv
+	set slideN to (item 4 of argv) as integer
+	set itemN to (item 5 of argv) as integer
+	set runs to {{{runs_as}}}
+	set baseColor to {hex_to_as(BASE)}
+	set doc to my openDeck(deckPath)
+	tell application "Keynote"
+		set target to missing value
+		set foundAt to ""
+		if slideN > 0 and itemN > 0 then
+			set target to text item itemN of slide slideN of doc
+			set foundAt to "slide " & slideN & " text item " & itemN
+		else
+			repeat with i from 1 to count of slides of doc
+				set s to slide i of doc
+				repeat with j from 1 to count of text items of s
+					set ti to text item j of s
+					try
+						if (paragraph 1 of (object text of ti)) as text is firstLine then
+							set target to ti
+							set foundAt to "slide " & i & " text item " & j
+							exit repeat
+						end if
+					end try
+				end repeat
+				if target is not missing value then exit repeat
+			end repeat
+		end if
+		if target is missing value then error "no text box whose first line is: " & firstLine
+		tell target
+			set theFont to font of character 1 of its object text
+			set theSize to size of character 1 of its object text
+			set object text of it to newCode
+			set n to count of characters of its object text
+			set font of characters 1 thru n of its object text to theFont
+			set size of characters 1 thru n of its object text to theSize
+			set color of characters 1 thru n of its object text to baseColor
+			repeat with idx from 1 to count of runs
+				set r to item idx of runs
+				set a to item 1 of r
+				set b to item 2 of r
+				set c to item 3 of r
+				set color of characters a thru b of its object text to c
+			end repeat
+		end tell
+		save doc
+	end tell
+	return "updated " & foundAt & " (" & (count of runs) & " color runs, font " & theFont & " " & theSize & "pt)"
+end run
+"""
+
+    result = subprocess.run(
+        ["osascript", "-", deck, code, first_line, str(slide_n), str(item_n)],
+        input=script.encode(),
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        sys.exit(f"key-code failed: {result.stderr.decode().strip()}")
+    print("✓ " + result.stdout.decode().strip())
+
+
+if __name__ == "__main__":
+    main()

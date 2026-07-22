@@ -2,5 +2,11 @@
 .DS_Store
 .Rproj.user
 .quarto
+slides-dev/*/figs/.stamp/
+slides-dev/*/Rplots.pdf
+slides-dev/*/equations/*.aux
+slides-dev/*/.notes-audit/
+slides-dev/_src/__pycache__/
 
 /.quarto/
+CLAUDE.md

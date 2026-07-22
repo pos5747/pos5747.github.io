@@ -1,0 +1,51 @@
+#!/bin/zsh
+# slide-eqn — compile a standalone equation/theorem .tex into a tightly
+# cropped vector PDF for dragging into Keynote. Solves the two annoyances of
+# the by-hand routine: the fragile relative \input path to eqn-preamble.tex
+# (TEXINPUTS handles it from any directory) and the compile-look-recompile
+# loop (-w watches the file; Preview auto-reloads the PDF on each save).
+#
+# Usage:
+#   slide-eqn eqn-likelihood.tex        compile once, open PDF in Preview
+#   slide-eqn -w eqn-likelihood.tex     watch: recompile on every save
+#   slide-eqn -n eqn-invariance         create a new .tex from the template
+#
+# In the .tex, write \input{eqn-preamble.tex} (no path needed).
+
+set -e
+TOOLS="${0:A:h}"
+export TEXINPUTS=".:${TOOLS}:"
+
+if [[ "$1" == "-n" ]]; then
+  name="${2%.tex}"
+  [[ -z "$name" ]] && { echo "usage: slide-eqn -n <name>"; exit 1 }
+  cat > "$name.tex" <<'EOF'
+% standalone -> a tightly cropped PDF of one equation or theorem
+\documentclass[border=3bp]{standalone}
+\input{eqn-preamble.tex}
+\begin{document}
+
+% bare math auto-sizes; wrap prose in \begin{minipage}{3.5in} ... \end{minipage}
+$x^2$
+
+\end{document}
+EOF
+  echo "✓ created $name.tex"
+  exit 0
+fi
+
+watch=""
+[[ "$1" == "-w" ]] && { watch="-pvc"; shift }
+tex="$1"
+[[ -z "$tex" ]] && { echo "usage: slide-eqn [-w] <file.tex> | slide-eqn -n <name>"; exit 1 }
+
+pdf="${tex%.tex}.pdf"
+if [[ -n "$watch" ]]; then
+  ( sleep 3; open "$pdf" ) &
+  latexmk -pdf -interaction=nonstopmode $watch "$tex"
+else
+  latexmk -pdf -interaction=nonstopmode "$tex" >/dev/null
+  latexmk -c "$tex" >/dev/null 2>&1   # clean aux/log, keep the pdf
+  open "$pdf"
+  echo "✓ $pdf — drag from Preview (or Finder) into Keynote"
+fi

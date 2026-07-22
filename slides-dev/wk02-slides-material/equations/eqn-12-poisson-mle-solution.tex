@@ -1,0 +1,69 @@
+% Poisson MLE, full worked solution (four steps)
+% — source recovered from wk02 deck notes, 2026-07-22
+\documentclass[border=3bp]{standalone}
+\input{eqn-preamble.tex}
+\begin{document}
+
+\begin{minipage}{4.5in}
+\textbf{Likelihood.}
+\[
+L(\lambda)=\prod_{i=1}^{N}\frac{e^{-\lambda}\lambda^{y_i}}{y_i!}
+= e^{-N\lambda}\,\lambda^{\sum_{i=1}^{N}y_i}\,\prod_{i=1}^{N}\frac{1}{y_i!}.
+\]
+
+\begin{enumerate}\setlength{\itemsep}{0.25em}
+
+\item \textbf{Take logs.} (Use $\log(\prod a_i)=\sum\log a_i$, $\log(ab)=\log a+\log b$, and $\log(x^c)=c\log x$.)
+\begingroup\setlength{\jot}{1.5pt}
+\[
+\begin{aligned}
+\log L(\lambda)
+&= \sum_{i=1}^{N}\left[-\lambda + y_i\log\lambda - \log(y_i!)\right] \\
+&= -N\lambda + \Big(\sum_{i=1}^{N}y_i\Big)\log\lambda - \sum_{i=1}^{N}\log(y_i!).
+\end{aligned}
+\]
+\endgroup
+
+\item \textbf{Differentiate $\log L(\lambda)$ with respect to $\lambda$.}
+\begingroup\setlength{\jot}{1.5pt}
+\[
+\begin{aligned}
+\frac{d\,\log L(\lambda)}{d\lambda}
+&= \frac{d}{d\lambda}\!\left[-N\lambda\right]
+  + \frac{d}{d\lambda}\!\left[\Big(\sum_{i=1}^{N}y_i\Big)\log\lambda\right]
+  - \frac{d}{d\lambda}\!\left[\sum_{i=1}^{N}\log(y_i!)\right] \\
+&= -N \;+\; \Big(\sum_{i=1}^{N}y_i\Big)\frac{1}{\lambda} \;+\; 0 \\
+&= -\,N \;+\; \frac{\sum_{i=1}^{N}y_i}{\lambda}.
+\end{aligned}
+\]
+\endgroup
+
+\item \textbf{Set the derivative to zero at $\lambda=\hat{\lambda}$ and solve.}
+\[
+\left.\frac{d\,\log L(\lambda)}{d\lambda}\right|_{\lambda=\hat{\lambda}}
+= -\,N + \frac{\sum_{i=1}^{N}y_i}{\hat{\lambda}} = 0.
+\]
+\begingroup\setlength{\jot}{1.5pt}
+\[
+\begin{aligned}
+\frac{\sum_{i=1}^{N}y_i}{\hat{\lambda}} &= N
+\;\Longleftrightarrow\;
+\sum_{i=1}^{N}y_i = N\hat{\lambda}
+\;\Longrightarrow\;
+\hat{\lambda} = \frac{1}{N}\sum_{i=1}^{N}y_i
+= \overline{y}.
+\end{aligned}
+\]
+\endgroup
+
+\item \textbf{Second-order condition (concavity).} Need $\displaystyle \frac{d^{2}\!\log L(\lambda)}{d\lambda^{2}}<0$.
+\[
+\frac{d^{2}\!\log L(\lambda)}{d\lambda^{2}}
+= -\,\frac{\sum_{i=1}^{N}y_i}{\lambda^{2}}
+\;<\;0 \quad (\lambda>0\ \text{and}\ \textstyle\sum_{i=1}^{N}y_i>0).
+\]
+Thus $\log L(\lambda)$ is strictly concave and the critical point $\hat{\lambda}=\overline{y}$ is the unique global maximizer.
+\end{enumerate}
+\end{minipage}
+
+\end{document}

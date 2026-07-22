@@ -1,0 +1,16 @@
+% Example equation asset (bare math, auto-sizes to its content).
+% Conventions:
+%   - one .tex per equation, named eqn-NN-<topic>.tex: NN = zero-padded
+%     order of first appearance in the deck. NN is a human sorting aid,
+%     rough by design (staleness is fine) and ignored by the audit; the
+%     topic slug is the real link and matches the notes book's terminology;
+%     variants get words, never trailing numbers
+%   - \input{eqn-preamble.tex} with NO path — TEXINPUTS finds it in _src/
+%   - Set1 colors from the preamble: \textcolor{red}{...}, blue, green
+\documentclass[border=3bp]{standalone}
+\input{eqn-preamble.tex}
+\begin{document}
+
+$\displaystyle \underbrace{f(\theta \mid y)}_{\text{posterior}} = \frac{\overbrace{f(y \mid \theta)}^{\text{likelihood}} \times \overbrace{f(\theta)}^{\text{prior}}}{\displaystyle \underbrace{\int_{-\infty}^\infty f(y \mid \theta)f(\theta) d\theta}_{\text{normalizing constant}}}$
+
+\end{document}

@@ -1,0 +1,67 @@
+% Bernoulli MLE, full worked solution (four steps)
+% — source recovered from wk02 deck notes, 2026-07-22
+\documentclass[border=3bp]{standalone}
+\input{eqn-preamble.tex}
+\begin{document}
+
+\begin{minipage}{4.5in}
+\textbf{Likelihood.}
+\[
+L(\pi)=\pi^{k}(1-\pi)^{N-k}.
+\]
+
+\begin{enumerate}\setlength{\itemsep}{0.25em}
+
+\item \textbf{Take logs.} (Use $\log(ab)=\log a+\log b$ and $\log(x^c)=c\log x$.)
+\begingroup\setlength{\jot}{1.5pt}
+\[
+\begin{aligned}
+\log L(\pi)
+&= \log\!\big(\pi^{k}(1-\pi)^{N-k}\big)\\
+&= \log(\pi^{k})+\log\!\big((1-\pi)^{N-k}\big)\\
+&= k\log\pi+(N-k)\log(1-\pi).
+\end{aligned}
+\]
+\endgroup
+
+\item \textbf{Differentiate $\log L(\pi)$ with respect to $\pi$.}
+\begingroup\setlength{\jot}{1.5pt}
+\[
+\begin{aligned}
+\frac{d\,\log L(\pi)}{d\pi}
+&= k\,\frac{d\,\log\pi}{d\pi}+(N-k)\,\frac{d\,\log(1-\pi)}{d\pi}\\
+&= k\left(\frac{1}{\pi}\right)
+  +(N-k)\left(\frac{1}{1-\pi}\,\frac{d(1-\pi)}{d\pi}\right)\\
+&= \frac{k}{\pi}-\frac{N-k}{1-\pi}.
+\end{aligned}
+\]
+\endgroup
+
+\item \textbf{Set the derivative to zero at $\pi=\hat{\pi}$ and solve.}
+\[
+\left.\frac{d\,\log L(\pi)}{d\pi}\right|_{\pi=\hat{\pi}}
+= \frac{k}{\hat{\pi}}-\frac{N-k}{1-\hat{\pi}}=0.
+\]
+\begingroup\setlength{\jot}{1.5pt}
+\[
+\begin{aligned}
+\frac{k}{\hat{\pi}}&=\frac{N-k}{1-\hat{\pi}}
+\;\Longleftrightarrow\; k(1-\hat{\pi})=(N-k)\hat{\pi}\\
+&\Longleftrightarrow\; k=N\hat{\pi}
+\;\Longrightarrow\; \hat{\pi}=\frac{k}{N}
+=\frac{1}{N}\sum_{i=1}^{N}y_i.
+\end{aligned}
+\]
+\endgroup
+
+\item \textbf{Second-order condition (concavity).} Need $\displaystyle \frac{d^{2}\!\log L(\pi)}{d\pi^{2}}<0$.
+\[
+\frac{d^{2}\!\log L(\pi)}{d\pi^{2}}
+= -\frac{k}{\pi^{2}}-\frac{N-k}{(1-\pi)^{2}}
+<0 \quad (0<\pi<1).
+\]
+Thus $\log L(\pi)$ is strictly concave, and the critical point $\hat{\pi}=k/N$ is the unique global maximizer.
+\end{enumerate}
+\end{minipage}
+
+\end{document}

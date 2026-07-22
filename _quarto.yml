@@ -1,9 +1,10 @@
 project:
   type: website
   output-dir: docs
-  render: 
+  render:
     - "*.qmd"
-    - "!slides/"  
+    - "!slides/"
+    - "!slides-dev/"
 
 execute:
   freeze: auto
@@ -36,7 +37,13 @@ resources:
   - syllabus.pdf
   - exr/
   - files/
-  - slides/
+  # slides/ is the FROZEN published snapshot — the only slide content that
+  # reaches the site. Working decks live in slides-dev/ and are deliberately
+  # unpublished; a revision goes live only when it is promoted into slides/
+  # (see slides-dev/README.md). Never point this at slides-dev/.
+  - "slides/**"
+  - "!slides/README.md"
+  - "!slides/**/.DS_Store"
   - data/
 
 

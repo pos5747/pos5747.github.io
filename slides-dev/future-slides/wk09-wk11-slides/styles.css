@@ -1,0 +1,26 @@
+
+/* Optionally adjust the spacing between code and surrounding text */
+.reveal code {
+  line-height: 1.4;
+}
+
+
+.reveal .slides section .fragment.blur {
+  filter: blur(15px);
+}
+
+.reveal .slides section .fragment.blur.visible {
+  filter: none
+}
+
+.smaller {
+  font-size: 80% !important;
+}
+
+.evensmaller {
+  font-size: 65% !important;
+}
+
+.gray-text {
+  color: #aaa !important; /* medium grey */
+}

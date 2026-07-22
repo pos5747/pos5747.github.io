@@ -1,0 +1,136 @@
+#!/bin/zsh
+# notes-audit — LLM-assisted correspondence audit between a week's slide
+# sources and the notes book (../../../notes). Flags slide equations whose
+# notation, and master scripts whose code, have drifted from the notes.
+#
+# This is a SEPARATE, deliberate check — not part of `make audit`. Run it
+# while revising a week's slides:
+#
+#   make notes-audit-wk02          # from slides/
+#   _src/notes-audit wk02-slides-material [--dry-run] [--force]
+#
+# Options / environment:
+#   --dry-run           assemble and save the prompt, print what would be
+#                       compared; no API call
+#   --force             ignore the cache and re-run the comparison
+#   NOTES_DIR           notes book root (default: the course's notes/ dir,
+#                       a sibling of 5747website/)
+#   NOTES_AUDIT_MODEL   model for the comparison (default: sonnet)
+#
+# Caching: results are keyed by a hash of every input file (slide sources +
+# notes chapters). If nothing changed since the last run, the cached report
+# is replayed with no API call — so editing the NOTES never triggers
+# anything here; the check happens only when you invoke it, and costs an
+# API call only when something actually changed.
+#
+# Verdicts per slide source file, judged by a Sonnet agent:
+#   CURRENT  — consistent with the notes
+#   STALE    — substantive notation/code drift (reason given); exit 1
+#   NOMATCH  — no corresponding notes content (informational)
+
+set -e
+
+week_dir=""
+dry=0; force=0
+for a in "$@"; do
+  case "$a" in
+    --dry-run) dry=1 ;;
+    --force)   force=1 ;;
+    *)         week_dir="${a:A}" ;;
+  esac
+done
+[[ -d "$week_dir" ]] || { echo "usage: notes-audit <wkNN-slides-material-dir> [--dry-run] [--force]"; exit 2 }
+
+week="${${week_dir:t}%%-slides-material*}"
+notes_root="${NOTES_DIR:-${week_dir:h:h:h}/notes}"
+notes_dir="$notes_root/$week"
+model="${NOTES_AUDIT_MODEL:-sonnet}"
+
+srcs=("$week_dir"/equations/*.tex(N) "$week_dir"/R/*.R(N))
+chapters=("$notes_dir"/*.qmd(N))
+
+if (( ${#srcs} == 0 )); then
+  echo "notes-audit: $week has no equations/*.tex or R/*.R to check"
+  exit 0
+fi
+if (( ${#chapters} == 0 )); then
+  echo "notes-audit: no notes chapters at $notes_dir — nothing to compare against"
+  exit 0
+fi
+
+cache="$week_dir/.notes-audit"
+mkdir -p "$cache"
+hash=$(cat "${srcs[@]}" "${chapters[@]}" | md5 -q)
+
+if (( ! force )) && [[ -f "$cache/hash" && "$(cat "$cache/hash")" == "$hash" && -f "$cache/report" ]]; then
+  echo "notes-audit: $week unchanged since last check — cached report:"
+  echo
+  cat "$cache/report"
+  grep -q '^STALE' "$cache/report" && exit 1 || exit 0
+fi
+
+prompt="$cache/prompt.txt"
+{
+  cat <<'EOF'
+You are auditing lecture-slide source files against the course notes they
+must stay consistent with. The slides and notes teach the same material;
+the notes are the source of truth. Judge each slide source file:
+
+- Equations (.tex): flag SUBSTANTIVE notation drift — different symbols or
+  case for the same concept (e.g. notes use N but the slide uses n, or
+  p vs pi), different formulas, different definitions, changed hypotheses
+  or conclusions. IGNORE formatting: display style, line breaks, aligned
+  vs align, minipage widths, spacing commands, coloring, and wording
+  differences that do not change the math.
+- R scripts (.R): flag SUBSTANTIVE code drift from the corresponding code
+  in the notes — renamed variables/functions, changed arguments or values,
+  different model specifications, different data/columns, changed logic.
+  IGNORE comments, whitespace, snippet fences (## ---- slide: ... ----),
+  and the fact that slides show excerpts or build up in stages. Slide-only
+  scaffolding (e.g. an install line, a simplified first pass clearly
+  presented as such) is fine unless it contradicts the notes.
+- If a slide file has no corresponding content in the notes chapters,
+  say NOMATCH (that is informational, not a failure).
+
+Output format — one line per slide source file, in the order given, then a
+blank line and one RESULT line. No other text.
+
+CURRENT <filename>
+STALE <filename> :: <one concise sentence: what drifted, notes vs slide>
+NOMATCH <filename>
+
+RESULT ok
+(or)
+RESULT stale
+EOF
+  echo
+  echo "===================== SLIDE SOURCES ($week) ====================="
+  for f in "${srcs[@]}"; do
+    echo
+    echo "--------- ${f#$week_dir/} ---------"
+    cat "$f"
+  done
+  echo
+  echo "===================== NOTES CHAPTERS ($week) ====================="
+  for f in "${chapters[@]}"; do
+    echo
+    echo "--------- ${f:t} ---------"
+    cat "$f"
+  done
+} > "$prompt"
+
+echo "notes-audit: $week — ${#srcs} slide source(s) vs ${#chapters} notes chapter(s)"
+if (( dry )); then
+  echo "  (dry run) prompt assembled at $prompt ($(wc -c < "$prompt" | tr -d ' ') bytes); no API call made"
+  for f in "${srcs[@]}"; do echo "  would check: ${f#$week_dir/}"; done
+  for f in "${chapters[@]}"; do echo "  against:     ${f:t}"; done
+  exit 0
+fi
+
+echo "  asking $model ..."
+report="$cache/report"
+claude -p --model "$model" < "$prompt" > "$report"
+echo "$hash" > "$cache/hash"
+echo
+cat "$report"
+grep -q '^STALE' "$report" && exit 1 || exit 0

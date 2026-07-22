@@ -1,0 +1,51 @@
+#!/bin/zsh
+# key-add — insert an asset onto a slide of a Keynote deck (the FIRST-time
+# insertion; afterward key-sync updates it by name). You still position and
+# size it by hand — that's the WYSIWYG part.
+#
+# Usage:
+#   key-add deck.key 12 equations/eqn-mle.pdf     # onto slide 12
+
+set -e
+deck="${1:A}"
+slide_n="$2"
+asset="${3:A}"
+[[ -z "$deck" || -z "$slide_n" || -z "$asset" ]] && { echo "usage: key-add <deck.key> <slide-number> <asset>"; exit 1 }
+[[ -f "$asset" ]] || { echo "no such file: $asset"; exit 1 }
+
+osascript - "$deck" "$slide_n" "$asset" <<'EOF'
+on openDeck(deckPath)
+	tell application "Keynote"
+		set doc to open (POSIX file deckPath)
+		if doc is missing value then
+			repeat 100 times
+				repeat with d in documents
+					try
+						if POSIX path of (file of d) is deckPath then
+							set doc to contents of d
+							exit repeat
+						end if
+					end try
+				end repeat
+				if doc is not missing value then exit repeat
+				delay 0.1
+			end repeat
+		end if
+		if doc is missing value then error "could not open " & deckPath
+	end tell
+	return doc
+end openDeck
+
+on run argv
+	set doc to my openDeck(item 1 of argv)
+	tell application "Keynote"
+		set s to slide ((item 2 of argv) as integer) of doc
+		tell s
+			set newObj to make new image with properties {file:POSIX file (item 3 of argv)}
+		end tell
+		set current slide of doc to s
+		save doc
+		return "added " & (file name of newObj) & " to slide " & (item 2 of argv) & " — position it, then key-sync keeps it fresh"
+	end tell
+end run
+EOF
