@@ -2,9 +2,13 @@
 title: "Comments on preparation for exam 1"
 ---
 
+::: {.callout-warning}
+These are my notes for the **Fall 2025** midterm exam. They do not necessarily apply to the Fall 2026 exams.
+:::
+
 The exam will be about 50% multiple choice and 50% open ended questions of various types. I'm trying to allocate **points** and **time** so that it's 50/50 between multiple choice and open ended. About half of your time will be spent on multiple choice questions and about half on open-ended questions.
 
-The questions range in difficult from quite easy to very challenging.
+The questions range in difficulty from quite easy to very challenging.
 
 In all cases, I try to follow the notes and exercises closely.
 

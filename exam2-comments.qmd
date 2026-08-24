@@ -2,11 +2,15 @@
 title: "Comments on preparation for exam 2"
 ---
 
+::: {.callout-warning}
+These are my notes for the **Fall 2025** final exam. They do not necessarily apply to the Fall 2026 exams.
+:::
+
 The exam will be cumulative, with something like a 70/30 balance toward newer material.
 
 **I made an important revision here:** The exam will be about **30% multiple choice** and **70% open ended questions** of various types. I'm trying to allocate **points** and **time** so that it's 30/70 between multiple choice and open ended. And among the multiple choice questions, many will focus on the older material from the Midterm exam.
 
-The questions range in difficult from quite easy to very challenging.
+The questions range in difficulty from quite easy to very challenging.
 
 In all cases, I try to follow the notes and exercises closely.
 
@@ -33,14 +37,14 @@ We've covered a large range of statistical models:
 1. Normal linear
 1. Logit
 1. Multinomial Logit (see my slides)
-1. Ordered Logit (see my sides)
+1. Ordered Logit (see my slides)
 1. Parametric duration models, especially exponential, log-normal, and Weibull. *(Cox PH not covered on exam.)*
 1. Count models, including Poisson, NB, and ZINB.
 1. Hierarchical variants of the above.
 
 You should be comfortable with the simulate-and-recover exercise with each. It will probably be helpful to be familiar with the examples in the notes, slides, and exercises.
 
-## Quantitities of interest
+## Quantities of interest
 
 We should be very familiar with `predictions()`, `comparisons()`, and `avg_comparisons()` in \{marginaleffects\} and very familiar with the quantities they compute.
 
@@ -96,7 +100,7 @@ You are an editor of a journal and have received two thoughtful reviews for a we
 
 ### Testing and Claims
 
-I like to say: "Only make a claim if the claim is hold for the entire confidence interval.” 
+I like to say: "Only make a claim if the claim holds for the entire confidence interval.” 
 
 Using the arguments from Rainey (2014) and McCaskey and Rainey (2015), give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two situations.
 

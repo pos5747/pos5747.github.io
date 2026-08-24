@@ -5,8 +5,8 @@ title: "Suggestions for the Exercises"
 - Answer the questions in a Quarto document that compiles to PDF. Make sure that all your code is neat and readable, equations are typeset nicely with LaTeX, and figures render nicely. The [Quarto documentation](https://quarto.org/docs/output-formats/pdf-basics.html) is excellent. 
     - For mathematical problems, work out the answers with paper-and-pencil first, then move the answers to a Quarto document (while simultaneously reviewing and polishing).
     - For coding problems, write and debug the code in a standalone `.R` script first, then move the code to a Quarto code chunk. 
-- At the beginning of the semester, start a new R project called `exr/`. Each week, create a new `.qmd` document named `01-exr.qmd`, `02-exr.qmd`, ..., to `exr/`. (You can adjust these names if you like.) Throughout the semester you'll have several PDFs that you can revise and review as you prepare for the exams.
+- At the beginning of the semester, start a new R project called `exr/`. Each week, create a new `.qmd` document named `wk01-exr.qmd`, `wk02-exr.qmd`, ..., in `exr/`. (You can adjust these names if you like.) Throughout the semester you'll have several PDFs that you can revise and review as you prepare for the exams.
 - Make sure to render often as you work in a `.qmd` file (e.g., every time you add a new part).
-- Use the `tinytable` to automate table creation. 
+- Use the {tinytable} package to automate table creation.
 - The default output of `tt()`, `modelsummary()`, `ggplot()`, etc. is almost always "good enough" for our purposes. Don't spend lots of time polishing your tables, plots, and output. Use that time and energy to focus on understanding the ideas, math, and code.
 - An exception to the rule above is carefully controlling the output of code chunks. In most cases, you want `messages: false` and `warnings: false`. You don't want a lot of junk in your rendered documents, but it's fine if your column and axis labels have the raw variable names. 

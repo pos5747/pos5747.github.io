@@ -114,7 +114,11 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <span class="menu-text">Workshop</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./syllabus.pdf"> 
+    <a class="nav-link" href="./assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
 </ul>
@@ -159,9 +163,9 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <li>For mathematical problems, work out the answers with paper-and-pencil first, then move the answers to a Quarto document (while simultaneously reviewing and polishing).</li>
 <li>For coding problems, write and debug the code in a standalone <code>.R</code> script first, then move the code to a Quarto code chunk.</li>
 </ul></li>
-<li>At the beginning of the semester, start a new R project called <code>exr/</code>. Each week, create a new <code>.qmd</code> document named <code>01-exr.qmd</code>, <code>02-exr.qmd</code>, …, to <code>exr/</code>. (You can adjust these names if you like.) Throughout the semester you’ll have several PDFs that you can revise and review as you prepare for the exams.</li>
+<li>At the beginning of the semester, start a new R project called <code>exr/</code>. Each week, create a new <code>.qmd</code> document named <code>wk01-exr.qmd</code>, <code>wk02-exr.qmd</code>, …, in <code>exr/</code>. (You can adjust these names if you like.) Throughout the semester you’ll have several PDFs that you can revise and review as you prepare for the exams.</li>
 <li>Make sure to render often as you work in a <code>.qmd</code> file (e.g., every time you add a new part).</li>
-<li>Use the <code>tinytable</code> to automate table creation.</li>
+<li>Use the {tinytable} package to automate table creation.</li>
 <li>The default output of <code>tt()</code>, <code>modelsummary()</code>, <code>ggplot()</code>, etc. is almost always “good enough” for our purposes. Don’t spend lots of time polishing your tables, plots, and output. Use that time and energy to focus on understanding the ideas, math, and code.</li>
 <li>An exception to the rule above is carefully controlling the output of code chunks. In most cases, you want <code>messages: false</code> and <code>warnings: false</code>. You don’t want a lot of junk in your rendered documents, but it’s fine if your column and axis labels have the raw variable names.</li>
 </ul>

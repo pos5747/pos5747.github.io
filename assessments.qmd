@@ -1,0 +1,72 @@
+---
+title: "Assessments"
+---
+
+Two of the four components of the course grade are closed-book assessments of what you've learned from the notes and exercises:
+
+- **Weekly assessments** (10%): short (about 10 minutes), closed-book assessments at the beginning of class, based on the weekly exercises. These mimic exam questions, but tend to be easier and shorter than what you see on the exam. I will drop the two lowest and average the remaining assessments.
+- **Exams** (40%): a midterm exam (15%) and a final exam (25%), based primarily on the weekly exercises.
+
+(The other two components are the [research project](research-project.qmd) and the [workshop](workshop.qmd). The official grading statement is in the [Simple Syllabus](https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view).)
+
+## Exercises
+
+What do I ask of you? Read the notes and complete the exercises.
+
+Exercises are "due" weekly, but I do not grade them. If you have questions or need hints, see me or Bryson.
+
+::: {.aside}
+You should be extremely careful about using AI as a study partner. It's very good at giving you the answer. It's also very good at making you think you can reproduce that answer later. Thus, it's very good at making you very bad at giving the answer. It's way better to come and talk to me or our TA when you are stuck or struggling. 
+:::
+
+- I'll distribute detailed solutions.
+- Come talk to me often!
+- Collaborate as it helps you learn. Ideal model might be (1) make a best effort as an individual, (2) discuss difficult portions in groups of 2-3, (3) polish your work as an individual, and (4) review your work weekly.
+
+See also my [suggestions for the exercises](suggestions-for-exercises.qmd).
+
+**AI.** AI is always allowed. However, the exercises are preparation for the assessments and exams. If you use AI to complete the exercises, then you are defeating the purpose. You may find AI helpful as a "tutor," but I recommend working with me or Bryson instead.
+
+## Weekly Assessments
+
+Short, closed-book assessments at the beginning of class, based on the weekly exercises.
+
+## Exams
+
+Do you understand a variety of tools? In-class, closed-book exams based on the examples and exercises.
+
+1. Based closely on exercises and examples.
+   - Variants are fair game.
+   - Make sure you can comfortably complete examples and exercises in a closed-book setting.
+   - Make sure you are not relying on solutions or AI-help. Don't confuse "familiarity" with "understanding."
+
+### How to Prepare
+
+As I write the exam, I'm focused on the notes and the exercises.
+
+- Make sure you understand the ideas in the notes and the examples.
+- Make sure you understand each exercise.
+- Make sure you are familiar with the readings (assigned in the exercise).
+
+Don't forget about the mathematical foundations we did in week one!
+
+The questions range in difficulty from quite easy to very challenging. In all cases, I try to follow the notes and exercises closely.
+
+### Structure
+
+The exam will be organized by types of questions (e.g., short-answer questions, then long-answer questions). Within these sections, I'll organize them roughly chronologically (i.e., starting math basics and ending with MCMC).
+
+**Short questions.** My goal with the short-answer questions is that you can see the correct answer immediately without any or much work. Many of these questions are multiple choice. These cover definitions, principles, and simple calculations.
+
+**Long questions.** Some long-answer questions require you to write several sentences. Others require a chain of math.
+
+**Midterm.** The exam will be about 50% multiple choice and 50% open ended questions of various types. I'm trying to allocate **points** and **time** so that it's 50/50 between multiple choice and open ended. About half of your time will be spent on multiple choice questions and about half on open-ended questions.
+
+**Final.** The exam will be cumulative, with something like a 70/30 balance toward newer material. The exam will be about **30% multiple choice** and **70% open ended questions** of various types. I'm trying to allocate **points** and **time** so that it's 30/70 between multiple choice and open ended. And among the multiple choice questions, many will focus on the older material from the Midterm exam.
+
+### Study Guides
+
+Before each exam, I post comments that work as a "study guide." The exam is based on the notes and exercises, but these documents offer a "big picture" overview of the important themes, including the open-ended questions at the bottom. The Fall 2025 versions:
+
+- [Comments on preparation for exam 1](exam1-comments.qmd)
+- [Comments on preparation for exam 2](exam2-comments.qmd)

@@ -8,7 +8,7 @@ reference-location: margin
 
 Your task this semester: *design and run a 60-minute workshop on a particular statistical model.*
 
-You will complete this task in (ideally) teams of two.^[If we have an odd number, I will likely want one team of three person rather than one person work alone, but we should discuss.]
+You will complete this task in (ideally) teams of two.^[If we have an odd number, I will likely want one team of three rather than one person working alone, but we should discuss.]
 
 ## Why?
 
@@ -22,9 +22,10 @@ I designed this project to help you develop as a researcher and teacher.
 
 I suggest the following topics:
 
-1. Modeling **binary categorical outcomes**.
+1. Modeling **binary** outcomes.
 1. Modeling **unordered categorical** outcomes.
 1. Modeling **ordered categorical** outcomes.
+1. Modeling **count** outcomes.
 
 ## Materials
 
@@ -48,7 +49,7 @@ devtools::install_github("carlislerainey/crdata")
 
 Be aware that some students might use RStudio via Posit Cloud rather than locally.
 
-This document is not a substitute for the workshop. It is lightweight document that reduces friction and builds interest.
+This document is not a substitute for the workshop. It is a lightweight document that reduces friction and builds interest.
 
 ### Slides
 
@@ -56,7 +57,7 @@ A set of slides to show during the presentation.
 
 The slides should support a roughly 15-minute conceptual lecture portion of the workshop.
 
-The slides do not need to be comprehensive.^[The take-home notes can include the supporting details.] Perhaps 6-8 slides are enough. Use slides to emphasize the big ideas concepts or show visuals.^[Again, reserve complicated equations for handouts.] (It's fine to use an analog or digital chalkboard for portions of the lecture!)
+The slides do not need to be comprehensive.^[The take-home notes can include the supporting details.] Perhaps 6-8 slides are enough. Use slides to emphasize the big ideas or show visuals.^[Again, reserve complicated equations for handouts.] (It's fine to use an analog or digital chalkboard for portions of the lecture!)
 
 
 ### Two Examples
@@ -68,9 +69,7 @@ Two diverse examples from political science.
 
 Given that you only have a few minutes, these examples need to be *simple*.
 
-The bit below seems about right for the Cox model, for example. Regardless, it cannot be 300 lines of R code or 10+ commands. Fit, EV, and FD seems about right.
-
-**I want to replace this Cox PH model with a logit model.**
+The bit below seems about right for a logit model, for example. Regardless, it cannot be 300 lines of R code or 10+ commands. Fit, EV, and FD seems about right.
 
 ```{r}
 #| message: false
@@ -78,45 +77,40 @@ The bit below seems about right for the Cox model, for example. Regardless, it c
 #| fig-asp: 0.35
 # load packages
 library(tidyverse)
-library(survival)
 library(marginaleffects)
 
-# load data
-cancer <- survival::cancer |> 
+# load data (install once with devtools::install_github("jrnold/ZeligData"))
+turnout <- ZeligData::turnout |>
   glimpse()
 
-# fit cox model
-f <- Surv(time, status) ~ age + sex + pat.karno
-fit <- coxph(f, data = cancer)
+# fit logit model
+f <- vote ~ age + educate + income + race
+fit <- glm(f, data = turnout, family = binomial)
 summary(fit)
 
-# generate predictions
+# generate predictions: expected value across age, other variables at mean or mode
 p <- predictions(
-  fit, 
-  variables = list(time = unique, pat.karno = c(50, 100)), 
-  newdata = datagrid(grid_type = "mean_or_mode"),
-  type = "survival"  # <---- this is important!
+  fit,
+  newdata = datagrid(age = unique, grid_type = "mean_or_mode")
   )
-ggplot(p, aes(x = time, 
-              y = estimate, 
-              ymax = conf.high, 
+ggplot(p, aes(x = age,
+              y = estimate,
+              ymax = conf.high,
               ymin = conf.low)) +
-  geom_ribbon(fill = "grey80") + 
-  geom_line() + 
-  facet_wrap(vars(pat.karno))
+  geom_ribbon(fill = "grey80") +
+  geom_line()
 
-# generate comparisons
+# generate comparisons: first difference as educate moves from 12 to 16 years
 c <- comparisons(
   fit,
-  variables = list(pat.karno = c(50, 100)), 
-  newdata = datagrid(time = unique),
-  type = "survival"
+  variables = list(educate = c(12, 16)),
+  newdata = datagrid(age = unique, grid_type = "mean_or_mode")
   )
-ggplot(c, aes(x = time, 
-              y = estimate, 
-              ymax = conf.high, 
+ggplot(c, aes(x = age,
+              y = estimate,
+              ymax = conf.high,
               ymin = conf.low)) +
-  geom_ribbon(fill = "grey80") + 
+  geom_ribbon(fill = "grey80") +
   geom_line()
 ```
 
@@ -126,11 +120,17 @@ Take-home handout that summarizes all the content from the workshop. This docume
 
 1. It should cover the conceptual and mathematical ideas from the lecture, but in somewhat greater detail. Something like two pages of text seems about right, excluding large equations, figures, and tables.
 1. It should include the two examples worked out in detail. In Quarto, it's easy to mix the prose, code, equations, and figures, so use those features to clearly explain the concepts and software. Make sure to focus on the important points---it's easy to make pages and pages of relatively unimportant code and output. The length of this section will depend heavily on the nature of the examples, but each example should load and inspect data, fit models, compute quantities of interest, and plot the quantities of interest.
-1. It should include a few references in case participants want to learn more. For each references, write a few words about why participants might use that resource.
+1. It should include a few references in case participants want to learn more. For each reference, write a few words about why participants might use that resource.
 
 ## Time and Place
 
-I want to students to take the lead on choosing the exact time and place for the workshop and a rehearsal, reserving the space, and recruiting participants (e.g., first-year PhD students, other PhD students, RIBC students, students from other departments, etc.). We want about 10 participants of similar background. 
+I want students to take the lead on choosing the exact time and place for the workshop and a rehearsal, reserving the space, and recruiting participants (e.g., first-year PhD students, other PhD students, RIBC students, students from other departments, etc.). We want about 10 participants of similar background. 
+
+## Extra Credit for Participants
+
+RIBC students will be offered extra credit in their course for attending a workshop. FSU has no university-wide rule about extra credit, but two policies shape how we offer it. The University Attendance Policy requires that excused absences be accommodated "in a way that does not arbitrarily penalize students who have a valid written excuse," and a course's grading statement is fixed once its syllabus is published, so extra credit must be available on the same terms to every student in that course. In practice, an extra-credit opportunity tied to attending an event outside class time has to come with an equivalent alternative for students who cannot attend.
+
+So each team must design an alternative assignment that a student who cannot attend your workshop can complete instead. It should take about as much effort as attending (roughly an hour) and rely only on your take-home handout---for example, working through your second example from the handout and submitting the code and a short write-up. Describe the alternative assignment at the end of your handout and include it with your drafts of all materials.
 
 ## Suggested Workshop Structure
 
@@ -142,10 +142,12 @@ I want to students to take the lead on choosing the exact time and place for the
 
 ## Scaffolding, Due Dates, and Weights
 
-- **Oct. 21**: *Initial outline* (10%). Sketch out the take-home handout. Have 2-3 ideas for examples. Summarize the material you plan to include (and, implicitly, exclude). Graded as pass/fall.
-- **Oct. 28**: *Submit drafts of all materials* (25%). Read-ahead document, slides, and take-home handout. Graded using rubric below (where applicable).
-- **Nov. 04**: *Rehearsal* (15%). Before class on Nov. 5, arrange for a rehearsal of your workshop. I suggest recruiting some or all of your classmates. Graded as pass/fail.
-- **Nov. 25**: *Workshop* (50%). Give your workshop before Thanksgiving break, ideally between Nov. 05 and Nov. 19. Graded using rubric below.
+The percentages below are shares of the workshop component, which is 15% of the course grade.
+
+- **Oct. 19**: *Initial outline* (10%). Sketch out the take-home handout. Have 2-3 ideas for examples. Summarize the material you plan to include (and, implicitly, exclude). Graded as pass/fail.
+- **Oct. 26**: *Submit drafts of all materials* (25%). Read-ahead document, slides, and take-home handout. Graded using rubric below (where applicable).
+- **Nov. 09**: *Rehearsal* (15%). Before class on Nov. 10, arrange for a rehearsal of your workshop. I suggest recruiting some or all of your classmates. Graded as pass/fail.
+- **Nov. 24**: *Workshop* (50%). Give your workshop before Thanksgiving break, ideally between Nov. 10 and Nov. 24. Graded using rubric below.
 
 ## Workshop Rubric
 
@@ -158,6 +160,14 @@ The rubric below characterizes an excellent (100% credit), acceptable (80%), and
 | **Materials (Read-Ahead, Slides, Handout)** | Read-ahead is short, engaging, and practical. Slides emphasize big ideas and visuals. Handout is reproducible, integrates text/code/figures/references, and works as a standalone resource. | Materials are present but uneven (too long read-ahead, overly dense slides, incomplete or cluttered handout). Some reproducibility issues. | Materials missing, incoherent, or cannot be followed independently. |
 | **Delivery** | Workshop stays on time and follows structure. Delivery is confident, clear, and interactive. Live coding is smooth with backup plan. Audience is engaged and participates. | Delivery understandable but uneven (rushed, monotone, or overly technical). Some interaction but limited engagement. Minor coding/timing issues. | Workshop disorganized, unclear, or off schedule. Little to no interaction. Technical failures derail session. |
 | **Professionalism** | Teamwork is balanced. Materials are polished and proofed. Overall presentation mirrors professional standards (conference/job talk quality). | Teamwork uneven or materials lack polish (typos, sloppy figures, unclear code). Still functional overall. | One person carries the work or team uncoordinated. Materials unprofessional, incomplete, or sloppy. |
+
+## AI
+
+AI is always allowed, but you **must declare any use of AI tools** that shaped the work. See more [here](annotated-ajps-ai-policy.qmd).
+
+For the workshop, AI is even *encouraged* for review and error checking. However, you are **responsible for the content** and **must declare usage**. In this course, we will borrow *AJPS*'s policy, which I have [posted and annotated](annotated-ajps-ai-policy.qmd). This annotated policy describes precisely what "responsible for the content" and "must declare usage" mean.
+
+Document your AI usage in a single consolidated statement at the end of the **take-home handout**, covering how the team used AI in developing *each* workshop component (read-ahead document, slides, both examples, and the handout itself). If you used no AI, say so ("No AI tools were used.").
 
 ## Comments on Tools
 

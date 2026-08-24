@@ -148,7 +148,11 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <span class="menu-text">Workshop</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./syllabus.pdf"> 
+    <a class="nav-link" href="./assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
 </ul>
@@ -177,9 +181,11 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
   <li><a href="#a-take-home-handout" id="toc-a-take-home-handout" class="nav-link" data-scroll-target="#a-take-home-handout">A Take-Home Handout</a></li>
   </ul></li>
   <li><a href="#time-and-place" id="toc-time-and-place" class="nav-link" data-scroll-target="#time-and-place">Time and Place</a></li>
+  <li><a href="#extra-credit-for-participants" id="toc-extra-credit-for-participants" class="nav-link" data-scroll-target="#extra-credit-for-participants">Extra Credit for Participants</a></li>
   <li><a href="#suggested-workshop-structure" id="toc-suggested-workshop-structure" class="nav-link" data-scroll-target="#suggested-workshop-structure">Suggested Workshop Structure</a></li>
   <li><a href="#scaffolding-due-dates-and-weights" id="toc-scaffolding-due-dates-and-weights" class="nav-link" data-scroll-target="#scaffolding-due-dates-and-weights">Scaffolding, Due Dates, and Weights</a></li>
   <li><a href="#workshop-rubric" id="toc-workshop-rubric" class="nav-link" data-scroll-target="#workshop-rubric">Workshop Rubric</a></li>
+  <li><a href="#ai" id="toc-ai" class="nav-link" data-scroll-target="#ai">AI</a></li>
   <li><a href="#comments-on-tools" id="toc-comments-on-tools" class="nav-link" data-scroll-target="#comments-on-tools">Comments on Tools</a></li>
   <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
   </ul>
@@ -210,7 +216,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 
 <p>Your task this semester: <em>design and run a 60-minute workshop on a particular statistical model.</em></p>
 <p>You will complete this task in (ideally) teams of two.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;If we have an odd number, I will likely want one team of three person rather than one person work alone, but we should discuss.</p></div></div><section id="why" class="level2">
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;If we have an odd number, I will likely want one team of three rather than one person working alone, but we should discuss.</p></div></div><section id="why" class="level2">
 <h2 class="anchored" data-anchor-id="why">Why?</h2>
 <p>I designed this project to help you develop as a researcher and teacher.</p>
 <ol type="1">
@@ -223,9 +229,10 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="topics">Topics</h2>
 <p>I suggest the following topics:</p>
 <ol type="1">
-<li>Modeling <strong>binary categorical outcomes</strong>.</li>
+<li>Modeling <strong>binary</strong> outcomes.</li>
 <li>Modeling <strong>unordered categorical</strong> outcomes.</li>
 <li>Modeling <strong>ordered categorical</strong> outcomes.</li>
+<li>Modeling <strong>count</strong> outcomes.</li>
 </ol>
 </section>
 <section id="materials" class="level2 page-columns page-full">
@@ -243,13 +250,13 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <pre><code>install.packages("devtools")
 devtools::install_github("carlislerainey/crdata")</code></pre>
 <p>Be aware that some students might use RStudio via Posit Cloud rather than locally.</p>
-<p>This document is not a substitute for the workshop. It is lightweight document that reduces friction and builds interest.</p>
+<p>This document is not a substitute for the workshop. It is a lightweight document that reduces friction and builds interest.</p>
 </section>
 <section id="slides" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="slides">Slides</h3>
 <p>A set of slides to show during the presentation.</p>
 <p>The slides should support a roughly 15-minute conceptual lecture portion of the workshop.</p>
-<p>The slides do not need to be comprehensive.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Perhaps 6-8 slides are enough. Use slides to emphasize the big ideas concepts or show visuals.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> (It’s fine to use an analog or digital chalkboard for portions of the lecture!)</p>
+<p>The slides do not need to be comprehensive.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Perhaps 6-8 slides are enough. Use slides to emphasize the big ideas or show visuals.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> (It’s fine to use an analog or digital chalkboard for portions of the lecture!)</p>
 <div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The take-home notes can include the supporting details.</p></div><div id="fn3"><p><sup>3</sup>&nbsp;Again, reserve complicated equations for handouts.</p></div></div></section>
 <section id="two-examples" class="level3">
 <h3 class="anchored" data-anchor-id="two-examples">Two Examples</h3>
@@ -259,73 +266,62 @@ devtools::install_github("carlislerainey/crdata")</code></pre>
 <li>Use the second example as a hands-on exercise for your participants. <em>Participants should be able to adapt the code from the first example here.</em></li>
 </ol>
 <p>Given that you only have a few minutes, these examples need to be <em>simple</em>.</p>
-<p>The bit below seems about right for the Cox model, for example. Regardless, it cannot be 300 lines of R code or 10+ commands. Fit, EV, and FD seems about right.</p>
-<p><strong>I want to replace this Cox PH model with a logit model.</strong></p>
+<p>The bit below seems about right for a logit model, for example. Regardless, it cannot be 300 lines of R code or 10+ commands. Fit, EV, and FD seems about right.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>cancer <span class="ot">&lt;-</span> survival<span class="sc">::</span>cancer <span class="sc">|&gt;</span> </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load data (install once with devtools::install_github("jrnold/ZeligData"))</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>turnout <span class="ot">&lt;-</span> ZeligData<span class="sc">::</span>turnout <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 228
-Columns: 10
-$ inst      &lt;dbl&gt; 3, 3, 3, 5, 1, 12, 7, 11, 1, 7, 6, 16, 11, 21, 12, 1, 22, 16…
-$ time      &lt;dbl&gt; 306, 455, 1010, 210, 883, 1022, 310, 361, 218, 166, 170, 654…
-$ status    &lt;dbl&gt; 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, …
-$ age       &lt;dbl&gt; 74, 68, 56, 57, 60, 74, 68, 71, 53, 61, 57, 68, 68, 60, 57, …
-$ sex       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1, …
-$ ph.ecog   &lt;dbl&gt; 1, 0, 0, 1, 0, 1, 2, 2, 1, 2, 1, 2, 1, NA, 1, 1, 1, 2, 2, 1,…
-$ ph.karno  &lt;dbl&gt; 90, 90, 90, 90, 100, 50, 70, 60, 70, 70, 80, 70, 90, 60, 80,…
-$ pat.karno &lt;dbl&gt; 100, 90, 90, 60, 90, 80, 60, 80, 80, 70, 80, 70, 90, 70, 70,…
-$ meal.cal  &lt;dbl&gt; 1175, 1225, NA, 1150, NA, 513, 384, 538, 825, 271, 1025, NA,…
-$ wt.loss   &lt;dbl&gt; NA, 15, 15, 11, 0, 0, 10, 1, 16, 34, 27, 23, 5, 32, 60, 15, …</code></pre>
+<pre><code>Rows: 2,000
+Columns: 5
+$ race    &lt;fct&gt; white, white, white, white, white, white, white, white, white,…
+$ age     &lt;int&gt; 60, 51, 24, 38, 25, 67, 40, 56, 32, 75, 46, 52, 22, 60, 24, 30…
+$ educate &lt;dbl&gt; 14, 10, 12, 8, 12, 12, 12, 10, 12, 16, 15, 12, 12, 12, 14, 10,…
+$ income  &lt;dbl&gt; 3.3458, 1.8561, 0.6304, 3.4183, 2.7852, 2.3866, 4.2857, 9.3205…
+$ vote    &lt;int&gt; 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,…</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit cox model</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">Surv</span>(time, status) <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> pat.karno</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">coxph</span>(f, <span class="at">data =</span> cancer)</span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit logit model</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> vote <span class="sc">~</span> age <span class="sc">+</span> educate <span class="sc">+</span> income <span class="sc">+</span> race</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">data =</span> turnout, <span class="at">family =</span> binomial)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = f, data = cancer)
+<pre><code>
+Call:
+glm(formula = f, family = binomial, data = turnout)
 
-  n= 225, number of events= 162 
-   (3 observations deleted due to missingness)
-
-               coef exp(coef)  se(coef)      z Pr(&gt;|z|)    
-age        0.011793  1.011863  0.009331  1.264 0.206269    
-sex       -0.519262  0.594959  0.168967 -3.073 0.002118 ** 
-pat.karno -0.019061  0.981120  0.005638 -3.381 0.000722 ***
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -3.034261   0.325959  -9.309  &lt; 2e-16 ***
+age          0.028354   0.003461   8.193 2.54e-16 ***
+educate      0.175634   0.020333   8.638  &lt; 2e-16 ***
+income       0.177112   0.027158   6.521 6.96e-11 ***
+racewhite    0.250798   0.146466   1.712   0.0868 .  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-          exp(coef) exp(-coef) lower .95 upper .95
-age          1.0119     0.9883    0.9935    1.0305
-sex          0.5950     1.6808    0.4272    0.8285
-pat.karno    0.9811     1.0192    0.9703    0.9920
+(Dispersion parameter for binomial family taken to be 1)
 
-Concordance= 0.639  (se = 0.025 )
-Likelihood ratio test= 24.33  on 3 df,   p=2e-05
-Wald test            = 23.72  on 3 df,   p=3e-05
-Score (logrank) test = 24.23  on 3 df,   p=2e-05</code></pre>
+    Null deviance: 2266.7  on 1999  degrees of freedom
+Residual deviance: 2024.0  on 1995  degrees of freedom
+AIC: 2034
+
+Number of Fisher Scoring iterations: 5</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate predictions</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate predictions: expected value across age, other variables at mean or mode</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predictions</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  fit, </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">time =</span> unique, <span class="at">pat.karno =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>)), </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>),</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"survival"</span>  <span class="co"># &lt;---- this is important!</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p, <span class="fu">aes</span>(<span class="at">x =</span> time, </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> estimate, </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymax =</span> conf.high, </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymin =</span> conf.low)) <span class="sc">+</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span> </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(pat.karno))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  fit,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">age =</span> unique, <span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p, <span class="fu">aes</span>(<span class="at">x =</span> age,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> estimate,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymax =</span> conf.high,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymin =</span> conf.low)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -333,19 +329,18 @@ Score (logrank) test = 24.23  on 3 df,   p=2e-05</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate comparisons</span></span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate comparisons: first difference as educate moves from 12 to 16 years</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">comparisons</span>(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  fit,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">pat.karno =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>)), </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">time =</span> unique),</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"survival"</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(c, <span class="fu">aes</span>(<span class="at">x =</span> time, </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> estimate, </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymax =</span> conf.high, </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymin =</span> conf.low)) <span class="sc">+</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span> </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">educate =</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">16</span>)),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">age =</span> unique, <span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(c, <span class="fu">aes</span>(<span class="at">x =</span> age,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> estimate,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymax =</span> conf.high,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymin =</span> conf.low)) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -361,13 +356,18 @@ Score (logrank) test = 24.23  on 3 df,   p=2e-05</code></pre>
 <ol type="1">
 <li>It should cover the conceptual and mathematical ideas from the lecture, but in somewhat greater detail. Something like two pages of text seems about right, excluding large equations, figures, and tables.</li>
 <li>It should include the two examples worked out in detail. In Quarto, it’s easy to mix the prose, code, equations, and figures, so use those features to clearly explain the concepts and software. Make sure to focus on the important points—it’s easy to make pages and pages of relatively unimportant code and output. The length of this section will depend heavily on the nature of the examples, but each example should load and inspect data, fit models, compute quantities of interest, and plot the quantities of interest.</li>
-<li>It should include a few references in case participants want to learn more. For each references, write a few words about why participants might use that resource.</li>
+<li>It should include a few references in case participants want to learn more. For each reference, write a few words about why participants might use that resource.</li>
 </ol>
 </section>
 </section>
 <section id="time-and-place" class="level2">
 <h2 class="anchored" data-anchor-id="time-and-place">Time and Place</h2>
-<p>I want to students to take the lead on choosing the exact time and place for the workshop and a rehearsal, reserving the space, and recruiting participants (e.g., first-year PhD students, other PhD students, RIBC students, students from other departments, etc.). We want about 10 participants of similar background.</p>
+<p>I want students to take the lead on choosing the exact time and place for the workshop and a rehearsal, reserving the space, and recruiting participants (e.g., first-year PhD students, other PhD students, RIBC students, students from other departments, etc.). We want about 10 participants of similar background.</p>
+</section>
+<section id="extra-credit-for-participants" class="level2">
+<h2 class="anchored" data-anchor-id="extra-credit-for-participants">Extra Credit for Participants</h2>
+<p>RIBC students will be offered extra credit in their course for attending a workshop. FSU has no university-wide rule about extra credit, but two policies shape how we offer it. The University Attendance Policy requires that excused absences be accommodated “in a way that does not arbitrarily penalize students who have a valid written excuse,” and a course’s grading statement is fixed once its syllabus is published, so extra credit must be available on the same terms to every student in that course. In practice, an extra-credit opportunity tied to attending an event outside class time has to come with an equivalent alternative for students who cannot attend.</p>
+<p>So each team must design an alternative assignment that a student who cannot attend your workshop can complete instead. It should take about as much effort as attending (roughly an hour) and rely only on your take-home handout—for example, working through your second example from the handout and submitting the code and a short write-up. Describe the alternative assignment at the end of your handout and include it with your drafts of all materials.</p>
 </section>
 <section id="suggested-workshop-structure" class="level2">
 <h2 class="anchored" data-anchor-id="suggested-workshop-structure">Suggested Workshop Structure</h2>
@@ -381,11 +381,12 @@ Score (logrank) test = 24.23  on 3 df,   p=2e-05</code></pre>
 </section>
 <section id="scaffolding-due-dates-and-weights" class="level2">
 <h2 class="anchored" data-anchor-id="scaffolding-due-dates-and-weights">Scaffolding, Due Dates, and Weights</h2>
+<p>The percentages below are shares of the workshop component, which is 15% of the course grade.</p>
 <ul>
-<li><strong>Oct.&nbsp;21</strong>: <em>Initial outline</em> (10%). Sketch out the take-home handout. Have 2-3 ideas for examples. Summarize the material you plan to include (and, implicitly, exclude). Graded as pass/fall.</li>
-<li><strong>Oct.&nbsp;28</strong>: <em>Submit drafts of all materials</em> (25%). Read-ahead document, slides, and take-home handout. Graded using rubric below (where applicable).</li>
-<li><strong>Nov.&nbsp;04</strong>: <em>Rehearsal</em> (15%). Before class on Nov.&nbsp;5, arrange for a rehearsal of your workshop. I suggest recruiting some or all of your classmates. Graded as pass/fail.</li>
-<li><strong>Nov.&nbsp;25</strong>: <em>Workshop</em> (50%). Give your workshop before Thanksgiving break, ideally between Nov.&nbsp;05 and Nov.&nbsp;19. Graded using rubric below.</li>
+<li><strong>Oct.&nbsp;19</strong>: <em>Initial outline</em> (10%). Sketch out the take-home handout. Have 2-3 ideas for examples. Summarize the material you plan to include (and, implicitly, exclude). Graded as pass/fail.</li>
+<li><strong>Oct.&nbsp;26</strong>: <em>Submit drafts of all materials</em> (25%). Read-ahead document, slides, and take-home handout. Graded using rubric below (where applicable).</li>
+<li><strong>Nov.&nbsp;09</strong>: <em>Rehearsal</em> (15%). Before class on Nov.&nbsp;10, arrange for a rehearsal of your workshop. I suggest recruiting some or all of your classmates. Graded as pass/fail.</li>
+<li><strong>Nov.&nbsp;24</strong>: <em>Workshop</em> (50%). Give your workshop before Thanksgiving break, ideally between Nov.&nbsp;10 and Nov.&nbsp;24. Graded using rubric below.</li>
 </ul>
 </section>
 <section id="workshop-rubric" class="level2">
@@ -439,6 +440,12 @@ Score (logrank) test = 24.23  on 3 df,   p=2e-05</code></pre>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="ai" class="level2">
+<h2 class="anchored" data-anchor-id="ai">AI</h2>
+<p>AI is always allowed, but you <strong>must declare any use of AI tools</strong> that shaped the work. See more <a href="./annotated-ajps-ai-policy.html">here</a>.</p>
+<p>For the workshop, AI is even <em>encouraged</em> for review and error checking. However, you are <strong>responsible for the content</strong> and <strong>must declare usage</strong>. In this course, we will borrow <em>AJPS</em>’s policy, which I have <a href="./annotated-ajps-ai-policy.html">posted and annotated</a>. This annotated policy describes precisely what “responsible for the content” and “must declare usage” mean.</p>
+<p>Document your AI usage in a single consolidated statement at the end of the <strong>take-home handout</strong>, covering how the team used AI in developing <em>each</em> workshop component (read-ahead document, slides, both examples, and the handout itself). If you used no AI, say so (“No AI tools were used.”).</p>
 </section>
 <section id="comments-on-tools" class="level2">
 <h2 class="anchored" data-anchor-id="comments-on-tools">Comments on Tools</h2>

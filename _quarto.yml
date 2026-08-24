@@ -4,7 +4,6 @@ project:
   render:
     - "*.qmd"
     - "!slides/"
-    - "!slides-dev/"
 
 execute:
   freeze: auto
@@ -23,7 +22,9 @@ website:
         text: Research Project
       - href: workshop.qmd
         text: Workshop
-      - href: syllabus.pdf
+      - href: assessments.qmd
+        text: Assessments
+      - href: https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view
         text: Syllabus
 
 format:
@@ -34,16 +35,25 @@ format:
     toc: true
     
 resources:
-  - syllabus.pdf
   - exr/
   - files/
-  # slides/ is the FROZEN published snapshot — the only slide content that
-  # reaches the site. Working decks live in slides-dev/ and are deliberately
-  # unpublished; a revision goes live only when it is promoted into slides/
-  # (see slides-dev/README.md). Never point this at slides-dev/.
+  # slides/ is the working slide tree (Keynote sources + exported decks +
+  # material folders). Only the exported artifacts are published; the
+  # exclusions below keep sources, machinery, and unrevised decks off the
+  # site. The entry MUST stay in glob form (slides/**): a bare directory
+  # entry is copied wholesale and every "!" exclusion is silently ignored.
   - "slides/**"
+  - "!slides/_src/**"
   - "!slides/README.md"
+  - "!slides/CLAUDE.md"
+  - "!slides/Makefile"
+  - "!slides/future-slides/**"
+  - "!slides/**/*.key"
+  - "!slides/**/*-material/**"
+  - "!slides/**/*-materials/**"
   - "!slides/**/.DS_Store"
+  - "!slides/**/.stamp/**"
+  - "!slides/**/.notes-audit/**"
   - data/
 
 

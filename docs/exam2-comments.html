@@ -143,7 +143,11 @@ window.Quarto = {
 <span class="menu-text">Workshop</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./syllabus.pdf"> 
+    <a class="nav-link" href="./assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
 </ul>
@@ -163,7 +167,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#models" id="toc-models" class="nav-link active" data-scroll-target="#models">Models</a></li>
-  <li><a href="#quantitities-of-interest" id="toc-quantitities-of-interest" class="nav-link" data-scroll-target="#quantitities-of-interest">Quantitities of interest</a></li>
+  <li><a href="#quantities-of-interest" id="toc-quantities-of-interest" class="nav-link" data-scroll-target="#quantities-of-interest">Quantities of interest</a></li>
   <li><a href="#applications-of-hierarchical-models" id="toc-applications-of-hierarchical-models" class="nav-link" data-scroll-target="#applications-of-hierarchical-models">Applications of Hierarchical Models</a></li>
   <li><a href="#potential-essay-questions" id="toc-potential-essay-questions" class="nav-link" data-scroll-target="#potential-essay-questions">Potential Essay Questions</a>
   <ul class="collapse">
@@ -198,9 +202,22 @@ window.Quarto = {
 </header>
 
 
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These are my notes for the <strong>Fall 2025</strong> final exam. They do not necessarily apply to the Fall 2026 exams.</p>
+</div>
+</div>
 <p>The exam will be cumulative, with something like a 70/30 balance toward newer material.</p>
 <p><strong>I made an important revision here:</strong> The exam will be about <strong>30% multiple choice</strong> and <strong>70% open ended questions</strong> of various types. I’m trying to allocate <strong>points</strong> and <strong>time</strong> so that it’s 30/70 between multiple choice and open ended. And among the multiple choice questions, many will focus on the older material from the Midterm exam.</p>
-<p>The questions range in difficult from quite easy to very challenging.</p>
+<p>The questions range in difficulty from quite easy to very challenging.</p>
 <p>In all cases, I try to follow the notes and exercises closely.</p>
 <hr>
 <p>Think of these comments as a “study guide.” As I noted at the beginning of the semester, the exam is based on the notes and exercises, but this document offers a “big picture” overview of the important themes. See especially the open-ended questions at the bottom.</p>
@@ -220,15 +237,15 @@ window.Quarto = {
 <li>Normal linear</li>
 <li>Logit</li>
 <li>Multinomial Logit (see my slides)</li>
-<li>Ordered Logit (see my sides)</li>
+<li>Ordered Logit (see my slides)</li>
 <li>Parametric duration models, especially exponential, log-normal, and Weibull. <em>(Cox PH not covered on exam.)</em></li>
 <li>Count models, including Poisson, NB, and ZINB.</li>
 <li>Hierarchical variants of the above.</li>
 </ol>
 <p>You should be comfortable with the simulate-and-recover exercise with each. It will probably be helpful to be familiar with the examples in the notes, slides, and exercises.</p>
 </section>
-<section id="quantitities-of-interest" class="level2">
-<h2 class="anchored" data-anchor-id="quantitities-of-interest">Quantitities of interest</h2>
+<section id="quantities-of-interest" class="level2">
+<h2 class="anchored" data-anchor-id="quantities-of-interest">Quantities of interest</h2>
 <p>We should be very familiar with <code>predictions()</code>, <code>comparisons()</code>, and <code>avg_comparisons()</code> in {marginaleffects} and very familiar with the quantities they compute.</p>
 <ul>
 <li>For a verbal description of a quantity of interest, you should be able to write the <code>predictions()</code>, <code>comparisons()</code>, or <code>avg_comparisons()</code> command to compute it.</li>
@@ -285,7 +302,7 @@ window.Quarto = {
 </section>
 <section id="testing-and-claims" class="level3">
 <h3 class="anchored" data-anchor-id="testing-and-claims">Testing and Claims</h3>
-<p>I like to say: “Only make a claim if the claim is hold for the entire confidence interval.”</p>
+<p>I like to say: “Only make a claim if the claim holds for the entire confidence interval.”</p>
 <p>Using the arguments from Rainey (2014) and McCaskey and Rainey (2015), give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two situations.</p>
 <p>Examples of common incorrect habits:</p>
 <ul>

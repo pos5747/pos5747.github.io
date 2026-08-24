@@ -1,91 +1,89 @@
 ---
 title: "Schedule"
-editor: 
-  markdown: 
+editor:
+  markdown:
     wrap: 72
 ---
 
+- Office hours: Mondays, 1:00–2:00 PM, Bellamy 540.
+- Our TA, Bryson Lyons, will hold office hours (time TBD) and an optional study/review session (time TBD).
 
-aug 27 · **review** · \[[slides](slides/wk01-slides.pdf)\]
+------------------------------------------------------------------------
+
+aug 25 · **review** · \[[slides](slides/wk01-slides.pdf)\]
 \[[notes](https://pos5747.github.io/notes/wk01/frac-exp-log.html)\]
-\[[solutions](exr/wk01-exr-sol.pdf)\] [fractions, logarithms, and exponents;
+\[[exercises](exr/wk01-exr.pdf)\] [fractions, logarithms, and exponents;
 calculus; matrices; probability theory]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 03 · **ml** · \[[slides](slides/wk02-slides.pdf)\]
-\[[notes](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html)\]
-\[[solutions](exr/wk02-exr-sol.pdf)\] [*maximum likelihood; invariance
+sep 01 · **ml** [*maximum likelihood; invariance
 principle; predictive distribution*]{.topics}
-
 
 ------------------------------------------------------------------------
 
-sep 10 · **se** · \[[slides](slides/wk03-slides.pdf)\] [[materials](files/wk03-r.qmd)] \[[notes](https://pos5747.github.io/notes/wk03/01-sampling-distribution.html)\] \[[solutions](exr/wk03-exr-sol.pdf)\] [sampling
+sep 08 · **se** [sampling
 distribution; parametric bootstrap; variance and standard error; delta
 method]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 17 · **X** · \[[slides](slides/wk04-slides.pdf)\] [[materials](files/wk04-r.qmd)] [[notes](https://pos5747.github.io/notes/wk04/01-design-matrix.html)] \[[solutions](exr/wk04-exr-sol.pdf)\] [adding covariates;
+sep 15 · **X** [adding covariates;
 logit models; expected value and first difference]{.topics}
-
 
 ------------------------------------------------------------------------
 
-sep 24 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\] [[materials](files/wk05-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk05/01-marginaleffects.html)] \[[solutions](exr/wk05-exr-sol.pdf)\]
+sep 22 · **{marginaleffects}**
 [{marginaleffects}; information criteria; zero inflation]{.topics}
 
 ------------------------------------------------------------------------
 
-oct 01 · **bayes** · [[slides](slides/wk06-slides.pdf)] [[materials](files/wk06-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk06/01-bayes.html)] [[solutions](exr/wk06-exr-sol.pdf)] [Bayesian
-inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics} [Due Oct. 1: prospectus for research paper.]{.remarks}
+sep 29 · **bayes** [Bayesian
+inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics} [Due Sep. 29: prospectus for research paper.]{.remarks}
 
 ------------------------------------------------------------------------
 
-oct 08 · **mcmc** · [[slides](slides/wk07-slides.pdf)] [[materials](files/wk07-r.qmd)]  [[notes](https://pos5747.github.io/notes/wk07/01-metrop.html)] [[solutions](exr/wk07-exr-sol.pdf)] [Metropolis
-algorithm; HMC + Stan and its R ecosystem]{.topics} 
+oct 06 · **mcmc** [Metropolis
+algorithm; HMC + Stan and its R ecosystem]{.topics}
 
 ------------------------------------------------------------------------
 
-oct 15 · [**midterm exam**]{.text-warning} 
+oct 13 · [**midterm exam**]{.text-warning}
 
 ------------------------------------------------------------------------
 
-oct 22 · **hierarchical models, 1** · [[slides](slides//wk09-wk11-slides/01-slides-hier.html)] [[solutions](exr/wk09-exr-sol.pdf)]
+oct 20 · **ai**
 [Due: (1) first draft of research paper due and (2) initial outline of
 take-home workshop handout.]{.remarks}
 
 ------------------------------------------------------------------------
 
-oct 29 · **hierarchical models, 2** · [[solutions](exr/wk10-exr-sol.pdf)] [Due: (1) peer-review memo and (2) first drafts of all workshop materials.]{.remarks}
+oct 27 · **hierarchical models, 1** [Due: (1) peer-review memo and (2) first drafts of all workshop materials.]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 05 · **irt** · [[slides](slides/wk09-wk11-slides/02-slides-irt.html)] [[solutions](exr/wk11-exr-sol.pdf)]
+nov 03 · **hierarchical models, 2**
 
 ------------------------------------------------------------------------
 
-nov 12 · **a final perspective** · [[ideal points slides](slides/wk09-wk11-slides/03-slides-ideal-points.html)] [[mrp slides](slides/wk09-wk11-slides/04-slides-mrp.html)] [[slides](slides/wk12-slides/testing.html)]
-[[solutions](exr/wk12-exr-sol.pdf)] [Due: workshop
+nov 10 · **irt** [Due: workshop
 rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 19 · **a final perspective, continued** · [[exercises](exr/wk13-exr.pdf)]
+nov 17 · **a final perspective**
 
 ------------------------------------------------------------------------
 
-nov 26 · [**thanksgiving break**]{.text-info}  
-[Due by Tuesday: **poster** and
-**second draft** of research paper.]{.text-warning}
+nov 24 · **wrap** [Due: **second
+draft** of research paper.]{.remarks}
 
 ------------------------------------------------------------------------
 
-dec 03 · **wrap/review** · [[ordered slides](slides/wk12-slides/ordered.html)] [[unordered slides](slides/wk12-slides/unordered.html)] [[interaction slides](slides/wk12-slides/interaction.html)] [[ATE slides](slides/wk12-slides/ate.pdf)] [Poster
-presentation this week.]{.remarks}
+dec 01 · **posters** [No class meeting; instead, poster presentations on
+the 5th floor of Bellamy from 9:45 to 11:30 AM.]{.remarks}
 
 ------------------------------------------------------------------------
 
-dec 10 · [**final exam**]{.text-warning} [[comments](exam2-comments.qmd)]
-[Due: Final draft of research paper.]{.remarks}
+dec 08 · [**final exam**]{.text-warning} [9:00–11:30 AM in Bellamy 113,
+our usual meeting time. Due: final draft of research paper.]{.remarks}
