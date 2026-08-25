@@ -127,7 +127,7 @@ one thing connecting a deck to its sources. Rules:
 ## Style
 
 - Text: Source Sans 3 · Code: Menlo 24 · Mock annotations: Marker Felt
-  (Thin) · Math: tgpagella (via `_src/eqn-preamble.tex`).
+  (Thin) · Math: Latin Modern (via `_src/eqn-preamble.tex`).
 - Colors: Set1 — red `#e41a1c`, blue `#377eb8`, green `#4daf4a`; in code:
   comments red, keywords blue, strings green.
 - Transitions: none by default; Magic Move when it earns it.

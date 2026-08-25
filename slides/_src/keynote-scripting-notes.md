@@ -50,22 +50,46 @@ scratchpad copy when unzipping. Deck updates are Carlisle's, by hand.
 Caveat to remember: text items inside **groups** may not be enumerated by
 `text items of slide` — don't group code boxes, or the audit may miss them.
 
-## Three launch/targeting traps (all hit live, 2026-07-22)
+## Which Keynote to target (corrected 2026-08-24)
 
-1. **The impostor app.** A Mac App Store app, "Keynote Creator
-   Studio.app", is installed alongside Apple's Keynote and **spoofs the
-   bundle identifier `com.apple.Keynote`** (its executable is even named
-   `Keynote`). `tell application "Keynote"` and
-   `tell application id "com.apple.Keynote"` both resolve to it, and events
-   hang or fail. Apple's real Keynote is `com.apple.iWork.Keynote` — always
-   target that id.
-2. **Sandboxed opens.** Apple-event `open (POSIX file ...)` silently
+**Target `com.apple.Keynote`.** That is Apple's current Keynote.
+
+⚠️ **This entry previously said the opposite, and the error was costly.** It
+claimed a Mac App Store app named "Keynote Creator Studio.app" was an
+impostor spoofing `com.apple.Keynote`, and told the reader to target
+`com.apple.iWork.Keynote` instead. That is wrong. Acting on it in August 2026
+led to a legitimate Apple app being called malware, two decks being closed
+without saving, and the *old* Keynote being deleted.
+
+What actually happened: in February 2026 Apple folded iWork into **Apple
+Creator Studio** and unified the Mac bundle identifiers onto the iOS ones,
+dropping the `iWork` segment. So:
+
+| | Bundle id | Installed as | Status |
+|---|---|---|---|
+| Keynote 15+ | `com.apple.Keynote` | `/Applications/Keynote Creator Studio.app` | **current** |
+| Keynote 14.x | `com.apple.iWork.Keynote` | `/Applications/Keynote.app` | legacy, pulled from the App Store |
+
+Both are Apple. They differ in code-signing Team ID (`JCRTNEU7GK` for
+Creator Studio, `74J34U3R6X` for the legacy app), and **that difference is
+not evidence of anything** — it is what misled the 2026-07-22 note. The
+reliable checks are the App Store receipt at
+`Contents/_MASReceipt/receipt` and `spctl -a -vv` reporting
+`source=Mac App Store`.
+
+Both apps can be installed side by side, and while they are, `.key` files
+may open in either. If a script must be certain, target the bundle id, not
+the name — the executable inside both bundles is called `Keynote`.
+
+## Two remaining launch traps (hit live, 2026-07-22)
+
+1. **Sandboxed opens.** Apple-event `open (POSIX file ...)` silently
    returns `missing value` for some paths (observed for
    `~/Library/CloudStorage/Dropbox/...` and `/private/tmp/...`). Launch the
-   file via LaunchServices instead — `open -b com.apple.iWork.Keynote
-   <deck>` grants access like a Finder double-click — then find the open
-   document by `name` from AppleScript.
-3. **Auto-termination.** A window-less Keynote is auto-terminated by macOS
+   file via LaunchServices instead — `open -b com.apple.Keynote <deck>`
+   grants access like a Finder double-click — then find the open document by
+   `name` from AppleScript.
+2. **Auto-termination.** A window-less Keynote is auto-terminated by macOS
    between osascript calls, producing "Connection is invalid (-609)". Open
    the document first (a window keeps it alive) and do all work in one
    osascript run.

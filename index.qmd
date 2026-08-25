@@ -62,12 +62,12 @@ oct 27 · **hierarchical models, 1** [Due: (1) peer-review memo and (2) first dr
 
 ------------------------------------------------------------------------
 
-nov 03 · **hierarchical models, 2**
+nov 03 · **hierarchical models, 2** [Due: workshop
+rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 10 · **irt** [Due: workshop
-rehearsal]{.remarks}
+nov 10 · **irt**
 
 ------------------------------------------------------------------------
 
