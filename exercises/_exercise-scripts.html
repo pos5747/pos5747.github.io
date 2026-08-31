@@ -1,0 +1,58 @@
+<!-- Injected at the end of every exercise page (see _metadata.yml).
+     Two jobs: keep the countdown in the release notice current, and, when
+     `solution-gate: browser` is in force, open the solution panels the moment
+     the release time arrives. Under the default `render` gate there is
+     nothing on the page to open, so the reveal half simply finds nothing. -->
+<script>
+(function () {
+  var notice = document.querySelector(".ex-notice-wait");
+  var pending = Array.prototype.slice.call(
+    document.querySelectorAll(".ex-slot.ex-pending")
+  );
+  if (!notice && !pending.length) return;
+
+  var iso = (notice || pending[0]).getAttribute("data-unlock");
+  var unlock = new Date(iso);
+  if (isNaN(unlock)) return;
+
+  var readout = notice ? notice.querySelector(".ex-countdown") : null;
+
+  function remaining(ms) {
+    var mins = Math.floor(ms / 60000);
+    var days = Math.floor(mins / 1440);
+    var hours = Math.floor((mins % 1440) / 60);
+    if (days >= 1) {
+      return days + (days === 1 ? " day, " : " days, ") +
+             hours + (hours === 1 ? " hour" : " hours");
+    }
+    if (hours >= 1) {
+      var m = mins % 60;
+      return hours + (hours === 1 ? " hour, " : " hours, ") +
+             m + (m === 1 ? " minute" : " minutes");
+    }
+    return mins + (mins === 1 ? " minute" : " minutes");
+  }
+
+  function release() {
+    pending.forEach(function (slot) {
+      slot.classList.remove("ex-pending");
+    });
+    if (notice) {
+      notice.classList.remove("ex-notice-wait");
+      notice.classList.add("ex-notice-open");
+      notice.textContent = pending.length
+        ? "Complete solutions are available. Work each exercise before you open one."
+        : "Complete solutions are due to be posted — reload in a little while.";
+    }
+  }
+
+  function tick() {
+    var left = unlock - new Date();
+    if (left <= 0) { release(); return; }
+    if (readout) readout.textContent = remaining(left);
+    setTimeout(tick, left < 3600000 ? 30000 : 600000);
+  }
+
+  tick();
+})();
+</script>

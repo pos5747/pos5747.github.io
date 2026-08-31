@@ -1,12 +1,65 @@
--old/
-.DS_Store
-.Rproj.user
-.quarto
-slides/*/figs/.stamp/
-slides/*/Rplots.pdf
-slides/*/equations/*.aux
-slides/*/.notes-audit/
-slides/_src/__pycache__/
+# ============================================================================
+# Deny by default.  Only the website's own source and the rendered site are
+# tracked.  Everything else -- the exercise method files, the per-week build
+# directories, Keynote sources, unrevised decks, render caches -- stays in
+# Dropbox and out of the repo.
+#
+# How it works: line 1 ignores every file; line 2 keeps git descending into
+# directories so the `!` re-includes below can still match.  Nothing is
+# tracked unless a rule below names it.  Last matching rule wins, so the
+# blanket exclusions at the bottom override the re-includes above them.
+#
+# The one hazard: a NEW KIND of build input is silently untracked until it is
+# added here.  If you add, say, a font or a second .lua filter, add it below.
+# The test is that `make site` works from a fresh clone.
+#
+# Adding a week needs no edits: wkNN-exercises.qmd and wkNN-slides.pdf are
+# picked up automatically, and exercises/wkNN/ and wkNN-slides.key are
+# ignored automatically.
+# ============================================================================
 
+# --- 1. ignore everything, but keep descending into directories ------------
+*
+!*/
+
+# --- 2. the rendered site, and the freeze cache it is built from -----------
+!/docs/**
+!/_freeze/**
+
+# --- 3. page sources -------------------------------------------------------
+!/*.qmd
+!/exercises/*.qmd
+!/files/*.qmd
+
+# --- 4. project and format configuration -----------------------------------
+!/_quarto.yml
+!/exercises/_metadata.yml
+!/.gitignore
+!/.quartoignore
+!/5747website.Rproj
+
+# --- 5. the site's own assets ----------------------------------------------
+!/styles.css
+!/references.bib
+!/exercises/exercises.css
+!/exercises/exercises.lua
+!/exercises/_exercise-scripts.html
+
+# --- 6. static resources copied verbatim into docs/ ------------------------
+#        (these are the `resources:` entries in _quarto.yml -- without them a
+#        clone renders a site with the PDFs and data files missing)
+!/exr/**
+!/files/**
+!/data/**
+!/slides/*.pdf
+!/slides/*.html
+!/slides/*_files/**
+
+# --- 7. directories git should not even walk -------------------------------
+/-old/
 /.quarto/
-CLAUDE.md
+/.Rproj.user/
+/slides/future-slides/
+
+# --- 8. junk the re-includes above would otherwise catch -------------------
+.DS_Store

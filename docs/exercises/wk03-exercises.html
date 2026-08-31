@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 3 Exercises – Modern Statistical Modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7ad6542725e80d1433b1f8ee26c2a1fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZV1MJ9E632"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="exercises.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Modern Statistical Modeling</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://pos5747.github.io/notes/"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research-project.html"> 
+<span class="menu-text">Research Project</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../workshop.html"> 
+<span class="menu-text">Workshop</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Exercises</h2>
+   
+  <ul class="collapse">
+  <li><a href="#sampling-distributions-and-the-bootstrap" id="toc-sampling-distributions-and-the-bootstrap" class="nav-link active" data-scroll-target="#sampling-distributions-and-the-bootstrap">Sampling Distributions and the Bootstrap</a>
+  <ul class="collapse">
+  <li><a href="#ex-1" id="toc-ex-1" class="nav-link" data-scroll-target="#ex-1"><span class="ex-num">Exercise 1</span> Defining the Sampling Distribution</a></li>
+  <li><a href="#ex-2" id="toc-ex-2" class="nav-link" data-scroll-target="#ex-2"><span class="ex-num">Exercise 2</span> SD of the Bernoulli Estimator</a></li>
+  <li><a href="#ex-3" id="toc-ex-3" class="nav-link" data-scroll-target="#ex-3"><span class="ex-num">Exercise 3</span> Does the Odds Transform Preserve Unbiasedness?</a></li>
+  <li><a href="#ex-4" id="toc-ex-4" class="nav-link" data-scroll-target="#ex-4"><span class="ex-num">Exercise 4</span> Bias versus Standard Error</a></li>
+  <li><a href="#ex-5" id="toc-ex-5" class="nav-link" data-scroll-target="#ex-5"><span class="ex-num">Exercise 5</span> Steps of the Parametric Bootstrap</a></li>
+  </ul></li>
+  <li><a href="#fisher-information" id="toc-fisher-information" class="nav-link" data-scroll-target="#fisher-information">Fisher Information</a>
+  <ul class="collapse">
+  <li><a href="#ex-6" id="toc-ex-6" class="nav-link" data-scroll-target="#ex-6"><span class="ex-num">Exercise 6</span> Observed Information to Standard Errors</a></li>
+  <li><a href="#ex-7" id="toc-ex-7" class="nav-link" data-scroll-target="#ex-7"><span class="ex-num">Exercise 7</span> Hessian to Covariance Matrix</a></li>
+  <li><a href="#ex-8" id="toc-ex-8" class="nav-link" data-scroll-target="#ex-8"><span class="ex-num">Exercise 8</span> The Wald Interval Formula</a></li>
+  </ul></li>
+  <li><a href="#the-delta-method" id="toc-the-delta-method" class="nav-link" data-scroll-target="#the-delta-method">The Delta Method</a>
+  <ul class="collapse">
+  <li><a href="#ex-9" id="toc-ex-9" class="nav-link" data-scroll-target="#ex-9"><span class="ex-num">Exercise 9</span> The Delta-Method Variance Formula</a></li>
+  <li><a href="#ex-10" id="toc-ex-10" class="nav-link" data-scroll-target="#ex-10"><span class="ex-num">Exercise 10</span> Gradient of a Ratio</a></li>
+  </ul></li>
+  <li><a href="#bias-and-precision" id="toc-bias-and-precision" class="nav-link" data-scroll-target="#bias-and-precision">Bias and Precision</a>
+  <ul class="collapse">
+  <li><a href="#ex-11" id="toc-ex-11" class="nav-link" data-scroll-target="#ex-11"><span class="ex-num">Exercise 11</span> Average versus Median</a></li>
+  <li><a href="#ex-12" id="toc-ex-12" class="nav-link" data-scroll-target="#ex-12"><span class="ex-num">Exercise 12</span> One Unbiased, One Biased</a></li>
+  </ul></li>
+  <li><a href="#standard-errors-in-practice" id="toc-standard-errors-in-practice" class="nav-link" data-scroll-target="#standard-errors-in-practice">Standard Errors in Practice</a>
+  <ul class="collapse">
+  <li><a href="#ex-13" id="toc-ex-13" class="nav-link" data-scroll-target="#ex-13"><span class="ex-num">Exercise 13</span> The Poisson Standard Error</a></li>
+  <li><a href="#ex-14" id="toc-ex-14" class="nav-link" data-scroll-target="#ex-14"><span class="ex-num">Exercise 14</span> The Bogotá Operations Mismatch</a></li>
+  <li><a href="#ex-15" id="toc-ex-15" class="nav-link" data-scroll-target="#ex-15"><span class="ex-num">Exercise 15</span> Exponential SE via the Delta Method</a></li>
+  <li><a href="#ex-16" id="toc-ex-16" class="nav-link" data-scroll-target="#ex-16"><span class="ex-num">Exercise 16</span> SE of a Ratio by Hand</a></li>
+  <li><a href="#ex-17" id="toc-ex-17" class="nav-link" data-scroll-target="#ex-17"><span class="ex-num">Exercise 17</span> The 2024 Turnout Bootstrap</a></li>
+  </ul></li>
+  <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together">Putting It Together</a>
+  <ul class="collapse">
+  <li><a href="#ex-18" id="toc-ex-18" class="nav-link" data-scroll-target="#ex-18"><span class="ex-num">Exercise 18</span> Two Intervals at a Rare-Event Boundary</a></li>
+  <li><a href="#ex-19" id="toc-ex-19" class="nav-link" data-scroll-target="#ex-19"><span class="ex-num">Exercise 19</span> Comparing Models of Coalition Duration</a></li>
+  <li><a href="#ex-20" id="toc-ex-20" class="nav-link" data-scroll-target="#ex-20"><span class="ex-num">Exercise 20</span> German Tank Problem</a></li>
+  </ul></li>
+  <li><a href="#extra-practice" id="toc-extra-practice" class="nav-link" data-scroll-target="#extra-practice">Extra Practice</a>
+  <ul class="collapse">
+  <li><a href="#extra-1" id="toc-extra-1" class="nav-link" data-scroll-target="#extra-1"><span class="ex-num">Extra Practice 1</span> Checking the Asymptotic Normal by Simulation</a></li>
+  <li><a href="#extra-2" id="toc-extra-2" class="nav-link" data-scroll-target="#extra-2"><span class="ex-num">Extra Practice 2</span> SD of a Fitted Beta Model</a></li>
+  <li><a href="#extra-3" id="toc-extra-3" class="nav-link" data-scroll-target="#extra-3"><span class="ex-num">Extra Practice 3</span> Negative Binomial for Bogotá</a></li>
+  <li><a href="#extra-4" id="toc-extra-4" class="nav-link" data-scroll-target="#extra-4"><span class="ex-num">Extra Practice 4</span> Fitting the Weibull Yourself</a></li>
+  <li><a href="#extra-5" id="toc-extra-5" class="nav-link" data-scroll-target="#extra-5"><span class="ex-num">Extra Practice 5</span> Bootstrap SEs for the Shape Parameters</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 3 Exercises</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="ex-notice ex-notice-wait" data-unlock="2026-09-11T12:00:00-04:00">Complete solutions open <strong>Friday, September 11 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<p>These exercises practice the ideas in the week’s notes: <a href="https://pos5747.github.io/notes/wk03/01-sampling-distribution.html">the sampling distribution</a>, <a href="https://pos5747.github.io/notes/wk03/02-parametric-bootstrap.html">the parametric bootstrap</a>, <a href="https://pos5747.github.io/notes/wk03/03-fisher-information-matrix.html">the Fisher information matrix</a>, <a href="https://pos5747.github.io/notes/wk03/04-delta-method.html">the delta method</a>, and <a href="https://pos5747.github.io/notes/wk03/05-evaluating-cis.html">evaluating confidence intervals</a>. Read the notes first; the exercises assume them.</p>
+<p>Do all the exercises below. The Extra Practice problems at the end are optional: they’re there if you want another repetition of a particular skill, and each one says which required exercise it pairs with.</p>
+<p>Several exercises ask you to write down a prediction before running code. No one checks these predictions. You’ll just learn more if you commit to a guess before you peek.</p>
+<p>If you jot down roughly how long each exercise took you, send it my way. I use it to size future sets, and right now I’m mostly guessing.</p>
+<section id="sampling-distributions-and-the-bootstrap" class="level1 ex-section">
+<h1 class="ex-section">Sampling Distributions and the Bootstrap</h1>
+<section id="ex-1" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Defining the Sampling Distribution</h2>
+<ol type="a">
+<li>In your own words, state what a sampling distribution is.</li>
+<li>The notes give two uses for the sampling distribution. Name both.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The sampling distribution chapter states this definition explicitly, in one sentence, in the paragraph right before the heading “Example: The Toothpaste Cap Problem.” Find that sentence and put it in your own words, rather than reconstructing a definition from the simulation that follows it.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>The sampling distribution chapter’s “Bias” section opens by asking how the sampling distribution actually gets used, then answers with a two-item numbered list. Read that list and name the two uses in your own words, not the notes’ phrasing.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-2" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> SD of the Bernoulli Estimator</h2>
+<p>For a Bernoulli sample of size <span class="math inline">\(n\)</span> with true parameter <span class="math inline">\(\pi\)</span>, <span class="math inline">\(\hat\pi = \operatorname{avg}(y)\)</span>.</p>
+<ol type="a">
+<li>Write the general formula for <span class="math inline">\(\text{SD}(\hat\pi)\)</span> — the SD of <span class="math inline">\(\hat\pi\)</span>’s sampling distribution.</li>
+<li>For <span class="math inline">\(N = 150\)</span> and <span class="math inline">\(\pi = 0.05\)</span>, compute the number.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p><span class="math inline">\(\hat\pi = \operatorname{avg}(y)\)</span> is the mean of <span class="math inline">\(n\)</span> independent Bernoulli(<span class="math inline">\(\pi\)</span>) draws. Turning <span class="math inline">\(\text{Var}(y_i)\)</span> into <span class="math inline">\(\text{Var}(\hat\pi)\)</span> takes two variance rules: one for summing independent variables, one for multiplying by a constant. The sampling distribution chapter applies both to this exact model, as its own worked example right after the definition of standard error. Open it and match its steps to your <span class="math inline">\(y_i\)</span>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b), self-check</span></summary><div class="ex-reveal-body">
+<p>Once you have a number for part (b), check it by simulation instead of trusting the arithmetic alone. But supply your own value first, so the code can only tell you whether the two agree, not what either one is.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>bsd_hint_my_answer <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co"># replace NA with your part (b) answer</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(<span class="fu">sd</span>(<span class="fu">replicate</span>(<span class="dv">10000</span>, <span class="fu">mean</span>(<span class="fu">rbinom</span>(<span class="dv">150</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.05</span>)))) <span class="sc">-</span> bsd_hint_my_answer) <span class="sc">&lt;</span> <span class="fl">0.005</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fill in <code>bsd_hint_my_answer</code> and run it. <code>TRUE</code> means your value agrees with the simulation within Monte Carlo noise.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-3" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Does the Odds Transform Preserve Unbiasedness?</h2>
+<p><span class="math inline">\(\hat\pi\)</span> is unbiased for <span class="math inline">\(\pi\)</span>: <span class="math inline">\(E(\hat\pi) = \pi\)</span>. Is <span class="math inline">\(\hat\pi/(1-\hat\pi)\)</span> unbiased for the odds <span class="math inline">\(\pi/(1-\pi)\)</span>? Answer in one sentence, and say why.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p><span class="math inline">\(E(a\hat\pi + b) = aE(\hat\pi) + b\)</span> for constants <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>: expectation distributes over addition and scalar multiplication. Does it distribute over division the same way? Write out <span class="math inline">\(E\!\left(\hat\pi/(1-\hat\pi)\right)\)</span> and try the same term-by-term move you’d use on <span class="math inline">\(a\hat\pi + b\)</span> to find out.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>The Bernoulli bias example under the notes’ “Bias” heading sets up exactly this transformation for the toothpaste-cap problem (<span class="math inline">\(N = 150\)</span>, <span class="math inline">\(\pi = 0.05\)</span>): it simulates <span class="math inline">\(\hat\pi\)</span> many times, forms <span class="math inline">\(\hat\pi/(1-\hat\pi)\)</span> on each draw, and compares the simulated average to the true odds <span class="math inline">\(\pi/(1-\pi)\)</span>. Work through that comparison (on paper, or by running the chapter’s code) to check the conclusion you reached above.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-4" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Bias versus Standard Error</h2>
+<p>The notes give bias and the standard error separate definitions, both properties of <span class="math inline">\(\hat{\theta}\)</span>’s sampling distribution. State the difference in one sentence each:</p>
+<ol type="a">
+<li>What does it mean for <span class="math inline">\(\hat{\theta}\)</span> to be biased?</li>
+<li>What does the standard error of <span class="math inline">\(\hat{\theta}\)</span> measure?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The notes give bias and the standard error their own sections, each with a labeled definition box: one under the Bias heading, one under the Standard Error heading. Reread the box for each term and write your own one-sentence version of it rather than quoting it directly: the exercise is checking that you can restate the idea, not that you can find it.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Once you’ve drafted sentences for (a) and (b), try swapping them: read your (a) sentence as if it were answering (b), and vice versa. If either one still sounds like a reasonable description of the other property, it isn’t specific enough yet. Revise it so it only fits the definition it’s paraphrasing.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-5" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Steps of the Parametric Bootstrap</h2>
+<p>In your own words, state the four steps of the parametric bootstrap algorithm from the notes’ chapter on the parametric bootstrap. Answer in one sentence per step.</p>
+<ol type="a">
+<li>What do you need before you start — the algorithm’s inputs?</li>
+<li>What’s the first thing you compute, using just the observed data?</li>
+<li>What happens once, for each of the <span class="math inline">\(B\)</span> replicates <span class="math inline">\(b = 1, \dots, B\)</span>?</li>
+<li>Once you have all <span class="math inline">\(B\)</span> replicate values, what do you do with them?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The chapter on the parametric bootstrap sets its steps off in a box labeled “Algorithm: Parametric Bootstrap Estimator,” right after the callout note comparing the parametric bootstrap to its nonparametric alternative. That box numbers on two levels: an outer list, and, inside one of its items, an inner list of the actions that happen together on a single pass. Match each part below to one outer item: the item that contains the inner list is still just one of them.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check for part (c)</span></summary><div class="ex-reveal-body">
+<p>Self-check: once you’ve drafted your sentence for part (c), reread the first sub-item under the b-loop in the algorithm box (the one carrying a footnote) and compare it to what you wrote. If your sentence has the algorithm resampling the observed data points instead, that’s the nonparametric bootstrap. Revise your sentence to match what that sub-item says instead.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+</section>
+<section id="fisher-information" class="level1 ex-section">
+<h1 class="ex-section">Fisher Information</h1>
+<section id="ex-6" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Observed Information to Standard Errors</h2>
+<p>Here is an observed information matrix for a two-parameter model, evaluated at <span class="math inline">\(\hat\theta = (\hat\theta_1, \hat\theta_2)\)</span>:</p>
+<p><span class="math display">\[
+\mathcal{I}_{\text{obs}}(\hat\theta) = \begin{bmatrix} 5 &amp; 1 \\ 1 &amp; 2 \end{bmatrix}
+\]</span></p>
+<p>By hand:</p>
+<ol type="a">
+<li>Find <span class="math inline">\(\widehat{\text{SE}}(\hat\theta_1)\)</span>.</li>
+<li>Find <span class="math inline">\(\widehat{\text{SE}}(\hat\theta_2)\)</span>.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>The Fisher information chapter’s section on more than two parameters writes out this same problem for a general <span class="math inline">\(k \times k\)</span> matrix. It shows exactly what gets inverted, and in what order, to reach <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span>. Line up your <span class="math inline">\(2\times2\)</span> case against that pattern before doing any arithmetic on <span class="math inline">\(\mathcal{I}_{\text{obs}}(\hat\theta)\)</span>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>The notes never spell out how to invert a <span class="math inline">\(2\times2\)</span> matrix by hand, so here is the rule: for <span class="math inline">\(\begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}\)</span>, the inverse is <span class="math inline">\(\dfrac{1}{ad-bc}\begin{bmatrix} d &amp; -b \\ -c &amp; a \end{bmatrix}\)</span>. In words: swap the two diagonal entries, negate the two off-diagonal entries, and divide the result by the determinant <span class="math inline">\(ad-bc\)</span>. Apply that to <span class="math inline">\(\mathcal{I}_{\text{obs}}(\hat\theta)\)</span> to get <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span>.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-7" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Hessian to Covariance Matrix</h2>
+<p>You’ve fit a model with <code>optim(par, fn, control = list(fnscale = -1), hessian = TRUE)</code>, where <code>fn</code> returns the log-likelihood <span class="math inline">\(\ell(\theta)\)</span>, not its negative, and the result is stored in <code>est</code>. Write the one line of R that turns <code>est$hessian</code> into <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span>, the estimated covariance matrix of <span class="math inline">\(\hat\theta\)</span>.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>You already know from the call in the prompt that <code>fn</code> computes <span class="math inline">\(\ell(\theta)\)</span> directly, not <span class="math inline">\(-\ell(\theta)\)</span>: <code>fnscale = -1</code> only tells <code>optim()</code> how to treat that value internally while it searches. The beta-model walkthrough in the Fisher information chapter builds a call structured exactly like yours, <code>optim(..., control = list(fnscale = -1), hessian = TRUE)</code>, and the numbered comment on that <code>hessian = TRUE</code> line settles what the returned <code>hessian</code> is a Hessian <em>of</em>. Reread that comment before you decide what has to happen to <code>est$hessian</code> on the way to a covariance matrix.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>A covariance matrix cannot have negative diagonal entries. Fit any model with <code>optim(..., hessian = TRUE)</code>, apply your candidate line, and check <code>diag()</code> of the result: non-negative entries confirm the sign is resolved, a negative entry means it isn’t.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-8" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> The Wald Interval Formula</h2>
+<p>Write the general formula for a Wald confidence interval on a scalar parameter <span class="math inline">\(\hat\theta\)</span> estimated by maximum likelihood.</p>
+<ol type="a">
+<li>The 90% interval.</li>
+<li>The 95% interval.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The Fisher information chapter has a section right after it finishes the general variance-matrix formula for several parameters (titled “From Curvature to Wald Confidence Intervals”) that works out this exact interval: a scalar parameter estimated by maximum likelihood, at 90% and 95%. Open that section and adapt what’s there to your own notation.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Once you’ve written both intervals, check your critical values independently of the notes: a two-sided interval splits its leftover probability evenly between the two tails, so the tail probability you hand to R’s <code>qnorm()</code> isn’t your confidence level itself.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tail probability = 1 - (1 - confidence level) / 2</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.95</span>)    <span class="co"># should match your critical value for part (a)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.975</span>)   <span class="co"># should match your critical value for part (b)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+</section>
+<section id="the-delta-method" class="level1 ex-section">
+<h1 class="ex-section">The Delta Method</h1>
+<section id="ex-9" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> The Delta-Method Variance Formula</h2>
+<p>In the one-parameter case, write the delta-method approximation for <span class="math inline">\(\widehat{\operatorname{Var}}[\tau(\hat\theta)]\)</span> in terms of <span class="math inline">\(\tau'(\hat\theta)\)</span> and <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span>.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The chapter builds this exact one-parameter result from a first-order Taylor expansion of <span class="math inline">\(\tau\)</span> around <span class="math inline">\(\hat\theta\)</span>, in the discussion right before the worked examples that follow (the Bernoulli odds, the Poisson SD, and the beta mean). Which classic rule for the variance of a linear transformation does that expansion invoke? Reread that discussion and use the rule it names to fix the form of your answer.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>A variance can never be negative, no matter the sign of <span class="math inline">\(\tau'(\hat\theta)\)</span>. Plenty of transformations <span class="math inline">\(\tau\)</span> are decreasing, which makes <span class="math inline">\(\tau'(\hat\theta)\)</span> negative. Take your candidate formula and ask whether it could go negative for such a <span class="math inline">\(\tau\)</span>, given that <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span> itself is never negative. A linear (unsquared) power on <span class="math inline">\(\tau'(\hat\theta)\)</span> can flip the sign of the whole expression, so any candidate built that way cannot be right.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-10" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> Gradient of a Ratio</h2>
+<p>Let <span class="math inline">\(\tau(a, b) = \dfrac{a}{a+b}\)</span> — the same ratio form as the beta mean in the notes, but with generic <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> in place of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.</p>
+<ol type="a">
+<li>Find <span class="math inline">\(\dfrac{\partial \tau}{\partial a}\)</span> and <span class="math inline">\(\dfrac{\partial \tau}{\partial b}\)</span>.</li>
+<li>Assemble your two partials into the gradient <span class="math inline">\(\nabla \tau(a, b)\)</span>.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The delta-method chapter uses <span class="math inline">\(\nabla\tau(\hat\theta)\)</span> throughout but never restates the calculus rule for differentiating a ratio, so it’s worth having on hand: for <span class="math inline">\(\tau = u/v\)</span>, <span class="math inline">\(\dfrac{\partial \tau}{\partial x} = \dfrac{u'v - uv'}{v^2}\)</span>, where <span class="math inline">\(u'\)</span> and <span class="math inline">\(v'\)</span> are the derivatives of <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> with respect to <span class="math inline">\(x\)</span>. Set <span class="math inline">\(u = a\)</span> and <span class="math inline">\(v = a+b\)</span>, then apply the rule twice: once differentiating with respect to <span class="math inline">\(a\)</span> with <span class="math inline">\(b\)</span> held fixed, once differentiating with respect to <span class="math inline">\(b\)</span> with <span class="math inline">\(a\)</span> held fixed.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Once you have both partials, check them numerically rather than eyeballing the signs. <code>numDeriv::grad()</code> (the delta-method chapter’s own numerical-gradient section uses it the same way) nudges each argument of a function and reports how the output moves, giving you a numerical gradient to compare against your analytic one.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gr_hint_tau <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> theta[<span class="dv">2</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  a <span class="sc">/</span> (a <span class="sc">+</span> b)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>gr_hint_point <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="dv">7</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>numDeriv<span class="sc">::</span><span class="fu">grad</span>(gr_hint_tau, gr_hint_point)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># now evaluate your own d/da and d/db formulas at gr_hint_point and compare</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+</section>
+<section id="bias-and-precision" class="level1 ex-section">
+<h1 class="ex-section">Bias and Precision</h1>
+<section id="ex-11" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-11"><span class="ex-num">Exercise 11</span> Average versus Median</h2>
+<ol type="a">
+<li><p>Suppose you plan to sample <span class="math inline">\(N\)</span> observations from a normal distribution and use the sample to estimate the center of the distribution. You are choosing between two estimators: the sample average <span class="math inline">\(\operatorname{avg}(y)\)</span> and the sample median. Before you run anything, predict which of the two has the smaller SE, and explain why using a mechanism — not a guess, and not “because a simulation shows it.”</p></li>
+<li><p>Check your prediction with a Monte Carlo simulation. Choose a sample size <span class="math inline">\(N\)</span>, a mean <span class="math inline">\(\mu\)</span>, and an SD <span class="math inline">\(\sigma\)</span>; choose a number of simulated samples, and set a seed. For each simulated sample of size <span class="math inline">\(N\)</span> drawn from a normal(<span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span>) distribution, compute <span class="math inline">\(\operatorname{avg}(y)\)</span> and the median. Treat the SD of the resulting averages across simulations as a Monte Carlo estimate of the SE of <span class="math inline">\(\operatorname{avg}(y)\)</span>, and do the same for the median. Report both estimated SEs and their ratio. Does the ratio match your prediction in (a)?</p></li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The notes define the SE as simply the standard deviation of the sampling distribution, and the normal-model example works out <span class="math inline">\(\text{Var}[\operatorname{avg}(y)] = \sigma^2/N\)</span> because <span class="math inline">\(\operatorname{avg}(y)\)</span> can be written as the explicit sum <span class="math inline">\(\frac{1}{N}\sum_{i=1}^N y_i\)</span>, to which the variance-of-independent-sum rule applies term by term. Can you write the sample median as that same kind of explicit weighted sum of <span class="math inline">\(y_1, \dots, y_N\)</span>? Write both estimators as explicit formulas in the data before you commit to a prediction, and build your explanation from that comparison.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b), self-check</span></summary><div class="ex-reveal-body">
+<p>The sampling-distribution chapter’s Standard Error section already runs this exact workflow in its “Example: Exponential Model”: loop over many simulated samples, recompute the estimator on each one, and take the SD of the resulting vector as the simulated SE. It does this for a case where the SE has no clean closed form. Adapt that loop by drawing from <code>rnorm()</code> and computing both <code>mean()</code> and <code>median()</code> inside each iteration. Once you have a simulated SE for <span class="math inline">\(\operatorname{avg}(y)\)</span>, compare it to <span class="math inline">\(\sigma/\sqrt{N}\)</span> using the <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span>, and <span class="math inline">\(N\)</span> you chose, since the notes show this is the exact SE of <span class="math inline">\(\operatorname{avg}(y)\)</span> for a normal model. A mismatch there means a bug to chase down before you trust the ratio.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-12" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-12"><span class="ex-num">Exercise 12</span> One Unbiased, One Biased</h2>
+<p>Let <span class="math inline">\(X_1, \dots, X_N\)</span> be an iid sample from an exponential distribution with rate <span class="math inline">\(\lambda\)</span>, so <span class="math inline">\(E(X) = 1/\lambda\)</span>. Define the population mean <span class="math inline">\(\mu = 1/\lambda\)</span>, estimated by <span class="math inline">\(\hat\mu = \operatorname{avg}(x)\)</span>, and recall from Week 2’s exercise “The Exponential Model” that the ML estimate of the rate is <span class="math inline">\(\hat\lambda = 1/\operatorname{avg}(x)\)</span>.</p>
+<ol type="a">
+<li>Show that <span class="math inline">\(\hat\mu = \operatorname{avg}(x)\)</span> is unbiased for <span class="math inline">\(\mu\)</span>.</li>
+<li>Show that <span class="math inline">\(\hat\lambda = 1/\operatorname{avg}(x)\)</span> is biased for <span class="math inline">\(\lambda\)</span>, and say whether it over- or underestimates <span class="math inline">\(\lambda\)</span> on average.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The notes’ definition of bias says <span class="math inline">\(\hat\theta\)</span> is unbiased exactly when <span class="math inline">\(E(\hat\theta) = \theta\)</span>, not merely close to it. Write <span class="math inline">\(\operatorname{avg}(x)\)</span> as <span class="math inline">\(\frac{1}{N}\sum_{i=1}^N X_i\)</span>, take the expectation of that sum directly, and use the fact that expectation is linear and every <span class="math inline">\(X_i\)</span> shares the same expectation as <span class="math inline">\(X\)</span>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>Part (a)’s trick relied on <span class="math inline">\(g(t) = t\)</span> being linear, so the expectation passed straight through the sum. <span class="math inline">\(g(t) = 1/t\)</span> is not linear, so that trick does not carry over to <span class="math inline">\(\hat\lambda = 1/\operatorname{avg}(x)\)</span>. Check whether <span class="math inline">\(g(t) = 1/t\)</span> is convex or concave for <span class="math inline">\(t &gt; 0\)</span> by computing its second derivative, which determines which way Jensen’s inequality runs: for a convex <span class="math inline">\(g\)</span>, <span class="math inline">\(g(E[T]) \leq E[g(T)]\)</span>, and for a concave <span class="math inline">\(g\)</span> the inequality reverses. Apply whichever branch matches your check, with <span class="math inline">\(T = \operatorname{avg}(x)\)</span>.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+</section>
+<section id="standard-errors-in-practice" class="level1 ex-section">
+<h1 class="ex-section">Standard Errors in Practice</h1>
+<section id="ex-13" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-13"><span class="ex-num">Exercise 13</span> The Poisson Standard Error</h2>
+<p>Suppose <span class="math inline">\(y_1, \dots, y_N\)</span> are an iid sample from a Poisson model, <span class="math inline">\(f(y_i \mid \lambda) = \dfrac{\lambda^{y_i} e^{-\lambda}}{y_i!}\)</span> for <span class="math inline">\(y_i = 0, 1, 2, \dots\)</span>. Derive <span class="math inline">\(\widehat{\text{SE}}(\hat\lambda)\)</span> from the observed Fisher information, using the same steps as the exponential example in the notes.</p>
+<ol type="a">
+<li>Write the log-likelihood <span class="math inline">\(\ell(\lambda)\)</span> for the sample and find the score function <span class="math inline">\(\partial \ell(\lambda)/\partial \lambda\)</span>.</li>
+<li>Find the second derivative <span class="math inline">\(\partial^2 \ell(\lambda)/\partial \lambda^2\)</span>, and set the score to zero to solve for <span class="math inline">\(\hat\lambda\)</span>.</li>
+<li>Evaluate the second derivative at <span class="math inline">\(\hat\lambda\)</span> to get the observed information <span class="math inline">\(\mathcal I_{\text{obs}}(\hat\lambda)\)</span>, invert it, and take the square root to get <span class="math inline">\(\widehat{\text{SE}}(\hat\lambda)\)</span>.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>Two familiar log rules (the power rule and the product rule for logarithms) turn the product inside the Poisson pmf into a sum you can differentiate term by term. Apply both to <span class="math inline">\(\log\!\left(\lambda^{y_i}e^{-\lambda}/y_i!\right)\)</span> before summing over <span class="math inline">\(i\)</span>. One of the resulting three terms will not involve <span class="math inline">\(\lambda\)</span> at all.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p>Part (b) already gives you <span class="math inline">\(\sum_{i=1}^N y_i\)</span> written in terms of <span class="math inline">\(N\)</span> and <span class="math inline">\(\hat\lambda\)</span>. Substitute that expression into the second derivative before evaluating at <span class="math inline">\(\hat\lambda\)</span>, rather than evaluating with the raw sum still sitting in the formula.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-14" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-14"><span class="ex-num">Exercise 14</span> The Bogotá Operations Mismatch</h2>
+<p>In Week 2’s exercise “The SD the Model Implies,” you compared the Poisson model’s predictive SD to the sample SD for several cities’ enforcement-operations counts, and Bogotá’s numbers didn’t match. Here you work through Bogotá on its own, add a standard error, and pin down exactly what the mismatch is telling you.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>op_holland2015 <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>op_ops <span class="ot">&lt;-</span> op_holland2015<span class="sc">$</span>operations[op_holland2015<span class="sc">$</span>city <span class="sc">==</span> <span class="st">"bogota"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>op_ops</code> holds the 19 district-level operations counts for Bogotá.</p>
+<ol type="a">
+<li><p>Find the ML estimate <span class="math inline">\(\hat\lambda\)</span> of the Poisson rate, and its standard error <span class="math inline">\(\widehat{\text{SE}}(\hat\lambda)\)</span>, using the result you derived in <a href="#ex-13">Exercise 13</a>.</p></li>
+<li><p>Find the standard deviation the Poisson model implies for individual operations counts, and compare it to the sample SD of <code>op_ops</code>.</p></li>
+<li><p>Using the ratio of the sample variance to the sample mean, diagnose the mismatch: which structural assumption of the Poisson model do these data violate, and why can’t a single parameter <span class="math inline">\(\hat\lambda\)</span> satisfy both quantities at once?</p></li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>By the time you reach (b), you already have a number from (a): the standard error of <span class="math inline">\(\hat\lambda\)</span>, which measures how much the <em>estimate</em> would move if you redrew the sample of 19 districts. Is that the same thing as how spread out individual operations counts are under the model? The delta-method chapter’s “Poisson: From <span class="math inline">\(\lambda\)</span> to SD” section gives the population standard deviation of a Poisson variable in one line. Use <span class="math inline">\(\hat\lambda\)</span> in place of <span class="math inline">\(\lambda\)</span> there to get the quantity part (b) is asking for.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check for part (c)</span></summary><div class="ex-reveal-body">
+<p>If a Poisson model with your <span class="math inline">\(\hat\lambda\)</span> were exactly right for these data, the ratio of sample variance to sample mean should behave like a ratio computed from genuine Poisson draws of the same size: it should cluster near 1, with some sampling noise for <span class="math inline">\(N = 19\)</span>. Simulate many samples of that size from a Poisson(<span class="math inline">\(\hat\lambda\)</span>), compute the same ratio for each, and see where Bogotá’s actual ratio falls relative to that simulated spread.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate many samples of size N from Poisson(lambda_hat) and see where</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the real var/mean ratio falls among the simulated ratios</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>op_hint_lambda_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(op_ops)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>op_hint_n <span class="ot">&lt;-</span> <span class="fu">length</span>(op_ops)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>op_hint_n_sims <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>op_hint_ratios <span class="ot">&lt;-</span> <span class="fu">numeric</span>(op_hint_n_sims)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>op_hint_n_sims) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  op_hint_y <span class="ot">&lt;-</span> <span class="fu">rpois</span>(op_hint_n, op_hint_lambda_hat)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  op_hint_ratios[i] <span class="ot">&lt;-</span> <span class="fu">var</span>(op_hint_y) <span class="sc">/</span> <span class="fu">mean</span>(op_hint_y)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(op_hint_ratios)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-15" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-15"><span class="ex-num">Exercise 15</span> Exponential SE via the Delta Method</h2>
+<p>Return to the exponential model, <span class="math inline">\(f(y_i \mid \lambda) = \lambda \exp(-\lambda y_i)\)</span> for <span class="math inline">\(y_i \ge 0\)</span> and <span class="math inline">\(i = 1, \dots, N\)</span>. Week 2’s “The Exponential Model” found the ML estimate <span class="math inline">\(\hat\lambda = 1/\operatorname{avg}(y)\)</span>.</p>
+<ol type="a">
+<li>Derive <span class="math inline">\(\widehat{\text{SE}}(\hat\lambda)\)</span> from the observed Fisher information.</li>
+<li>The mean of the exponential distribution is <span class="math inline">\(\mu = 1/\lambda\)</span>. Use the delta method to derive <span class="math inline">\(\widehat{\text{SE}}(\hat\mu)\)</span>, and simplify your answer as far as it goes.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The Fisher information chapter’s “Approximations via asymptotics” callout is followed immediately by the general recipe for turning the curvature of a log-likelihood into a standard error, the same recipe you built in <a href="#ex-6">Exercise 6</a>. Differentiate the log-likelihood given above twice, then apply that recipe to your own second derivative.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>The delta method chapter states the general one-parameter formula before any of its worked examples (the same formula behind <a href="#ex-9">Exercise 9</a>), and its Poisson-to-SD example carries out the same differentiate-then-square maneuver for a different transformation of a rate parameter. Find <span class="math inline">\(\tau'(\lambda)\)</span> for <span class="math inline">\(\tau(\lambda) = 1/\lambda\)</span>, then combine it with your part (a) variance in that formula.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>The delta method chapter verifies its Poisson-to-SD result the same way: simulate many data sets from a known rate, recompute the estimate on each one, and compare the spread of those estimates to the closed-form SE. Do the same here for both <span class="math inline">\(\hat\lambda\)</span> and <span class="math inline">\(\hat\mu\)</span>, and confirm your two formulas track the simulated spread.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># self-check: simulated SE vs. your closed-form formulas</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>exp_se_delta_n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>exp_se_delta_lambda_true <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>exp_se_delta_n_sim <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>exp_se_delta_lambda_hats <span class="ot">&lt;-</span> <span class="fu">numeric</span>(exp_se_delta_n_sim)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>exp_se_delta_mu_hats <span class="ot">&lt;-</span> <span class="fu">numeric</span>(exp_se_delta_n_sim)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (exp_se_delta_s <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>exp_se_delta_n_sim) {</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  exp_se_delta_y <span class="ot">&lt;-</span> <span class="fu">rexp</span>(exp_se_delta_n, exp_se_delta_lambda_true)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  exp_se_delta_lambda_hats[exp_se_delta_s] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">mean</span>(exp_se_delta_y)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  exp_se_delta_mu_hats[exp_se_delta_s] <span class="ot">&lt;-</span> <span class="fu">mean</span>(exp_se_delta_y)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(exp_se_delta_lambda_hats)  <span class="co"># compare to your part (a) formula, evaluated near lambda_true</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(exp_se_delta_mu_hats)      <span class="co"># compare to your part (b) formula, evaluated near 1 / lambda_true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-16" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-16"><span class="ex-num">Exercise 16</span> SE of a Ratio by Hand</h2>
+<p>Take the fitted values and covariance matrix from the notes’ beta-model example: <span class="math inline">\(\hat\theta = (\hat a, \hat b) = (37.08, 114.93)\)</span> and</p>
+<p><span class="math display">\[
+\widehat{\operatorname{Var}}(\hat\theta) = \begin{bmatrix} 5.96 &amp; 18.41 \\ 18.41 &amp; 57.84 \end{bmatrix}.
+\]</span></p>
+<p>Here the quantity of interest is not the notes’ <span class="math inline">\(\mu = a/(a+b)\)</span> but the ratio <span class="math inline">\(\tau = a/b\)</span>, so relabel the fitted values <span class="math inline">\(\hat a\)</span> and <span class="math inline">\(\hat b\)</span> rather than <span class="math inline">\(\hat\alpha\)</span> and <span class="math inline">\(\hat\beta\)</span>.</p>
+<ol type="a">
+<li>Write <span class="math inline">\(\nabla\tau(\theta)\)</span> and evaluate it at <span class="math inline">\(\hat\theta\)</span>.</li>
+<li>Compute <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\tau)\)</span> by hand. Write out each of the four products in the sum, and identify the two that come from the off-diagonal entries of <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span>.</li>
+<li>Compute <span class="math inline">\(\widehat{\text{SE}}(\hat\tau)\)</span> from your answer to (b).</li>
+<li>Confirm (b) and (c) in R.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The fitted values and covariance matrix here are lifted from the notes’ beta-model example, but that chapter’s delta-method derivation is for a different <span class="math inline">\(\tau\)</span>. Two of its subsections carry out the same two moves you need: “The gradient” gives <span class="math inline">\(\partial\mu/\partial\alpha\)</span> and <span class="math inline">\(\partial\mu/\partial\beta\)</span> for <span class="math inline">\(\mu = \alpha/(\alpha+\beta)\)</span> without showing the derivation — apply the quotient rule yourself to get there — and “By hand” (under “The matrix algebra”) expands the resulting sandwich product term by term. Use their algebraic layout as a template, substituting <span class="math inline">\(\tau = a/b\)</span> for <span class="math inline">\(\mu = \alpha/(\alpha+\beta)\)</span>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For parts (b) and (c)</span></summary><div class="ex-reveal-body">
+<p>Because <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span> has a sizable off-diagonal entry and the gradient’s two components have opposite signs, the terms in this sum partially cancel, leaving a result much smaller in magnitude than any one of them. Carry at least three or four significant figures through the gradient and every product, rounding only at the very end. Rounding early can shift your final variance and SE by a double-digit percentage.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Once you have computed (b)-(c) by hand and confirmed them in R for part (d), the two should agree to two or three significant figures. If they don’t, check first whether you rounded the gradient or an intermediate product too early before you suspect your R code.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-17" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-17"><span class="ex-num">Exercise 17</span> The 2024 Turnout Bootstrap</h2>
+<p>State-level turnout among the voting-eligible population in the 2024 general election — one proportion per state, plus DC, 51 observations in all — is posted as a tibble in <a href="https://gist.github.com/carlislerainey/fda3b4eb7e95d50949a445d9ae7f02c8">this gist</a> (source: the <a href="https://election.lab.ufl.edu/2024-general-election-turnout/">UF Election Lab</a>). Read it in and treat the 51 turnout proportions as a sample from a beta distribution.</p>
+<p><strong>a.</strong> Fit the beta distribution by maximum likelihood, the way the notes do for the beta example: write the log-likelihood and hand it to <code>optim()</code>. Report <span class="math inline">\(\hat\alpha\)</span> and <span class="math inline">\(\hat\beta\)</span>, along with the implied mean <span class="math inline">\(\hat\mu = \hat\alpha / (\hat\alpha + \hat\beta)\)</span> and standard deviation <span class="math inline">\(\hat\sigma = \sqrt{\hat\alpha\hat\beta \big/ \big((\hat\alpha+\hat\beta)^2(\hat\alpha+\hat\beta+1)\big)}\)</span>.</p>
+<p><strong>b.</strong> Get a parametric-bootstrap standard error for <span class="math inline">\(\hat\mu\)</span> and for <span class="math inline">\(\hat\sigma\)</span>, using <span class="math inline">\(B = 2000\)</span> replicates — the same <span class="math inline">\(B\)</span> the notes use.</p>
+<p><strong>c.</strong> Some of your <span class="math inline">\(B\)</span> replicate fits will fail to converge. How many do, and what do you do about it?</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>“The beta example” names two things in this week’s chapters. The parametric bootstrap chapter fits a beta model by maximum likelihood as a warm-up before bootstrapping it. The Fisher information chapter fits a different beta model (Lahman batting averages) to get a Hessian-based covariance matrix instead: a different SE method entirely. Work from the parametric bootstrap chapter’s version: its log-likelihood function and <code>optim()</code> call carry over to <code>tb_turnout$vep_turnout</code> with only the data changed.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>The parametric bootstrap chapter’s beta example already bootstraps a derived quantity rather than <span class="math inline">\(\hat\alpha\)</span> and <span class="math inline">\(\hat\beta\)</span> themselves: its last code block computes the mean from each refit’s shape parameters before taking the <code>sd()</code> of that column. <span class="math inline">\(\hat\sigma\)</span> is a second derived quantity of the same kind: apply the formula from part (a) to each replicate’s fit instead of deriving a new one.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p><code>optim()</code>’s return value always carries a <code>$convergence</code> element. The Fisher information chapter’s beta-model function checks exactly this element and prints a warning whenever it is nonzero. Your part (b) loop already calls <code>optim()</code> on every replicate, so nothing needs refitting: pull that element off each replicate’s fit as you go and use it to find which ones failed.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+</section>
+<section id="putting-it-together" class="level1 ex-section">
+<h1 class="ex-section">Putting It Together</h1>
+<section id="ex-18" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-18"><span class="ex-num">Exercise 18</span> Two Intervals at a Rare-Event Boundary</h2>
+<p>You observe <span class="math inline">\(N = 20\)</span> independent Bernoulli trials and exactly one success.</p>
+<ol type="a">
+<li>Construct the 95% Wald confidence interval for <span class="math inline">\(\pi\)</span> from this sample. What do you notice about where the interval falls?</li>
+<li>Instead, construct a 95% confidence interval by parametric bootstrap: draw <span class="math inline">\(B = 2{,}000\)</span> bootstrap samples of size <span class="math inline">\(N = 20\)</span> from a Bernoulli(<span class="math inline">\(\hat\pi\)</span>) distribution, recompute <span class="math inline">\(\hat\pi^*\)</span> for each, and take the 2.5th and 97.5th percentiles of the <span class="math inline">\(\hat\pi^*\)</span> values. Compare where this interval falls to your answer in (a).</li>
+<li>Now check both interval methods by simulation, at two settings: <span class="math inline">\(\pi = .05, N = 20\)</span> and <span class="math inline">\(\pi = .10, N = 40\)</span>. For each setting, simulate a large number of studies — in each, draw a sample of size <span class="math inline">\(N\)</span> from Bernoulli(<span class="math inline">\(\pi\)</span>) and construct both intervals as in (a) and (b) — and report, for each interval method, the fraction of simulated studies that capture the true <span class="math inline">\(\pi\)</span>. Also report, at each setting, the frequency with which <span class="math inline">\(\hat\pi = 0\)</span>. Compare the two coverage rates to the nominal 95% rate and to each other, and explain why an interval that always stays inside <span class="math inline">\([0, 1]\)</span> does not necessarily cover <span class="math inline">\(\pi\)</span> at the nominal rate.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c): the nested loops</span></summary><div class="ex-reveal-body">
+<p>The natural approach to part (c) pastes together the notes’ coverage-simulation loop (the <em>Evaluating Confidence Intervals</em> chapter) and the notes’ parametric-bootstrap loop (the <em>Parametric Bootstrap</em> chapter). As written in each chapter, both loops count their iterations with the same variable, <code>i</code>. Nesting the bootstrap loop inside the coverage loop without renaming one of those counters means the inner loop finishes each pass with <code>i</code> sitting at its own last value, so the outer loop’s use of <code>i</code> to store that iteration’s result no longer tracks which outer iteration you’re on. Give the inner loop’s counter a name distinct from the outer loop’s before you nest it.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c): checking capture</span></summary><div class="ex-reveal-body">
+<p>The notes’ own coverage-simulation example (the <em>Evaluating Confidence Intervals</em> chapter) checks capture with strict inequalities: the lower bound compared with <code>&lt;</code> and the upper bound compared with <code>&gt;</code> against the known true value. That’s fine there because the quantity being intervalled is continuous, so a computed bound landing exactly on the true value is a negligible possibility. Here, <span class="math inline">\(\pi\)</span> itself lies on the grid of values <span class="math inline">\(\hat\pi\)</span> can take, so a bound landing exactly on <span class="math inline">\(\pi\)</span> is a real, checkable event for either interval method, not a coincidence to ignore. Check capture with closed inequalities (<code>&lt;=</code> on both sides), so a bound that lands exactly on <span class="math inline">\(\pi\)</span> counts as capturing it.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-19" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-19"><span class="ex-num">Exercise 19</span> Comparing Models of Coalition Duration</h2>
+<p>Cabinet coalitions in parliamentary democracies eventually break apart. The <code>coalition</code> data set in the <strong>brglm2</strong> package records how long each of <span class="math inline">\(N = 314\)</span> coalition governments lasted, in months, alongside several covariates; you’ll use only the duration.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brglm2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"coalition"</span>, <span class="at">package =</span> <span class="st">"brglm2"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>dc_y <span class="ot">&lt;-</span> coalition<span class="sc">$</span>duration</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Some background.</strong> When you model duration data, it helps to think in terms of the hazard: the instantaneous risk of a coalition ending at time <span class="math inline">\(t\)</span>, given that it has survived to <span class="math inline">\(t\)</span>.</p>
+<p>The <em>exponential</em> is the simplest choice. Its density is <span class="math inline">\(f(t \mid \lambda) = \lambda e^{-\lambda t}\)</span> for <span class="math inline">\(t &gt; 0\)</span>, its mean is <span class="math inline">\(\mathbb{E}[T] = 1/\lambda\)</span>, and its hazard is the constant <span class="math inline">\(h(t) = \lambda\)</span>: the risk of ending doesn’t depend on how long the coalition has already lasted.</p>
+<p>The <em>Weibull</em> generalizes the exponential by letting the hazard rise or fall with time; setting its shape parameter <span class="math inline">\(k = 1\)</span> recovers the exponential exactly, while <span class="math inline">\(k &gt; 1\)</span> gives a rising hazard and <span class="math inline">\(k &lt; 1\)</span> a falling one. Its mean is <span class="math inline">\(\mathbb{E}[T] = \lambda\,\Gamma(1 + 1/k)\)</span>.</p>
+<p>The <em>log-normal</em> instead assumes <span class="math inline">\(\log T \sim \mathcal{N}(\mu, \sigma^2)\)</span>. Its density is <span class="math inline">\(f(t \mid \mu, \sigma) = \dfrac{1}{t\sigma\sqrt{2\pi}}\exp\!\left(-\dfrac{(\log t - \mu)^2}{2\sigma^2}\right)\)</span> for <span class="math inline">\(t &gt; 0\)</span>, its mean is <span class="math inline">\(\mathbb{E}[T] = \exp(\mu + \sigma^2/2)\)</span>, and its hazard rises and then falls.</p>
+<p>You’ll fit the exponential and log-normal models by hand. Someone has already fit the Weibull for you and printed the result below — read it, don’t refit it.</p>
+<pre><code>Weibull fit (ML):
+  k-hat (shape)      1.138   SE 0.052   95% CI [1.037, 1.240]
+  lambda-hat (scale) 19.29
+  mean duration      18.410  SE 0.914
+  maximized log-lik  -1225.3
+  AIC                2454.6</code></pre>
+<p><strong>Part 1. Fit the exponential and log-normal models.</strong></p>
+<ol type="a">
+<li><p>Write the exponential log-likelihood <span class="math inline">\(\ell(\lambda)\)</span> for <code>dc_y</code>, and maximize it with <code>optim()</code>, requesting the Hessian. Report <span class="math inline">\(\hat\lambda\)</span>, its SE (invert the observed information, then take the square root), the maximized log-likelihood, and the AIC, where <span class="math inline">\(\text{AIC} = 2p - 2\,\ell(\hat\theta)\)</span> and <span class="math inline">\(p\)</span> is the number of parameters (smaller is better).</p></li>
+<li><p>The exponential’s mean is <span class="math inline">\(\tau(\lambda) = 1/\lambda\)</span>. Using the invariance property and the delta method, get the ML estimate of the mean duration and its SE.</p></li>
+<li><p>Write the log-normal log-likelihood <span class="math inline">\(\ell(\mu, \sigma)\)</span> for <code>dc_y</code> (use <code>dlnorm(dc_y, meanlog = mu, sdlog = sigma, log = TRUE)</code>), and maximize it with <code>optim()</code> over <span class="math inline">\((\mu, \sigma)\)</span>, requesting the Hessian. Report <span class="math inline">\(\hat\mu\)</span>, <span class="math inline">\(\hat\sigma\)</span>, their covariance matrix, the maximized log-likelihood, and the AIC.</p></li>
+<li><p>The log-normal’s mean is <span class="math inline">\(\tau(\mu, \sigma) = \exp(\mu + \sigma^2/2)\)</span>. Using the invariance property and the multi-parameter delta method, get the ML estimate of the mean duration and its SE.</p></li>
+</ol>
+<p><strong>Part 2. The classical estimate.</strong></p>
+<ol start="5" type="a">
+<li>Using <code>dc_y</code> directly, with no distributional assumption, compute <span class="math inline">\(\operatorname{avg}(y)\)</span> and its SE.</li>
+</ol>
+<p><strong>Part 3.</strong></p>
+<ol start="6" type="a">
+<li><p>Collect all four estimates of the mean duration (classical, exponential, Weibull, log-normal), each with its SE, and the AIC of the three fitted models, in one table.</p></li>
+<li><p>Which model does the AIC prefer? Which model’s estimate of the mean differs most from the other three? Are these the same model?</p></li>
+<li><p>What does that combination tell you about how much the fit statistics can help you decide which estimate of the mean to trust?</p></li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For parts (a) and (c): the optim() + Hessian pattern</span></summary><div class="ex-reveal-body">
+<p>The notes’ Fisher-information chapter fits a model this same way, using the beta model and batting-average data: a log-likelihood function built from the distribution’s <code>d*(..., log = TRUE)</code> values and a parameter vector <code>theta</code>, one call to <code>optim()</code> with <code>hessian = TRUE</code>, then a covariance matrix from inverting the observed information. Part (a)’s exponential is the one-parameter version of that recipe; part (c)’s log-normal is the two-parameter version. Read the “Beta model and <code>optim()</code>” section for the full pattern, including how <code>theta[1]</code> and <code>theta[2]</code> pull the two parameters out of the vector <code>optim()</code> optimizes over.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (d): the multi-parameter delta method</span></summary><div class="ex-reveal-body">
+<p>Part (d) needs the two-parameter version of the same delta-method formula you used in part (b), now applied to a gradient with two entries instead of one. The notes’ delta-method chapter builds exactly this in the Beta Example section for the beta model’s mean. See “The gradient” and “The matrix algebra” for how the general formula turns into R code once you have the gradient vector. Differentiate <span class="math inline">\(\tau(\mu,\sigma) = \exp(\mu + \sigma^2/2)\)</span> with respect to <span class="math inline">\(\mu\)</span> and then with respect to <span class="math inline">\(\sigma\)</span> to get the two entries of that vector.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check for parts (a), (b), and (e)</span></summary><div class="ex-reveal-body">
+<p>The notes’ exponential example notes that this model’s ML estimate has a closed form, <span class="math inline">\(\hat\lambda = 1/\operatorname{avg}(y)\)</span>: <code>optim()</code> in part (a) should converge to the same value you’d get from that one-line formula. That closed form also means part (b)’s mean estimate, <span class="math inline">\(1/\hat\lambda\)</span>, and part (e)’s classical mean, <span class="math inline">\(\operatorname{avg}(y)\)</span>, are two routes to the same number: they should agree to several decimal places. If they don’t, tighten <code>optim()</code>’s convergence tolerance or check your starting value in (a) before moving to (c) and (d).</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="ex-20" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-20"><span class="ex-num">Exercise 20</span> German Tank Problem</h2>
+<p>Week 2’s exercise “The Discrete Uniform” derived two estimators for a discrete uniform model and closed by noting that an estimator’s weaknesses aren’t visible from its formula alone — you find them by asking how the estimator behaves under repeated sampling. This exercise asks that question directly.</p>
+<p>Suppose <span class="math inline">\(y_1, \dots, y_N\)</span> are drawn independently from a discrete uniform distribution on <span class="math inline">\(\{0, 1, \dots, K\}\)</span>, with pmf <span class="math display">\[f(y; K) = \frac{1}{K+1}, \quad y \in \{0, 1, \dots, K\}.\]</span> The maximum-likelihood estimator is <span class="math inline">\(\hat K_{ML} = \max(y)\)</span>, and the method-of-moments estimator is <span class="math inline">\(\hat K_{MM} = 2 \cdot \operatorname{avg}(y)\)</span>.</p>
+<p><em>Note:</em> this model violates several of the usual regularity conditions, so the standard asymptotic guarantees for ML estimators do not apply here.</p>
+<ol type="a">
+<li>Choose a value of <span class="math inline">\(K\)</span>, and run a Monte Carlo simulation to find the bias and the variance of <span class="math inline">\(\hat K_{ML}\)</span> and of <span class="math inline">\(\hat K_{MM}\)</span> at a small (<span class="math inline">\(N = 3\)</span>), a medium (<span class="math inline">\(N = 25\)</span>), and a large (<span class="math inline">\(N = 1000\)</span>) sample size.</li>
+<li>In a single sentence, propose and defend a criterion for choosing between an estimator that is biased and one that is noisier but less biased, when you can report only one number.</li>
+<li>Compute your criterion for both estimators at all three sample sizes.</li>
+<li>State your recommendation.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The notes’ sampling-distribution chapter builds its Toothpaste Cap Problem sampling distribution the same way you’ll want to build yours here: a numeric container sized to the number of Monte Carlo replicates, and a <code>for</code> loop that draws one new data set per iteration and stores one number from it before moving to the next iteration. Set up that container-and-loop shell for the discrete uniform model described in this exercise, then run the whole thing separately for each of the three sample sizes named in the prompt.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a), the code</span></summary><div class="ex-reveal-body">
+<p>Inside that loop, one call to <code>sample()</code> draws a single data set from the discrete uniform on <span class="math inline">\(\{0, 1, \dots, K\}\)</span> described in the prompt. From that one drawn data set you can compute both <span class="math inline">\(\max(y)\)</span> and <span class="math inline">\(2 \cdot \operatorname{avg}(y)\)</span> before the loop moves to its next iteration. A skeleton:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gt_K <span class="ot">&lt;-</span> <span class="cn">NA</span>        <span class="co"># fill in: your chosen K</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gt_N <span class="ot">&lt;-</span> <span class="cn">NA</span>        <span class="co"># fill in: the sample size for this run</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>gt_n_sims <span class="ot">&lt;-</span> <span class="cn">NA</span>   <span class="co"># fill in: number of Monte Carlo replicates</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>gt_ml_est <span class="ot">&lt;-</span> <span class="fu">numeric</span>(gt_n_sims)  <span class="co"># container for hat K_ML</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>gt_mm_est <span class="ot">&lt;-</span> <span class="fu">numeric</span>(gt_n_sims)  <span class="co"># container for hat K_MM</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>gt_n_sims) {</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  gt_y <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span>gt_K, <span class="at">size =</span> gt_N, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  gt_ml_est[i] <span class="ot">&lt;-</span> <span class="fu">max</span>(gt_y)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  gt_mm_est[i] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">mean</span>(gt_y)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+</section>
+<section id="extra-practice" class="level1 ex-divider">
+<h1 class="ex-divider">Extra Practice</h1>
+<section id="extra-1" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-1"><span class="ex-num">Extra Practice 1</span> Checking the Asymptotic Normal by Simulation</h2>
+<p>This item pairs with <a href="#ex-15">Exercise 15</a> and repeats its use of the asymptotic-normality and asymptotic-variance theorems, but this time you check the theorem’s prediction against a simulated sampling distribution instead of deriving <span class="math inline">\(\widehat{\text{SE}}(\hat\lambda)\)</span> from the log-likelihood.</p>
+<p>Fix <span class="math inline">\(\lambda = 2\)</span> and <span class="math inline">\(N = 50\)</span> for an exponential model.</p>
+<ol type="a">
+<li>Simulate the sampling distribution of <span class="math inline">\(\hat\lambda = 1/\operatorname{avg}(y)\)</span>: draw a large number of samples of <span class="math inline">\(N\)</span> observations from <span class="math inline">\(\text{Exponential}(\lambda)\)</span>, compute <span class="math inline">\(\hat\lambda\)</span> for each sample, and report the simulated mean and SD of <span class="math inline">\(\hat\lambda\)</span> across samples.</li>
+<li>Use the notes’ asymptotic normality theorem and asymptotic variance theorem to write down the normal distribution that <span class="math inline">\(\hat\lambda\)</span> should follow, in terms of <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(N\)</span>. Compare its mean and SD to what you found in part a.</li>
+<li>Compare the <em>shape</em> of the simulated distribution to this asymptotic normal — for example, overlay the normal density on a histogram of your simulated <span class="math inline">\(\hat\lambda\)</span> values. (A quantile table or an ECDF overlay are optional further comparisons.) Where, if anywhere, does the simulated distribution depart from the normal approximation?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The sampling-distribution chapter’s toothpaste cap example builds a sampling distribution with the same shape this part needs: a container vector and a <code>for</code> loop that draws one sample, computes one estimate from it, and stores the estimate, repeated many times. Adapt that loop to draw one exponential sample of size <span class="math inline">\(N\)</span> per iteration and store <span class="math inline">\(\hat\lambda\)</span> in place of the toothpaste cap’s estimate. Before trusting the mean and SD that come out, check the Arguments section of <code>?rexp</code> for what its <code>rate</code> argument means. Get that backward, and every number downstream describes a different <span class="math inline">\(\lambda\)</span> than the one you fixed.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>You already derived the Fisher information for this exact exponential model when you worked <a href="#ex-15">Exercise 15</a>. Reuse that calculus instead of redoing it from the log-likelihood. The piece you still need (how to turn Fisher information into the variance of <span class="math inline">\(\hat\lambda\)</span>) is the notes’ asymptotic variance theorem, in the Fisher information chapter immediately after the asymptotic normality theorem.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p>The sampling-distribution chapter’s toothpaste cap example overlays a normal density on a histogram of simulated estimates using the same <code>geom_histogram()</code> / <code>stat_function(fun = dnorm, ...)</code> combination this part needs, but that example centers its curve on the <em>simulated</em> mean and SD. Here you want the curve centered on the <em>asymptotic</em> mean and SD from part b instead. Build your plot the same way, with that one substitution.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="extra-2" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-2"><span class="ex-num">Extra Practice 2</span> SD of a Fitted Beta Model</h2>
+<p>This repeats <a href="#ex-16">Exercise 16</a>’s delta-method skill — turning a covariance matrix for two fitted parameters into an SE for a function of them — but here you fit the model yourself, the function is the beta distribution’s SD rather than a ratio of its two parameters, and its gradient doesn’t simplify by hand, so you get it numerically.</p>
+<ol type="a">
+<li>Fit the beta model to Lahman’s 2023 batting averages, exactly as the notes do: <code>battingStats()</code>, <code>yearID == 2023</code>, <code>AB &gt;= 100</code>, and <code>optim()</code> with <code>hessian = TRUE</code> to get <span class="math inline">\(\hat\theta = (\hat\alpha, \hat\beta)\)</span> and <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span>.</li>
+<li>The beta distribution’s SD, as a function of its parameters, is <span class="math display">\[
+\sigma(\alpha,\beta) = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}.
+\]</span> Write this as an R function and use <code>numDeriv::grad()</code> to evaluate its gradient at <span class="math inline">\(\hat\theta\)</span>.</li>
+<li>Use the delta method to compute <span class="math inline">\(\hat\sigma\)</span> and <span class="math inline">\(\widehat{\text{SE}}(\hat\sigma)\)</span>.</li>
+<li>Compute the classical <code>sd()</code> of the batting averages directly. You now have three numbers: <span class="math inline">\(\hat\sigma\)</span>, <span class="math inline">\(\widehat{\text{SE}}(\hat\sigma)\)</span>, and <code>sd()</code> of the data. Say in one sentence each what quantity each one estimates or measures, and say which two of the three should come out close in value.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The notes fit this exact model (same beta distribution, same <code>battingStats()</code> filters, <code>optim()</code> with <code>hessian = TRUE</code>) step by step in the Fisher information chapter, in the “Beta model and <code>optim()</code>” section (its “Computing <code>hessian</code> with <code>optim()</code>” and “Fitting the beta model” parts). Open that section and adapt its log-likelihood function and fitting function to your own names.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>The notes compute a gradient this same way (numerically, with <code>numDeriv::grad()</code>) for the mean function <span class="math inline">\(\tau(\alpha,\beta) = \alpha/(\alpha+\beta)\)</span>, in the delta-method chapter’s “Numerical gradient” section. Write your SD function to take one vector argument the way <code>tau_fn()</code> does there, indexing into it for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, so <code>grad()</code> can call it directly at <span class="math inline">\(\hat\theta\)</span>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (d)</span></summary><div class="ex-reveal-body">
+<p>The notes define the standard error as the standard deviation of the sampling distribution: a statement about how much an <em>estimate</em> would vary across repeated samples, not about how spread out the values are within one sample. Ask what happens to each of your three numbers if you imagine repeating the whole exercise on a much larger set of players: does it shrink toward zero, or does it settle near some fixed value? That distinguishes an estimate of a fixed quantity from a measure of an estimate’s own uncertainty.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="extra-3" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-3"><span class="ex-num">Extra Practice 3</span> Negative Binomial for Bogotá</h2>
+<p>This pairs with <a href="#ex-14">Exercise 14</a> and repeats its ML-by-<code>optim()</code> skill on a model with one more parameter: the negative binomial, which lets the variance move independently of the mean.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>onb_holland2015 <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>onb_ops <span class="ot">&lt;-</span> onb_holland2015<span class="sc">$</span>operations[onb_holland2015<span class="sc">$</span>city <span class="sc">==</span> <span class="st">"bogota"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>onb_ops</code> holds the same 19 district-level operations counts for Bogotá you used in <a href="#ex-14">Exercise 14</a>. The negative binomial’s mean/dispersion parameterization is new here: <code>dnbinom(y, size = theta, mu = mu, log = TRUE)</code> gives <span class="math inline">\(\operatorname{E}(Y) = \mu\)</span> and <span class="math inline">\(\operatorname{Var}(Y) = \mu + \mu^2/\theta\)</span>, and <span class="math inline">\(\theta \to \infty\)</span> recovers the Poisson. A skeleton for the optimization:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># negative log-likelihood, mean/dispersion parameterization;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># optimize over (log mu, log theta) so both stay positive</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>onb_nll <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  onb_mu <span class="ot">&lt;-</span> <span class="cn">NA</span>     <span class="co"># exp(par[1])</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  onb_theta <span class="ot">&lt;-</span> <span class="cn">NA</span>  <span class="co"># exp(par[2])</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>               <span class="co"># -sum(dnbinom(y, size = onb_theta, mu = onb_mu, log = TRUE))</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>onb_start <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>)  <span class="co"># log(mean(y)) is a reasonable start for log mu</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>onb_fit <span class="ot">&lt;-</span> <span class="fu">optim</span>(onb_start, onb_nll, <span class="at">y =</span> onb_ops)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="a">
+<li><p>Fit the negative binomial to <code>onb_ops</code> by maximum likelihood: optimize the negative log-likelihood over <span class="math inline">\((\log\mu, \log\theta)\)</span> with <code>optim()</code>, so the search never has to evaluate <span class="math inline">\(\theta \le 0\)</span>, and report <span class="math inline">\(\hat\mu\)</span> and <span class="math inline">\(\hat\theta\)</span>.</p></li>
+<li><p>Compute the standard deviation the fitted model implies for an individual operations count, <span class="math inline">\(\sqrt{\hat\mu + \hat\mu^2/\hat\theta}\)</span>, and compare it to the sample SD of <code>onb_ops</code>. Does the extra parameter close the gap you found in <a href="#ex-14">Exercise 14</a>?</p></li>
+<li><p>Compute the maximized log-likelihood and the AIC for the negative binomial and for the Poisson model, both fit to the same 19 counts. Which model does AIC favor, and by how much?</p></li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The skeleton’s comment gives a starting value for <span class="math inline">\(\log\mu\)</span> (<code>log(mean(y))</code>) but leaves the second entry of <code>onb_start</code> (the start for <span class="math inline">\(\log\theta\)</span>) unspecified. <code>optim()</code> needs a real number in both slots before it can search. Any modest, positive guess for <span class="math inline">\(\theta\)</span> on the natural scale, logged, is a reasonable place to start. Fill in both entries and run the skeleton as written. If <code>onb_fit$convergence</code> comes back nonzero, the search didn’t settle and a different starting value is worth trying.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p><code>onb_fit$value</code> is the value <code>onb_nll</code> returned at the fitted parameters: the minimized <em>negative</em> log-likelihood, not the log-likelihood itself (see the Value section of <code>?optim</code>). These chapters never define AIC, so here is the formula: <span class="math inline">\(\operatorname{AIC} = 2k - 2\,\ell(\hat\theta)\)</span>, where <span class="math inline">\(k\)</span> is the number of estimated parameters (one for the Poisson, two for the negative binomial) and <span class="math inline">\(\ell(\hat\theta)\)</span> is the maximized log-likelihood at each model’s own fit. Get both log-likelihoods with the right sign, plug into that formula for each model, and compare.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p><span class="math inline">\(\theta \to \infty\)</span> recovers the Poisson, so the negative binomial nests it as a special case. A strictly more flexible model can always match or beat a less flexible one fit to the same data. Confirm your negative binomial’s log-likelihood is at least as large as your Poisson’s before trusting either AIC. If it isn’t, one of the two fits has a bug.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="extra-4" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-4"><span class="ex-num">Extra Practice 4</span> Fitting the Weibull Yourself</h2>
+<p><a href="#ex-19">Exercise 19</a> asked you to fit the exponential and log-normal models of coalition duration by hand and simply handed you the Weibull’s row already fit; here you fit the Weibull yourself, using the same <code>optim()</code> + Hessian + delta-method routine.</p>
+<ol type="a">
+<li><p>Write the Weibull log-likelihood <span class="math inline">\(\ell(k, \lambda)\)</span> for the coalition durations, using <code>dweibull(y, shape = k, scale = lambda, log = TRUE)</code>. Maximize it with <code>optim()</code>, requesting the Hessian. Report <span class="math inline">\(\hat k\)</span>, <span class="math inline">\(\hat\lambda\)</span>, and <span class="math inline">\(\widehat{\text{SE}}(\hat k)\)</span> (invert the observed information, then take the square root of the diagonal entry for <span class="math inline">\(k\)</span>).</p></li>
+<li><p>Using <span class="math inline">\(\hat k\)</span> and <span class="math inline">\(\widehat{\text{SE}}(\hat k)\)</span>, build a 95% Wald CI for <span class="math inline">\(k\)</span> and a <span class="math inline">\(z\)</span>-test of <span class="math inline">\(H_0: k = 1\)</span> — the value at which the Weibull’s hazard is constant, i.e., the exponential. Report <span class="math inline">\(z\)</span> and the two-sided <span class="math inline">\(p\)</span>-value.</p></li>
+<li><p>The Weibull’s mean is <span class="math inline">\(\tau(k, \lambda) = \lambda\,\Gamma(1 + 1/k)\)</span>. Using the invariance property and the delta method with a numerical gradient (<code>numDeriv::grad()</code>), get the ML estimate of the mean duration and its SE. Report the maximized log-likelihood and the AIC.</p></li>
+<li><p>Check every number against the printed block in <a href="#ex-19">Exercise 19</a>. Then say what <span class="math inline">\(\hat k = 1.138\)</span> with <span class="math inline">\(p = 0.008\)</span> implies about the exponential model considered there.</p></li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p><a href="#ex-19">Exercise 19</a> already had you build this same <code>optim()</code> + Hessian routine for a two-parameter density with a positivity-constrained parameter (log-normal’s <span class="math inline">\(\sigma\)</span>). Reuse that code as your scaffold, swap in <code>dweibull()</code> for the density, and pick a starting value for <span class="math inline">\(k\)</span> comfortably above zero, since <code>dweibull()</code> returns <code>NaN</code> once <span class="math inline">\(k\)</span> reaches zero or below.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>The notes already build this machinery, just for a null of 0 and a one-sided test: the opening paragraphs of the Standard Error section (right before the formal SE definition box) construct a Wald confidence interval and a one-sided <span class="math inline">\(p\)</span>-value from <span class="math inline">\(\hat\theta\)</span> and <span class="math inline">\(\widehat{\text{SE}}(\hat\theta)\)</span> alone. Adapt it in two places: recenter on the null <span class="math inline">\(k_0 = 1\)</span> instead of 0, and make the test two-sided instead of one-sided.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Before trusting the numbers in (a) through (c), confirm two things about your own fitted model: the optimizer’s convergence code should read 0 (a stalled search can still return plausible-looking numbers that aren’t actually at the maximum), and <code>grad()</code> returns one entry per input dimension, so check that both of yours are nonzero before you trust the SE it feeds into. If either check fails, the numbers downstream aren’t ready to report.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+</section>
+<section id="extra-5" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-5"><span class="ex-num">Extra Practice 5</span> Bootstrap SEs for the Shape Parameters</h2>
+<p><a href="#ex-17">Exercise 17</a> has you bootstrap <span class="math inline">\(\widehat{\text{SE}}(\hat\mu)\)</span> and <span class="math inline">\(\widehat{\text{SE}}(\hat\sigma)\)</span> for the 2024 turnout data; the same loop, at no extra cost, already stored every replicate’s <span class="math inline">\(\hat\alpha^*\)</span> and <span class="math inline">\(\hat\beta^*\)</span> too.</p>
+<p><strong>a.</strong> Report <span class="math inline">\(\widehat{\text{SE}}(\hat\alpha)\)</span> and <span class="math inline">\(\widehat{\text{SE}}(\hat\beta)\)</span>.</p>
+<p><strong>b.</strong> How big is each of those two SEs relative to its estimate?</p>
+<p><strong>c.</strong> <span class="math inline">\(\hat\alpha\)</span> and <span class="math inline">\(\hat\beta\)</span> turn out to be far less precisely estimated, in relative terms, than <span class="math inline">\(\hat\mu\)</span> is. What does the correlation between the <span class="math inline">\(\alpha^*\)</span> and <span class="math inline">\(\beta^*\)</span> replicates tell you about why?</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The notes’ parametric-bootstrap chapter states the rule behind every bootstrap SE in this exercise set as one instruction: summarize the empirical distribution of whatever replicate values the loop produced, using their SD to estimate the SE. <a href="#ex-17">Exercise 17</a>’s loop applied that rule only to its <span class="math inline">\(\hat\mu^{*}\)</span> and <span class="math inline">\(\hat\sigma^{*}\)</span> output. Did it also keep the <span class="math inline">\(\hat\alpha^{*}\)</span> and <span class="math inline">\(\hat\beta^{*}\)</span> values the loop computes on the way to those two, or were they discarded once <span class="math inline">\(\hat\mu^{*}\)</span> and <span class="math inline">\(\hat\sigma^{*}\)</span> were formed? If they were kept, <code>sd()</code> on each of those two columns is the entire calculation part (a) is asking for. If they weren’t, add two lines to store them (they’re already sitting in local variables inside the loop) and rerun with the same seed and the same <span class="math inline">\(B\)</span> before going further.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p>Right after introducing the covariance matrix for a two-parameter model, the notes’ Fisher-information chapter singles out its off-diagonal entries (the covariances between two parameter estimates) with the aside that “they’ll be really important to us later,” even though that chapter has no direct use for them itself. Have you looked at the <span class="math inline">\(\hat\alpha^{*}\)</span> and <span class="math inline">\(\hat\beta^{*}\)</span> replicates as a pair, rather than one column at a time? Plot the two thousand pairs against each other before trying to interpret the correlation between them: the shape of that cloud is what part (c) is asking you to account for.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check for part (c)</span></summary><div class="ex-reveal-body">
+<p>Part (b) already gives you more than the fact that <span class="math inline">\(\hat\mu\)</span> is more precisely estimated than <span class="math inline">\(\hat\alpha\)</span> or <span class="math inline">\(\hat\beta\)</span>: it gives you the relative SEs themselves, so you know roughly how much more precise. Would your part (c) explanation, left exactly as written, justify a gap between those relative SEs that was much smaller than the one you measured, or much larger, just as comfortably as it justifies the actual one? If it would fit any gap equally well, it has not yet used the size of the number part (b) handed you, and it is not finished.</p>
+</div></details>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<!-- Injected at the end of every exercise page (see _metadata.yml).
+     Two jobs: keep the countdown in the release notice current, and, when
+     `solution-gate: browser` is in force, open the solution panels the moment
+     the release time arrives. Under the default `render` gate there is
+     nothing on the page to open, so the reveal half simply finds nothing. -->
+<script>
+(function () {
+  var notice = document.querySelector(".ex-notice-wait");
+  var pending = Array.prototype.slice.call(
+    document.querySelectorAll(".ex-slot.ex-pending")
+  );
+  if (!notice && !pending.length) return;
+
+  var iso = (notice || pending[0]).getAttribute("data-unlock");
+  var unlock = new Date(iso);
+  if (isNaN(unlock)) return;
+
+  var readout = notice ? notice.querySelector(".ex-countdown") : null;
+
+  function remaining(ms) {
+    var mins = Math.floor(ms / 60000);
+    var days = Math.floor(mins / 1440);
+    var hours = Math.floor((mins % 1440) / 60);
+    if (days >= 1) {
+      return days + (days === 1 ? " day, " : " days, ") +
+             hours + (hours === 1 ? " hour" : " hours");
+    }
+    if (hours >= 1) {
+      var m = mins % 60;
+      return hours + (hours === 1 ? " hour, " : " hours, ") +
+             m + (m === 1 ? " minute" : " minutes");
+    }
+    return mins + (mins === 1 ? " minute" : " minutes");
+  }
+
+  function release() {
+    pending.forEach(function (slot) {
+      slot.classList.remove("ex-pending");
+    });
+    if (notice) {
+      notice.classList.remove("ex-notice-wait");
+      notice.classList.add("ex-notice-open");
+      notice.textContent = pending.length
+        ? "Complete solutions are available. Work each exercise before you open one."
+        : "Complete solutions are due to be posted — reload in a little while.";
+    }
+  }
+
+  function tick() {
+    var left = unlock - new Date();
+    if (left <= 0) { release(); return; }
+    if (readout) readout.textContent = remaining(left);
+    setTimeout(tick, left < 3600000 ? 30000 : 600000);
+  }
+
+  tick();
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/pos5747\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

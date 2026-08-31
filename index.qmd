@@ -18,8 +18,10 @@ theory]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 01 · **ml** [*maximum likelihood; invariance principle; predictive
-distribution*]{.topics}
+sep 01 · **ml** · \[[slides](slides/wk02-slides.pdf)\]
+\[[notes](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html)\]
+\[[exercises](exercises/wk02-exercises.html)\] [*maximum likelihood;
+invariance principle; predictive distribution*]{.topics}
 
 ------------------------------------------------------------------------
 

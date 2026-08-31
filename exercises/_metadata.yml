@@ -1,0 +1,65 @@
+# Settings shared by every wkNN-exercises.qmd in this folder.
+#
+# Keep the week files themselves down to a `title:`, a `distributed:` date,
+# and the exercises.  Anything about formatting or release timing belongs
+# here, or -- if one week needs to differ -- in that week's front matter,
+# which overrides what is set below.
+
+# --- when the complete solutions open ---------------------------------------
+#
+# Release moment = the week's `distributed:` date + solution-delay-days,
+# at solution-unlock-time, America/New_York.  A set goes out Tuesday in
+# class, so a three-day delay opens the solutions Friday at noon.  Week 1
+# goes out Aug 25, so its solutions open Friday Aug 28 at 12:00 PM.
+#
+# Students get most of the week with the exercises and no answer key, and
+# still have the weekend with the solutions before the next Tuesday's
+# assessment, which draws on them.
+#
+# To shift every week, change the delay or the time here.  To shift one week,
+# put the same key in that week's front matter, or pin the moment outright
+# with `solution-unlock: "2026-08-28 12:00"`.
+
+solution-delay-days: 3
+solution-unlock-time: "12:00"
+
+# render  = the solution text is absent from the page until you render after
+#           the release moment; students cannot read ahead.  Requires one
+#           `make site` and push after the date, which is the Tuesday-morning
+#           step the weekly cycle already includes.
+# browser = the text ships with the page and a script opens it on time,
+#           with no second render.  Convenient, but readable in View Source.
+solution-gate: render
+
+# true  = show the hints that are written, and hide `::: {.hint .todo}`
+#         placeholders entirely
+# draft = also show the placeholders, marked "(draft)"
+# false = no hint buttons at all
+#
+# Hints are being written one exercise at a time, so `draft` is the useful
+# setting while that is in progress. Switch to `true` before publishing and
+# the unwritten ones simply do not appear.
+show-hints: draft
+
+# --- formatting -------------------------------------------------------------
+
+# Heading level that marks one exercise. Level-1 headings above it are topic
+# sections. Numbering, #ex-N anchors, and the heading sizes all follow this.
+exercise-level: 2
+
+
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-title: Exercises
+    number-sections: false
+    css:
+      - ../styles.css
+      - exercises.css
+    include-after-body:
+      - _exercise-scripts.html
+
+filters:
+  - exercises.lua
+  - quarto

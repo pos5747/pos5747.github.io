@@ -4,6 +4,20 @@ project:
   render:
     - "*.qmd"
     - "!slides/"
+    # Week 1 ships as the PDF pair in exr/ (decided 2026-08-29). The HTML
+    # rebuild stays as a source for reference but must not publish: it was
+    # rendering into docs/exercises/ unlinked but discoverable, with its
+    # solutions open because of the review-only solution-delay-days override.
+    - "!exercises/wk01-exercises.qmd"
+
+    # The per-week build directories (exercises/wkNN/) hold the pipeline's
+    # working files: the spec, the findings, and the fragment .qmd files the
+    # week's page is assembled from. "*.qmd" matches them recursively, and on
+    # 2026-08-30 a render published all 25 wk03 fragments to
+    # docs/exercises/wk03/fragments/ -- unlinked but discoverable, with every
+    # solution open, because a fragment carries no `distributed:` date for the
+    # solution gate to read.
+    - "!exercises/wk*/"
 
 execute:
   freeze: auto

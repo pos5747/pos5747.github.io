@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 2 Exercises – Modern Statistical Modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7ad6542725e80d1433b1f8ee26c2a1fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZV1MJ9E632"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
+</script>
+<meta name="robots" content="noindex, nofollow">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="exercises.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Modern Statistical Modeling</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://pos5747.github.io/notes/"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research-project.html"> 
+<span class="menu-text">Research Project</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../workshop.html"> 
+<span class="menu-text">Workshop</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Exercises</h2>
+   
+  <ul class="collapse">
+  <li><a href="#maximum-likelihood" id="toc-maximum-likelihood" class="nav-link active" data-scroll-target="#maximum-likelihood">Maximum Likelihood</a>
+  <ul class="collapse">
+  <li><a href="#ex-1" id="toc-ex-1" class="nav-link" data-scroll-target="#ex-1"><span class="ex-num">Exercise 1</span> A Function of What?</a></li>
+  <li><a href="#ex-2" id="toc-ex-2" class="nav-link" data-scroll-target="#ex-2"><span class="ex-num">Exercise 2</span> Why the Log? Predict, Then Check</a></li>
+  <li><a href="#ex-3" id="toc-ex-3" class="nav-link" data-scroll-target="#ex-3"><span class="ex-num">Exercise 3</span> What a Grid Can Miss</a></li>
+  <li><a href="#ex-4" id="toc-ex-4" class="nav-link" data-scroll-target="#ex-4"><span class="ex-num">Exercise 4</span> From Derivative to Estimator</a></li>
+  <li><a href="#ex-5" id="toc-ex-5" class="nav-link" data-scroll-target="#ex-5"><span class="ex-num">Exercise 5</span> Reading a Contour Plot</a></li>
+  <li><a href="#ex-6" id="toc-ex-6" class="nav-link" data-scroll-target="#ex-6"><span class="ex-num">Exercise 6</span> Diagnose the Error</a></li>
+  <li><a href="#ex-7" id="toc-ex-7" class="nav-link" data-scroll-target="#ex-7"><span class="ex-num">Exercise 7</span> Trust It or Not?</a></li>
+  <li><a href="#ex-8" id="toc-ex-8" class="nav-link" data-scroll-target="#ex-8"><span class="ex-num">Exercise 8</span> An Unfamiliar Density</a></li>
+  </ul></li>
+  <li><a href="#the-invariance-property" id="toc-the-invariance-property" class="nav-link" data-scroll-target="#the-invariance-property">The Invariance Property</a>
+  <ul class="collapse">
+  <li><a href="#ex-9" id="toc-ex-9" class="nav-link" data-scroll-target="#ex-9"><span class="ex-num">Exercise 9</span> One Line of Invariance</a></li>
+  <li><a href="#ex-10" id="toc-ex-10" class="nav-link" data-scroll-target="#ex-10"><span class="ex-num">Exercise 10</span> The Exponential Model</a></li>
+  <li><a href="#ex-11" id="toc-ex-11" class="nav-link" data-scroll-target="#ex-11"><span class="ex-num">Exercise 11</span> Four Models, One Number</a></li>
+  <li><a href="#ex-12" id="toc-ex-12" class="nav-link" data-scroll-target="#ex-12"><span class="ex-num">Exercise 12</span> N or N − 1?</a></li>
+  <li><a href="#ex-13" id="toc-ex-13" class="nav-link" data-scroll-target="#ex-13"><span class="ex-num">Exercise 13</span> The SD the Model Implies</a></li>
+  </ul></li>
+  <li><a href="#when-the-recipe-fails" id="toc-when-the-recipe-fails" class="nav-link" data-scroll-target="#when-the-recipe-fails">When the Recipe Fails</a>
+  <ul class="collapse">
+  <li><a href="#ex-14" id="toc-ex-14" class="nav-link" data-scroll-target="#ex-14"><span class="ex-num">Exercise 14</span> The Discrete Uniform</a></li>
+  </ul></li>
+  <li><a href="#checking-the-model" id="toc-checking-the-model" class="nav-link" data-scroll-target="#checking-the-model">Checking the Model</a>
+  <ul class="collapse">
+  <li><a href="#ex-15" id="toc-ex-15" class="nav-link" data-scroll-target="#ex-15"><span class="ex-num">Exercise 15</span> The Remaining Wait</a></li>
+  <li><a href="#ex-16" id="toc-ex-16" class="nav-link" data-scroll-target="#ex-16"><span class="ex-num">Exercise 16</span> Herron’s Hockey Data</a></li>
+  <li><a href="#ex-17" id="toc-ex-17" class="nav-link" data-scroll-target="#ex-17"><span class="ex-num">Exercise 17</span> Heavy Tails: GDP Growth and the Location-Scale <em>t</em></a></li>
+  </ul></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a>
+  <ul class="collapse">
+  <li><a href="#ex-18" id="toc-ex-18" class="nav-link" data-scroll-target="#ex-18"><span class="ex-num">Exercise 18</span> What Should a Model Match?</a></li>
+  </ul></li>
+  <li><a href="#extra-practice" id="toc-extra-practice" class="nav-link" data-scroll-target="#extra-practice">Extra Practice</a>
+  <ul class="collapse">
+  <li><a href="#extra-1" id="toc-extra-1" class="nav-link" data-scroll-target="#extra-1"><span class="ex-num">Extra Practice 1</span> Bernoulli Grid Search</a></li>
+  <li><a href="#extra-2" id="toc-extra-2" class="nav-link" data-scroll-target="#extra-2"><span class="ex-num">Extra Practice 2</span> <code>optim()</code> Meets the Closed Form</a></li>
+  <li><a href="#extra-3" id="toc-extra-3" class="nav-link" data-scroll-target="#extra-3"><span class="ex-num">Extra Practice 3</span> Corrupted Data</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 2 Exercises</h1>
+<p class="subtitle lead">Instructor and TA copy: complete solutions, always open</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
+<p>Do all the exercises below. The Extra Practice problems at the end are optional.</p>
+<section id="maximum-likelihood" class="level1 ex-section">
+<h1 class="ex-section">Maximum Likelihood</h1>
+<section id="ex-1" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> A Function of What?</h2>
+<p>For the Bernoulli model, we wrote the likelihood as <span class="math inline">\(L(\pi) = \pi^{k}(1 - \pi)^{(N - k)}\)</span>, where <span class="math inline">\(k\)</span> is the number of successes in <span class="math inline">\(N\)</span> trials. In this expression, which symbol is the variable, and which symbols are fixed? In one sentence describe the question that <span class="math inline">\(L(\pi)\)</span> answers.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>In the pmf <span class="math inline">\(f(x; \pi)\)</span>, we treat <span class="math inline">\(\pi\)</span> as fixed and <span class="math inline">\(x\)</span> as the variable. What changed when we relabeled <span class="math inline">\(f(x; \pi)\)</span> as <span class="math inline">\(L(\pi)\)</span>?</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>Before the notes ever write <span class="math inline">\(L(\pi)\)</span>, the Bernoulli section evaluates the same fixed toothpaste-cap data at several candidate values of <span class="math inline">\(\pi\)</span> (0.1, 0.45, 0.55, and 0.9), one at a time. Reread that paragraph.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>The likelihood flips the usual roles compared to <span class="math inline">\(f(x; \pi)\)</span>. For the likelihood, the data are fixed (we observed them!), and the parameter varies. In <span class="math inline">\(L(\pi)\)</span>, the variable is <span class="math inline">\(\pi\)</span>. The data (or summaries <span class="math inline">\(k\)</span> and <span class="math inline">\(N\)</span>, in this case) are fixed numbers. <span class="math inline">\(L(\pi)\)</span> answers the question: <em>if the parameter were <span class="math inline">\(\pi\)</span>, how likely would these data be?</em> ML then picks the <span class="math inline">\(\pi\)</span> that makes the observed data most likely.</p>
+<p><strong>Something that’s wrong</strong>: the likelihood is <em>not</em> a probability distribution over <span class="math inline">\(\pi\)</span>. It doesn’t integrate to one. It does not allow a probability claim about the parameter.</p>
+</div></details>
+</section>
+<section id="ex-2" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Why the Log? Predict, Then Check</h2>
+<p>Suppose you observe 2,000 Bernoulli trials with <span class="math inline">\(\pi = 0.5\)</span>, so each observation has probability exactly 0.5. The likelihood is the product of these 2,000 probabilities.</p>
+<p>Predict what the first line below returns <em>before you run it</em>, and write down your reasoning.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">2000</span>, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dbinom</span>(y, <span class="dv">1</span>, <span class="fl">0.5</span>))             <span class="co"># the likelihood, computed directly</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(y, <span class="dv">1</span>, <span class="fl">0.5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>))  <span class="co"># the log-likelihood</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now run both lines. Explain what happened, why it’s expected, and why it matters for ML. The log fixes this computational problem, but it also helps with the calculus. How?</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>Each of the 2,000 factors equals 0.5, so the product is <span class="math inline">\(0.5^{2000}\)</span>. Figure out roughly how big that is as a power of ten. Compare that to the smallest positive number R can store (i.e., run <code>.Machine$double.xmin</code>).</p>
+<p>A rule of thumb: <span class="math inline">\(2^{10} = 1024 \approx 10^3\)</span>. Thus, ten halvings cost about three orders of magnitude.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>The notes give two separate reasons for taking the log (i.e., where they define <span class="math inline">\(L(\pi)\)</span> in the Bernoulli example). One reason is what you just watched happen in R. The other reason is about calculus.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>Start with the prediction. Each factor is 0.5, so the product is <span class="math inline">\(0.5^{2000} \approx 10^{-600}\)</span>. Computers can’t track numbers that small (the smallest positive number R can store is about <span class="math inline">\(10^{-308}\)</span>; run <code>.Machine$double.xmin</code>), so <code>prod()</code> returns exactly 0.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">2000</span>, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dbinom</span>(y, <span class="dv">1</span>, <span class="fl">0.5</span>))             <span class="co"># the likelihood, computed directly</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(y, <span class="dv">1</span>, <span class="fl">0.5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>))  <span class="co"># the log-likelihood</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1386.294</code></pre>
+</div>
+</div>
+<p>The log-likelihood works just fine, though. It’s <span class="math inline">\(2000 \log(0.5) \approx -1386.29\)</span>. This is a very ordinary number that computers can handle.</p>
+<p>(Importantly, a hill-climbing algorithm can’t climb a function that returns 0 everywhere!)</p>
+<p>And this matters for the calculus, too. The log turns the product into a sum. Derivatives are much easier with sums.</p>
+</div></details>
+</section>
+<section id="ex-3" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> What a Grid Can Miss</h2>
+<p>Suppose a colleague estimates a Bernoulli <span class="math inline">\(\pi\)</span> by computing the log-likelihood at the eleven values <span class="math inline">\(0, 0.1, 0.2, \ldots, 1\)</span> and reporting the best of the eleven as “the ML estimate.” In one or two sentences, in what sense is that answer wrong, and how would you tighten it? (If you’d like to actually run a grid search, that’s <a href="#extra-1">Extra Practice 1</a>.)</p>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>A grid can <em>bracket</em> the maximum, but it almost never <em>contains</em> it. The true ML estimate is <span class="math inline">\(k/N\)</span>. Unless we’re lucky, this will not be a multiple of 0.1. To tighten the answer, we could make the grid finer near the peak (or just use calculus or <code>optim()</code>).</p>
+</div></details>
+</section>
+<section id="ex-4" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> From Derivative to Estimator</h2>
+<p>Last week, you found <span class="math inline">\(\frac{d\ell}{d\pi}\)</span> for <span class="math inline">\(\ell(\pi) = S \log(\pi) + (N - S)\log(1 - \pi)\)</span>. Set the derivative equal to zero and solve for <span class="math inline">\(\hat{\pi}\)</span>.</p>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>We have <span class="math inline">\(\frac{d\ell}{d\pi} = \frac{S}{\pi} - \frac{N - S}{1 - \pi}\)</span>. Setting it to zero at <span class="math inline">\(\pi = \hat{\pi}\)</span> and clearing the fractions, we obtain</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{S}{\hat{\pi}} &amp;= \frac{N - S}{1 - \hat{\pi}} \\
+S(1 - \hat{\pi}) &amp;= (N - S)\hat{\pi} \\
+S - S\hat{\pi} &amp;= N\hat{\pi} - S\hat{\pi} \\
+S &amp;= N\hat{\pi} \\
+\hat{\pi} &amp;= \frac{S}{N}.
+\end{aligned}
+\]</span></p>
+<p>The ML estimate is the fraction of successes (the sample average of the 0s and 1s).</p>
+</div></details>
+</section>
+<section id="ex-5" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Reading a Contour Plot</h2>
+<p>The plot below shows the log-likelihood for the notes’ beta-distribution example. We have 100 observations (simulated from a beta distribution). I computed the log-likelihood <span class="math inline">\(\log L(\alpha, \beta)\)</span> over a grid of parameter pairs.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex05-contour-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol type="a">
+<li>Roughly where is the ML estimate?</li>
+<li>What does a single labeled curve on this plot mean?</li>
+<li>For the Bernoulli model, we found <span class="math inline">\(\hat{\pi}\)</span> with pencil and paper. Why can’t we do that here?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>Each labeled curve gives the log-likelihood value along it; higher numbers sit closer to the peak. Find the region where the labeled values are highest and read off its <span class="math inline">\((\alpha, \beta)\)</span> coordinates.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>The plot shows the height of <span class="math inline">\(\log L(\alpha, \beta)\)</span>. Along one curve, what is constant?</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p>Look back at what stopped us in the notes’ beta example.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (a)</strong> At the center of the innermost region, around <span class="math inline">\(\alpha = 12\)</span>, <span class="math inline">\(\beta = 12\)</span>. (The notes’ <code>optim()</code> run puts it at <span class="math inline">\(\hat{\alpha} \approx 12.0\)</span> and <span class="math inline">\(\hat{\beta} \approx 11.9\)</span>.)</p>
+<p><strong>Part (b)</strong> A curve is a <em>level set</em>, such that every pair <span class="math inline">\((\alpha, \beta)\)</span> on that curve produces the same value of the log-likelihood.</p>
+<p><strong>Part (c)</strong> The beta log-likelihood contains <span class="math inline">\(\log B(\alpha, \beta)\)</span>. We can <em>evaluate</em> that term for any <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> we like (R’s <code>lbeta()</code> does it instantly), but differentiating it and setting the two derivatives to zero leaves a pair of equations we can’t solve for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> on paper. An <em>intractable</em> likelihood means we have no closed-form maximizer. (This is the usual situation; our first few tractable models are the exceptions.)</p>
+</div></details>
+</section>
+<section id="ex-6" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Diagnose the Error</h2>
+<p>A classmate wants the ML estimate of a Poisson rate <span class="math inline">\(\lambda\)</span> for the data below, and their code runs without an error or a warning:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">10</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ll_pois <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">dpois</span>(y, <span class="at">lambda =</span> par, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> ll_pois,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> y,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"Brent"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="fl">0.001</span>, <span class="at">upper =</span> <span class="dv">100</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>est<span class="sc">$</span>par</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 100</code></pre>
+</div>
+</div>
+<p>But the estimate is absurd. The average of <code>y</code> is 10, but <span class="math inline">\(\hat{\lambda}\)</span> comes back as 100. What went wrong? What’s the fix? What is the <em>category</em> of the mistake: a typo, an algebra slip, or something else?</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>When you hand <code>optim()</code> a function what does it do by default: maximize or minimize? See the Details section of <code>?optim</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><code>optim()</code> is a <em>minimizer</em> by default. By default it looks for the “minimum likelihood.” But the Poisson log-likelihood always gets smaller as <span class="math inline">\(\lambda\)</span> moves away from the average of <code>y</code>. The search “climbed” to the edge of the parameter space (i.e., [0.001 to 100]) and stopped.</p>
+<p>Don’t read too much into <em>which</em> bound <code>optim()</code> found. <code>method = "Brent"</code> assumes the function has a single interior minimum. In this case, the log-likelihood at <code>lower = 0.001</code> is even smaller than at <code>upper = 100</code>, so <code>optim()</code> didn’t even land on the smaller of the two endpoints. It just climbed downhill (in the wrong direction!) until it ran out of space.</p>
+<p>The fix is <code>control = list(fnscale = -1)</code>. This flips the function over, which turns a minimizer into a maximizer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> ll_pois,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> y,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"Brent"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="fl">0.001</span>, <span class="at">upper =</span> <span class="dv">100</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>est<span class="sc">$</span>par</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+<p>Now <span class="math inline">\(\hat{\lambda} = 10\)</span>, which matches the closed form.</p>
+<p>It’s not a typo and it’s not algebra. The code computed exactly what it was told to compute. It is a misuse of the tool (or a misunderstanding of how the tool works). This is a dangerous category of error. No error or warning appeared.</p>
+</div></details>
+</section>
+<section id="ex-7" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Trust It or Not?</h2>
+<p>Your <code>optim()</code> call returns <code>$convergence = 1</code>, and <code>$par</code> equals the upper bound you supplied. Do you trust the estimate? What do you check or change next?</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p><code>?optim</code>’s Value section documents every code <code>$convergence</code> can return, not only <code>0</code>. Look up what <code>1</code> means there before you decide anything else.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>No.&nbsp;<code>$convergence = 1</code> means the algorithm hit its iteration limit without converging (see <code>?optim</code>). A parameter estimate sitting exactly on a boundary is a red flag.</p>
+</div></details>
+</section>
+<section id="ex-8" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> An Unfamiliar Density</h2>
+<p>Suppose a random variable has pdf <span class="math inline">\(f(x; \theta) = \theta x^{\theta - 1}\)</span> for <span class="math inline">\(0 &lt; x &lt; 1\)</span> and <span class="math inline">\(\theta &gt; 0\)</span>, and suppose we collect <span class="math inline">\(N\)</span> iid observations <span class="math inline">\(x = \{x_1, x_2, \ldots, x_N\}\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Find the ML estimator of <span class="math inline">\(\theta\)</span>.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>What steps did we follow for the Bernoulli and the Poisson? Start the same way here by writing <span class="math inline">\(L(\theta)\)</span> as a product over the observations.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>Take the log and bring the exponent down. You should end up with two terms: one involving <span class="math inline">\(\log \theta\)</span> and one involving <span class="math inline">\(\sum \log x_i\)</span>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Your formula and <code>optim()</code> must agree. For <code>x &lt;- c(0.2, 0.5, 0.9)</code>, evaluate your <span class="math inline">\(\hat{\theta}\)</span> formula, then run the code below and compare.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ll_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(theta, x) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">log</span>(theta) <span class="sc">+</span> (theta <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(x))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> ll_fn,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">x =</span> x,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"Brent"</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="dv">100</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>est<span class="sc">$</span>par</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>The recipe carries over unchanged. The only new bit is keeping track of <span class="math inline">\(\sum \log x_i\)</span>.</p>
+<p>First, write down the likelihood and simplify the product:</p>
+<p><span class="math display">\[
+L(\theta) = \prod_{i = 1}^N \theta x_i^{\theta - 1} = \theta^N \prod_{i = 1}^N x_i^{\theta - 1}.
+\]</span></p>
+<p>Second, take the log. The product becomes a sum, and <span class="math inline">\(\log(a^b) = b \log(a)\)</span> brings the exponent down:</p>
+<p><span class="math display">\[
+\log L(\theta) = N \log \theta + (\theta - 1) \sum_{i = 1}^N \log x_i.
+\]</span></p>
+<p>Third, differentiate with respect to <span class="math inline">\(\theta\)</span>:</p>
+<p><span class="math display">\[
+\frac{d \log L}{d\theta} = \frac{N}{\theta} + \sum_{i = 1}^N \log x_i.
+\]</span></p>
+<p>Fourth, set the derivative to zero at <span class="math inline">\(\theta = \hat{\theta}\)</span> and solve:</p>
+<p><span class="math display">\[
+\hat{\theta} = \frac{N}{-\sum_{i = 1}^N \log x_i}.
+\]</span></p>
+<p>For the check data, <span class="math inline">\(\hat{\theta} = 3 / [-(\log 0.2 + \log 0.5 + \log 0.9)] \approx 1.246\)</span>, and <code>optim()</code> returns the same 1.246.</p>
+</div></details>
+</section>
+</section>
+<section id="the-invariance-property" class="level1 ex-section">
+<h1 class="ex-section">The Invariance Property</h1>
+<section id="ex-9" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> One Line of Invariance</h2>
+<p>Let <span class="math inline">\(\hat{\theta}\)</span> be the ML estimate of <span class="math inline">\(\theta\)</span>. Suppose we are interested in <span class="math inline">\(\psi = \theta^2\)</span>. What is the ML estimate of <span class="math inline">\(\psi\)</span>?</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>This week’s notes has a chapter built entirely turning an ML estimate of one quantity into an ML estimate of a function of it, without writing down a new likelihood.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>By the invariance property, the ML estimate of a function of a parameter is the function of the ML estimate:</p>
+<p><span class="math display">\[
+\hat{\psi} = \hat{\theta}^2.
+\]</span></p>
+<p>That’s the whole answer. The brevity is the point. We don’t need to derive a new likelihood for <span class="math inline">\(\psi\)</span>.</p>
+</div></details>
+</section>
+<section id="ex-10" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> The Exponential Model</h2>
+<p>The exponential distribution has pdf <span class="math inline">\(f(t; \lambda) = \lambda e^{-\lambda t}\)</span> for <span class="math inline">\(t \geq 0\)</span> and <span class="math inline">\(\lambda &gt; 0\)</span>. We might use the exponential distribution to model <em>durations</em>. A duration is the time until an event, such as the end of a coalition government.</p>
+<ol type="a">
+<li>Suppose we collect <span class="math inline">\(N\)</span> iid durations <span class="math inline">\(t = \{t_1, t_2, \ldots, t_N\}\)</span>. Find the ML estimator of <span class="math inline">\(\lambda\)</span>.</li>
+<li>The parameter <span class="math inline">\(\lambda\)</span> is called the <em>rate</em>. The <em>mean</em> of the exponential distribution is <span class="math inline">\(\frac{1}{\lambda}\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Give the ML estimator of the mean.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>This is very similar to the derivation of the ML estimate of <span class="math inline">\(\lambda\)</span> for the Poisson distribution, with one important difference. Be careful with your algebra!</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate durations from a known rate and see whether your formulas</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># recover it</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>lambda_true <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">500</span>, <span class="at">rate =</span> lambda_true)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fill in your part (a) estimator, as a function of t</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>lambda_hat <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># a numerical check: maximize the exponential log-likelihood directly</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>ll_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda, t) <span class="fu">sum</span>(<span class="fu">dexp</span>(t, <span class="at">rate =</span> lambda, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>lambda_hat_numeric <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>, <span class="at">fn =</span> ll_fn, <span class="at">t =</span> t,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                             <span class="at">method =</span> <span class="st">"Brent"</span>, <span class="at">lower =</span> <span class="fl">1e-6</span>, <span class="at">upper =</span> <span class="dv">20</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                             <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>))<span class="sc">$</span>par</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># these two should agree closely</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>lambda_hat</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>lambda_hat_numeric</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># fill in your part (b) estimator, as a function of lambda_hat</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>mean_hat <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"># an independent numerical check: reparameterize the same likelihood in</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co"># terms of the mean and maximize over that instead</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>ll_fn_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, t) <span class="fu">sum</span>(<span class="fu">dexp</span>(t, <span class="at">rate =</span> <span class="dv">1</span> <span class="sc">/</span> mu, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>mean_hat_numeric <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>, <span class="at">fn =</span> ll_fn_mean, <span class="at">t =</span> t,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method =</span> <span class="st">"Brent"</span>, <span class="at">lower =</span> <span class="fl">1e-6</span>, <span class="at">upper =</span> <span class="dv">20</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>                           <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>))<span class="sc">$</span>par</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co"># these two should agree closely</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>mean_hat</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>mean_hat_numeric</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (a)</strong> The key move is that the product of exponentials collects into a single exponential of a sum.</p>
+<p>First, write down the likelihood and simplify:</p>
+<p><span class="math display">\[
+L(\lambda) = \prod_{i = 1}^N \lambda e^{-\lambda t_i} = \lambda^N e^{-\lambda \sum_{i = 1}^N t_i}.
+\]</span></p>
+<p>Second, take the log. The product becomes a sum, and <span class="math inline">\(\log e^u = u\)</span>:</p>
+<p><span class="math display">\[
+\log L(\lambda) = N \log \lambda - \lambda \sum_{i = 1}^N t_i.
+\]</span></p>
+<p>Third, differentiate:</p>
+<p><span class="math display">\[
+\frac{d \log L}{d\lambda} = \frac{N}{\lambda} - \sum_{i = 1}^N t_i.
+\]</span></p>
+<p>Fourth, set the derivative to zero at <span class="math inline">\(\lambda = \hat{\lambda}\)</span> and solve:</p>
+<p><span class="math display">\[
+\hat{\lambda} = \frac{N}{\sum_{i = 1}^N t_i} = \frac{1}{\text{avg}(t)}.
+\]</span></p>
+<p>Thus, the ML estimator of the rate is the reciprocal of the average duration.</p>
+<p><strong>Part (b)</strong> By the invariance property, the ML estimator of the mean <span class="math inline">\(\frac{1}{\lambda}\)</span> is</p>
+<p><span class="math display">\[
+\widehat{\text{mean}} = \frac{1}{\hat{\lambda}} = \text{avg}(t).
+\]</span></p>
+<p>The ML estimate of the mean duration is the average duration, which seems sensible.</p>
+</div></details>
+</section>
+<section id="ex-11" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-11"><span class="ex-num">Exercise 11</span> Four Models, One Number</h2>
+<p>Suppose you observe the binary outcome <code>y &lt;- c(0, 1, 0, 1, 1, 1, 0)</code> and you want to estimate the <em>mean</em> of the distribution that generated it. Naturally, you’d model these data as Bernoulli and estimate <span class="math inline">\(\pi\)</span>. But suppose that instead you model these 0s and 1s with a <em>normal</em> distribution. What is your ML estimate of the mean? What if you use the Poisson? The exponential?</p>
+<p>Complete the table below: for each model, the ML estimates of the parameters, then the estimate of the mean via the invariance property. What do you notice? Explain why it happens.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th>Parameter(s)</th>
+<th>ML estimates</th>
+<th>Estimate of the mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bernoulli</td>
+<td><span class="math inline">\(\pi\)</span></td>
+<td>??</td>
+<td>??</td>
+</tr>
+<tr class="even">
+<td>Normal</td>
+<td><span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma^2\)</span></td>
+<td>??</td>
+<td>??</td>
+</tr>
+<tr class="odd">
+<td>Poisson</td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td>??</td>
+<td>??</td>
+</tr>
+<tr class="even">
+<td>Exponential</td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td>??</td>
+<td>??</td>
+</tr>
+</tbody>
+</table>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>For each model, what is <span class="math inline">\(E(Y)\)</span> in terms of that model’s parameter? (Three of the four means <em>are</em> the parameter. The fourth is a transformation of the parameter.)</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>Estimate each model’s parameters by ML (all four estimators appear in the notes or in <a href="#ex-10">Exercise 10</a>). If needed, transform the estimates with the invariance property.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>Here’s the completed table, for <code>y</code> with <span class="math inline">\(\text{avg}(y) = \frac{4}{7} \approx 0.571\)</span>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th>Parameter(s)</th>
+<th>ML estimates</th>
+<th>Estimate of the mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bernoulli</td>
+<td><span class="math inline">\(\pi\)</span></td>
+<td><span class="math inline">\(\hat{\pi} = \text{avg}(y) \approx 0.571\)</span></td>
+<td><span class="math inline">\(\hat{\pi} \approx 0.571\)</span> (no transformation needed: <span class="math inline">\(E(Y) = \pi\)</span>)</td>
+</tr>
+<tr class="even">
+<td>Normal</td>
+<td><span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma^2\)</span></td>
+<td><span class="math inline">\(\hat{\mu} = \text{avg}(y) \approx 0.571\)</span> and <span class="math inline">\(\hat{\sigma}^2 = \frac{\sum (y_i - \bar{y})^2}{N} \approx 0.245\)</span></td>
+<td><span class="math inline">\(\hat{\mu} \approx 0.571\)</span></td>
+</tr>
+<tr class="odd">
+<td>Poisson</td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td><span class="math inline">\(\hat{\lambda} = \text{avg}(y) \approx 0.571\)</span></td>
+<td><span class="math inline">\(\hat{\lambda} \approx 0.571\)</span> (<span class="math inline">\(E(Y) = \lambda\)</span>)</td>
+</tr>
+<tr class="even">
+<td>Exponential</td>
+<td><span class="math inline">\(\lambda\)</span></td>
+<td><span class="math inline">\(\hat{\lambda} = \frac{1}{\text{avg}(y)} = 1.75\)</span></td>
+<td><span class="math inline">\(\frac{1}{\hat{\lambda}} = \text{avg}(y) \approx 0.571\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>No matter which distribution we use, we obtain the <em>identical</em> estimate of the mean. Not the same in expectation. Not the same asymptotically. It’s the exact same number, every time. The reason: in each of these four models, setting the derivative to zero forces the model’s own mean to match the sample mean. The four likelihoods use different distributions and different parameters, but every one of them lands on <span class="math inline">\(\text{avg}(y)\)</span>.</p>
+<p>And importantly, whatever properties one of these estimators has, the others share. If one is consistent, all are consistent. If one is unbiased, all are unbiased.</p>
+<p>The lesson is worth stating carefully: <em>the quality of an estimator doesn’t always depend on every part of the model being right.</em> It often depends on <em>what quantity you’re targeting</em>. These four models agree exactly about the mean of these data. And, as <a href="#ex-13">Exercise 13</a> and the model-checking exercises below show, they disagree wildly about almost everything else.</p>
+</div></details>
+</section>
+<section id="ex-12" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-12"><span class="ex-num">Exercise 12</span> N or N − 1?</h2>
+<p>R’s <code>var(y)</code> is <em>not</em> the ML estimate of <span class="math inline">\(\sigma^2\)</span> for a normal model. What’s the difference between the two? Which one is bigger? And does the difference matter at <span class="math inline">\(N = 10{,}000\)</span>? Check your answers numerically on any vector you like.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The notes derive the ML estimator for <span class="math inline">\(\sigma^2\)</span> by solving <span class="math inline">\(\frac{d \log L}{d \sigma^2} = 0\)</span>. Find that derivation. What is the denominator? Compare it to the denominator for <code>var()</code>, which is explained deep in the Details of <code>?var</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>For the numeric check, build the sum of squared deviations from the mean. Then use the two alternative denominators. Compare each result to <code>var()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pick any vector, e.g.:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(y)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># your ML formula for sigma^2, using y directly (not from var(y))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><code>var()</code> divides the sum of squared deviations by <span class="math inline">\(N - 1\)</span> (the classic, unbiased estimator). The ML estimator divides by <span class="math inline">\(N\)</span> (see the notes). So <code>var()</code> is bigger, by the factor <span class="math inline">\(\frac{N}{N-1}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="at">mean =</span> <span class="dv">5</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(y)                             <span class="co"># divides by N - 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.099462</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">length</span>(y)   <span class="co"># ml estimate: divides by N</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.099052</code></pre>
+</div>
+</div>
+<p>At <span class="math inline">\(N = 10{,}000\)</span> the two differ in the fourth decimal, which is nothing in practice. But the conceptual distinction is important. They are different estimators, derived from different principles, and at small <span class="math inline">\(N\)</span> the difference can be visible.</p>
+</div></details>
+</section>
+<section id="ex-13" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-13"><span class="ex-num">Exercise 13</span> The SD the Model Implies</h2>
+<p>Holland (2015) measures the number of enforcement operations (i.e., a “count”) against street vendors across districts in three Latin American cities. The data are in <code>crdata::holland2015</code>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The notes estimated the Poisson rate <span class="math inline">\(\lambda\)</span> separately for each city. Now let’s estimate the standard deviation of the number of operations (rather than the rate or mean).</p>
+<ol type="a">
+<li>What does the Poisson model <em>assume</em> about the SD of the data, in terms of <span class="math inline">\(\lambda\)</span>?</li>
+<li>Use the invariance property to estimate the SD of the operations counts in each city from <span class="math inline">\(\hat{\lambda}\)</span>.</li>
+<li>Compute the sample SD in each city and compare. What do you find, and what does it tell you about the model?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For parts (a) and (b)</span></summary><div class="ex-reveal-body">
+<p>For a Poisson distribution, how is the variance related to the mean? Write the SD as a function of <span class="math inline">\(\lambda\)</span>, then estimate it by plugging in <span class="math inline">\(\hat{\lambda}\)</span>.</p>
+<p>The <a href="https://pos5747.github.io/notes/appendicies/999-distributions.html#poisson-distribution">distributions appendix</a> has the answer.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p>You already grouped the operations counts by city to compute <span class="math inline">\(\hat{\lambda}\)</span> in part (b). Apply that same grouping here, and compute each city’s sample SD with <code>sd()</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (a)</strong> Recall that the Poisson has <span class="math inline">\(\text{Var}(Y) = E(Y) = \lambda\)</span>, so the model assumes the SD is <span class="math inline">\(\sqrt{\lambda}\)</span>. In this case, the spread is <em>determined by</em> the mean. The variance and the mean have no freedom to differ.</p>
+<p><strong>Parts (b) and (c)</strong> By invariance, we estimate the SD with <span class="math inline">\(\widehat{\text{SD}} = \sqrt{\hat{\lambda}}\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load holland's data</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>holland2015 <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>holland2015 <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(city) <span class="sc">|&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">lambda_hat =</span> <span class="fu">mean</span>(operations),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_implied =</span> <span class="fu">sqrt</span>(lambda_hat),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_sample  =</span> <span class="fu">sd</span>(operations))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  city     lambda_hat sd_implied sd_sample
+  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+1 bogota         8.89       2.98      6.94
+2 lima          23.2        4.82     18.8 
+3 santiago       2.71       1.64      4.94</code></pre>
+</div>
+</div>
+<p>The comparison fails in every city, and in the same direction: the sample SDs run roughly two to four times the model-implied SDs (Santiago 4.9 vs.&nbsp;1.6; Bogotá 6.9 vs.&nbsp;3.0; Lima 18.8 vs.&nbsp;4.8). These counts are far more dispersed than a Poisson allows. This is called <em>overdispersion</em>, and it’s almost always present in count data.</p>
+<p>Notice what kind of failure this is. Nothing is wrong with <span class="math inline">\(\sqrt{\hat{\lambda}}\)</span> as an estimate of <em>the model’s</em> SD. Invariance did its job. The problem lies with the model. The Poisson assumes a particular relationship between the SD and the mean. These data are inconsistent with that assumed relationship. This is exactly the mismatch the predictive-distribution chapter showed graphically for Lima.</p>
+</div></details>
+</section>
+</section>
+<section id="when-the-recipe-fails" class="level1 ex-section">
+<h1 class="ex-section">When the Recipe Fails</h1>
+<section id="ex-14" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-14"><span class="ex-num">Exercise 14</span> The Discrete Uniform</h2>
+<p>Suppose a discrete uniform distribution on <span class="math inline">\(\{0, 1, \ldots, K\}\)</span>, with pmf <span class="math inline">\(f(x; K) = \frac{1}{K + 1}\)</span> for <span class="math inline">\(x \in \{0, 1, \ldots, K\}\)</span>. Suppose we observe a sample of size 3: 276, 159, and 912.</p>
+<ol type="a">
+<li>Find the ML estimate of <span class="math inline">\(K\)</span>. <em>Hint: The likelihood is discontinuous in <span class="math inline">\(K\)</span>, so differentiate-and-solve will mislead you. But the maximum is immediately apparent once you write out the likelihood.</em></li>
+<li>Find the method of moments estimate of <span class="math inline">\(K\)</span>. <em>Hint: The mean of this distribution is <span class="math inline">\(\tfrac{K}{2}\)</span>. Set the sample mean equal to the model mean and solve.</em></li>
+<li>For these data, the method of moments estimate falls below the largest observation. This is unsatisfying because it’s an estimate of <span class="math inline">\(K\)</span> that the data themselves rule out. How bad can this get? Construct a three-observation dataset that makes the ratio <span class="math inline">\(\hat{K}_{MM} / \max(x)\)</span> as small as you can. What is the smallest value the ratio can take with three observations?</li>
+<li>In a sentence or two, say what these two failures teach us about choosing an estimator.</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
+<p>The ratio you’re minimizing is <span class="math inline">\(2 \cdot \text{avg}(x) / \max(x)\)</span> (i.e., part (b)’s formula divided by the largest observation). With <span class="math inline">\(\max(x)\)</span> fixed, which direction should you push the other two observations to shrink the average? Work that out before you pick numbers.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c), a second nudge</span></summary><div class="ex-reveal-body">
+<p>Fact: this distribution never produces a value below 0, so that’s the floor for any observation you choose. Combined with part (b)’s formula, how far can you push <span class="math inline">\(\text{avg}(x)\)</span> down without changing <span class="math inline">\(\max(x)\)</span>?</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Plug your candidate dataset from part (c) into the code below and confirm the ratio matches what you computed by hand.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(a, b, c)               <span class="co"># your three-observation dataset from part (c)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>K_hat_mm <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">mean</span>(x)       <span class="co"># method of moments estimate, from part (b)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ratio <span class="ot">&lt;-</span> K_hat_mm <span class="sc">/</span> <span class="fu">max</span>(x)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>ratio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (a)</strong> The likelihood is</p>
+<p><span class="math display">\[
+L(K) = \prod_{i=1}^N \frac{1}{K+1} = \left(\frac{1}{K+1}\right)^N
+\]</span></p>
+<p>if every observation lies in <span class="math inline">\(\{0, 1, \ldots, K\}\)</span>, and <span class="math inline">\(0\)</span> if <em>any</em> observation exceeds <span class="math inline">\(K\)</span>. This function is not differentiable, so the recipe isn’t useful. To make <span class="math inline">\(L(K)\)</span> as large as possible, we make <span class="math inline">\(K\)</span> as small as the data allow, so <span class="math inline">\(\hat{K}_{ML} = \max(x) = 912\)</span>.</p>
+<p><strong>Part (b)</strong> Set the sample mean equal to the model mean, <span class="math inline">\(\text{avg}(x) = \frac{\hat{K}_{MM}}{2}\)</span>. Then, solving for <span class="math inline">\(\hat{K}_{MM}\)</span> gives <span class="math inline">\(\hat{K}_{MM} = 2 \cdot \text{avg}(x) = 2 \cdot 449 = 898\)</span>.</p>
+<p><strong>Part (c)</strong> We want <span class="math inline">\(2 \cdot \text{avg}(x)\)</span> small while <span class="math inline">\(\max(x)\)</span> stays large, so push the other two observations as low as they can go, which is <span class="math inline">\(x = (0, 0, 912)\)</span>. Then <span class="math inline">\(\text{avg}(x) = 304\)</span>, <span class="math inline">\(\hat{K}_{MM} = 608\)</span>, and the ratio is <span class="math inline">\(608/912 = \tfrac{2}{3}\)</span>. This means that <span class="math inline">\(\tfrac{2}{3}\)</span> is the floor. With three observations, <span class="math inline">\(\text{avg}(x) \geq \frac{\max(x)}{3}\)</span>.</p>
+<p><span class="math display">\[
+\hat{K}_{MM} = 2 \cdot \text{avg}(x) \;\geq\; \frac{2}{3}\max(x).
+\]</span></p>
+<p><strong>Part (d)</strong> Both estimators “work” in the sense that the procedure produces a number. But each misbehaves differently. The ML estimate is the smallest <em>logically possible</em> value of <span class="math inline">\(K\)</span>, which intuition says is probably too low. And the method of moments can produce values of <span class="math inline">\(K\)</span> the data have already contradicted.</p>
+</div></details>
+</section>
+</section>
+<section id="checking-the-model" class="level1 ex-section">
+<h1 class="ex-section">Checking the Model</h1>
+<section id="ex-15" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-15"><span class="ex-num">Exercise 15</span> The Remaining Wait</h2>
+<p>The exponential distribution from <a href="#ex-10">Exercise 10</a> is our first model for durations. What does the model actually claim about waiting? This turns out to be really interesting and important!</p>
+<ol type="a">
+<li><p>Show that the cdf of the exponential distribution is <span class="math inline">\(F(t; \lambda) = \Pr(T \leq t) = 1 - e^{-\lambda t}\)</span>. Then define the <em>survival function</em> <span class="math inline">\(S(t; \lambda) = \Pr(T &gt; t) = 1 - F(t; \lambda)\)</span> and interpret it (i.e., for an input <span class="math inline">\(t\)</span>, what does <span class="math inline">\(S\)</span> return)?</p></li>
+<li><p>Suppose you’ve already waited <span class="math inline">\(s\)</span> units of time without the event occurring. Using the definition of conditional probability and the survival function, find <span class="math inline">\(\Pr(T &gt; t + s \mid T &gt; s)\)</span>. Compare your answer to <span class="math inline">\(\Pr(T &gt; t)\)</span>. What do you notice? Write it down in one sentence <em>before</em> you start part (c).</p></li>
+<li><p>Now check your sentence against a simulation. The code below draws 10,000 durations and computes, <em>for the draws that lasted past time 2</em>, how much <em>longer</em> they lasted.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>durations <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">10000</span>, <span class="at">rate =</span> <span class="dv">1</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>remaining <span class="ot">&lt;-</span> durations[durations <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Compare the distribution of <code>remaining</code> to the distribution of the original <code>durations</code> (plotting both ECDFs in one panel works well). Do the plots confirm or refute your sentence from (b)?</p></li>
+<li><p>Name one political process that your finding might describe well, and one it clearly can’t. Say why.</p></li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p>The cdf accumulates the density: <span class="math inline">\(F(t; \lambda) = \int_0^t \lambda e^{-\lambda u}\, du\)</span>. Use integration rules from Week 1.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>What is the event “<span class="math inline">\(T &gt; t + s\)</span> <em>and</em> <span class="math inline">\(T &gt; s\)</span>”? Notice that one of the two conditions implies the other.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b), a second nudge</span></summary><div class="ex-reveal-body">
+<p>Write the conditional probability as a ratio of survival functions and substitute <span class="math inline">\(S(t; \lambda) = e^{-\lambda t}\)</span>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (a)</strong> Integrate the pdf from <span class="math inline">\(0\)</span> to <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[
+F(t; \lambda) = \int_0^t \lambda e^{-\lambda u}\, du = \lambda \left[ \frac{-1}{\lambda} e^{-\lambda u} \right]_0^t = -e^{-\lambda t} + e^{0} = 1 - e^{-\lambda t}.
+\]</span></p>
+<p>Subtracting from one, we obtain the survival function:</p>
+<p><span class="math display">\[
+S(t; \lambda) = \Pr(T &gt; t) = e^{-\lambda t}.
+\]</span></p>
+<p><span class="math inline">\(S\)</span> returns the probability that the event <em>has not yet occurred</em> by time <span class="math inline">\(t\)</span>. (The cdf returns the probability that it <em>has</em>.) If <span class="math inline">\(t = 3\)</span> years and <span class="math inline">\(S(3; \lambda) = 0.20\)</span>, there’s a 20% chance the event happens after year three.</p>
+<p><strong>Part (b)</strong> The key step: when <span class="math inline">\(T &gt; t + s\)</span>, then <span class="math inline">\(T &gt; s\)</span> automatically, so the joint event is just <span class="math inline">\(T &gt; t + s\)</span>. By the definition of conditional probability,</p>
+<p><span class="math display">\[
+\Pr(T &gt; t + s \mid T &gt; s) = \frac{\Pr(T &gt; t + s)}{\Pr(T &gt; s)} = \frac{e^{-\lambda (t + s)}}{e^{-\lambda s}} = e^{-\lambda t} = \Pr(T &gt; t).
+\]</span></p>
+<p>Dividing exponentials subtracts the exponents, so the <span class="math inline">\(s\)</span> cancels and the two are exactly the same. <strong>This is important</strong>: the probability of waiting at least <span class="math inline">\(t\)</span> more units of time doesn’t depend on how long you’ve already waited. The distribution of the remaining wait, given that you’ve waited <span class="math inline">\(s\)</span> already, is exactly the distribution of the original wait. This is the <strong>memoryless property</strong>, and the exponential is the <em>only</em> continuous distribution that has it.</p>
+<p><strong>Part (c)</strong> Here <span class="math inline">\(s = 2\)</span>. The vector <code>remaining</code> holds the leftover durations of the draws that made it past time 2, so it is a sample from the distribution of <span class="math inline">\(T - s\)</span> given <span class="math inline">\(T &gt; s\)</span>. Plotting its ECDF over the ECDF of the original <code>durations</code> allows us to check part (b)’s claim at every <span class="math inline">\(t\)</span> at once.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>durations <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">10000</span>, <span class="at">rate =</span> <span class="dv">1</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>remaining <span class="ot">&lt;-</span> durations[durations <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># stack the two sets of durations into one tidy data frame</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">duration =</span> durations, <span class="at">type =</span> <span class="st">"original"</span>),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">duration =</span> remaining, <span class="at">type =</span> <span class="st">"remaining"</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the two ecdfs in a single panel</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> duration, <span class="at">color =</span> type)) <span class="sc">+</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex15-solution-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The two ECDFs sit right on top of each other! Of the 10,000 draws, only 1353 survived past time 2, so the <code>remaining</code> curve rests on about a seventh as much data and wiggles around a little more.</p>
+<p><strong>Part (d)</strong> The property is perhaps plausible for waits “with no internal clock,” such as the time between militarized disputes in a region or between filibusters in a session. (The classic non-political example is the time between lightning strikes, and <a href="#ex-16">Exercise 16</a> tests the time between hits in a hockey game.) Memorylessness fails for cabinet duration, the example mentioned back in <a href="#ex-10">Exercise 10</a>. If I ask how much longer a coalition will last, you’d definitely want to know how long it has lasted already. Human lifespans are similar. If I asked how much longer a person will live, you’d definitely want to know how old that person is now.</p>
+</div></details>
+</section>
+<section id="ex-16" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-16"><span class="ex-num">Exercise 16</span> Herron’s Hockey Data</h2>
+<p>Herron’s hockey data set records the time between hits<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> in the regulation periods of all 82 regular-season games for the Chicago Blackhawks.</p>
+<p>Before looking at the data, do you expect an exponential model to fit the times between hits? Write down your prediction and your reasoning. Notice that your derivation in <a href="#ex-15">Exercise 15</a> <em>can’t</em> settle this one. Whether hits actually behave this way is an empirical question. It could be that hits cluster (a hit sparks retaliation). Or maybe a long lull makes the next hit imminent.</p>
+<p>Model <code>seconds_btw_hits</code> as exponential, estimate the rate and the mean, and use the predictive distribution to evaluate the fit. Were you right?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data directly from the web</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>hockey <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/carlislerainey/0bc3018cd2377022fd045e1c932110a2/raw/fd6dcc28a7c0df456d779e9f0d7a82f15b9b5844/herron-hockey.csv"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># quick look</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(hockey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,175
+Columns: 5
+$ game_id                  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, …
+$ period_id                &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, …
+$ time_of_hit              &lt;chr&gt; "25S", "2M 8S", "2M 58S", "3M 8S", "4M 13S", …
+$ seconds_played_in_season &lt;dbl&gt; 25, 128, 178, 188, 253, 560, 643, 1407, 1825,…
+$ seconds_btw_hits         &lt;dbl&gt; NA, 103, 50, 10, 65, 307, 83, 764, 418, 535, …</code></pre>
+</div>
+</div>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>The general recipe for the predictive distribution is in the notes and it works for any fitted distribution. You’ve already derived a formula for <span class="math inline">\(\hat{\lambda}\)</span> in <a href="#ex-10">Exercise 10</a>. Get that number for the hockey data first. Then simulate.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>The notes offer a three-step procedure: estimate <span class="math inline">\(\hat{\lambda}\)</span> (you derived the estimator in <a href="#ex-10">Exercise 10</a>), simulate several fake data sets from the fitted exponential distribution, and compare them to the observed data with histograms or ECDFs.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>First the estimates, using <span class="math inline">\(\hat{\lambda} = 1/\text{avg}(t)\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># drop the one missing value (the season's first hit has no predecessor)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(hockey<span class="sc">$</span>seconds_btw_hits)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ml estimates of the rate and the mean</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>lambda_hat <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">mean</span>(y)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>lambda_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.003980079</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 251.2513</code></pre>
+</div>
+</div>
+<p>The mean time between hits is about 251 seconds (a hit every four minutes or so), which makes the rate <span class="math inline">\(\hat{\lambda} \approx 0.004\)</span> hits per second.</p>
+<p>Now the predictive check:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create observed data set</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>observed_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">seconds_btw_hits =</span> y, <span class="at">type =</span> <span class="st">"observed"</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate five fake data sets</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1917</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>sim_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  y_pred <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="at">rate =</span> lambda_hat)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  sim_list[[i]] <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">seconds_btw_hits =</span> y_pred,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="fu">paste0</span>(<span class="st">"simulated #"</span>, i))</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="co"># combine the fake and observed data sets</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>gg_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sim_list) <span class="sc">|&gt;</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(observed_data)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the observed and fake data sets</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg_data, <span class="fu">aes</span>(<span class="at">x =</span> seconds_btw_hits)) <span class="sc">+</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex16-check-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a sharper comparison: all the ecdfs in one panel</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>gg_data2 <span class="ot">&lt;-</span> gg_data <span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(type, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"type"</span>, <span class="st">"version"</span>))</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg_data2, <span class="fu">aes</span>(<span class="at">x =</span> seconds_btw_hits, <span class="at">color =</span> type, <span class="at">group =</span> version)) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex16-ecdf-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These distributions look <em>very</em> similar. In the ECDF overlay, the observed curve hides among the simulated ones.</p>
+<p>The exponential fits; this is perhaps substantively surprising. In sports we talk constantly about momentum, big swings, retaliation, tension building during a lull. If any of that mattered for hits, the time since the last hit would predict the time to the next one, but the distribution of hits seems memoryless.</p>
+</div></details>
+</section>
+<section id="ex-17" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-17"><span class="ex-num">Exercise 17</span> Heavy Tails: GDP Growth and the Location-Scale <em>t</em></h2>
+<p>The location-scale <em>t</em> distribution is a flexible model for data with heavier-than-normal tails (i.e., more extreme observations than a normal model expects). Its pdf is</p>
+<p><span class="math display">\[
+f(y; \mu, \sigma, \nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right) \sqrt{\nu \pi} \, \sigma} \left[1 + \frac{1}{\nu} \left( \frac{y - \mu}{\sigma} \right)^2 \right]^{-\frac{\nu+1}{2}},
+\]</span></p>
+<p>where <span class="math inline">\(\mu\)</span> is the location parameter (it shifts the distribution, like the normal’s mean), <span class="math inline">\(\sigma\)</span> is the scale parameter (it spreads the distribution, like the normal’s SD), and <span class="math inline">\(\nu\)</span> controls the heaviness of the tails. The <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> work similarly to a normal model. Small <span class="math inline">\(\nu\)</span> means heavy tails, and as <span class="math inline">\(\nu \to \infty\)</span> the distribution converges to the normal. (For <span class="math inline">\(\nu &gt; 10\)</span> or so, the <span class="math inline">\(t\)</span> and the normal distributions are hard to tell apart, and <span class="math inline">\(\nu = 1\)</span> is the Cauchy.)</p>
+<p>In R, <code>metRology::dt.scaled()</code> computes this density.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Be careful with the argument names in <code>metRology::dt.scaled()</code>. <code>mean</code> is the location <span class="math inline">\(\mu\)</span> (though <span class="math inline">\(\mu\)</span> isn’t always a mean), <code>sd</code> is the scale <span class="math inline">\(\sigma\)</span> (though <span class="math inline">\(\sigma\)</span> isn’t the SD), and <code>df</code> is <span class="math inline">\(\nu\)</span>.</p>
+<p>We’ll model cross-national GDP growth, which mixes a tight cluster of ordinary economies with a few extreme performers. The code below downloads percentage GDP growth for 2022 from the World Bank.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WDI)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get annual % gdp growth for 2022</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># - "NY.GDP.MKTP.KD.ZG" is percentage gdp growth</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   see https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">"NY.GDP.MKTP.KD.ZG"</span>,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">start =</span> <span class="dv">2022</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">end =</span> <span class="dv">2022</span>,</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">extra =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop aggregates (e.g., European Union)</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">!=</span> <span class="st">"Aggregates"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct_gdp_growth =</span> NY.GDP.MKTP.KD.ZG) <span class="sc">%&gt;%</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, year, region, pct_gdp_growth) <span class="sc">%&gt;%</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> pct_gdp_growth)) <span class="sc">+</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex17-data-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol type="a">
+<li><p>As a baseline, model <code>pct_gdp_growth</code> with a normal distribution. Estimate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> by ML (both have closed forms), then use the predictive distribution to assess the fit. What does the normal model miss?</p></li>
+<li><p>Now fit the location-scale <em>t</em>, estimating <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span>, and <span class="math inline">\(\nu\)</span> with <code>optim()</code>. Complete the skeleton below by filling in the two blanked lines.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ll_t <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># unpack the parameter vector</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  mu    <span class="ot">&lt;-</span> par[<span class="dv">1</span>]   <span class="co"># location</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  sigma <span class="ot">&lt;-</span> par[<span class="dv">2</span>]   <span class="co"># scale</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  nu    <span class="ot">&lt;-</span> par[<span class="dv">3</span>]   <span class="co"># degrees of freedom (tail heaviness)</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. guard: impossible parameter values should return -Inf</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    ... your code here ...</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. compute the log-likelihood with metRology::dt.scaled()</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    ll &lt;- ... your code here ...</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ll)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Reasonable starting values are <code>c(median(y), sd(y), 10)</code>.</p></li>
+<li><p>Use the predictive distribution to compare the <em>t</em> model to the normal model. What is the ML estimate of <span class="math inline">\(\nu\)</span>, and what does it give us?</p></li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>The density is undefined when the scale or the tail parameter is zero or negative. Decide what your function should return for those impossible values, so that <code>optim()</code> doesn’t consider them.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b), the code</span></summary><div class="ex-reveal-body">
+<p>If <code>sigma</code> or <code>nu</code> is not positive, return <code>-Inf</code>; otherwise return <code>sum(dt.scaled(y, mean = mu, sd = sigma, df = nu, log = TRUE))</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Your normal-model estimates in part (a) must match the closed forms exactly so that <span class="math inline">\(\hat{\mu}\)</span> = <code>mean(y)</code> and <span class="math inline">\(\hat{\sigma}\)</span> = <code>sqrt(sum((y - mean(y))^2)/length(y))</code>. If your predictive simulations look off, check these two numbers before debugging anything else.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (a)</strong> The normal ML estimates have closed forms, so no optimizer is needed:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the variable as y to simplify the code</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df<span class="sc">$</span>pct_gdp_growth</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ml estimates for the normal model</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>mu_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>sigma_hat <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((y <span class="sc">-</span> mu_hat)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>n)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mu_hat =</span> mu_hat, <span class="at">sigma_hat =</span> sigma_hat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mu_hat sigma_hat 
+ 4.418957  6.766710 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># predictive check for the normal model</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>observed_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">pct_gdp_growth =</span> y, <span class="at">type =</span> <span class="st">"observed"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>sim_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  y_pred <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mu_hat, <span class="at">sd =</span> sigma_hat)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  sim_list[[i]] <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">pct_gdp_growth =</span> y_pred,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="fu">paste0</span>(<span class="st">"simulated #"</span>, i))</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>gg_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sim_list) <span class="sc">|&gt;</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(observed_data)</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_gdp_growth)) <span class="sc">+</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>) <span class="sc">+</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex17-normal-check-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The normal model misses in two directions at once. To accommodate the handful of extreme observations, it needs a large SD (about 6.8 here). But that large SD forces the simulated data sets to spread out, so they show too little of the tight clustering around the average that the observed data have, and still none of the truly extreme values. The observed panel has a sharper peak <em>and</em> wilder outliers than any simulated panel.</p>
+<p><strong>Part (b)</strong> The completed skeleton:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(metRology)  <span class="co"># for dt.scaled()</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># log-likelihood for the location-scale t</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>ll_t <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># unpack the parameter vector</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  mu    <span class="ot">&lt;-</span> par[<span class="dv">1</span>]   <span class="co"># location</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  sigma <span class="ot">&lt;-</span> par[<span class="dv">2</span>]   <span class="co"># scale</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  nu    <span class="ot">&lt;-</span> par[<span class="dv">3</span>]   <span class="co"># degrees of freedom (tail heaviness)</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. guard: impossible parameters get -Inf, so optim() walks away</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sigma <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">|</span> nu <span class="sc">&lt;=</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="sc">-</span><span class="cn">Inf</span>)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. compute the log-likelihood</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  ll <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">dt.scaled</span>(y, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma, <span class="at">df =</span> nu, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ll)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a><span class="co"># maximize</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fu">median</span>(y), <span class="fu">sd</span>(y), <span class="dv">10</span>),</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> ll_t,</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> y,</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"Nelder-Mead"</span>)</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>est<span class="sc">$</span>convergence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>est<span class="sc">$</span>par</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.379386 2.561957 1.884743</code></pre>
+</div>
+</div>
+<p><strong>Part (c)</strong> The predictive check for the <em>t</em> model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2027</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>sim_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  y_pred <span class="ot">&lt;-</span> <span class="fu">rt.scaled</span>(n, <span class="at">mean =</span> est<span class="sc">$</span>par[<span class="dv">1</span>], <span class="at">sd =</span> est<span class="sc">$</span>par[<span class="dv">2</span>], <span class="at">df =</span> est<span class="sc">$</span>par[<span class="dv">3</span>])</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  sim_list[[i]] <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">pct_gdp_growth =</span> y_pred,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="fu">paste0</span>(<span class="st">"simulated #"</span>, i))</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>gg_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sim_list) <span class="sc">|&gt;</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(observed_data)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg_data, <span class="fu">aes</span>(<span class="at">x =</span> pct_gdp_growth)) <span class="sc">+</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>) <span class="sc">+</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex17-t-check-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the ecdf overlay for a sharper comparison</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>gg_data2 <span class="ot">&lt;-</span> gg_data <span class="sc">|&gt;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(type, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"type"</span>, <span class="st">"version"</span>))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg_data2, <span class="fu">aes</span>(<span class="at">x =</span> pct_gdp_growth, <span class="at">color =</span> type, <span class="at">group =</span> version)) <span class="sc">+</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ex17-t-ecdf-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The fitted <em>t</em> distributions match the observed data far better than the normal model. The simulated panels now show the tight central cluster <em>and</em> occasional extreme values. In the ECDF overlay, the observed curve is hard to pick out.</p>
+<p>The estimate of the degrees of freedom is <span class="math inline">\(\hat{\nu} \approx 1.9\)</span>. This means that these data have extremely heavy tails (almost a Cauchy). A <span class="math inline">\(t\)</span> has a finite variance only when <span class="math inline">\(\nu &gt; 2\)</span>, so the fitted model doesn’t have one. This is a sharp reminder that <span class="math inline">\(\sigma\)</span> is a “scale” and not an SD.</p>
+<p><span class="math inline">\(\nu\)</span> gives us a third parameter that separates “how spread out is the middle?” (<span class="math inline">\(\sigma \approx 2.6\)</span>, against the normal’s inflated 6.8) from “how common are extreme values?”. With the tails handled by <span class="math inline">\(\nu\)</span>, the scale can describe the typical countries. If you’d like to see what these heavy tails do for <em>robustness</em> (what happens to each model when one observation is wildly wrong), see <a href="#extra-3">Extra Practice 3</a>.</p>
+</div></details>
+</section>
+</section>
+<section id="reflection" class="level1 ex-section">
+<h1 class="ex-section">Reflection</h1>
+<section id="ex-18" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-18"><span class="ex-num">Exercise 18</span> What Should a Model Match?</h2>
+<p>The exercises above repeatedly compare a fitted model against observed data, and the models often disagree with the data about everything <em>except</em> the mean. Three questions, a few sentences each:</p>
+<ol type="a">
+<li>Is it important that a model mimic features of the data beyond the mean?</li>
+<li>When might the SD, the tails, or the behavior of waits matter <em>substantively</em>, for the political question itself?</li>
+<li>When might those features matter <em>statistically</em>, even if the mean is all you care about?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
+<p><a href="#ex-11">Exercise 11</a> earlier on this page fit several different models to the same data. Reread it and compare what varied across the fits to what didn’t, then think about what that contrast implies for when matching the mean is enough.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
+<p>Two of the exercises above already put this question in a concrete setting: <a href="#ex-17">Exercise 17</a> compared a normal model to a heavier-tailed model for a country’s GDP growth, and <a href="#ex-15">Exercise 15</a> asked whether a wait so far should change your forecast of the wait still to come. Reread whichever is closer to where you’re stuck, and ask what would go wrong for the actual political question, not just for the histogram, if you’d picked the wrong model.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>There’s no single right answer here. But here are a few thoughts:</p>
+<p><strong>(a)</strong> It depends on the target. <a href="#ex-11">Exercise 11</a> showed four wildly different models agreeing exactly about the mean, so for estimating a mean, mimicry beyond the mean can be surprisingly optional. But a model might be useful when we lean on the parts beyond the mean and some interesting quantities eventually do.</p>
+<p><strong>(b)</strong> Your question might concern more than the center. If you care about the <em>chance of an extreme outcome</em> (a deep recession, an unusually long stretch without a coup), the tails are the substance. If you care about <em>how long until an event, given the wait so far</em>, the memory structure is the substance. If you care about variability, then the scale or SD might matter most. A normal model of GDP growth answers tail questions badly even though its mean is fine.</p>
+<p><strong>(c)</strong> Looking ahead, standard errors depend on more of the distribution than its center. A model whose spread or tails are wrong can deliver a fine point estimate with badly wrong uncertainty.</p>
+</div></details>
+</section>
+</section>
+<section id="extra-practice" class="level1 ex-divider">
+<h1 class="ex-divider">Extra Practice</h1>
+<section id="extra-1" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-1"><span class="ex-num">Extra Practice 1</span> Bernoulli Grid Search</h2>
+<p>Suppose you design a Bernoulli experiment that generates successes and failures with an unknown probability <span class="math inline">\(\pi\)</span>. You want to estimate <span class="math inline">\(\pi\)</span>, so you run the experiment three times and get the outcomes <code>y &lt;- c(0, 1, 0)</code>, where <code>0</code> is a failure and <code>1</code> is a success.</p>
+<p>Use ML to estimate <span class="math inline">\(\pi\)</span>. <em>But don’t find the maximum analytically</em> or with a hill-climbing algorithm. Instead, use a <em>grid search</em>: use <code>seq()</code> to create ten to twenty candidate values of <span class="math inline">\(\pi\)</span>, compute the log-likelihood for each candidate, and locate the candidate that produces the largest log-likelihood. Report your results in a figure. (A table works too, if you’d like both.)</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>You’ll need the Bernoulli log-likelihood as a function you can evaluate. That is, write <span class="math inline">\(\log L(\pi) = k \log(\pi) + (N - k)\log(1 - \pi)\)</span>, with <span class="math inline">\(k\)</span> successes in <span class="math inline">\(N\)</span> trials, as an R function of <span class="math inline">\(\pi\)</span>. Then you can give this R function the whole grid at once to compute the log-likelihoods for the entire grid.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Your grid search and the closed-form Bernoulli estimate from your notes should land on nearly the same <span class="math inline">\(\pi\)</span>. The grid is just more coarse. Compute both, store them, and check that they differ by less than your grid’s spacing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># best_grid_pi: the pi your grid search returned as the best candidate</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># closed_form_pi: the closed-form Bernoulli estimate from your notes</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>best_grid_pi <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>closed_form_pi <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(best_grid_pi <span class="sc">-</span> closed_form_pi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>First, create a function to compute the log-likelihood.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create function to compute log-likelihood</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>compute_log_lik <span class="ot">&lt;-</span> <span class="cf">function</span>(pi_grid, y) {</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">sum</span>(y)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  log_lik <span class="ot">&lt;-</span> k<span class="sc">*</span><span class="fu">log</span>(pi_grid) <span class="sc">+</span> (N <span class="sc">-</span> k)<span class="sc">*</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> pi_grid)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(log_lik)</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>One R gotcha worth highlighting: we named the argument <code>pi_grid</code>, not <code>pi</code>, because <code>pi</code> is R’s built-in constant 3.14159…. Naming a variable <code>pi</code> works, but then a stray line that <em>forgot</em> to define it would silently use 3.14159… instead of producing an error.</p>
+<p>Now compute the log-likelihood for 11 evenly spaced candidates from 0 to 1 and plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create data set</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co"># candidate values and their log-likelihoods</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>pi_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">11</span>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>grid_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">pi_grid =</span> pi_grid,</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">log_lik =</span> <span class="fu">compute_log_lik</span>(pi_grid, y))</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot log-likelihood against the candidates</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grid_df, <span class="fu">aes</span>(<span class="at">x =</span> pi_grid, <span class="at">y =</span> log_lik)) <span class="sc">+</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk02-exercises-sol_files/figure-html/ep1-grid-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a table, for those who want the numbers</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>grid_df <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"Candidate Value"</span> <span class="ot">=</span> pi_grid,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Log-Likelihood"</span> <span class="ot">=</span> log_lik) <span class="sc">|&gt;</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">tt</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_luubrixp8tfivk1ddkyc = TinyTable.createTableFunctions("tinytable_luubrixp8tfivk1ddkyc");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '11', j: 1 }, { i: '11', j: 2 } ], css_id: 'tinytable_css_5e6hyn6xy5nz3a2kl8gv',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_pbzm871qvps00vf2vfgs',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_luubrixp8tfivk1ddkyc.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_luubrixp8tfivk1ddkyc td.tinytable_css_5e6hyn6xy5nz3a2kl8gv, #tinytable_luubrixp8tfivk1ddkyc th.tinytable_css_5e6hyn6xy5nz3a2kl8gv {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_luubrixp8tfivk1ddkyc td.tinytable_css_pbzm871qvps00vf2vfgs, #tinytable_luubrixp8tfivk1ddkyc th.tinytable_css_pbzm871qvps00vf2vfgs {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_luubrixp8tfivk1ddkyc" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">Candidate Value</th>
+                <th scope="col" data-row="0" data-col="2">Log-Likelihood</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">0</td>
+                  <td data-row="1" data-col="2">-Inf</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">0.1</td>
+                  <td data-row="2" data-col="2">-2.51</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">0.2</td>
+                  <td data-row="3" data-col="2">-2.06</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">0.3</td>
+                  <td data-row="4" data-col="2">-1.92</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">0.4</td>
+                  <td data-row="5" data-col="2">-1.94</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1">0.5</td>
+                  <td data-row="6" data-col="2">-2.08</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">0.6</td>
+                  <td data-row="7" data-col="2">-2.34</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1">0.7</td>
+                  <td data-row="8" data-col="2">-2.76</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">0.8</td>
+                  <td data-row="9" data-col="2">-3.44</td>
+                </tr>
+                <tr>
+                  <td data-row="10" data-col="1">0.9</td>
+                  <td data-row="10" data-col="2">-4.71</td>
+                </tr>
+                <tr>
+                  <td data-row="11" data-col="1">1</td>
+                  <td data-row="11" data-col="2">-Inf</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p>Among the candidates, <span class="math inline">\(\pi = 0.3\)</span> produces the largest log-likelihood (about <span class="math inline">\(-1.92\)</span>, against <span class="math inline">\(-1.94\)</span> for <span class="math inline">\(\pi = 0.4\)</span>). I knew the winner would be 0.3 or 0.4 before computing anything, because the ML estimate is the sample mean, <span class="math inline">\(\text{avg}(y) = \frac{1}{3} \approx 0.33\)</span>, and the log-likelihood rises to that peak and falls away on both sides, so the best candidate has to be one of the two that bracket it. Which of the two wins depends on the shape of the curve, not only on distance. And notice that the grid <em>cannot</em> report <span class="math inline">\(\frac{1}{3}\)</span> itself, because 0.33 isn’t a candidate, which is precisely the limitation <a href="#ex-3">Exercise 3</a> asked about. (The endpoints show as missing in the plot: at <span class="math inline">\(\pi = 0\)</span> and <span class="math inline">\(\pi = 1\)</span> the log-likelihood is <span class="math inline">\(-\infty\)</span>.)</p>
+</div></details>
+</section>
+<section id="extra-2" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-2"><span class="ex-num">Extra Practice 2</span> <code>optim()</code> Meets the Closed Form</h2>
+<p>We found that the sample average is the ML estimator of the parameter <span class="math inline">\(\lambda\)</span> of the Poisson distribution. For the data set <code>y &lt;- c(12, 7, 9, 12, 10)</code>, show that maximizing the Poisson log-likelihood with <code>optim()</code> produces the same answer as the closed-form solution.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>You need a Poisson log-likelihood function before you can call <code>optim()</code>. See the example for the beta distribution in the notes. Then write the Poisson version yourself.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>Once you have a log-likelihood function, the beta example in the notes walks through every argument the <code>optim()</code> call needs, one by one, in the numbered list right after the call.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
+<p>Before calling <code>optim()</code>, check that the log-likelihood function itself works as expected. It should return a larger value at the closed-form estimate than at a nearby value that isn’t the estimate.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># evaluate your log-likelihood function at the closed-form estimate</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ll_fn</span>(<span class="at">par =</span> <span class="fu">mean</span>(y), <span class="at">y =</span> y)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and at a nearby value that is NOT the estimate</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ll_fn</span>(<span class="at">par =</span> <span class="fu">mean</span>(y) <span class="sc">+</span> <span class="dv">1</span>, <span class="at">y =</span> y)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># if ll_fn is correct, the first number is larger</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></details>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>First, the closed-form solution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data set</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">10</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># closed-form maximum</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+<p>Next, the numerical solution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create log-likelihood function to maximize</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>ll_pois <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">dpois</span>(y, <span class="at">lambda =</span> par, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co"># maximize the log-likelihood function</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>,</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> ll_pois,</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> y,</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"Brent"</span>,</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="dv">100</span>)</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="co"># print the lambda that maximizes the log-likelihood</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>est<span class="sc">$</span>par</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+<p>Both find <span class="math inline">\(\hat{\lambda} = 10\)</span>. The numerical solution isn’t <em>exactly</em> 10, because of <em>very</em> small numerical errors (the difference is around <span class="math inline">\(10^{-8}\)</span>).</p>
+</div></details>
+</section>
+<section id="extra-3" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="extra-3"><span class="ex-num">Extra Practice 3</span> Corrupted Data</h2>
+<p>Take the WDI GDP-growth data from <a href="#ex-17">Exercise 17</a> and corrupt them by replacing one observation with a severe data-entry error. Perhaps replace one value of <code>pct_gdp_growth</code> with 10,000. Re-fit the normal and <em>t</em> models. How did each model’s estimate of the <em>location</em> change? Why? Is resistance to corruption a desirable property?</p>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the variable as y (to simplify the code)</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df<span class="sc">$</span>pct_gdp_growth</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co"># corrupt the data</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>y_corrupt <span class="ot">&lt;-</span> y</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>y_corrupt[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="co"># normal ml estimates, clean and corrupted</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mu_hat =</span> <span class="fu">mean</span>(y),</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">sigma_hat =</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(y)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mu_hat sigma_hat 
+ 4.418957  6.766710 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mu_hat =</span> <span class="fu">mean</span>(y_corrupt),</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sigma_hat =</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((y_corrupt <span class="sc">-</span> <span class="fu">mean</span>(y_corrupt))<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">length</span>(y_corrupt)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mu_hat sigma_hat 
+  52.2957  689.7820 </code></pre>
+</div>
+</div>
+<p>The data-entry error drags the normal model’s estimated mean from about 4.4 to about 52. This is percentage GDP growth, so that’s a huge error.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># t ml estimates, clean and corrupted (ll_t() comes from the heavy-tails exercise)</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>est_clean <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fu">median</span>(y), <span class="fu">sd</span>(y), <span class="dv">10</span>),</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fn =</span> ll_t, <span class="at">y =</span> y,</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>), <span class="at">method =</span> <span class="st">"Nelder-Mead"</span>)</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>est_corrupt <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fu">median</span>(y_corrupt), <span class="fu">sd</span>(y_corrupt), <span class="dv">10</span>),</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fn =</span> ll_t, <span class="at">y =</span> y_corrupt,</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>), <span class="at">method =</span> <span class="st">"Nelder-Mead"</span>)</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mu_clean =</span> est_clean<span class="sc">$</span>par[<span class="dv">1</span>], <span class="at">mu_corrupt =</span> est_corrupt<span class="sc">$</span>par[<span class="dv">1</span>],</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">nu_clean =</span> est_clean<span class="sc">$</span>par[<span class="dv">3</span>], <span class="at">nu_corrupt =</span> est_corrupt<span class="sc">$</span>par[<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  mu_clean mu_corrupt   nu_clean nu_corrupt 
+  4.379386   4.376540   1.884743   1.438458 </code></pre>
+</div>
+</div>
+<p>The <em>t</em> model’s location estimate barely moves. It’s about 4.4 in both the original and the corrupted data. With heavy tails available, the model can file the absurd observation under “weird draw” without letting it drag the location away from the correct value. Notice that <span class="math inline">\(\hat{\nu}\)</span> drops from about 1.9 to about 1.4, making the tails heavier still to accommodate this new, absurd value. The normal distribution has thin tails that make 10,000 essentially impossible. It has no option but to move the whole distribution toward this absurd value.</p>
+<p>Is the <em>t</em>’s behavior desirable? Often, yes! If data-entry errors happen, we’d rather our estimates not swing wildly with each error. However, the resistance applies to <em>correct</em> extreme observations, and whether those outliers should move the estimate of the typical value is a substantive question, not a statistical one. A robust model is a choice about which observations speak to “typical”. That’s a choice worth being thoughtful about.</p>
+</div></details>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>This is Exercise 9 on p.&nbsp;425 of DeGroot and Schervish’s <em>Probability and Statistics</em>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Showing this takes integration by parts; here we’ll take it as known.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><code>crdata</code> isn’t on CRAN. Install it once with <code>remotes::install_github("carlislerainey/crdata")</code>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>From <a href="https://en.wikipedia.org/wiki/Ice_hockey_statistics">Wikipedia</a>, a hit is: <em>“Intentionally initiated contact with the player possessing the puck that causes that player to lose possession of the puck.”</em><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><code>metRology</code> is on CRAN: <code>install.packages("metRology")</code>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The <code>WDI</code> package (CRAN) fetches the data live, so this chunk needs an internet connection.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<!-- Injected at the end of every exercise page (see _metadata.yml).
+     Two jobs: keep the countdown in the release notice current, and, when
+     `solution-gate: browser` is in force, open the solution panels the moment
+     the release time arrives. Under the default `render` gate there is
+     nothing on the page to open, so the reveal half simply finds nothing. -->
+<script>
+(function () {
+  var notice = document.querySelector(".ex-notice-wait");
+  var pending = Array.prototype.slice.call(
+    document.querySelectorAll(".ex-slot.ex-pending")
+  );
+  if (!notice && !pending.length) return;
+
+  var iso = (notice || pending[0]).getAttribute("data-unlock");
+  var unlock = new Date(iso);
+  if (isNaN(unlock)) return;
+
+  var readout = notice ? notice.querySelector(".ex-countdown") : null;
+
+  function remaining(ms) {
+    var mins = Math.floor(ms / 60000);
+    var days = Math.floor(mins / 1440);
+    var hours = Math.floor((mins % 1440) / 60);
+    if (days >= 1) {
+      return days + (days === 1 ? " day, " : " days, ") +
+             hours + (hours === 1 ? " hour" : " hours");
+    }
+    if (hours >= 1) {
+      var m = mins % 60;
+      return hours + (hours === 1 ? " hour, " : " hours, ") +
+             m + (m === 1 ? " minute" : " minutes");
+    }
+    return mins + (mins === 1 ? " minute" : " minutes");
+  }
+
+  function release() {
+    pending.forEach(function (slot) {
+      slot.classList.remove("ex-pending");
+    });
+    if (notice) {
+      notice.classList.remove("ex-notice-wait");
+      notice.classList.add("ex-notice-open");
+      notice.textContent = pending.length
+        ? "Complete solutions are available. Work each exercise before you open one."
+        : "Complete solutions are due to be posted — reload in a little while.";
+    }
+  }
+
+  function tick() {
+    var left = unlock - new Date();
+    if (left <= 0) { release(); return; }
+    if (readout) readout.textContent = remaining(left);
+    setTimeout(tick, left < 3600000 ? 30000 : 600000);
+  }
+
+  tick();
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/pos5747\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

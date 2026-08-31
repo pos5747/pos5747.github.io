@@ -25,7 +25,7 @@ You should be extremely careful about using AI as a study partner. It's very goo
 
 See also my [suggestions for the exercises](suggestions-for-exercises.qmd).
 
-**AI.** AI is always allowed. However, the exercises are preparation for the assessments and exams. If you use AI to complete the exercises, then you are defeating the purpose. You may find AI helpful as a "tutor," but I recommend working with me or Bryson instead.
+**AI.** AI is always allowed. But in the case of exercises, it is **strongly discouraged.** However, the exercises are preparation for the assessments and exams. If you use AI to complete the exercises, then you are defeating the purpose. You may find AI helpful as a "tutor," but I recommend working with me or Bryson instead.
 
 ## Weekly Assessments
 

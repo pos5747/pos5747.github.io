@@ -1,0 +1,23 @@
+---
+# The always-open companion to wk03-exercises.qmd.
+#
+# Same page, same content, solutions never gated -- for Carlisle and the TA.
+# The week file is the only source; this wrapper adds nothing but front matter.
+# To make one of these for a new week, copy this file and change the two
+# `wk03` strings below.
+#
+# `solution-unlock` in the past is what opens the solutions: the week file
+# does not set that key, so this one survives the include's metadata merge.
+# (`title` does not survive -- the week file's wins -- hence the subtitle.)
+subtitle: "Instructor and TA copy: complete solutions, always open"
+solution-unlock: "2000-01-01 00:00"
+
+# Keep it off the site's search box and out of Google.
+search: false
+format:
+  html:
+    include-in-header:
+      text: '<meta name="robots" content="noindex, nofollow">'
+---
+
+{{< include wk03-exercises.qmd >}}

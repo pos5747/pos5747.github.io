@@ -58,7 +58,7 @@ print(ml_est, digits = 3)
 
 # create data frame with batting average
 bstats <- battingStats() |>
-  filter(yearID == 2023, AB > 100) |>  # data from 2023
+  filter(yearID == 2023) |>  # data from 2023
   filter(AB >= 100) |>  # players with at least 100 at-bats
   select(player_id = playerID, batting_average = BA) |>
   arrange(-batting_average) |>
@@ -75,5 +75,5 @@ theta_hat
 # use invariance property to get mean
 theta_hat$est[1]/(theta_hat$est[1] + theta_hat$est[2])
 
-# this is *slightly different than the sample avg
+# this is slightly different than the sample avg
 mean(bstats$batting_average)

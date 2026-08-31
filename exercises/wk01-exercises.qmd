@@ -1,0 +1,1255 @@
+---
+title: "Week 1 Exercises"
+distributed: 2026-08-25
+
+# TEMPORARY, so the solutions are visible while you look the page over.
+# Delete this line to go back to the three-day default in _metadata.yml.
+solution-delay-days: 1
+---
+
+I created some notes that review the concepts required for these exercises, but you should draw on familiar textbooks and notes where possible.
+
+Do all the exercises below.
+
+The numbering runs one ahead of the PDF from here on: the PDF's Exercise 1 has two parts, which appear below as Exercises 1 and 2.
+
+The [PDF version](../exr/wk01-exr.pdf) has an appendix of extra practice problems. These are not required. But when a required exercise exposes a weak spot, work through the matching appendix problems if time allows.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Fractions, Logarithms, and Exponents
+
+## Some Practice Combining Fractions, Logarithms, and Exponents
+
+Simplify $\log\!\left(\dfrac{a^{3}b^{2}}{c}\right)$.
+
+::: hint
+
+Work from the outside in. What does a logarithm do to a quotient (i.e., what does $\log\!\left(\dfrac{u}{v}\right)$ become)? Apply that rule first, and see what's left inside each logarithm. Then you'll need two more rules to finish, one for $\log(uv)$ and one for $\log\!\left(u^{k}\right)$.
+
+:::
+
+::: {.hint label="Check your work"}
+
+Pick any numbers you like and evaluate both the original expression and your simplified one. If the simplification is right, they'll agree to machine precision.
+
+```{r ex01-check}
+#| eval: false
+a <- 2
+b <- 3
+cc <- 5                  # cc, not c: `c()` is R's combine function
+
+log(a^3 * b^2 / cc)      # the original
+# ... your simplified expression here ...
+```
+
+:::
+
+::: sol
+
+We need three rules here, and it's easiest to use them in this order. Recall that
+
+$$
+\log\!\left(\frac{u}{v}\right) = \log(u) - \log(v),
+\qquad
+\log(uv) = \log(u) + \log(v),
+\qquad
+\log\!\left(u^{k}\right) = k\log(u).
+$$
+
+Applying them in turn, we obtain
+
+$$
+\begin{aligned}
+\log\!\left(\dfrac{a^{3}b^{2}}{c}\right)
+&= \log\!\left(a^{3}b^{2}\right) - \log(c) && \text{(quotient rule)} \\
+&= \log\!\left(a^{3}\right) + \log\!\left(b^{2}\right) - \log(c) && \text{(product rule)} \\
+&= 3\log(a) + 2\log(b) - \log(c). && \text{(power rule)}
+\end{aligned}
+$$
+
+The order is a convenience, not a requirement. We could just as well use the product rule first. But each rule does need a whole factor to work on, never part of one.
+
+*The two classic slips with logarithms.*
+
+- $\log(a^{3}b^{2}/c) = \log(a^{3}b^{2}) / \log(c)$. A logarithm turns a quotient into a *difference*, never into a quotient of logarithms. (The same slip with products turns $\log(uv)$ into $\log(u)\log(v)$.)
+- $3\log(a)$ written as $\log(a)^{3}$ or $\log(3a)$. The exponent comes down in front, where it multiplies the logarithm (not its argument).
+
+We can settle all three with one numeric check:
+
+```{r ex01-verify}
+a <- 2
+b <- 3
+cc <- 5                  # cc, not c: `c()` is R's combine function
+
+log(a^3 * b^2 / cc)                # the original
+3 * log(a) + 2 * log(b) - log(cc)  # the simplified form
+```
+
+:::
+
+## The Logarithm of a Product {ref="log-of-product"}
+
+Simplify $\log \left(\prod_{i = 1}^{n} \pi^{y_i}(1 - \pi)^{(1 - y_i)} \right)$.
+
+::: hint
+
+Start with $\log(uv)$. What does it become? Now extend that from two factors to $n$, i.e., what is $\log\!\left(\prod_{i=1}^{n} u_i\right)$? Make that move first, before you touch a single exponent.
+
+:::
+
+::: hint
+
+By now you should have a sum of terms that look like $\log\!\left(\pi^{y_i}\right)$. What does $\log\!\left(u^{k}\right)$ become, and where does the $k$ go? And notice that it makes no difference whether the exponent is a number like $3$ or a symbol like $y_i$.
+
+:::
+
+::: {.hint label="Check your work"}
+
+Your answer should have a $\log(\pi)$ term and a $\log(1 - \pi)$ term. Before you run anything, write one sentence saying why the two coefficients have to add up to $n$.
+
+Then take $n = 3$, $y = (1, 0, 1)$, and $\pi = 0.4$, and evaluate both expressions. They should agree to machine precision.
+
+```{r ex02-check}
+#| eval: false
+y <- c(1, 0, 1)
+p <- 0.4                            # pi in the algebra; p in R, so we do not
+n <- length(y)                      #   shadow R's built-in `pi`
+
+log(prod(p^y * (1 - p)^(1 - y)))    # the original: multiply, then take the log
+# ... your simplified expression here ...
+```
+
+:::
+
+::: sol
+
+The log of a product is a sum of logs, so we take that step first and bring the exponents down afterward. Here are the three rules, in the order we use them:
+
+1. The product rule, $\log(uv) = \log(u) + \log(v)$, extended across $n$ factors: $\log\!\left(\prod_{i=1}^{n} u_i\right) = \sum_{i=1}^{n} \log(u_i)$.
+2. The power rule, $\log\!\left(u^{k}\right) = k\log(u)$. It makes no difference that the exponent here is a symbol ($y_i$) rather than a number.
+3. A constant comes out of a sum, and $\sum_{i=1}^{n} (1 - y_i) = n - \sum_{i=1}^{n} y_i$.
+
+$$
+\begin{aligned}
+\log \left(\prod_{i = 1}^{n} \pi^{y_i}(1 - \pi)^{(1 - y_i)} \right)
+&= \sum_{i=1}^{n} \log\!\left(\pi^{y_i}(1 - \pi)^{(1 - y_i)}\right) && \text{(rule 1, across the } n \text{ factors)} \\
+&= \sum_{i=1}^{n} \left[\log\!\left(\pi^{y_i}\right) + \log\!\left((1 - \pi)^{(1 - y_i)}\right)\right] && \text{(rule 1 again, inside each term)} \\
+&= \sum_{i=1}^{n} \left[ y_i \log(\pi) + (1 - y_i)\log(1 - \pi) \right] && \text{(rule 2)} \\
+&= \log(\pi)\sum_{i=1}^{n} y_i + \log(1 - \pi)\sum_{i=1}^{n} (1 - y_i) && \text{(constants out of the sums)} \\
+&= \Bigl(\sum_{i=1}^{n} y_i\Bigr)\log(\pi) + \Bigl(n - \sum_{i=1}^{n} y_i\Bigr)\log(1 - \pi). && \text{(rule 3)}
+\end{aligned}
+$$
+
+The third line is already a correct simplification, but it's worth the extra step to collect it into the last line. In the model this expression comes from (a Bernoulli model, which we take up in Week 2), each $y_i$ is $0$ or $1$. So $\sum_{i=1}^{n} y_i$ counts the ones and $n - \sum_{i=1}^{n} y_i$ counts the zeros, which is why they add to $n$. Writing $S = \sum_{i=1}^{n} y_i$ for the count of ones, we have
+
+$$
+\log \left(\prod_{i = 1}^{n} \pi^{y_i}(1 - \pi)^{(1 - y_i)} \right) = S\log(\pi) + (n - S)\log(1 - \pi).
+$$
+
+But watch the direction of the rule. It's the log of a *product* that becomes a sum of logs. By contrast, $\log(u + v)$, the log of a *sum*, doesn't simplify at all. Confusing $\sum \log$ with $\log \sum$ is usually the most expensive algebra slip of the semester, because nothing announces it; the expression still looks plausible, and every derivative we take afterward is wrong.
+
+One notation warning while we're here. The $\pi$ in this expression is an unknown probability, not the constant $3.14159$, and we use $\pi$ for it throughout the notes. R has the same collision, which is why the code below writes `p`.
+
+The $n = 3$ check from the hint:
+
+```{r ex02-verify}
+y <- c(1, 0, 1)
+p <- 0.4                            # pi in the algebra; p in R, so we do not
+n <- length(y)                      #   shadow R's built-in `pi`
+
+log(prod(p^y * (1 - p)^(1 - y)))            # the original
+sum(y) * log(p) + (n - sum(y)) * log(1 - p) # the simplified form
+```
+
+The form we just checked is the Bernoulli log-likelihood, and we differentiate exactly this function later in this set, in [bernoulli-ll]{.ex-ref}. Notice what taking the log did: it turned a product over observations into a sum over observations. That's the step that opens every maximum-likelihood problem in this course, and every log posterior in the Bayesian half.
+
+*Why we always take the log.* Suppose we let $n$ grow. Every factor lies between $0$ and $1$, so the product shrinks geometrically. Somewhere past a thousand observations, it falls below the smallest positive number a computer can hold, and R returns exactly $0$. The log of that is $-\infty$, and every calculation downstream is ruined. But the sum of logs stays a moderate negative number at any $n$.
+
+```{r ex02-underflow}
+set.seed(1)
+y <- rbinom(2000, 1, 0.4)
+n <- length(y)
+
+prod(p^y * (1 - p)^(1 - y))                 # multiply first, and it underflows
+log(prod(p^y * (1 - p)^(1 - y)))            # so the log of it is -Inf
+sum(y) * log(p) + (n - sum(y)) * log(1 - p) # the sum of logs is fine
+sum(dbinom(y, 1, p, log = TRUE))            # the idiomatic way to compute it
+```
+
+Here $S = 783$, so the sum of logs is $783\log(0.4) + 1217\log(0.6) \approx -1339$. Thus, the product itself is about $e^{-1339}$, or $10^{-582}$, far below the smallest number a double holds at full precision (about $2.2 \times 10^{-308}$).
+
+That's why, from Week 2 on, we never multiply densities and take the log at the end. In practice, we compute log-densities directly with `log = TRUE` and sum them.
+
+:::
+
+## Inverse Logit {ref="inverse-logit"}
+
+Show that the two common forms of the inverse-logit function  
+
+$$
+f_1(x) \;=\; \frac{1}{\,1 + e^{-x}\,} 
+\quad\text{and}\quad
+f_2(x) \;=\; \frac{e^{x}}{\,1 + e^{x}\,}
+$$
+
+are algebraically equivalent for every real number $x$.
+
+::: hint
+
+Neither fraction simplifies on its own, so try multiplying the numerator and denominator of $f_1$ by the same quantity (which leaves its value unchanged). What would you have to multiply by to clear the $e^{-x}$? Recall that $e^{x}e^{-x} = e^{0} = 1$.
+
+:::
+
+::: {.hint label="Check your work"}
+
+Before you run anything, what should both forms give at $x = 0$? Write the number down. Then evaluate the two forms in R at a few values of $x$, some negative and some positive, and check that they agree.
+
+```{r ex03-check}
+#| eval: false
+f1 <- function(x) 1 / (1 + exp(-x))
+f2 <- function(x) exp(x) / (1 + exp(x))
+
+x <- c(-3, -0.5, 0, 0.5, 3)
+# ... compare f1(x) and f2(x) here ...
+```
+
+:::
+
+::: sol
+
+Start with $f_1(x) \;=\; \frac{1}{1 + e^{-x}}$. Multiply the numerator and denominator by the strictly positive quantity $e^{x}$ (which leaves the fraction's value unchanged). After a bit of algebra, we obtain $f_2$.
+
+$$
+f_1(x)
+\;=\;
+\frac{1 \cdot e^{x}}{(1 + e^{-x}) \cdot e^{x}}
+\;=\;
+\frac{e^{x}}{e^{x} + 1}
+\;=\;
+\frac{e^{x}}{1 + e^{x}}
+\;=\;
+f_2(x).
+$$
+
+Hence  $f_1(x) = f_2(x)$, so the two expressions are equivalent for all $x$.
+
+Notice where the words *strictly positive* earn their keep. We can multiply the top and the bottom by $e^{x}$ only because $e^{x} \neq 0$, and $e^{x} > 0$ holds for every real $x$, so there is no value we have to rule out along the way. Thus the identity holds on the whole real line, and not just where the algebra happens to look tidy.
+
+*Two things to watch.*
+
+- A numeric check is not a proof. Evaluating both forms at a handful of $x$ values is a good way to catch a slip (which is why we suggested it above), but agreement at five points does not establish an identity on the whole real line. The algebra does that.
+- Confusing this function with its inverse. The *logit* is $\log\!\left(\dfrac{p}{1 - p}\right)$, which carries a probability to the real line. The inverse logit here carries the real line back to $(0, 1)$. From Week 4 on we move between the two constantly, so it's worth fixing now which direction is which.
+
+*The two forms are not interchangeable in code.* Both appear in print, so it's easy to read a paper that uses one and a function that uses the other and assume they are different models. They are not. But R doesn't treat them alike:
+
+```{r ex03-tails}
+f1 <- function(x) 1 / (1 + exp(-x))
+f2 <- function(x) exp(x) / (1 + exp(x))
+
+x <- c(-3, 0, 3)
+all.equal(f1(x), f2(x))                                # the same function...
+
+c(f1 = f1(710), f2 = f2(710), plogis = plogis(710))    # ...but not the same code
+```
+
+At $x = 710$, `exp(x)` overflows to `Inf`, so $f_2$ returns `NaN` while $f_1$ still returns $1$. (We saw the mirror image of this in [log-of-product]{.ex-ref}, where the product underflowed to $0$ and its log to $-\infty$.) In practice we don't hand-roll either form: `plogis()` is built to handle both tails. We differentiate this function in [ilogit-derivs]{.ex-ref}, and from Week 4 on it's the link that turns $X\beta$ into a probability.
+:::
+
+# Derivatives
+
+## An Important Preview {ref="bernoulli-ll"}
+
+Let $\ell(\pi)=S\log(\pi)+(n-S)\log\!\bigl(1-\pi\bigr)$ for $0<\pi<1$, where $S$ and $n$ (with $0\le S\le n$) are fixed numerical constants. Find $\frac{d\ell(\pi)}{d\pi}$ and $\frac{d^{2}\ell(\pi)}{d\pi^{2}}$.
+
+::: hint
+
+$\ell$ is a sum of two terms, each a constant times a logarithm, so differentiate term by term. What is $\dfrac{d}{d\pi}\log(\pi)$? The second term needs the chain rule, because the inside is $1 - \pi$ rather than $\pi$. Notice that $S$ and $n$ are fixed numbers here, so they just come along for the ride.
+
+:::
+
+::: hint
+
+For the second derivative, write each piece as a power before you differentiate: $\dfrac{S}{\pi} = S\pi^{-1}$ and $\dfrac{n-S}{1-\pi} = (n-S)(1-\pi)^{-1}$. Then it's the power rule, and the chain rule once more on the second piece.
+
+:::
+
+::: {.hint label="Check your work"}
+
+Before you run anything, what sign do you expect the second derivative to have on $(0,1)$, and what would that sign tell you about the shape of $\ell$?
+
+Then take $S = 7$ and $n = 10$ and compare your first derivative against a finite difference at $\pi = 0.4$. The two should agree to about six digits.
+
+```{r ex04-check}
+#| eval: false
+S <- 7
+n <- 10
+ell <- function(p) S * log(p) + (n - S) * log(1 - p)
+
+d1 <- function(p) {
+  # ... your first derivative here ...
+}
+
+p <- 0.4
+h <- 1e-6
+c(analytic = d1(p), finite_difference = (ell(p + h) - ell(p - h)) / (2 * h))
+```
+
+:::
+
+::: sol
+
+- **First derivative**
+
+  $$
+  \frac{d\ell}{d\pi}
+  =\frac{S}{\pi}-\frac{\,n-S\,}{1-\pi}.
+  $$
+
+  Here $\frac{d}{d\pi}\log(\pi) = \frac{1}{\pi}$, and $\frac{d}{d\pi}\log(1-\pi) = -\frac{1}{1-\pi}$ by the chain rule (the inside, $1 - \pi$, has derivative $-1$, and that's where the minus sign comes from).
+
+- **Second derivative**
+
+  $$
+  \frac{d^{2}\ell}{d\pi^{2}}
+  =-\frac{S}{\pi^{2}}-\frac{\,n-S\,}{(1-\pi)^{2}}.
+  $$
+
+  If we write each piece as a power first, $S\pi^{-1}$ and $(n-S)(1-\pi)^{-1}$, we differentiate each term again by the power rule. The result is negative for all $\pi\in(0,1)$, so $\ell(\pi)$ is concave.
+
+*Two things to watch.*
+
+- The minus sign in front of $\frac{n-S}{1-\pi}$. It's the easiest thing in the problem to drop, and it matters more than a sign slip usually does. Without it, both terms of $\ell'$ are positive on $(0,1)$, so $\ell'$ never crosses zero and there's nothing left to solve.
+- Reading $\ell'' < 0$ as evidence of a minimum. Negative curvature means concave, so a point where $\ell' = 0$ is a *maximum*. That's what we want here, and it's why we can find it by setting the first derivative to zero instead of hunting along the interval.
+
+Both derivatives against a finite difference, at $S = 7$ and $n = 10$:
+
+```{r ex04-verify}
+S <- 7
+n <- 10
+ell <- function(p) S * log(p) + (n - S) * log(1 - p)
+d1  <- function(p) S / p - (n - S) / (1 - p)
+d2  <- function(p) -S / p^2 - (n - S) / (1 - p)^2
+
+p <- 0.4
+h <- 1e-6
+c(d1 = d1(p), finite_difference = (ell(p + h) - ell(p - h)) / (2 * h))
+c(d2 = d2(p), finite_difference = (d1(p + h) - d1(p - h)) / (2 * h))
+
+d1(S / n)                       # zero at the ML estimate, up to rounding
+```
+
+*Why this one is called a preview.* That last line is no accident. The function $\ell(\pi)$ is the Bernoulli log-likelihood we built in [log-of-product]{.ex-ref}, with $S$ the number of ones. In Week 2 we set the first derivative to zero and solve,
+
+$$
+\frac{S}{\pi} = \frac{n-S}{1-\pi}
+\quad\Longrightarrow\quad
+S(1 - \pi) = (n - S)\pi
+\quad\Longrightarrow\quad
+\hat\pi = \frac{S}{n},
+$$
+
+which is just the sample proportion, and the second derivative tells us this stationary point is a maximum. (The algebra needs $0 < S < n$. If every observation is a one, or every one is a zero, $\ell'$ never reaches zero and the maximum sits at the edge of the interval instead.)
+
+Then in Week 3 the second derivative does another job. Evaluated at $\hat\pi$ it gives $-\ell''(\hat\pi) = \dfrac{n^{3}}{S(n-S)}$, so
+
+$$
+-\frac{1}{\ell''(\hat\pi)} = \frac{S(n-S)}{n^{3}} = \frac{\hat\pi(1 - \hat\pi)}{n},
+\qquad\text{and so}\qquad
+\widehat{\text{SE}}(\hat\pi) = \sqrt{\frac{\hat\pi(1 - \hat\pi)}{n}},
+$$
+
+the familiar standard error of a sample proportion. Nearly every standard error in this course comes from a second derivative in just this way.
+
+:::
+
+## Inverse Logit {ref="ilogit-derivs"}
+
+Define $p(\theta)=\frac{1}{1+e^{-\theta}}$ for $\theta\in\mathbb{R}$. Find $p'(\theta)$ and $p''(\theta)$.
+
+::: hint
+
+Rewrite $p$ as $(1+e^{-\theta})^{-1}$ and use the chain rule. Watch the signs carefully. Once you have an answer, see whether it factors into something you recognize.
+
+:::
+
+::: hint
+
+For $p''$, don't go back to the big fraction. Your $p'$ should have factored into a product, so differentiate that with the product rule, remembering that each factor is itself a function of $\theta$.
+
+:::
+
+::: {.hint label="Check your work"}
+
+Before you run anything, where do you expect the curve to be steepest, and what does that say about $p''$ there?
+
+Then check both derivatives against a finite difference at $\theta = 0.7$.
+
+```{r ex05-check}
+#| eval: false
+p <- function(th) 1 / (1 + exp(-th))
+
+d1 <- function(th) {
+  # ... your first derivative here ...
+}
+
+th <- 0.7
+h  <- 1e-6
+c(analytic = d1(th), finite_difference = (p(th + h) - p(th - h)) / (2 * h))
+```
+
+:::
+
+::: sol
+
+- **First derivative**
+
+  Rewrite $p(\theta)=(1+e^{-\theta})^{-1}$ and apply the chain rule:
+
+  $$
+  p'(\theta)=-(1+e^{-\theta})^{-2}\!\cdot(-e^{-\theta})
+           =\frac{e^{-\theta}}{(1+e^{-\theta})^{2}}
+           =p(\theta)\bigl[1-p(\theta)\bigr].
+  $$
+
+  Notice that the two minus signs cancel, which is the easiest thing to get wrong here. One comes from the power rule on $(\cdot)^{-1}$ and the other from differentiating $e^{-\theta}$, so $p'$ is positive everywhere, as it must be for an increasing function.
+
+- **Second derivative**
+
+  Differentiate $p'(\theta)=p(1-p)$ using the product rule:
+
+  $$
+  p''(\theta)=p'(1-p)-p\,p'
+            =p(\theta)\bigl[1-p(\theta)\bigr]\bigl[1-2p(\theta)\bigr].
+  $$
+
+  The factor $1-2p(\theta)$ shows the curve's slope is steepest (and $p''$ is zero) when $p(\theta)=0.5$, which is at $\theta = 0$, where $p' = 0.25$.
+
+Both derivatives against a finite difference:
+
+```{r ex05-verify}
+p  <- function(th) 1 / (1 + exp(-th))
+d1 <- function(th) p(th) * (1 - p(th))
+d2 <- function(th) p(th) * (1 - p(th)) * (1 - 2 * p(th))
+
+th <- 0.7
+h  <- 1e-6
+c(d1 = d1(th), finite_difference = (p(th + h) - p(th - h)) / (2 * h))
+c(d2 = d2(th), finite_difference = (d1(th + h) - d1(th - h)) / (2 * h))
+```
+
+*Why $p(1-p)$ is worth recognizing.* It's also the variance of a Bernoulli random variable, which we work out in [bernoulli-dist]{.ex-ref}. That the slope of the inverse logit and the variance of the outcome are the same expression is not a coincidence, and it's one of the things that makes logistic regression work as neatly as it does. Week 4 explains why. From Week 4 on, $p'(\theta)$ is also the marginal effect of $\theta$ on the probability, so the fact that it peaks at $0.25$ and falls away in both tails is why a logit coefficient does not translate into a single number you can report as "the effect."
+
+:::
+
+## Brambor, Clark, and Golder (2006)
+
+Let $E[y \mid x_1,x_2] =\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_1x_2$, where $\beta_0,\dots,\beta_3$ are constants. Find the marginal effect of $x_1$ on $y$. That is, compute $\displaystyle\frac{\partial E[y \mid x_1,x_2]}{\partial x_1}$.
+
+::: hint
+
+Treat $x_2$ as a constant and differentiate term by term. Which of the four terms survive, and what does $\beta_3 x_1 x_2$ contribute once $x_2$ is just a number?
+
+:::
+
+::: sol
+
+Differentiate with respect to $x_1$ while treating $x_2$ as constant, so that 
+
+$$
+\frac{\partial E[y \mid x_1,x_2]}{\partial x_1}
+      =\beta_1+\beta_3x_2.
+$$
+
+The marginal effect of $x_1$ depends on $x_2$; when $x_2=0$, the effect is $\beta_1$, and it changes by $\beta_3$ units for every unit increase in $x_2$.
+
+*Why this small derivative has a famous paper attached to it.* Reporting $\hat\beta_1$ on its own as "the effect of $x_1$" is the practice Brambor, Clark, and Golder wrote their article to stop. It's the effect only at $x_2 = 0$, and in most applications $x_2 = 0$ isn't a value any case actually takes, so the number describes nobody. There is no single "effect of $x_1$" in this model, only a line of effects indexed by $x_2$. We compute its standard error in [ols-interactions]{.ex-ref}, and Week 5 hands the whole job to {marginaleffects}.
+
+:::
+
+## Brambor, Clark, and Golder (2006) for Cubic Polynomial
+
+Let $E[y \mid x] =\beta_0+\beta_1x+\beta_2x^{2}+\beta_3x^{3}$, where $\beta_0,\dots,\beta_3$ are constants. Find the marginal effect of $x$ on $y$. That is, compute  $\displaystyle\frac{\partial E[y \mid x]}{\partial x}$.
+
+::: hint
+
+The power rule, term by term. There's only one variable here, so nothing is held fixed, and the derivative is an ordinary one despite the $\partial$.
+
+:::
+
+::: sol
+
+Apply the power rule term-by-term so that 
+
+$$
+\frac{\partial E[y \mid x]}{\partial x}
+      =\beta_1+2\beta_2x+3\beta_3x^{2}.
+$$
+
+The marginal effect varies with $x$ in a quadratic fashion; the sign and magnitude are governed by the coefficients on the polynomial terms.
+
+Notice that this is the same lesson as the exercise before it, with no interaction anywhere in sight. Any nonlinear specification makes the effect of $x$ depend on where you evaluate it, so a polynomial in $x$ has no single "effect of $x$" either. Interactions are just the case people notice.
+
+:::
+
+# Matrices
+
+## Some Practice with Matrix Multiplication
+
+Multiply $A$ and $B$ using paper-and-pencil. Check your work with R.
+
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix},
+\qquad
+B = \begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix}.
+$$
+
+::: hint
+
+Check conformability first. What are the dimensions of $A$, of $B$, and so of $AB$? Then each entry of $AB$ is one row of $A$ paired with one column of $B$. Multiply element by element and add.
+
+:::
+
+::: {.hint label="Check your work"}
+
+In R, matrix multiplication is `%*%`, not `*`. Build the two matrices with `matrix(..., byrow = TRUE)` and multiply.
+
+:::
+
+::: sol
+
+Check conformability: $A$ is $2 \times 3$ and $B$ is $3 \times 2$, so $AB$ is $2 \times 2$. The outer dimensions tell you the shape of the answer before you compute a single entry, which is the fastest way to catch a design matrix built the wrong way round.
+
+$$
+AB =
+\begin{bmatrix}
+(1)(7) + (2)(9) + (3)(11) & (1)(8) + (2)(10) + (3)(12) \\
+(4)(7) + (5)(9) + (6)(11) & (4)(8) + (5)(10) + (6)(12)
+\end{bmatrix}
+=
+\begin{bmatrix}
+ 58 &  64 \\
+139 & 154
+\end{bmatrix}.
+$$
+
+```{r}
+A <- matrix(c(1, 2, 3,
+              4, 5, 6),
+            nrow = 2, byrow = TRUE)
+
+B <- matrix(c( 7,  8,
+               9, 10,
+              11, 12),
+            nrow = 3, byrow = TRUE)
+
+A %*% B   # confirm work
+```
+
+*The R error to expect.* `A * B` is elementwise multiplication, not matrix multiplication. Here it fails outright, because $A$ and $B$ have different shapes:
+
+```{r ex08-star}
+#| error: true
+A * B
+```
+
+When the two matrices happen to be the same shape, `*` returns a wrong answer silently instead of an error, so it is worth fixing the habit now. We use `%*%` constantly from [ols-scratch]{.ex-ref} onward, wherever $X\beta$ appears.
+
+:::
+
+## Matrices, OLS, and R {ref="ols-scratch"}
+
+For the linear model $y = X\beta + \varepsilon$, where $X$ is an $n \times k$ full-rank design matrix (including a column of ones), we define
+
+- OLS estimator: $\hat\beta \;=\; (X'X)^{-1} X'y$.
+- Residual vector: $e \;=\; y - X\hat\beta$.
+- Predicted values: $\hat y \;=\; X\hat\beta$.
+- Classical variance–covariance matrix: $\operatorname{Var}_{\text{cl}}(\hat\beta) \;=\; \hat\sigma^{2}\,(X'X)^{-1}$, where $\hat\sigma^{2} \;=\; \dfrac{e'e}{\,n - k\,}$.
+
+1. Write an R function `ols(X, y)` that returns a list with the coefficient estimates `beta_hat`, the classical variance matrix `Var_cl`, the residuals `e`, and the predicted values `y_hat`.
+1. Use the `penguins` dataset in the {palmerpenguins} package to test your function.  The following starter code prepares $X$ and $y$.
+
+```{r}
+# load packages
+library(palmerpenguins)
+
+# 1. drop NAs
+penguins_complete <- na.omit(penguins)
+
+# 2. make response vector (y)
+y <- penguins_complete$body_mass_g # numeric vector (n × 1)
+
+## 3. make design matrix (X)
+X_predictors <- as.matrix(penguins_complete[ ,
+                   c("bill_length_mm",
+                     "bill_depth_mm",
+                     "flipper_length_mm")])
+
+X <- cbind("(Intercept)" = 1, X_predictors)
+```
+
+::: hint
+
+Build the function in the order the formula reads. Form $X'X$, invert it, then multiply by $X'y$. In R, `t()` transposes, `solve()` inverts, and `%*%` multiplies.
+
+:::
+
+::: hint
+
+For the variance matrix you also need $\hat\sigma^{2} = e'e/(n-k)$. Watch one detail: `t(e) %*% e` returns a $1 \times 1$ *matrix*, not a scalar, so wrap it in `as.numeric()` before you multiply it by $(X'X)^{-1}$.
+
+:::
+
+::: {.hint label="Check your work"}
+
+You don't need an answer key for this one. Fit the same model with `lm()` and compare. Your `beta_hat` should match `coef()`, and your `Var_cl` should match `vcov()`.
+
+```{r ex09-check}
+#| eval: false
+results <- ols(X, y)
+
+fit <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
+          data = penguins_complete)
+
+all.equal(as.vector(results$beta_hat), unname(coef(fit)))
+all.equal(unname(results$Var_cl), unname(vcov(fit)))
+```
+
+:::
+
+::: sol
+
+*The function.*
+
+```{r}
+ols <- function(X, y) {
+  ## 1. Components of (X'X) and its inverse
+  X_transpose <- t(X)                # X'
+  XtX         <- X_transpose %*% X   # X'X
+  XtX_inv     <- solve(XtX)          # (X'X)^{-1}
+  
+  ## 2. OLS estimator beta_hat 
+  Xty      <- X_transpose %*% y      # X'y
+  beta_hat <- XtX_inv %*% Xty        # (X'X)^{-1} X'y
+  
+  ## 3. Fitted values (y_hat) and residuals (e) 
+  y_hat <- X %*% beta_hat
+  e     <- y - y_hat
+  
+  ## 4. Classical variance–covariance matrix (Var_cl) 
+  n <- nrow(X)
+  k <- ncol(X)
+  
+  RSS         <- t(e) %*% e                      # e'e
+  sigma2_hat  <- as.numeric(RSS) / (n - k)       # \hat\sigma^2
+  Var_cl      <- sigma2_hat * XtX_inv            # \hat\sigma^2 (X'X)^{-1}
+  
+  ## 5. Return list matching notation 
+  list(
+    beta_hat = beta_hat,
+    Var_cl   = Var_cl,
+    e        = e,
+    y_hat    = y_hat
+  )
+}
+```
+
+*Demonstration with the `penguins` dataset.*
+
+```{r}
+# load packages
+library(palmerpenguins)
+
+# 1. drop NAs
+penguins_complete <- na.omit(penguins)
+
+# 2. make response vector (y)
+y <- penguins_complete$body_mass_g # numeric vector (n × 1)
+
+## 3. make design matrix (X)
+X_predictors <- as.matrix(penguins_complete[ ,
+                   c("bill_length_mm",
+                     "bill_depth_mm",
+                     "flipper_length_mm")])
+
+X <- cbind("(Intercept)" = 1, X_predictors)
+
+# compute quantities
+results <- ols(X, y)
+
+# print  each component
+results$beta_hat      # beta-hat
+results$Var_cl        # classical VCOV
+head(results$e)       # first few residuals
+head(results$y_hat)   # first few fitted values
+```
+
+*The check that matters.* R already knows how to do this, so we can verify the whole function against `lm()` rather than against a printed answer:
+
+```{r ex09-verify}
+fit <- lm(body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm,
+          data = penguins_complete)
+
+all.equal(as.vector(results$beta_hat), unname(coef(fit)))
+all.equal(unname(results$Var_cl), unname(vcov(fit)))
+```
+
+Both return `TRUE`, so `coef()` and `vcov()` are doing exactly the linear algebra we just wrote out. That is worth knowing for two reasons. It means we can read `lm()` output as $(X'X)^{-1}X'y$ rather than as a black box, and it means the pattern of "hand-roll the estimator, then check it against the built-in" is available whenever we write something new. We use it again in Week 2, where a hand-written log-likelihood maximized by `optim()` has to match `glm()`.
+
+:::
+
+## Gradients and Hessians
+
+Consider the function of two variables $f(x, y) = 3x^{2}y + 2e^{xy} - y^{3}$. Compute (1) the gradient vector $\nabla f(x,y)$ and (2) the Hessian matrix $H_f(x,y)$.
+
+::: hint
+
+A partial derivative treats every other variable as a constant. For $\partial f/\partial x$, that means $y$ is just a number and the $-y^{3}$ term disappears entirely.
+
+:::
+
+::: hint
+
+The $e^{xy}$ term needs the chain rule, with $xy$ as the inside. For the Hessian, differentiate each first partial again, and use the product rule where a term has both a polynomial and an exponential factor.
+
+:::
+
+::: {.hint label="Check your work"}
+
+The {numDeriv} package will differentiate numerically, which is a good habit for checking a gradient or Hessian you did by hand.
+
+```{r ex10-check}
+#| eval: false
+f <- function(v) 3 * v[1]^2 * v[2] + 2 * exp(v[1] * v[2]) - v[2]^3
+
+numDeriv::grad(f, c(0.5, -1.2))       # compare with your gradient
+numDeriv::hessian(f, c(0.5, -1.2))    # compare with your Hessian
+```
+
+:::
+
+::: sol
+
+**Gradient**
+
+The gradient collects the first-order partial derivatives.
+
+   $$
+   \begin{aligned}
+   \frac{\partial f}{\partial x}
+     &= 6xy + 2y\,e^{xy},\\[4pt]
+   \frac{\partial f}{\partial y}
+     &= 3x^{2} + 2x\,e^{xy} - 3y^{2}.
+   \end{aligned}
+   $$
+
+Hence
+
+   $$
+   \nabla f(x,y)
+   \;=\;
+   \begin{bmatrix}
+     6xy + 2y\,e^{xy} \\[4pt]
+     3x^{2} + 2x\,e^{xy} - 3y^{2}
+   \end{bmatrix}.
+   $$
+
+**Hessian**
+
+The Hessian collects the second-order partial derivatives.
+
+   $$
+   \begin{aligned}
+   \frac{\partial^{2} f}{\partial x^{2}}
+     &= 6y + 2y^{2}e^{xy}, \\[4pt]
+   \frac{\partial^{2} f}{\partial x\,\partial y}
+     &= 6x + 2e^{xy} + 2xy\,e^{xy}, \\[4pt]
+   \frac{\partial^{2} f}{\partial y^{2}}
+     &= -6y + 2x^{2}e^{xy}.
+   \end{aligned}
+   $$
+
+Notice that the mixed partials are equal ($\partial^{2}f/\partial x\,\partial y = \partial^{2}f/\partial y\,\partial x$). 
+   
+The Hessian is
+
+   $$
+   H_f(x,y)
+   \;=\;
+   \begin{bmatrix}
+     6y + 2y^{2}e^{xy} &
+     6x + 2e^{xy} + 2xy\,e^{xy} \\[6pt]
+     6x + 2e^{xy} + 2xy\,e^{xy} &
+     -6y + 2x^{2}e^{xy}
+   \end{bmatrix}.
+   $$
+
+Both against {numDeriv}, at $(x, y) = (0.5, -1.2)$:
+
+```{r ex10-verify}
+f <- function(v) 3 * v[1]^2 * v[2] + 2 * exp(v[1] * v[2]) - v[2]^3
+
+grad_hand <- function(x, y) c(6*x*y + 2*y*exp(x*y),
+                              3*x^2 + 2*x*exp(x*y) - 3*y^2)
+hess_hand <- function(x, y) matrix(c(6*y + 2*y^2*exp(x*y),
+                                     6*x + 2*exp(x*y) + 2*x*y*exp(x*y),
+                                     6*x + 2*exp(x*y) + 2*x*y*exp(x*y),
+                                     -6*y + 2*x^2*exp(x*y)), nrow = 2)
+
+all.equal(grad_hand(0.5, -1.2), numDeriv::grad(f, c(0.5, -1.2)))
+all.equal(hess_hand(0.5, -1.2), numDeriv::hessian(f, c(0.5, -1.2)),
+          tolerance = 1e-6)
+```
+
+*Where these come back.* In [bernoulli-ll]{.ex-ref} the second derivative of a one-parameter log-likelihood told us the function was concave, and it turned into a standard error. With more than one parameter, the gradient and the Hessian do those two jobs: we set the gradient to zero to find the ML estimates, and we invert the negative Hessian to get the variance matrix of all of them at once, off-diagonal covariances included. Every model from Week 4 on has more than one parameter, so this is the form we actually use.
+
+:::
+
+# Probability Theory
+
+## Sixes
+
+Suppose a six-sided die is rolled 10 times. What's the probability of...
+
+a. all sixes?
+a. not all-sixes?
+a. all not-sixes?
+
+::: hint
+
+The rolls are independent, so probabilities multiply. Then read (b) and (c) slowly, because they describe different events: one is the complement of (a), and the other is not.
+
+:::
+
+::: sol
+
+a. $(1/6)^{10} \approx 1.65 \times 10^{-8}$
+a. $1 - (1/6)^{10} \approx 0.99999998$
+a. $(5/6)^{10} \approx 0.162$
+
+The point of the exercise is the gap between (b) and (c). "Not all sixes" is the complement of "all sixes," so it fails only in the single case where every roll is a six, and it's therefore nearly certain. "All not-sixes" is a much stronger claim, requiring all ten rolls to avoid a six, and it happens about one time in six.
+
+Negation is where this goes wrong. The complement of "every roll is a six" is "at least one roll is not a six," not "every roll is not a six." The complement rule does a lot of work later, too. In Week 6 the survival function is defined as $S(t) = 1 - F(t)$, the probability that an event has *not yet* happened, and duration models are built on it.
+
+:::
+
+## Drug Testing (Bayes' Rule)
+
+A drug test is used to detect the presence of a banned substance in professional athletes. Suppose that 2 in every 1,000 athletes use the substance. The test correctly identifies users 98% of the time. However, it also produces a false positive 1% of the time for non-users. You are randomly selected for testing, and your result comes back positive. Use Bayes' rule to compute the probability that you actually use the substance.
+
+::: hint
+
+Bayes' rule needs $\Pr(T)$, the unconditional probability of a positive test, and the problem doesn't hand it to you. Get it from the law of total probability: a positive test arrives either from a user or from a non-user, so add the two paths.
+
+:::
+
+::: {.hint label="Before you compute"}
+
+Before you work anything out, guess the answer. Most first guesses are far too high, and the gap between the guess and the truth is the point of the exercise.
+
+:::
+
+::: sol
+
+Let $U$ be the event that you use the banned substance and $T$ be the event that the test result is positive.
+
+We are given the following values:
+
+- $\Pr(U) = 0.002$
+- $\Pr(U^c) = 0.998$
+- $\Pr(T \mid U) = 0.98$
+- $\Pr(T \mid U^c) = 0.01$
+
+We want to compute $\Pr(U \mid T)$ using Bayes' rule $\Pr(U \mid T) = \frac{\Pr(T \mid U)\Pr(U)}{\Pr(T)}$.
+
+To compute $\Pr(T)$, we apply the law of total probability $\Pr(T) = \Pr(T \mid U)\Pr(U) + \Pr(T \mid U^c)\Pr(U^c)$.
+
+Substitute the known values, so that $\Pr(T) = (0.98)(0.002) + (0.01)(0.998) = 0.00196 + 0.00998 = 0.01194$.
+
+Now apply Bayes' rule, so that $\Pr(U \mid T) = \frac{(0.98)(0.002)}{0.01194} \approx \frac{0.00196}{0.01194} \approx 0.1642$.
+
+So the chance that you actually use the substance, given a positive test result, is about 16%.
+
+*Why the answer feels wrong.* A test that is 98% accurate on users and wrong only 1% of the time on non-users still leaves a positive result more likely to be a mistake than not. Counting heads makes it obvious. Out of 100,000 athletes, about 200 use the substance and 99,800 do not. The test catches 196 of the users. It also flags 1% of the 99,800 non-users, which is 998 people. So 1,194 athletes test positive and only 196 of them are users, which is the 16%.
+
+The base rate is doing the work. There are so many more non-users than users that even a small false-positive rate produces more false positives than true ones. Reading $\Pr(T \mid U)$ as though it were $\Pr(U \mid T)$ is one of the most durable errors in applied statistics, and it is the same confusion that reads a $p$-value, which is a probability computed *assuming* a hypothesis, as though it were a probability *about* that hypothesis. We come back to it in Week 6, where the prior plays the part the base rate plays here.
+
+:::
+
+## Bernoulli Distribution {ref="bernoulli-dist"}
+
+Let $X \sim \text{Bernoulli}(p)$ with pmf
+
+$$
+f(x; p) =
+\begin{cases}
+p, & x = 1, \\
+1 - p, & x = 0, \\
+0, & \text{otherwise},
+\end{cases}
+\qquad 0 < p < 1.
+$$
+
+Compute
+
+1. the cumulative distribution function $F(x) = \Pr(X \le x)$,  
+2. the expected value $\operatorname{E}[X]$, and  
+3. the variance $\operatorname{Var}(X)$.
+
+::: hint
+
+The cdf of a discrete variable is a step function, so ask where $F$ jumps and by how much. $X$ takes only two values, which means there are only two jumps and three stretches to describe.
+
+:::
+
+::: hint
+
+For the variance, use $\operatorname{Var}(X) = \operatorname{E}[X^2] - \left(\operatorname{E}[X]\right)^2$, and notice something convenient about $X^2$ when $X$ is only ever $0$ or $1$.
+
+:::
+
+::: sol
+
+**1. cdf**
+
+Since $X$ is discrete, its cdf is a step function.  
+
+- For $x < 0$, $F(x) = 0$  
+- For $0 \le x < 1$,  
+  $$
+  F(x) = \Pr(X \le x) = \Pr(X = 0) = 1 - p
+  $$
+- For $x \ge 1$,  
+  $$
+  F(x) = \Pr(X \le x) = \Pr(X = 0) + \Pr(X = 1) = 1 - p + p = 1
+  $$
+
+So the cdf is:
+
+$$
+F(x) =
+\begin{cases}
+0, & x < 0 \\
+1 - p, & 0 \le x < 1 \\
+1, & x \ge 1
+\end{cases}
+$$
+
+**2. expected value**
+
+Using the definition of expected value for a discrete random variable,
+
+$$
+\operatorname{E}[X] = \sum_x x \cdot \Pr(X = x)
+= 0 \cdot (1 - p) + 1 \cdot p
+= p.
+$$
+
+**3. variance**
+
+We use the formula:
+
+$$
+\operatorname{Var}(X) = \operatorname{E}[X^2] - \left(\operatorname{E}[X]\right)^2
+$$
+
+Since $X$ only takes the values 0 and 1, $X^2 = X$, so $\operatorname{E}[X^2] = \operatorname{E}[X] = p$.
+
+Then:
+
+$$
+\begin{aligned}
+\operatorname{Var}(X) 
+&= p - p^2 \\
+&= p(1 - p).
+\end{aligned}
+$$
+
+**Summary**
+
+- $F(x) = 1 - p$ for $0 \le x < 1$, and $F(x) = 1$ for $x \ge 1$  
+- $\operatorname{E}[X] = p$  
+- $\operatorname{Var}(X) = p(1 - p)$
+
+*Where $p(1-p)$ has already turned up.* This is the model whose likelihood we built in [log-of-product]{.ex-ref}, so the pieces are starting to fit together. In [bernoulli-ll]{.ex-ref} the second derivative of that likelihood gave $\widehat{\text{SE}}(\hat\pi) = \sqrt{\hat\pi(1-\hat\pi)/n}$, which is $\sqrt{\operatorname{Var}(X)/n}$ with the variance we just computed. And in [ilogit-derivs]{.ex-ref} the derivative of the inverse logit came out as $p(1-p)$ as well. One small expression, three different jobs, and we haven't left Week 1.
+
+:::
+
+## Some Practice with Expectations
+
+Use the stated rules to simplify each expression.
+
+a. $E[\,4X + Y - 2Z\,]$
+b. Let $X$ take values $1,2,3$ each with probability $1/3$. Compute $E[X^2]$.
+
+::: hint
+
+Expectation is linear: constants come out front and the expectation of a sum is the sum of the expectations. No independence is needed for that. For (b), fall back on the definition, $\operatorname{E}[g(X)] = \sum_x g(x)\Pr(X = x)$.
+
+:::
+
+::: sol
+
+a. $4E[X] + E[Y] - 2E[Z]$, by linearity. Note that (a) holds whether or not $X$, $Y$, and $Z$ are independent, which is what makes linearity of expectation so useful.
+b. $E[X^2] = \frac{1^2 + 2^2 + 3^2}{3} = \frac{14}{3}$. Notice that this is not $\left(E[X]\right)^2 = 4$: the expectation of a function is generally not that function of the expectation. For squaring in particular, the gap between the two is $\frac{14}{3} - 4 = \frac{2}{3}$, which is exactly $\operatorname{Var}(X)$. That is the definition we use in the next exercise.
+
+:::
+
+## Some Practice with Variances
+
+Use the stated rules to simplify each expression.
+
+a. $\mathrm{Var}(3X)$ (express in terms of $E[X^2]$ and $E[X]$)
+a. $\mathrm{Var}(2X - 3Y)$ (assume independence)
+
+::: hint
+
+You need two rules here: $\operatorname{Var}(aX) = a^{2}\operatorname{Var}(X)$, and for independent variables the variance of a sum is the sum of the variances. Watch what the second one does to a *difference*.
+
+:::
+
+::: {.hint label="Check your work"}
+
+Part (b) is the one worth verifying, because the answer is easy to talk yourself out of. Simulate two independent variables and compare.
+
+```{r ex15-check}
+#| eval: false
+set.seed(1)
+x <- rnorm(1e6, sd = 2)
+y <- rnorm(1e6, sd = 3)
+
+var(2 * x - 3 * y)          # the truth
+# ... your answer here ...
+```
+
+:::
+
+::: sol
+
+a. $E[9X^2] - (3E[X])^2 = 9E[X^2] - 9(E[X])^2$, which is $9\operatorname{Var}(X)$.
+a. $4\,\mathrm{Var}(X) + 9\,\mathrm{Var}(Y)$
+
+Notice the plus sign in the second one. The coefficients come out squared, so the minus in $2X - 3Y$ becomes $(-3)^{2} = 9$ and disappears. Variances of independent terms add no matter what signs sit in front of them. Subtracting two independent quantities makes the result *more* variable, not less. It's the covariance term, not the sign, that can reduce a variance, and that term is zero here by independence.
+
+```{r ex15-verify}
+set.seed(1)
+x <- rnorm(1e6, sd = 2)
+y <- rnorm(1e6, sd = 3)
+
+var(2 * x - 3 * y)          # simulated
+4 * var(x) + 9 * var(y)     # the rule
+4 * var(x) - 9 * var(y)     # what subtracting the variances would give
+```
+
+The third line returns a negative number, and no variance can be negative. That is the quickest way to see that the rule cannot involve subtraction.
+
+:::
+
+## Some Practice with Covariances
+
+Use the stated rules to simplify each expression.
+
+a. $\mathrm{Cov}(2X - 3Y, Z)$
+
+::: hint
+
+Covariance is bilinear: a constant multiplying either argument comes out front, and the covariance of a sum splits into a sum of covariances. Treat it exactly like expanding a product.
+
+:::
+
+::: sol
+
+a. $2\,\mathrm{Cov}(X,Z) - 3\,\mathrm{Cov}(Y,Z)$
+
+Here the signs do survive, unlike the variance rules in the exercise before. Constants come out of a covariance to the first power, not squared. These three sets of rules are what we use in [ols-interactions]{.ex-ref} to derive the standard error of a marginal effect, and again in Week 3 for the delta method.
+
+:::
+
+## OLS, Interactions, and R {ref="ols-interactions"}
+
+**A Theoretical Result**
+
+*For this portion, it will be helpful to have [Brambor, Clark, and Golder (2006)](https://mattgolder.com/files/research/pa_final.pdf) handy.*
+
+Consider the linear interaction model $Y = \beta_0 + \beta_1 X + \beta_2 Z + \beta_3 XZ + \varepsilon$ estimated by OLS. For a given value $Z=z$, the marginal effect of $X$ on $E(Y)$ is $\beta_1 + \beta_3 z$, with plug-in estimate $\widehat{\mathrm{ME}}_X(z) = \hat\beta_1 + \hat\beta_3 z$ (i.e., see eq. 13 in Brambor, Clark, and Golder 2006).
+
+Let $\widehat{\mathrm{Var}}(\hat\beta_1)$, $\widehat{\mathrm{Var}}(\hat\beta_3)$, and $\widehat{\mathrm{Cov}}(\hat\beta_1,\hat\beta_3)$ denote the corresponding elements from the estimated variance–covariance matrix of $(\hat\beta_0,\hat\beta_1,\hat\beta_2,\hat\beta_3)$. Treat $z$ as fixed. Re-derive the standard error of $\widehat{\mathrm{ME}}_X(z)$ shown in eq. 8 of Brambor, Clark, and Golder (2006). In other words, show that 
+
+$$
+\widehat{\mathrm{SE}}\{\widehat{\mathrm{ME}}_X(z)\} = \sqrt{\widehat{\text{Var}}\left( \hat\beta_1 + \hat\beta_3 z \right)} = \sqrt{\,\widehat{\mathrm{Var}}(\hat\beta_1) + z^2\,\widehat{\mathrm{Var}}(\hat\beta_3) + 2z\,\widehat{\mathrm{Cov}}(\hat\beta_1,\hat\beta_3)\,}.
+$$
+
+::: hint
+
+The quantity whose variance you need is $\hat\beta_1 + \hat\beta_3 z$, with $z$ a fixed number rather than a random variable. So this is the variance of a sum, one term of which is multiplied by a constant. Which rule handles that, and what does the constant do to $\operatorname{Var}(\hat\beta_3)$ and to the covariance term?
+
+:::
+
+::: sol
+
+First, we have
+$$
+\text{Var}\left( \hat\beta_1 + \hat\beta_3 z \right) = \text{Var}\left( \hat\beta_1 \right) + \text{Var}\left(\hat\beta_3 z \right) + 2\text{Cov}\left(\hat\beta_1, \hat\beta_3 z \right)
+$$
+by the rules for the variance of a sum. Then we have 
+
+$$
+= \text{Var}\left( \hat\beta_1 \right) + z^2\text{Var}\left(\hat\beta_3 \right) + 2z\text{Cov}\left(\hat\beta_1, \hat\beta_3 \right)
+$$
+
+by the rules for variance of $aX$ and covariance of $X$ and $aY$. The standard error is simply the square root of the variance.
+
+Thus, eq. 8 in Brambor, Clark, and Golder follows directly from the application of the rules for variances and covariances.
+
+Notice that the covariance term is not optional. Estimated coefficients from the same regression are correlated, so dropping $2z\,\widehat{\mathrm{Cov}}(\hat\beta_1,\hat\beta_3)$ and adding the two variances alone gives the wrong standard error everywhere except at $z = 0$, or in the special case where the covariance itself is zero. This is why a marginal effect cannot be assembled from a published coefficient table: the table reports the square roots of the diagonal of $\widehat{\mathrm{Var}}(\hat\beta)$ and nothing off it, and the covariance you need lives off the diagonal.
+
+:::
+
+
+**A Computational Result**
+
+*For this portion, it will be helpful to have [Clark and Golder (2006)](https://mattgolder.com/files/research/cps2.pdf) handy.*
+
+The code below reproduces Clark and Golder's (2006) 1946-2000 Established Democracies model in Table 2 on p. 698. See also eq. 4 on p. 695 for their model specification.
+
+```{r}
+# load packages
+library(sandwich)  # for robust SEs
+
+# load Clark and Golder's data
+cg <- crdata::cg2006  # from my data package
+
+# reproduce regression
+f <- enep ~ eneg*log(average_magnitude) + eneg*upper_tier + en_pres*proximity
+fit <- lm(f, data = cg)
+
+# grab estimated coefs and var matrix
+beta_hat <- coef(fit)
+V_hat <- vcovCL(fit, cluster = ~ country, type = "HC1")
+
+# print table (shows we reproduce!)
+# modelsummary::modelsummary(fit, vcov = V_hat, fmt = 2)
+```
+
+1. Derive the formula for the marginal effect of `eneg` and its SE. *Hint: It depends on both `average_magnitude` and `upper_tier`.*
+1. Use R to compute the marginal effect of `eneg` for the maximum value of `log(average_magnitude)` and its SE. (You can fix `upper_tier` to 0, which simplifies the calculation.)
+1. Use R to compute the marginal effect of `eneg` and SE for a *range* of values from the minimum to the maximum value of `log(average_magnitude)`. Compute a 90% confidence interval and create a marginal effect plot like those in Figure 1 of Clark and Golder (2006). *Note: you should have the log of `average_magnitude` (not `average_magnitude` itself) along the $x$-axis.*
+
+::: hint
+
+Start from the model in eq. 4 and write down which terms contain `eneg`. The marginal effect is the derivative with respect to `eneg`, so it picks up the coefficient on `eneg` itself plus the coefficients on every interaction `eneg` appears in, each multiplied by the other variable in that interaction.
+
+For the standard error, extend the rule from the first part of this exercise. With three terms rather than two you need three variances and three covariances, all of which are elements of `V_hat`. Pull them out by name, e.g. `V_hat["eneg", "eneg:log(average_magnitude)"]`.
+
+:::
+
+::: sol
+
+*Question 1*
+
+Clark and Golder fit the model
+
+$$
+\begin{aligned}
+\text{ElectoralParties} = {}& \beta_0 
++ \beta_1\,\text{Ethnic} 
++ \beta_2 \ln(\text{Magnitude}) 
++ \beta_3\,\text{UppertierSeats} \\
+&+ \beta_4\,\text{PresidentCandidates} 
++ \beta_5\,\text{Proximity} \\
+&+ \beta_6\,\text{Ethnic}\times \ln(\text{Magnitude}) 
++ \beta_7\,\text{Ethnic}\times \text{UppertierSeats} \\
+&+ \beta_8\,\text{PresidentCandidates}\times \text{Proximity} 
++ \epsilon .\nonumber
+\end{aligned}
+$${#eq-electoral}
+
+Taking the derivative w.r.t. Ethnic, we have
+
+$$
+\frac{\partial \,\text{ElectoralParties}}{\partial \,\text{Ethnic}}
+= \beta_1 
++ \beta_6 \ln(\text{Magnitude}) 
++ \beta_7 \,\text{UppertierSeats}.
+$$
+
+*Question 2*
+
+```{r}
+# value of z = log(average_magnitude) at its maximum
+z <- max(log(cg$average_magnitude), na.rm = TRUE)
+
+# point estimate of marginal effect of eneg
+me <- beta_hat["eneg"] + z * beta_hat["eneg:log(average_magnitude)"]
+
+# variance components
+v1  <- V_hat["eneg", "eneg"]
+v3  <- V_hat["eneg:log(average_magnitude)", "eneg:log(average_magnitude)"]
+c13 <- V_hat["eneg", "eneg:log(average_magnitude)"]
+
+# standard error from the formula
+se <- sqrt(v1 + z^2 * v3 + 2 * z * c13)
+
+# 90% confidence interval
+ci <- me + c(-1, 1)*1.64 * se
+
+data.frame(
+  log_mag = z,
+  me,
+  se,
+  ci_lower = ci[1],
+  ci_upper = ci[2]
+) 
+
+```
+
+*Question 3*
+
+```{r}
+# load packages
+library(ggplot2)
+
+# grid over observed log(average_magnitude)
+z <- seq(min(log(cg$average_magnitude), na.rm = TRUE),
+         max(log(cg$average_magnitude), na.rm = TRUE),
+         length.out = 200)
+
+# point estimate of marginal effect of eneg
+me <- beta_hat["eneg"] + z * beta_hat["eneg:log(average_magnitude)"]
+
+# standard error from the formula
+se <- sqrt(v1 + z^2 * v3 + 2 * z * c13)
+
+# 90% confidence interval
+ci_lower <- me - 1.64 * se
+ci_upper <- me + 1.64 * se
+
+
+# combine qis into data frame
+gg_data <- data.frame(
+  log_mag = z,
+  me,
+  se,
+  ci_lower,
+  ci_upper
+)
+
+# draw plot
+ggplot(gg_data, aes(x = log_mag, y = me, 
+                    ymin = ci_lower, 
+                    ymax = ci_upper)) + 
+  geom_ribbon(fill = "grey70") + 
+  geom_line()
+
+```
+
+:::
