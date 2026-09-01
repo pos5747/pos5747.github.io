@@ -234,12 +234,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#ex-18" id="toc-ex-18" class="nav-link" data-scroll-target="#ex-18"><span class="ex-num">Exercise 18</span> What Should a Model Match?</a></li>
   </ul></li>
-  <li><a href="#extra-practice" id="toc-extra-practice" class="nav-link" data-scroll-target="#extra-practice">Extra Practice</a>
-  <ul class="collapse">
-  <li><a href="#extra-1" id="toc-extra-1" class="nav-link" data-scroll-target="#extra-1"><span class="ex-num">Extra Practice 1</span> Bernoulli Grid Search</a></li>
-  <li><a href="#extra-2" id="toc-extra-2" class="nav-link" data-scroll-target="#extra-2"><span class="ex-num">Extra Practice 2</span> <code>optim()</code> Meets the Closed Form</a></li>
-  <li><a href="#extra-3" id="toc-extra-3" class="nav-link" data-scroll-target="#extra-3"><span class="ex-num">Extra Practice 3</span> Corrupted Data</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -266,24 +260,24 @@ window.Quarto = {
 
 
 <div class="ex-notice ex-notice-wait" data-unlock="2026-09-04T12:00:00-04:00">Complete solutions open <strong>Friday, September 4 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
-<p>Do all the exercises below. The Extra Practice problems at the end are optional.</p>
+<p>Do all the exercises below.</p>
 <section id="maximum-likelihood" class="level1 ex-section">
 <h1 class="ex-section">Maximum Likelihood</h1>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> A Function of What?</h2>
-<p>For the Bernoulli model, we wrote the likelihood as <span class="math inline">\(L(\pi) = \pi^{k}(1 - \pi)^{(N - k)}\)</span>, where <span class="math inline">\(k\)</span> is the number of successes in <span class="math inline">\(N\)</span> trials. In this expression, which symbol is the variable, and which symbols are fixed? In one sentence describe the question that <span class="math inline">\(L(\pi)\)</span> answers.</p>
+<p>For the Bernoulli model, we wrote the likelihood as <span class="math inline">\(L(\pi) = \pi^{k}(1 - \pi)^{(N - k)}\)</span>, where <span class="math inline">\(k\)</span> is the number of successes in <span class="math inline">\(N\)</span> trials. In the likelihood, which symbol is the variable? Which symbol(s) are fixed? In one sentence, describe the question that <span class="math inline">\(L(\pi)\)</span> answers.</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
-<p>In the pmf <span class="math inline">\(f(x; \pi)\)</span>, we treat <span class="math inline">\(\pi\)</span> as fixed and <span class="math inline">\(x\)</span> as the variable. What changed when we relabeled <span class="math inline">\(f(x; \pi)\)</span> as <span class="math inline">\(L(\pi)\)</span>?</p>
+<p>In the pmf <span class="math inline">\(f(x; \pi)\)</span>, we treat <span class="math inline">\(x\)</span> as the variable and <span class="math inline">\(\pi\)</span> as fixed. What changes when we relabeled <span class="math inline">\(f(x; \pi)\)</span> as <span class="math inline">\(L(\pi)\)</span>?</p>
 </div></details>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
-<p>Before the notes ever write <span class="math inline">\(L(\pi)\)</span>, the Bernoulli section evaluates the same fixed toothpaste-cap data at several candidate values of <span class="math inline">\(\pi\)</span> (0.1, 0.45, 0.55, and 0.9), one at a time. Reread that paragraph.</p>
+<p>Before the notes ever introduce <span class="math inline">\(L(\pi)\)</span>, the Bernoulli section evaluates the likelihood (for the toothpaste cap data) at several candidate values of <span class="math inline">\(\pi\)</span> (0.1, 0.45, 0.55, and 0.9). Reread that paragraph.</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Why the Log? Predict, Then Check</h2>
-<p>Suppose you observe 2,000 Bernoulli trials with <span class="math inline">\(\pi = 0.5\)</span>, so each observation has probability exactly 0.5. The likelihood is the product of these 2,000 probabilities.</p>
-<p>Predict what the first line below returns <em>before you run it</em>, and write down your reasoning.</p>
+<p>Suppose you observe 2,000 Bernoulli trials with <span class="math inline">\(\pi = 0.5\)</span>, so that each observation equals one with probability 0.5 and zero with probability 0.5. The likelihood is the product of these 2,000 probabilities.</p>
+<p><em>Before you run it</em>, predict what the first line of R code below returns. Write down your reasoning.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">2000</span>, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
@@ -291,29 +285,29 @@ window.Quarto = {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dbinom</span>(y, <span class="dv">1</span>, <span class="fl">0.5</span>))             <span class="co"># the likelihood, computed directly</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(y, <span class="dv">1</span>, <span class="fl">0.5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>))  <span class="co"># the log-likelihood</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now run both lines. Explain what happened, why it’s expected, and why it matters for ML. The log fixes this computational problem, but it also helps with the calculus. How?</p>
+<p>Now run both lines. Explain what happened, why it’s expected, and why it matters for ML. The log fixes this computational problem. How?</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
-<p>Each of the 2,000 factors equals 0.5, so the product is <span class="math inline">\(0.5^{2000}\)</span>. Figure out roughly how big that is as a power of ten. Compare that to the smallest positive number R can store (i.e., run <code>.Machine$double.xmin</code>).</p>
-<p>A rule of thumb: <span class="math inline">\(2^{10} = 1024 \approx 10^3\)</span>. Thus, ten halvings cost about three orders of magnitude.</p>
+<p>The product is <span class="math inline">\(0.5^{2000}\)</span>. Figure out roughly how big that is as a power of ten. Compare that to the smallest positive number R can store (i.e., run <code>.Machine$double.xmin</code>).</p>
+<p>Use this rule of thumb: <span class="math inline">\(2^{10} = 1024 \approx 10^3\)</span>. In turn, <span class="math inline">\(\left(\frac{1}{2}\right)^{10} \approx 10^{-3}\)</span>, so that ten halvings is about the same as three orders of magnitude.</p>
 </div></details>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
-<p>The notes give two separate reasons for taking the log (i.e., where they define <span class="math inline">\(L(\pi)\)</span> in the Bernoulli example). One reason is what you just watched happen in R. The other reason is about calculus.</p>
+<p>The notes give two separate reasons for taking the log (i.e., where they define <span class="math inline">\(L(\pi)\)</span> in the Bernoulli example). One reason is what you just watched happen in R.</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> What a Grid Can Miss</h2>
-<p>Suppose a colleague estimates a Bernoulli <span class="math inline">\(\pi\)</span> by computing the log-likelihood at the eleven values <span class="math inline">\(0, 0.1, 0.2, \ldots, 1\)</span> and reporting the best of the eleven as “the ML estimate.” In one or two sentences, in what sense is that answer wrong, and how would you tighten it? (If you’d like to actually run a grid search, that’s <a href="#extra-1">Extra Practice 1</a>.)</p>
+<p>Suppose a colleague uses a Bernoulli model and estimates <span class="math inline">\(\pi\)</span> by computing the log-likelihood at the eleven values <span class="math inline">\(0, 0.1, 0.2, \ldots, 1\)</span> and reporting the best of the eleven as “the ML estimate.” In one or two sentences, in what sense is that answer wrong, and how would you tighten it?</p>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-4" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> From Derivative to Estimator</h2>
-<p>Last week, you found <span class="math inline">\(\frac{d\ell}{d\pi}\)</span> for <span class="math inline">\(\ell(\pi) = S \log(\pi) + (N - S)\log(1 - \pi)\)</span>. Set the derivative equal to zero and solve for <span class="math inline">\(\hat{\pi}\)</span>.</p>
+<p>Last week, we computed <span class="math inline">\(\frac{d\ell}{d\pi}\)</span> for <span class="math inline">\(\ell(\pi) = S \log(\pi) + (N - S)\log(1 - \pi)\)</span>. Set the derivative equal to zero, set <span class="math inline">\(\pi = \hat{\pi}\)</span>, solve for <span class="math inline">\(\hat{\pi}\)</span>.</p>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Reading a Contour Plot</h2>
-<p>The plot below shows the log-likelihood for the notes’ beta-distribution example. We have 100 observations (simulated from a beta distribution). I computed the log-likelihood <span class="math inline">\(\log L(\alpha, \beta)\)</span> over a grid of parameter pairs.</p>
+<p>The plot below shows the log-likelihood for the beta model from the notes. We have 100 observations (in this case, fake data simulated from a beta distribution). I computed the log-likelihood <span class="math inline">\(\log L(\alpha, \beta)\)</span> over a grid of parameter pairs.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -325,23 +319,14 @@ window.Quarto = {
 </div>
 <ol type="a">
 <li>Roughly where is the ML estimate?</li>
-<li>What does a single labeled curve on this plot mean?</li>
-<li>For the Bernoulli model, we found <span class="math inline">\(\hat{\pi}\)</span> with pencil and paper. Why can’t we do that here?</li>
+<li>What does a labeled curve on this plot mean (i.e., what do the points on that curve have in common)?</li>
+<li>For the Bernoulli model, we found <span class="math inline">\(\hat{\pi}\)</span> quickly with pencil and paper. Why can’t we do that here?</li>
 </ol>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
-<p>Each labeled curve gives the log-likelihood value along it; higher numbers sit closer to the peak. Find the region where the labeled values are highest and read off its <span class="math inline">\((\alpha, \beta)\)</span> coordinates.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
-<p>The plot shows the height of <span class="math inline">\(\log L(\alpha, \beta)\)</span>. Along one curve, what is constant?</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
-<p>Look back at what stopped us in the notes’ beta example.</p>
-</div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-6" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Diagnose the Error</h2>
-<p>A classmate wants the ML estimate of a Poisson rate <span class="math inline">\(\lambda\)</span> for the data below, and their code runs without an error or a warning:</p>
+<p>A classmate estimates a Poisson rate <span class="math inline">\(\lambda\)</span>. Their code runs without an error or a warning:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">10</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -359,17 +344,17 @@ window.Quarto = {
 <pre><code>[1] 100</code></pre>
 </div>
 </div>
-<p>But the estimate is absurd. The average of <code>y</code> is 10, but <span class="math inline">\(\hat{\lambda}\)</span> comes back as 100. What went wrong? What’s the fix? What is the <em>category</em> of the mistake: a typo, an algebra slip, or something else?</p>
+<p>But the estimate is absurd. The average of <code>y</code> is 10, but <span class="math inline">\(\hat{\lambda} = 100\)</span>. What went wrong? How can they fix the code? What is the <em>category</em> of the mistake: a typo, an algebra error, or something else?</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
-<p>When you hand <code>optim()</code> a function what does it do by default: maximize or minimize? See the Details section of <code>?optim</code>.</p>
+<p>When you hand <code>optim()</code> a function, what does it do by default: maximize or minimize? See the Details section of <code>?optim</code>.</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-7" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Trust It or Not?</h2>
-<p>Your <code>optim()</code> call returns <code>$convergence = 1</code>, and <code>$par</code> equals the upper bound you supplied. Do you trust the estimate? What do you check or change next?</p>
+<p>Your <code>optim()</code> call returns <code>$convergence = 1</code>, and <code>$par</code> equals the upper bound you supplied. Do you trust the estimate?</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
-<p><code>?optim</code>’s Value section documents every code <code>$convergence</code> can return, not only <code>0</code>. Look up what <code>1</code> means there before you decide anything else.</p>
+<p><code>?optim</code>’s Value section documents every <code>$convergence</code> code.</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
@@ -377,10 +362,11 @@ window.Quarto = {
 <h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> An Unfamiliar Density</h2>
 <p>Suppose a random variable has pdf <span class="math inline">\(f(x; \theta) = \theta x^{\theta - 1}\)</span> for <span class="math inline">\(0 &lt; x &lt; 1\)</span> and <span class="math inline">\(\theta &gt; 0\)</span>, and suppose we collect <span class="math inline">\(N\)</span> iid observations <span class="math inline">\(x = \{x_1, x_2, \ldots, x_N\}\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Find the ML estimator of <span class="math inline">\(\theta\)</span>.</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
-<p>What steps did we follow for the Bernoulli and the Poisson? Start the same way here by writing <span class="math inline">\(L(\theta)\)</span> as a product over the observations.</p>
+<p>What steps did we use for the Bernoulli and the Poisson? Start the same way here. Write <span class="math inline">\(L(\theta)\)</span> as a product over the observations.</p>
 </div></details>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
-<p>Take the log and bring the exponent down. You should end up with two terms: one involving <span class="math inline">\(\log \theta\)</span> and one involving <span class="math inline">\(\sum \log x_i\)</span>.</p>
+<p>Take the log and then use the rules for logs to simplify.</p>
+<p>You should end up with two terms: one involving <span class="math inline">\(\log \theta\)</span> and one involving <span class="math inline">\(\sum \log x_i\)</span>.</p>
 </div></details>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
 <p>Your formula and <code>optim()</code> must agree. For <code>x &lt;- c(0.2, 0.5, 0.9)</code>, evaluate your <span class="math inline">\(\hat{\theta}\)</span> formula, then run the code below and compare.</p>
@@ -409,62 +395,26 @@ window.Quarto = {
 <h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> One Line of Invariance</h2>
 <p>Let <span class="math inline">\(\hat{\theta}\)</span> be the ML estimate of <span class="math inline">\(\theta\)</span>. Suppose we are interested in <span class="math inline">\(\psi = \theta^2\)</span>. What is the ML estimate of <span class="math inline">\(\psi\)</span>?</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
-<p>This week’s notes has a chapter built entirely turning an ML estimate of one quantity into an ML estimate of a function of it, without writing down a new likelihood.</p>
+<p>The notes have a chapter that describes how to turn an ML estimate of a parameter into an ML estimate of a function of that parameter without writing down a new likelihood.</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-10" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> The Exponential Model</h2>
-<p>The exponential distribution has pdf <span class="math inline">\(f(t; \lambda) = \lambda e^{-\lambda t}\)</span> for <span class="math inline">\(t \geq 0\)</span> and <span class="math inline">\(\lambda &gt; 0\)</span>. We might use the exponential distribution to model <em>durations</em>. A duration is the time until an event, such as the end of a coalition government.</p>
+<p>The exponential distribution has pdf <span class="math inline">\(f(t; \lambda) = \lambda e^{-\lambda t}\)</span> for <span class="math inline">\(t \geq 0\)</span> and <span class="math inline">\(\lambda &gt; 0\)</span>. We might use the exponential distribution to model <em>durations</em>. A duration is the <em>time until an event</em>, such as the end of a coalition government.</p>
 <ol type="a">
 <li>Suppose we collect <span class="math inline">\(N\)</span> iid durations <span class="math inline">\(t = \{t_1, t_2, \ldots, t_N\}\)</span>. Find the ML estimator of <span class="math inline">\(\lambda\)</span>.</li>
-<li>The parameter <span class="math inline">\(\lambda\)</span> is called the <em>rate</em>. The <em>mean</em> of the exponential distribution is <span class="math inline">\(\frac{1}{\lambda}\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Give the ML estimator of the mean.</li>
+<li>The parameter <span class="math inline">\(\lambda\)</span> is called the <em>rate</em>. The <em>mean</em> of the exponential distribution is <span class="math inline">\(\frac{1}{\lambda}\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Find the ML estimator of the mean.</li>
 </ol>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
 <p>This is very similar to the derivation of the ML estimate of <span class="math inline">\(\lambda\)</span> for the Poisson distribution, with one important difference. Be careful with your algebra!</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate durations from a known rate and see whether your formulas</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># recover it</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>lambda_true <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">500</span>, <span class="at">rate =</span> lambda_true)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fill in your part (a) estimator, as a function of t</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>lambda_hat <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># a numerical check: maximize the exponential log-likelihood directly</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ll_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(lambda, t) <span class="fu">sum</span>(<span class="fu">dexp</span>(t, <span class="at">rate =</span> lambda, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>lambda_hat_numeric <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>, <span class="at">fn =</span> ll_fn, <span class="at">t =</span> t,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                             <span class="at">method =</span> <span class="st">"Brent"</span>, <span class="at">lower =</span> <span class="fl">1e-6</span>, <span class="at">upper =</span> <span class="dv">20</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                             <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>))<span class="sc">$</span>par</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># these two should agree closely</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>lambda_hat</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>lambda_hat_numeric</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># fill in your part (b) estimator, as a function of lambda_hat</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>mean_hat <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># an independent numerical check: reparameterize the same likelihood in</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># terms of the mean and maximize over that instead</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>ll_fn_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, t) <span class="fu">sum</span>(<span class="fu">dexp</span>(t, <span class="at">rate =</span> <span class="dv">1</span> <span class="sc">/</span> mu, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>mean_hat_numeric <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="dv">1</span>, <span class="at">fn =</span> ll_fn_mean, <span class="at">t =</span> t,</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method =</span> <span class="st">"Brent"</span>, <span class="at">lower =</span> <span class="fl">1e-6</span>, <span class="at">upper =</span> <span class="dv">20</span>,</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                           <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>))<span class="sc">$</span>par</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># these two should agree closely</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>mean_hat</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>mean_hat_numeric</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-11" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-11"><span class="ex-num">Exercise 11</span> Four Models, One Number</h2>
 <p>Suppose you observe the binary outcome <code>y &lt;- c(0, 1, 0, 1, 1, 1, 0)</code> and you want to estimate the <em>mean</em> of the distribution that generated it. Naturally, you’d model these data as Bernoulli and estimate <span class="math inline">\(\pi\)</span>. But suppose that instead you model these 0s and 1s with a <em>normal</em> distribution. What is your ML estimate of the mean? What if you use the Poisson? The exponential?</p>
-<p>Complete the table below: for each model, the ML estimates of the parameters, then the estimate of the mean via the invariance property. What do you notice? Explain why it happens.</p>
+<p>Complete the table below. For each model, find the ML estimates of the parameters, then the estimate of the mean via the invariance property if needed. What do you notice? Explain.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -501,40 +451,34 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
-<p>For each model, what is <span class="math inline">\(E(Y)\)</span> in terms of that model’s parameter? (Three of the four means <em>are</em> the parameter. The fourth is a transformation of the parameter.)</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
-<p>Estimate each model’s parameters by ML (all four estimators appear in the notes or in <a href="#ex-10">Exercise 10</a>). If needed, transform the estimates with the invariance property.</p>
-</div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-12" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-12"><span class="ex-num">Exercise 12</span> N or N − 1?</h2>
-<p>R’s <code>var(y)</code> is <em>not</em> the ML estimate of <span class="math inline">\(\sigma^2\)</span> for a normal model. What’s the difference between the two? Which one is bigger? And does the difference matter at <span class="math inline">\(N = 10{,}000\)</span>? Check your answers numerically on any vector you like.</p>
+<p>R’s <code>var(y)</code> is <em>not</em> the ML estimate of <span class="math inline">\(\sigma^2\)</span> for a normal model. What’s the difference between the two? Which one is bigger? And does the difference matter at <span class="math inline">\(N = 10{,}000\)</span>? Check your answers numerically using some vector of data.</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
-<p>The notes derive the ML estimator for <span class="math inline">\(\sigma^2\)</span> by solving <span class="math inline">\(\frac{d \log L}{d \sigma^2} = 0\)</span>. Find that derivation. What is the denominator? Compare it to the denominator for <code>var()</code>, which is explained deep in the Details of <code>?var</code>.</p>
+<p>The notes derive the ML estimator for <span class="math inline">\(\sigma^2\)</span> by solving <span class="math inline">\(\frac{d \log L}{d \sigma^2} = 0\)</span>. Find that derivation in the notes. What is the denominator? Compare it to the denominator for <code>var()</code>, which is explained deep in the Details of <code>?var</code>.</p>
 </div></details>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
-<p>For the numeric check, build the sum of squared deviations from the mean. Then use the two alternative denominators. Compare each result to <code>var()</code>.</p>
+<p>For the numeric check, compute the sum of squared deviations from the mean. Then use the two alternative denominators. Compare each result to <code>var()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pick any vector, e.g.:</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(y)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># your ML formula for sigma^2, using y directly (not from var(y))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pick any vector, e.g.:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(y)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># your ML formula for sigma^2, using y directly (not from var(y))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
 <section id="ex-13" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-13"><span class="ex-num">Exercise 13</span> The SD the Model Implies</h2>
-<p>Holland (2015) measures the number of enforcement operations (i.e., a “count”) against street vendors across districts in three Latin American cities. The data are in <code>crdata::holland2015</code>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The notes estimated the Poisson rate <span class="math inline">\(\lambda\)</span> separately for each city. Now let’s estimate the standard deviation of the number of operations (rather than the rate or mean).</p>
+<p>Holland (2015) measures the number of enforcement operations (i.e., a “count”) against street vendors across districts in three Latin American cities. The data are in <code>crdata::holland2015</code>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The notes use the Poisson model and estimate the mean <span class="math inline">\(\lambda\)</span> separately for each city. Now let’s estimate the standard deviation of the number of operations (rather than the mean).</p>
 <ol type="a">
 <li>What does the Poisson model <em>assume</em> about the SD of the data, in terms of <span class="math inline">\(\lambda\)</span>?</li>
 <li>Use the invariance property to estimate the SD of the operations counts in each city from <span class="math inline">\(\hat{\lambda}\)</span>.</li>
-<li>Compute the sample SD in each city and compare. What do you find, and what does it tell you about the model?</li>
+<li>Compute the observed sample SD in each city and compare (i.e., use <code>sd()</code>). What do you find? Why is this interesting or important?</li>
 </ol>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For parts (a) and (b)</span></summary><div class="ex-reveal-body">
 <p>For a Poisson distribution, how is the variance related to the mean? Write the SD as a function of <span class="math inline">\(\lambda\)</span>, then estimate it by plugging in <span class="math inline">\(\hat{\lambda}\)</span>.</p>
@@ -552,25 +496,13 @@ window.Quarto = {
 <h2 class="ex-heading anchored" data-anchor-id="ex-14"><span class="ex-num">Exercise 14</span> The Discrete Uniform</h2>
 <p>Suppose a discrete uniform distribution on <span class="math inline">\(\{0, 1, \ldots, K\}\)</span>, with pmf <span class="math inline">\(f(x; K) = \frac{1}{K + 1}\)</span> for <span class="math inline">\(x \in \{0, 1, \ldots, K\}\)</span>. Suppose we observe a sample of size 3: 276, 159, and 912.</p>
 <ol type="a">
-<li>Find the ML estimate of <span class="math inline">\(K\)</span>. <em>Hint: The likelihood is discontinuous in <span class="math inline">\(K\)</span>, so differentiate-and-solve will mislead you. But the maximum is immediately apparent once you write out the likelihood.</em></li>
+<li>Find the ML estimate of <span class="math inline">\(K\)</span>. <em>Hint: The likelihood is discontinuous in <span class="math inline">\(K\)</span>, so differentiate-and-solve will mislead you. But the maximum is immediately apparent once you write out the likelihood. Use a verbal, logical argument here, rather than the usual recipe.</em></li>
 <li>Find the method of moments estimate of <span class="math inline">\(K\)</span>. <em>Hint: The mean of this distribution is <span class="math inline">\(\tfrac{K}{2}\)</span>. Set the sample mean equal to the model mean and solve.</em></li>
-<li>For these data, the method of moments estimate falls below the largest observation. This is unsatisfying because it’s an estimate of <span class="math inline">\(K\)</span> that the data themselves rule out. How bad can this get? Construct a three-observation dataset that makes the ratio <span class="math inline">\(\hat{K}_{MM} / \max(x)\)</span> as small as you can. What is the smallest value the ratio can take with three observations?</li>
-<li>In a sentence or two, say what these two failures teach us about choosing an estimator.</li>
+<li>For these data, the method of moments estimate falls below the largest observation. This is unsatisfying because the data themselves rule out that estimate of <span class="math inline">\(K\)</span> as impossible. This raises the question: how bad can this get? Construct a three-observation dataset that makes the ratio <span class="math inline">\(\hat{K}_{MM} / \max(x)\)</span> as small as you can. What is the smallest value the ratio can take with three observations?</li>
+<li>In a sentence or two, describe what these two failures teach us about choosing an estimator.</li>
 </ol>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c)</span></summary><div class="ex-reveal-body">
-<p>The ratio you’re minimizing is <span class="math inline">\(2 \cdot \text{avg}(x) / \max(x)\)</span> (i.e., part (b)’s formula divided by the largest observation). With <span class="math inline">\(\max(x)\)</span> fixed, which direction should you push the other two observations to shrink the average? Work that out before you pick numbers.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (c), a second nudge</span></summary><div class="ex-reveal-body">
-<p>Fact: this distribution never produces a value below 0, so that’s the floor for any observation you choose. Combined with part (b)’s formula, how far can you push <span class="math inline">\(\text{avg}(x)\)</span> down without changing <span class="math inline">\(\max(x)\)</span>?</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
-<p>Plug your candidate dataset from part (c) into the code below and confirm the ratio matches what you computed by hand.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(a, b, c)               <span class="co"># your three-observation dataset from part (c)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>K_hat_mm <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">mean</span>(x)       <span class="co"># method of moments estimate, from part (b)</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ratio <span class="ot">&lt;-</span> K_hat_mm <span class="sc">/</span> <span class="fu">max</span>(x)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ratio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>You are minimizing the ratio <span class="math inline">\(2 \cdot \text{avg}(x) / \max(x)\)</span> (i.e., part (b)’s formula divided by the largest observation). <span class="math inline">\(\max(x)\)</span> is fixed, so which direction should you push the other two observations to shrink the average?</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
@@ -579,16 +511,16 @@ window.Quarto = {
 <h1 class="ex-section">Checking the Model</h1>
 <section id="ex-15" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-15"><span class="ex-num">Exercise 15</span> The Remaining Wait</h2>
-<p>The exponential distribution from <a href="#ex-10">Exercise 10</a> is our first model for durations. What does the model actually claim about waiting? This turns out to be really interesting and important!</p>
+<p>The exponential distribution from <a href="#ex-10">Exercise 10</a> is our first model for durations. However, this model makes a simple assumption about wait times that turns out to be really interesting and important!</p>
 <ol type="a">
 <li><p>Show that the cdf of the exponential distribution is <span class="math inline">\(F(t; \lambda) = \Pr(T \leq t) = 1 - e^{-\lambda t}\)</span>. Then define the <em>survival function</em> <span class="math inline">\(S(t; \lambda) = \Pr(T &gt; t) = 1 - F(t; \lambda)\)</span> and interpret it (i.e., for an input <span class="math inline">\(t\)</span>, what does <span class="math inline">\(S\)</span> return)?</p></li>
 <li><p>Suppose you’ve already waited <span class="math inline">\(s\)</span> units of time without the event occurring. Using the definition of conditional probability and the survival function, find <span class="math inline">\(\Pr(T &gt; t + s \mid T &gt; s)\)</span>. Compare your answer to <span class="math inline">\(\Pr(T &gt; t)\)</span>. What do you notice? Write it down in one sentence <em>before</em> you start part (c).</p></li>
 <li><p>Now check your sentence against a simulation. The code below draws 10,000 durations and computes, <em>for the draws that lasted past time 2</em>, how much <em>longer</em> they lasted.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>durations <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">10000</span>, <span class="at">rate =</span> <span class="dv">1</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>remaining <span class="ot">&lt;-</span> durations[durations <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>durations <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">10000</span>, <span class="at">rate =</span> <span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>remaining <span class="ot">&lt;-</span> durations[durations <span class="sc">&gt;</span> <span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Compare the distribution of <code>remaining</code> to the distribution of the original <code>durations</code> (plotting both ECDFs in one panel works well). Do the plots confirm or refute your sentence from (b)?</p></li>
-<li><p>Name one political process that your finding might describe well, and one it clearly can’t. Say why.</p></li>
+<li><p>Name one political process that your finding might describe well, and one that it might not. Explain.</p></li>
 </ol>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
 <p>The cdf accumulates the density: <span class="math inline">\(F(t; \lambda) = \int_0^t \lambda e^{-\lambda u}\, du\)</span>. Use integration rules from Week 1.</p>
@@ -604,14 +536,14 @@ window.Quarto = {
 <section id="ex-16" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-16"><span class="ex-num">Exercise 16</span> Herron’s Hockey Data</h2>
 <p>Herron’s hockey data set records the time between hits<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> in the regulation periods of all 82 regular-season games for the Chicago Blackhawks.</p>
-<p>Before looking at the data, do you expect an exponential model to fit the times between hits? Write down your prediction and your reasoning. Notice that your derivation in <a href="#ex-15">Exercise 15</a> <em>can’t</em> settle this one. Whether hits actually behave this way is an empirical question. It could be that hits cluster (a hit sparks retaliation). Or maybe a long lull makes the next hit imminent.</p>
+<p>Before looking at the data, do you expect an exponential model to fit the times between hits? Do you expect memorylessness to work well here? Write down your prediction and your reasoning. It could be that hits cluster together (i.e., a hit sparks retaliation). Or maybe a long lull makes the next hit increasingly likely.</p>
 <p>Model <code>seconds_btw_hits</code> as exponential, estimate the rate and the mean, and use the predictive distribution to evaluate the fit. Were you right?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data directly from the web</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hockey <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/carlislerainey/0bc3018cd2377022fd045e1c932110a2/raw/fd6dcc28a7c0df456d779e9f0d7a82f15b9b5844/herron-hockey.csv"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># quick look</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(hockey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data directly from the web</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hockey <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/carlislerainey/0bc3018cd2377022fd045e1c932110a2/raw/fd6dcc28a7c0df456d779e9f0d7a82f15b9b5844/herron-hockey.csv"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># quick look</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(hockey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 1,175
 Columns: 5
@@ -622,11 +554,8 @@ $ seconds_played_in_season &lt;dbl&gt; 25, 128, 178, 188, 253, 560, 643, 1407, 1
 $ seconds_btw_hits         &lt;dbl&gt; NA, 103, 50, 10, 65, 307, 83, 764, 418, 535, …</code></pre>
 </div>
 </div>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
-<p>The general recipe for the predictive distribution is in the notes and it works for any fitted distribution. You’ve already derived a formula for <span class="math inline">\(\hat{\lambda}\)</span> in <a href="#ex-10">Exercise 10</a>. Get that number for the hockey data first. Then simulate.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
-<p>The notes offer a three-step procedure: estimate <span class="math inline">\(\hat{\lambda}\)</span> (you derived the estimator in <a href="#ex-10">Exercise 10</a>), simulate several fake data sets from the fitted exponential distribution, and compare them to the observed data with histograms or ECDFs.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The general recipe for the predictive distribution is in the notes and it works for any fitted distribution. You’ve already derived a formula for <span class="math inline">\(\hat{\lambda}\)</span> in <a href="#ex-10">Exercise 10</a>. Get that estimate from the data. Then simulate fake data as we do in the notes.</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
@@ -637,28 +566,28 @@ $ seconds_btw_hits         &lt;dbl&gt; NA, 103, 50, 10, 65, 307, 83, 764, 418, 5
 f(y; \mu, \sigma, \nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\Gamma\left(\frac{\nu}{2}\right) \sqrt{\nu \pi} \, \sigma} \left[1 + \frac{1}{\nu} \left( \frac{y - \mu}{\sigma} \right)^2 \right]^{-\frac{\nu+1}{2}},
 \]</span></p>
 <p>where <span class="math inline">\(\mu\)</span> is the location parameter (it shifts the distribution, like the normal’s mean), <span class="math inline">\(\sigma\)</span> is the scale parameter (it spreads the distribution, like the normal’s SD), and <span class="math inline">\(\nu\)</span> controls the heaviness of the tails. The <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> work similarly to a normal model. Small <span class="math inline">\(\nu\)</span> means heavy tails, and as <span class="math inline">\(\nu \to \infty\)</span> the distribution converges to the normal. (For <span class="math inline">\(\nu &gt; 10\)</span> or so, the <span class="math inline">\(t\)</span> and the normal distributions are hard to tell apart, and <span class="math inline">\(\nu = 1\)</span> is the Cauchy.)</p>
-<p>In R, <code>metRology::dt.scaled()</code> computes this density.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Be careful with the argument names in <code>metRology::dt.scaled()</code>. <code>mean</code> is the location <span class="math inline">\(\mu\)</span> (though <span class="math inline">\(\mu\)</span> isn’t always a mean), <code>sd</code> is the scale <span class="math inline">\(\sigma\)</span> (though <span class="math inline">\(\sigma\)</span> isn’t the SD), and <code>df</code> is <span class="math inline">\(\nu\)</span>.</p>
-<p>We’ll model cross-national GDP growth, which mixes a tight cluster of ordinary economies with a few extreme performers. The code below downloads percentage GDP growth for 2022 from the World Bank.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>We can use <code>metRology::dt.scaled()</code> to compute this density in R.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Be careful with the argument names in <code>metRology::dt.scaled()</code>. <code>mean</code> is the location <span class="math inline">\(\mu\)</span> (though <span class="math inline">\(\mu\)</span> isn’t always a mean), <code>sd</code> is the scale <span class="math inline">\(\sigma\)</span> (though <span class="math inline">\(\sigma\)</span> isn’t the SD), and <code>df</code> is <span class="math inline">\(\nu\)</span>.</p>
+<p>We’ll model cross-national GDP growth, which mixes a tight cluster of ordinary economies with a few extreme performers. The code below downloads percentage GDP growth for 2022 from the World Bank.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WDI)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get annual % gdp growth for 2022</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># - "NY.GDP.MKTP.KD.ZG" is percentage gdp growth</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   see https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">"NY.GDP.MKTP.KD.ZG"</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">start =</span> <span class="dv">2022</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">end =</span> <span class="dv">2022</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">extra =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop aggregates (e.g., European Union)</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">!=</span> <span class="st">"Aggregates"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct_gdp_growth =</span> NY.GDP.MKTP.KD.ZG) <span class="sc">%&gt;%</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, year, region, pct_gdp_growth) <span class="sc">%&gt;%</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> pct_gdp_growth)) <span class="sc">+</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WDI)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get annual % gdp growth for 2022</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># - "NY.GDP.MKTP.KD.ZG" is percentage gdp growth</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   see https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">indicator =</span> <span class="st">"NY.GDP.MKTP.KD.ZG"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">start =</span> <span class="dv">2022</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">end =</span> <span class="dv">2022</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">extra =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop aggregates (e.g., European Union)</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">!=</span> <span class="st">"Aggregates"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct_gdp_growth =</span> NY.GDP.MKTP.KD.ZG) <span class="sc">%&gt;%</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, year, region, pct_gdp_growth) <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> pct_gdp_growth)) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -670,31 +599,25 @@ f(y; \mu, \sigma, \nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\Gamma\left(\
 <ol type="a">
 <li><p>As a baseline, model <code>pct_gdp_growth</code> with a normal distribution. Estimate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> by ML (both have closed forms), then use the predictive distribution to assess the fit. What does the normal model miss?</p></li>
 <li><p>Now fit the location-scale <em>t</em>, estimating <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span>, and <span class="math inline">\(\nu\)</span> with <code>optim()</code>. Complete the skeleton below by filling in the two blanked lines.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ll_t <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># unpack the parameter vector</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  mu    <span class="ot">&lt;-</span> par[<span class="dv">1</span>]   <span class="co"># location</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  sigma <span class="ot">&lt;-</span> par[<span class="dv">2</span>]   <span class="co"># scale</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  nu    <span class="ot">&lt;-</span> par[<span class="dv">3</span>]   <span class="co"># degrees of freedom (tail heaviness)</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. guard: impossible parameter values should return -Inf</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    ... your code here ...</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. compute the log-likelihood with metRology::dt.scaled()</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    ll &lt;- ... your code here ...</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ll)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ll_t <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># unpack the parameter vector</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  mu    <span class="ot">&lt;-</span> par[<span class="dv">1</span>]   <span class="co"># location</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  sigma <span class="ot">&lt;-</span> par[<span class="dv">2</span>]   <span class="co"># scale</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  nu    <span class="ot">&lt;-</span> par[<span class="dv">3</span>]   <span class="co"># degrees of freedom (tail heaviness)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. guard: impossible parameter values should return -Inf</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    ... your code here ...</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. compute the log-likelihood with metRology::dt.scaled()</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    ll &lt;- ... your code here ...</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ll)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Reasonable starting values are <code>c(median(y), sd(y), 10)</code>.</p></li>
-<li><p>Use the predictive distribution to compare the <em>t</em> model to the normal model. What is the ML estimate of <span class="math inline">\(\nu\)</span>, and what does it give us?</p></li>
+<li><p>Use the predictive distribution to compare the <em>t</em> model to the normal model. How does the predictive distribution from the <em>t</em> compare to the normal? What is the ML estimate of <span class="math inline">\(\nu\)</span>, and why might that matter?</p></li>
 </ol>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
-<p>The density is undefined when the scale or the tail parameter is zero or negative. Decide what your function should return for those impossible values, so that <code>optim()</code> doesn’t consider them.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b), the code</span></summary><div class="ex-reveal-body">
-<p>If <code>sigma</code> or <code>nu</code> is not positive, return <code>-Inf</code>; otherwise return <code>sum(dt.scaled(y, mean = mu, sd = sigma, df = nu, log = TRUE))</code>.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
-<p>Your normal-model estimates in part (a) must match the closed forms exactly so that <span class="math inline">\(\hat{\mu}\)</span> = <code>mean(y)</code> and <span class="math inline">\(\hat{\sigma}\)</span> = <code>sqrt(sum((y - mean(y))^2)/length(y))</code>. If your predictive simulations look off, check these two numbers before debugging anything else.</p>
+<p>The density is undefined when the scale or the tail parameter is zero or negative. If <code>sigma</code> or <code>nu</code> is not positive, return <code>-Inf</code>; otherwise return <code>sum(dt.scaled(y, mean = mu, sd = sigma, df = nu, log = TRUE))</code>.</p>
 </div></details>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 </section>
@@ -703,68 +626,16 @@ f(y; \mu, \sigma, \nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\Gamma\left(\
 <h1 class="ex-section">Reflection</h1>
 <section id="ex-18" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-18"><span class="ex-num">Exercise 18</span> What Should a Model Match?</h2>
-<p>The exercises above repeatedly compare a fitted model against observed data, and the models often disagree with the data about everything <em>except</em> the mean. Three questions, a few sentences each:</p>
+<p>The exercises above repeatedly compare a fitted model against observed data, and the models often disagree with the data about everything <em>except</em> the mean.</p>
+<p>Answer these three questions in a few sentences each:</p>
 <ol type="a">
 <li>Is it important that a model mimic features of the data beyond the mean?</li>
-<li>When might the SD, the tails, or the behavior of waits matter <em>substantively</em>, for the political question itself?</li>
-<li>When might those features matter <em>statistically</em>, even if the mean is all you care about?</li>
+<li>When might the SD, the tails, or the behavior of wait times matter <em>substantively</em>?</li>
+<li>When might those features matter <em>statistically</em> (even if the mean is all you care about)?</li>
 </ol>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (a)</span></summary><div class="ex-reveal-body">
-<p><a href="#ex-11">Exercise 11</a> earlier on this page fit several different models to the same data. Reread it and compare what varied across the fits to what didn’t, then think about what that contrast implies for when matching the mean is enough.</p>
+<p>See <a href="#ex-11">Exercise 11</a> for an example.</p>
 </div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">For part (b)</span></summary><div class="ex-reveal-body">
-<p>Two of the exercises above already put this question in a concrete setting: <a href="#ex-17">Exercise 17</a> compared a normal model to a heavier-tailed model for a country’s GDP growth, and <a href="#ex-15">Exercise 15</a> asked whether a wait so far should change your forecast of the wait still to come. Reread whichever is closer to where you’re stuck, and ask what would go wrong for the actual political question, not just for the histogram, if you’d picked the wrong model.</p>
-</div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
-</section>
-</section>
-<section id="extra-practice" class="level1 ex-divider">
-<h1 class="ex-divider">Extra Practice</h1>
-<section id="extra-1" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="extra-1"><span class="ex-num">Extra Practice 1</span> Bernoulli Grid Search</h2>
-<p>Suppose you design a Bernoulli experiment that generates successes and failures with an unknown probability <span class="math inline">\(\pi\)</span>. You want to estimate <span class="math inline">\(\pi\)</span>, so you run the experiment three times and get the outcomes <code>y &lt;- c(0, 1, 0)</code>, where <code>0</code> is a failure and <code>1</code> is a success.</p>
-<p>Use ML to estimate <span class="math inline">\(\pi\)</span>. <em>But don’t find the maximum analytically</em> or with a hill-climbing algorithm. Instead, use a <em>grid search</em>: use <code>seq()</code> to create ten to twenty candidate values of <span class="math inline">\(\pi\)</span>, compute the log-likelihood for each candidate, and locate the candidate that produces the largest log-likelihood. Report your results in a figure. (A table works too, if you’d like both.)</p>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
-<p>You’ll need the Bernoulli log-likelihood as a function you can evaluate. That is, write <span class="math inline">\(\log L(\pi) = k \log(\pi) + (N - k)\log(1 - \pi)\)</span>, with <span class="math inline">\(k\)</span> successes in <span class="math inline">\(N\)</span> trials, as an R function of <span class="math inline">\(\pi\)</span>. Then you can give this R function the whole grid at once to compute the log-likelihoods for the entire grid.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
-<p>Your grid search and the closed-form Bernoulli estimate from your notes should land on nearly the same <span class="math inline">\(\pi\)</span>. The grid is just more coarse. Compute both, store them, and check that they differ by less than your grid’s spacing.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># best_grid_pi: the pi your grid search returned as the best candidate</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># closed_form_pi: the closed-form Bernoulli estimate from your notes</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>best_grid_pi <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>closed_form_pi <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abs</span>(best_grid_pi <span class="sc">-</span> closed_form_pi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
-</section>
-<section id="extra-2" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="extra-2"><span class="ex-num">Extra Practice 2</span> <code>optim()</code> Meets the Closed Form</h2>
-<p>We found that the sample average is the ML estimator of the parameter <span class="math inline">\(\lambda\)</span> of the Poisson distribution. For the data set <code>y &lt;- c(12, 7, 9, 12, 10)</code>, show that maximizing the Poisson log-likelihood with <code>optim()</code> produces the same answer as the closed-form solution.</p>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
-<p>You need a Poisson log-likelihood function before you can call <code>optim()</code>. See the example for the beta distribution in the notes. Then write the Poisson version yourself.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
-<p>Once you have a log-likelihood function, the beta example in the notes walks through every argument the <code>optim()</code> call needs, one by one, in the numbered list right after the call.</p>
-</div></details>
-<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Self-check</span></summary><div class="ex-reveal-body">
-<p>Before calling <code>optim()</code>, check that the log-likelihood function itself works as expected. It should return a larger value at the closed-form estimate than at a nearby value that isn’t the estimate.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># evaluate your log-likelihood function at the closed-form estimate</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ll_fn</span>(<span class="at">par =</span> <span class="fu">mean</span>(y), <span class="at">y =</span> y)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and at a nearby value that is NOT the estimate</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ll_fn</span>(<span class="at">par =</span> <span class="fu">mean</span>(y) <span class="sc">+</span> <span class="dv">1</span>, <span class="at">y =</span> y)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># if ll_fn is correct, the first number is larger</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
-</section>
-<section id="extra-3" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="extra-3"><span class="ex-num">Extra Practice 3</span> Corrupted Data</h2>
-<p>Take the WDI GDP-growth data from <a href="#ex-17">Exercise 17</a> and corrupt them by replacing one observation with a severe data-entry error. Perhaps replace one value of <code>pct_gdp_growth</code> with 10,000. Re-fit the normal and <em>t</em> models. How did each model’s estimate of the <em>location</em> change? Why? Is resistance to corruption a desirable property?</p>
 <div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 4, 12pm</span></button></div>
 
 
@@ -780,7 +651,6 @@ f(y; \mu, \sigma, \nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\Gamma\left(\
 <li id="fn3"><p><code>crdata</code> isn’t on CRAN. Install it once with <code>remotes::install_github("carlislerainey/crdata")</code>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>From <a href="https://en.wikipedia.org/wiki/Ice_hockey_statistics">Wikipedia</a>, a hit is: <em>“Intentionally initiated contact with the player possessing the puck that causes that player to lose possession of the puck.”</em><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p><code>metRology</code> is on CRAN: <code>install.packages("metRology")</code>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>The <code>WDI</code> package (CRAN) fetches the data live, so this chunk needs an internet connection.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <!-- Injected at the end of every exercise page (see _metadata.yml).

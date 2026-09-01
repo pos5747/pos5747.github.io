@@ -4,7 +4,7 @@ distributed: 2026-09-01
 show-hints: true
 ---
 
-Do all the exercises below. The Extra Practice problems at the end are optional.
+Do all the exercises below.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -15,23 +15,29 @@ library(tidyverse)
 
 ## A Function of What? {ref="function-of-what"}
 
-For the Bernoulli model, we wrote the likelihood as $L(\pi) = \pi^{k}(1 - \pi)^{(N - k)}$, where $k$ is the number of successes in $N$ trials. In this expression, which symbol is the variable, and which symbols are fixed? In one sentence describe the question that $L(\pi)$ answers.
+For the Bernoulli model, we wrote the likelihood as $L(\pi) = \pi^{k}(1 - \pi)^{(N - k)}$, where $k$ is the number of successes in $N$ trials. In the likelihood, which symbol is the variable? Which symbol(s) are fixed? In one sentence, describe the question that $L(\pi)$ answers.
 
 ::: hint
 
-In the pmf $f(x; \pi)$, we treat $\pi$ as fixed and $x$ as the variable. What changed when we relabeled $f(x; \pi)$ as $L(\pi)$? 
+In the pmf $f(x; \pi)$, we treat $x$ as the variable and $\pi$ as fixed. What changes when we relabeled $f(x; \pi)$ as $L(\pi)$? 
 
 :::
 
 ::: hint
 
-Before the notes ever write $L(\pi)$, the Bernoulli section evaluates the same fixed toothpaste-cap data at several candidate values of $\pi$ (0.1, 0.45, 0.55, and 0.9), one at a time. Reread that paragraph.
+Before the notes ever introduce $L(\pi)$, the Bernoulli section evaluates the likelihood (for the toothpaste cap data) at several candidate values of $\pi$ (0.1, 0.45, 0.55, and 0.9). Reread that paragraph.
 
 :::
 
 ::: sol
 
-The likelihood flips the usual roles compared to $f(x; \pi)$. For the likelihood, the data are fixed (we observed them!), and the parameter varies. In $L(\pi)$, the variable is $\pi$. The data (or summaries $k$ and $N$, in this case) are fixed numbers. $L(\pi)$ answers the question: *if the parameter were $\pi$, how likely would these data be?* ML then picks the $\pi$ that makes the observed data most likely.
+The likelihood reverses the roles of $x$ and $\pi$ compared to $f(x; \pi)$. 
+
+We think of $f(x; \pi)$ as "the probability of $x$, given $\pi$."
+
+But for the likelihood, the data are fixed (we observed them!), and we want to vary the parameter (to optimize across it). Thus, for $L(\pi)$, the variable is $\pi$ and the data (or summaries $k$ and $N$, in this case) are fixed numbers. 
+
+$L(\pi)$ answers the question: *if the parameter were $\pi$, how likely would these data be?* ML then finds the $\pi$ that makes the observed data most likely.
 
 **Something that's wrong**: the likelihood is *not* a probability distribution over $\pi$. It doesn't integrate to one. It does not allow a probability claim about the parameter.
 
@@ -39,9 +45,9 @@ The likelihood flips the usual roles compared to $f(x; \pi)$. For the likelihood
 
 ## Why the Log? Predict, Then Check {ref="why-the-log"}
 
-Suppose you observe 2,000 Bernoulli trials with $\pi = 0.5$, so each observation has probability exactly 0.5. The likelihood is the product of these 2,000 probabilities.
+Suppose you observe 2,000 Bernoulli trials with $\pi = 0.5$, so that each observation equals one with probability 0.5 and zero with probability 0.5. The likelihood is the product of these 2,000 probabilities.
 
-Predict what the first line below returns *before you run it*, and write down your reasoning.
+*Before you run it*, predict what the first line of R code below returns. Write down your reasoning.
 
 ```{r ex02-skeleton}
 #| eval: false
@@ -52,25 +58,25 @@ prod(dbinom(y, 1, 0.5))             # the likelihood, computed directly
 sum(dbinom(y, 1, 0.5, log = TRUE))  # the log-likelihood
 ```
 
-Now run both lines. Explain what happened, why it's expected, and why it matters for ML. The log fixes this computational problem, but it also helps with the calculus. How?
+Now run both lines. Explain what happened, why it's expected, and why it matters for ML. The log fixes this computational problem. How?
 
 ::: hint
 
-Each of the 2,000 factors equals 0.5, so the product is $0.5^{2000}$. Figure out roughly how big that is as a power of ten. Compare that to the smallest positive number R can store (i.e., run `.Machine$double.xmin`).
+The product is $0.5^{2000}$. Figure out roughly how big that is as a power of ten. Compare that to the smallest positive number R can store (i.e., run `.Machine$double.xmin`).
 
-A rule of thumb: $2^{10} = 1024 \approx 10^3$. Thus, ten halvings cost about three orders of magnitude. 
+Use this rule of thumb: $2^{10} = 1024 \approx 10^3$. In turn, $\left(\frac{1}{2}\right)^{10} \approx 10^{-3}$, so that ten halvings is about the same as three orders of magnitude. 
 
 :::
 
 ::: hint
 
-The notes give two separate reasons for taking the log (i.e., where they define $L(\pi)$ in the Bernoulli example). One reason is what you just watched happen in R. The other reason is about calculus.
+The notes give two separate reasons for taking the log (i.e., where they define $L(\pi)$ in the Bernoulli example). One reason is what you just watched happen in R. 
 
 :::
 
 ::: sol
 
-Start with the prediction. Each factor is 0.5, so the product is $0.5^{2000} \approx 10^{-600}$. Computers can't track numbers that small (the smallest positive number R can store is about $10^{-308}$; run `.Machine$double.xmin`), so `prod()` returns exactly 0.
+Start with the prediction. The product is $0.5^{2000} \approx 10^{-600}$. Computers can't keep track of numbers that small (the smallest positive number R can store is about $10^{-308}$; run `.Machine$double.xmin`), so `prod()` returns exactly 0.
 
 ```{r ex02-solution}
 set.seed(42)
@@ -80,31 +86,31 @@ prod(dbinom(y, 1, 0.5))             # the likelihood, computed directly
 sum(dbinom(y, 1, 0.5, log = TRUE))  # the log-likelihood
 ```
 
-The log-likelihood works just fine, though. It's $2000 \log(0.5) \approx -1386.29$. This is a very ordinary number that computers can handle.
+The *log*-likelihood works just fine, though. It's $2000 \log(0.5) \approx -1386.29$. This is a very ordinary number that computers can handle.
 
 (Importantly, a hill-climbing algorithm can't climb a function that returns 0 everywhere!)
-
-And this matters for the calculus, too. The log turns the product into a sum. Derivatives are much easier with sums. 
 
 :::
 
 ## What a Grid Can Miss {ref="grid-miss"}
 
-Suppose a colleague estimates a Bernoulli $\pi$ by computing the log-likelihood at the eleven values $0, 0.1, 0.2, \ldots, 1$ and reporting the best of the eleven as "the ML estimate." In one or two sentences, in what sense is that answer wrong, and how would you tighten it? (If you'd like to actually run a grid search, that's [ep-grid]{.ex-ref}.)
+Suppose a colleague uses a Bernoulli model and estimates $\pi$ by computing the log-likelihood at the eleven values $0, 0.1, 0.2, \ldots, 1$ and reporting the best of the eleven as "the ML estimate." In one or two sentences, in what sense is that answer wrong, and how would you tighten it?
 
 ::: sol
 
-A grid can *bracket* the maximum, but it almost never *contains* it. The true ML estimate is $k/N$. Unless we're lucky, this will not be a multiple of 0.1. To tighten the answer, we could make the grid finer near the peak (or just use calculus or `optim()`).
+A grid will almost never *contain* the maximum. Instead the maximum will lie *between* the elements on the grid. For example, the true ML estimate is $k/N$. Unless we're lucky, this will not be a multiple of 0.1. 
+
+To tighten the answer, we could make the grid finer near the peak (or just use calculus or `optim()`).
 
 :::
 
 ## From Derivative to Estimator {ref="deriv-to-est"}
 
-Last week, you found $\frac{d\ell}{d\pi}$ for $\ell(\pi) = S \log(\pi) + (N - S)\log(1 - \pi)$. Set the derivative equal to zero and solve for $\hat{\pi}$.
+Last week, we computed $\frac{d\ell}{d\pi}$ for $\ell(\pi) = S \log(\pi) + (N - S)\log(1 - \pi)$. Set the derivative equal to zero, set $\pi = \hat{\pi}$, solve for $\hat{\pi}$.
 
 ::: sol
 
-We have $\frac{d\ell}{d\pi} = \frac{S}{\pi} - \frac{N - S}{1 - \pi}$. Setting it to zero at $\pi = \hat{\pi}$ and clearing the fractions, we obtain
+We already found that $\frac{d\ell}{d\pi} = \frac{S}{\pi} - \frac{N - S}{1 - \pi}$. Setting $\frac{d\ell}{d\pi} = 0$, setting $\pi = \hat{\pi}$, and solving for $\hat{\pi}$, we obtain
 
 $$
 \begin{aligned}
@@ -116,13 +122,13 @@ S &= N\hat{\pi} \\
 \end{aligned}
 $$
 
-The ML estimate is the fraction of successes (the sample average of the 0s and 1s).
+The ML estimate is the fraction of successes (i.e., the sample average of the 0s and 1s).
 
 :::
 
 ## Reading a Contour Plot {ref="contour"}
 
-The plot below shows the log-likelihood for the notes' beta-distribution example. We have 100 observations (simulated from a beta distribution). I computed the log-likelihood $\log L(\alpha, \beta)$ over a grid of parameter pairs.
+The plot below shows the log-likelihood for the beta model from the notes. We have 100 observations (in this case, fake data simulated from a beta distribution). I computed the log-likelihood $\log L(\alpha, \beta)$ over a grid of parameter pairs.
 
 ```{r ex05-contour}
 #| echo: false
@@ -153,40 +159,22 @@ ggplot(data, aes(x = alpha,
 ```
 
 a. Roughly where is the ML estimate?
-b. What does a single labeled curve on this plot mean?
-c. For the Bernoulli model, we found $\hat{\pi}$ with pencil and paper. Why can't we do that here?
-
-::: {.hint label="For part (a)"}
-
-Each labeled curve gives the log-likelihood value along it; higher numbers sit closer to the peak. Find the region where the labeled values are highest and read off its $(\alpha, \beta)$ coordinates.
-
-:::
-
-::: {.hint label="For part (b)"}
-
-The plot shows the height of $\log L(\alpha, \beta)$. Along one curve, what is constant?
-
-:::
-
-::: {.hint label="For part (c)"}
-
-Look back at what stopped us in the notes' beta example.
-
-:::
+b. What does a labeled curve on this plot mean (i.e., what do the points on that curve have in common)?
+c. For the Bernoulli model, we found $\hat{\pi}$ quickly with pencil and paper. Why can't we do that here?
 
 ::: sol
 
-**Part (a)** At the center of the innermost region, around $\alpha = 12$, $\beta = 12$. (The notes' `optim()` run puts it at $\hat{\alpha} \approx 12.0$ and $\hat{\beta} \approx 11.9$.)
+**Part (a)** Around $\alpha = 12$, $\beta = 12$. (`optim()` found the maximum at $\hat{\alpha} \approx 12.0$ and $\hat{\beta} \approx 11.9$.)
 
-**Part (b)** A curve is a *level set*, such that every pair $(\alpha, \beta)$ on that curve produces the same value of the log-likelihood.
+**Part (b)** A curve is a *level set*, such that every pair $(\alpha, \beta)$ on that curve produces the same value of the log-likelihood. If we imagine the contour plot as a mountain coming off the screen toward us, then each point along a curve is at the same "height" on that mountain (i.e., if you followed that path, you would go around the mountain and never up or down.)
 
-**Part (c)** The beta log-likelihood contains $\log B(\alpha, \beta)$. We can *evaluate* that term for any $\alpha$ and $\beta$ we like (R's `lbeta()` does it instantly), but differentiating it and setting the two derivatives to zero leaves a pair of equations we can't solve for $\alpha$ and $\beta$ on paper. An *intractable* likelihood means we have no closed-form maximizer. (This is the usual situation; our first few tractable models are the exceptions.)
+**Part (c)** The beta log-likelihood contains the expression $\log B(\alpha, \beta)$. We can *evaluate* that term for any $\alpha$ and $\beta$ we like (e.g., use `lbeta()` in R). But we cannot differentiate it and solve to find a closed-form solution (e.g., like we did for Bernoulli). Intractability is the usual situation; our first few tractable models are the exceptions.
 
 :::
 
 ## Diagnose the Error {ref="diagnose-fnscale"}
 
-A classmate wants the ML estimate of a Poisson rate $\lambda$ for the data below, and their code runs without an error or a warning:
+A classmate estimates a Poisson rate $\lambda$. Their code runs without an error or a warning:
 
 ```{r ex06-buggy}
 y <- c(12, 7, 9, 12, 10)
@@ -203,21 +191,21 @@ est <- optim(par = 1,
 est$par
 ```
 
-But the estimate is absurd. The average of `y` is 10, but $\hat{\lambda}$ comes back as 100. What went wrong? What's the fix? What is the *category* of the mistake: a typo, an algebra slip, or something else?
+But the estimate is absurd. The average of `y` is 10, but $\hat{\lambda} = 100$. What went wrong? How can they fix the code? What is the *category* of the mistake: a typo, an algebra error, or something else?
 
 ::: hint
 
-When you hand `optim()` a function what does it do by default: maximize or minimize? See the Details section of `?optim`.
+When you hand `optim()` a function, what does it do by default: maximize or minimize? See the Details section of `?optim`.
 
 :::
 
 ::: sol
 
-`optim()` is a *minimizer* by default. By default it looks for the "minimum likelihood." But the Poisson log-likelihood always gets smaller as $\lambda$ moves away from the average of `y`. The search "climbed" to the edge of the parameter space (i.e., [0.001 to 100]) and stopped.
+`optim()` is a *minimizer* by default. By default, it looks for the "minimum likelihood." We know that the Poisson log-likelihood always gets smaller as $\lambda$ moves away from the average of `y`. The search "climbed" to the edge of the parameter space (i.e., [0.001 to 100]) and stopped.
 
-Don't read too much into *which* bound `optim()` found. `method = "Brent"` assumes the function has a single interior minimum. In this case, the log-likelihood at `lower = 0.001` is even smaller than at `upper = 100`, so `optim()` didn't even land on the smaller of the two endpoints. It just climbed downhill (in the wrong direction!) until it ran out of space.
+Don't read much into *which* bound `optim()` found. Our hill-climbing algorithms assume the function has a single interior minimum. In this case, the log-likelihood at `lower = 0.001` is actually even smaller than the log-likelihood at `upper = 100`, so `optim()` didn't even land on the smaller of the two endpoints. It just "climbed" downhill (in the wrong direction!) until it ran out of space.
 
-The fix is `control = list(fnscale = -1)`. This flips the function over, which turns a minimizer into a maximizer.
+To maximize, we need `control = list(fnscale = -1)`. This flips the function over by multiplying it by $-1$. This turns a minimizer into a maximizer.
 
 ```{r ex06-fixed}
 est <- optim(par = 1,
@@ -231,23 +219,23 @@ est$par
 
 Now $\hat{\lambda} = 10$, which matches the closed form.
 
-It's not a typo and it's not algebra. The code computed exactly what it was told to compute. It is a misuse of the tool (or a misunderstanding of how the tool works). This is a dangerous category of error. No error or warning appeared. 
+It's not a typo and it's not algebra. The code computed exactly what it was told to compute. It is a misunderstanding of how the tool works. This is a dangerous category of error.
 
 :::
 
 ## Trust It or Not? {ref="trust-optim"}
 
-Your `optim()` call returns `$convergence = 1`, and `$par` equals the upper bound you supplied. Do you trust the estimate? What do you check or change next?
+Your `optim()` call returns `$convergence = 1`, and `$par` equals the upper bound you supplied. Do you trust the estimate?
 
 ::: hint
 
-`?optim`'s Value section documents every code `$convergence` can return, not only `0`. Look up what `1` means there before you decide anything else.
+`?optim`'s Value section documents every `$convergence` code.
 
 :::
 
 ::: sol
 
-No. `$convergence = 1` means the algorithm hit its iteration limit without converging (see `?optim`). A parameter estimate sitting exactly on a boundary is a red flag.
+No. `$convergence = 1` means the algorithm hit its iteration limit without converging (see `?optim`). Also, a parameter estimate sitting exactly on a boundary is a red flag.
 
 :::
 
@@ -257,13 +245,15 @@ Suppose a random variable has pdf $f(x; \theta) = \theta x^{\theta - 1}$ for $0 
 
 ::: hint
 
-What steps did we follow for the Bernoulli and the Poisson? Start the same way here by writing $L(\theta)$ as a product over the observations.
+What steps did we use for the Bernoulli and the Poisson? Start the same way here. Write $L(\theta)$ as a product over the observations.
 
 :::
 
 ::: hint
 
-Take the log and bring the exponent down. You should end up with two terms: one involving $\log \theta$ and one involving $\sum \log x_i$.
+Take the log and then use the rules for logs to simplify. 
+
+You should end up with two terms: one involving $\log \theta$ and one involving $\sum \log x_i$.
 
 :::
 
@@ -292,15 +282,13 @@ est$par
 
 ::: sol
 
-The recipe carries over unchanged. The only new bit is keeping track of $\sum \log x_i$.
-
 First, write down the likelihood and simplify the product:
 
 $$
 L(\theta) = \prod_{i = 1}^N \theta x_i^{\theta - 1} = \theta^N \prod_{i = 1}^N x_i^{\theta - 1}.
 $$
 
-Second, take the log. The product becomes a sum, and $\log(a^b) = b \log(a)$ brings the exponent down:
+Second, take the log. The product becomes a sum. Use $\log(a^b) = b \log(a)$ to bring the exponent out front:
 
 $$
 \log L(\theta) = N \log \theta + (\theta - 1) \sum_{i = 1}^N \log x_i.
@@ -312,13 +300,13 @@ $$
 \frac{d \log L}{d\theta} = \frac{N}{\theta} + \sum_{i = 1}^N \log x_i.
 $$
 
-Fourth, set the derivative to zero at $\theta = \hat{\theta}$ and solve:
+Fourth, set the derivative to zero, set $\theta = \hat{\theta}$, and solve:
 
 $$
 \hat{\theta} = \frac{N}{-\sum_{i = 1}^N \log x_i}.
 $$
 
-For the check data, $\hat{\theta} = 3 / [-(\log 0.2 + \log 0.5 + \log 0.9)] \approx 1.246$, and `optim()` returns the same 1.246.
+For the self-check data, $\hat{\theta} = 3 / [-(\log 0.2 + \log 0.5 + \log 0.9)] \approx 1.246$, and `optim()` returns 1.246.
 
 :::
 
@@ -330,7 +318,7 @@ Let $\hat{\theta}$ be the ML estimate of $\theta$. Suppose we are interested in 
 
 ::: hint
 
-This week's notes has a chapter built entirely turning an ML estimate of one quantity into an ML estimate of a function of it, without writing down a new likelihood.
+The notes have a chapter that describes how to turn an ML estimate of a parameter into an ML estimate of a function of that parameter without writing down a new likelihood.
 
 :::
 
@@ -342,16 +330,18 @@ $$
 \hat{\psi} = \hat{\theta}^2.
 $$
 
-That's the whole answer. The brevity is the point. We don't need to derive a new likelihood for $\psi$.
+That's the whole answer, and the brevity is the point. We don't need to derive a new likelihood for $\psi$.
+
+This is a very powerful, useful property.
 
 :::
 
 ## The Exponential Model {ref="exponential-model"}
 
-The exponential distribution has pdf $f(t; \lambda) = \lambda e^{-\lambda t}$ for $t \geq 0$ and $\lambda > 0$. We might use the exponential distribution to model *durations*. A duration is the time until an event, such as the end of a coalition government.
+The exponential distribution has pdf $f(t; \lambda) = \lambda e^{-\lambda t}$ for $t \geq 0$ and $\lambda > 0$. We might use the exponential distribution to model *durations*. A duration is the *time until an event*, such as the end of a coalition government.
 
 a. Suppose we collect $N$ iid durations $t = \{t_1, t_2, \ldots, t_N\}$. Find the ML estimator of $\lambda$.
-b. The parameter $\lambda$ is called the *rate*. The *mean* of the exponential distribution is $\frac{1}{\lambda}$.^[Showing this takes integration by parts; here we'll take it as known.] Give the ML estimator of the mean. 
+b. The parameter $\lambda$ is called the *rate*. The *mean* of the exponential distribution is $\frac{1}{\lambda}$.^[Showing this takes integration by parts; here we'll take it as known.] Find the ML estimator of the mean. 
 
 ::: {.hint label="For part (a)"}
 
@@ -359,51 +349,9 @@ This is very similar to the derivation of the ML estimate of $\lambda$ for the P
 
 :::
 
-::: {.hint label="Self-check"}
-
-```{r}
-#| label: exponential-model-hint-check
-#| eval: false
-
-# simulate durations from a known rate and see whether your formulas
-# recover it
-set.seed(1)
-lambda_true <- 2
-t <- rexp(500, rate = lambda_true)
-
-# fill in your part (a) estimator, as a function of t
-lambda_hat <- NA
-
-# a numerical check: maximize the exponential log-likelihood directly
-ll_fn <- function(lambda, t) sum(dexp(t, rate = lambda, log = TRUE))
-lambda_hat_numeric <- optim(par = 1, fn = ll_fn, t = t,
-                             method = "Brent", lower = 1e-6, upper = 20,
-                             control = list(fnscale = -1))$par
-
-# these two should agree closely
-lambda_hat
-lambda_hat_numeric
-
-# fill in your part (b) estimator, as a function of lambda_hat
-mean_hat <- NA
-
-# an independent numerical check: reparameterize the same likelihood in
-# terms of the mean and maximize over that instead
-ll_fn_mean <- function(mu, t) sum(dexp(t, rate = 1 / mu, log = TRUE))
-mean_hat_numeric <- optim(par = 1, fn = ll_fn_mean, t = t,
-                           method = "Brent", lower = 1e-6, upper = 20,
-                           control = list(fnscale = -1))$par
-
-# these two should agree closely
-mean_hat
-mean_hat_numeric
-```
-
-:::
-
 ::: sol
 
-**Part (a)** The key move is that the product of exponentials collects into a single exponential of a sum.
+**Part (a)** 
 
 First, write down the likelihood and simplify:
 
@@ -411,7 +359,7 @@ $$
 L(\lambda) = \prod_{i = 1}^N \lambda e^{-\lambda t_i} = \lambda^N e^{-\lambda \sum_{i = 1}^N t_i}.
 $$
 
-Second, take the log. The product becomes a sum, and $\log e^u = u$:
+Second, take the log. The product becomes a sum. Remember that $\log e^u = u$:
 
 $$
 \log L(\lambda) = N \log \lambda - \lambda \sum_{i = 1}^N t_i.
@@ -429,15 +377,15 @@ $$
 \hat{\lambda} = \frac{N}{\sum_{i = 1}^N t_i} = \frac{1}{\text{avg}(t)}.
 $$
 
-Thus, the ML estimator of the rate is the reciprocal of the average duration.
+Thus, the ML estimator of the rate is the *reciprocal of* the average duration.
 
 **Part (b)** By the invariance property, the ML estimator of the mean $\frac{1}{\lambda}$ is
 
 $$
-\widehat{\text{mean}} = \frac{1}{\hat{\lambda}} = \text{avg}(t).
+\widehat{\text{mean}} = \hat{\mu} = \frac{1}{\hat{\lambda}} = \text{avg}(t).
 $$
 
-The ML estimate of the mean duration is the average duration, which seems sensible.
+The ML estimate of the mean duration is the average duration, which seems sensible!
 
 :::
 
@@ -445,7 +393,7 @@ The ML estimate of the mean duration is the average duration, which seems sensib
 
 Suppose you observe the binary outcome `y <- c(0, 1, 0, 1, 1, 1, 0)` and you want to estimate the *mean* of the distribution that generated it. Naturally, you'd model these data as Bernoulli and estimate $\pi$. But suppose that instead you model these 0s and 1s with a *normal* distribution. What is your ML estimate of the mean? What if you use the Poisson? The exponential?
 
-Complete the table below: for each model, the ML estimates of the parameters, then the estimate of the mean via the invariance property. What do you notice? Explain why it happens.
+Complete the table below. For each model, find the ML estimates of the parameters, then the estimate of the mean via the invariance property if needed. What do you notice? Explain.
 
 | Distribution | Parameter(s) | ML estimates | Estimate of the mean |
 |---|---|---|---|
@@ -453,18 +401,6 @@ Complete the table below: for each model, the ML estimates of the parameters, th
 | Normal | $\mu$, $\sigma^2$ | ?? | ?? |
 | Poisson | $\lambda$ | ?? | ?? |
 | Exponential | $\lambda$ | ?? | ?? |
-
-::: hint
-
-For each model, what is $E(Y)$ in terms of that model's parameter? (Three of the four means *are* the parameter. The fourth is a transformation of the parameter.)
-
-:::
-
-::: hint
-
-Estimate each model's parameters by ML (all four estimators appear in the notes or in [exponential-model]{.ex-ref}). If needed, transform the estimates with the invariance property.
-
-:::
 
 ::: sol
 
@@ -477,27 +413,29 @@ Here's the completed table, for `y` with $\text{avg}(y) = \frac{4}{7} \approx 0.
 | Poisson | $\lambda$ | $\hat{\lambda} = \text{avg}(y) \approx 0.571$ | $\hat{\lambda} \approx 0.571$ ($E(Y) = \lambda$) |
 | Exponential | $\lambda$ | $\hat{\lambda} = \frac{1}{\text{avg}(y)} = 1.75$ | $\frac{1}{\hat{\lambda}} = \text{avg}(y) \approx 0.571$ |
 
-No matter which distribution we use, we obtain the *identical* estimate of the mean. Not the same in expectation. Not the same asymptotically. It's the exact same number, every time. The reason: in each of these four models, setting the derivative to zero forces the model's own mean to match the sample mean. The four likelihoods use different distributions and different parameters, but every one of them lands on $\text{avg}(y)$. 
+No matter which model we use, we obtain an *identical* estimate of the mean. Not the same in expectation. Not the same asymptotically. It's the exact same number, regardless of the model.
 
-And importantly, whatever properties one of these estimators has, the others share. If one is consistent, all are consistent. If one is unbiased, all are unbiased.
+And importantly, whatever properties one of these estimators has, the others share, because the estimates are identical. If one is consistent, all are consistent. If one is unbiased, all are unbiased.
 
-The lesson is worth stating carefully: *the quality of an estimator doesn't always depend on every part of the model being right.* It often depends on *what quantity you're targeting*. These four models agree exactly about the mean of these data. And, as [implied-sd]{.ex-ref} and the model-checking exercises below show, they disagree wildly about almost everything else.
+The lesson is worth stating carefully: *the quality or usefulness of an estimator doesn't always depend on every part of the model being right.* The usefulness of a model often depends on *what quantity you're targeting*. These four models agree exactly about the mean of these data. 
+
+(But, as [implied-sd]{.ex-ref} and the model-checking exercises below show, these models can disagree wildly about other important things.)
 
 :::
 
 ## N or N − 1? {ref="n-or-nm1"}
 
-R's `var(y)` is *not* the ML estimate of $\sigma^2$ for a normal model. What's the difference between the two? Which one is bigger? And does the difference matter at $N = 10{,}000$? Check your answers numerically on any vector you like.
+R's `var(y)` is *not* the ML estimate of $\sigma^2$ for a normal model. What's the difference between the two? Which one is bigger? And does the difference matter at $N = 10{,}000$? Check your answers numerically using some vector of data.
 
 ::: hint
 
-The notes derive the ML estimator for $\sigma^2$ by solving $\frac{d \log L}{d \sigma^2} = 0$. Find that derivation. What is the denominator? Compare it to the denominator for `var()`, which is explained deep in the Details of `?var`. 
+The notes derive the ML estimator for $\sigma^2$ by solving $\frac{d \log L}{d \sigma^2} = 0$. Find that derivation in the notes. What is the denominator? Compare it to the denominator for `var()`, which is explained deep in the Details of `?var`. 
 
 :::
 
 ::: {.hint label="Self-check"}
 
-For the numeric check, build the sum of squared deviations from the mean. Then use the two alternative denominators. Compare each result to `var()`.
+For the numeric check, compute the sum of squared deviations from the mean. Then use the two alternative denominators. Compare each result to `var()`.
 
 ```{r n-or-nm1-hint-check}
 #| eval: false
@@ -513,7 +451,7 @@ var(y)
 
 ::: sol
 
-`var()` divides the sum of squared deviations by $N - 1$ (the classic, unbiased estimator). The ML estimator divides by $N$ (see the notes). So `var()` is bigger, by the factor $\frac{N}{N-1}$.
+`var()` divides the sum of squared deviations by $N - 1$ (the classic, unbiased estimator). The ML estimator divides by $N$ (see the notes), so `var()` is larger by a factor of $\frac{N}{N-1}$.
 
 ```{r ex12-check}
 set.seed(1)
@@ -523,17 +461,17 @@ var(y)                             # divides by N - 1
 sum((y - mean(y))^2) / length(y)   # ml estimate: divides by N
 ```
 
-At $N = 10{,}000$ the two differ in the fourth decimal, which is nothing in practice. But the conceptual distinction is important. They are different estimators, derived from different principles, and at small $N$ the difference can be visible.
+At $N = 10{,}000$ the two differ in the fourth decimal, which is practically nothing. But the conceptual distinction is important. They are different estimators, derived from different principles. And at small $N$, the difference is sometimes visible.
 
 :::
 
 ## The SD the Model Implies {ref="implied-sd"}
 
-Holland (2015) measures the number of enforcement operations (i.e., a "count") against street vendors across districts in three Latin American cities. The data are in `crdata::holland2015`.^[`crdata` isn't on CRAN. Install it once with `remotes::install_github("carlislerainey/crdata")`.] The notes estimated the Poisson rate $\lambda$ separately for each city. Now let's estimate the standard deviation of the number of operations (rather than the rate or mean).
+Holland (2015) measures the number of enforcement operations (i.e., a "count") against street vendors across districts in three Latin American cities. The data are in `crdata::holland2015`.^[`crdata` isn't on CRAN. Install it once with `remotes::install_github("carlislerainey/crdata")`.] The notes use the Poisson model and estimate the mean $\lambda$ separately for each city. Now let's estimate the standard deviation of the number of operations (rather than the mean).
 
 a. What does the Poisson model *assume* about the SD of the data, in terms of $\lambda$?
 b. Use the invariance property to estimate the SD of the operations counts in each city from $\hat{\lambda}$.
-c. Compute the sample SD in each city and compare. What do you find, and what does it tell you about the model?
+c. Compute the observed sample SD in each city and compare (i.e., use `sd()`). What do you find? Why is this interesting or important?
 
 ::: {.hint label="For parts (a) and (b)"}
 
@@ -553,7 +491,7 @@ You already grouped the operations counts by city to compute $\hat{\lambda}$ in 
 
 **Part (a)** Recall that the Poisson has $\text{Var}(Y) = E(Y) = \lambda$, so the model assumes the SD is $\sqrt{\lambda}$. In this case, the spread is *determined by* the mean. The variance and the mean have no freedom to differ.
 
-**Parts (b) and (c)** By invariance, we estimate the SD with $\widehat{\text{SD}} = \sqrt{\hat{\lambda}}$.
+**Parts (b) and (c)** By the invariance property, we estimate the SD with $\widehat{\text{SD}} = \sqrt{\hat{\lambda}}$.
 
 ```{r ex13-holland}
 # load holland's data
@@ -566,9 +504,9 @@ holland2015 |>
             sd_sample  = sd(operations))
 ```
 
-The comparison fails in every city, and in the same direction: the sample SDs run roughly two to four times the model-implied SDs (Santiago 4.9 vs. 1.6; Bogotá 6.9 vs. 3.0; Lima 18.8 vs. 4.8). These counts are far more dispersed than a Poisson allows. This is called *overdispersion*, and it's almost always present in count data.
+For every city, the sample SDs are roughly two to four times the model SDs (Santiago 4.9 vs. 1.6; Bogotá 6.9 vs. 3.0; Lima 18.8 vs. 4.8). These counts are far more dispersed than a Poisson allows. This is called *overdispersion*, and it's almost always present in count data.
 
-Notice what kind of failure this is. Nothing is wrong with $\sqrt{\hat{\lambda}}$ as an estimate of *the model's* SD. Invariance did its job. The problem lies with the model. The Poisson assumes a particular relationship between the SD and the mean. These data are inconsistent with that assumed relationship. This is exactly the mismatch the predictive-distribution chapter showed graphically for Lima.
+Notice what kind of failure this is. Nothing is wrong with $\sqrt{\hat{\lambda}}$ as an estimate of *the model's* SD. Invariance did its job. The problem lies with the model. The Poisson assumes a particular relationship between the SD and the mean. These data are inconsistent with that assumed relationship. The predictive-distribution chapter shows this mismatch in detail for Lima.
 
 :::
 
@@ -578,34 +516,14 @@ Notice what kind of failure this is. Nothing is wrong with $\sqrt{\hat{\lambda}}
 
 Suppose a discrete uniform distribution on $\{0, 1, \ldots, K\}$, with pmf $f(x; K) = \frac{1}{K + 1}$ for $x \in \{0, 1, \ldots, K\}$. Suppose we observe a sample of size 3: 276, 159, and 912.
 
-a. Find the ML estimate of $K$. *Hint: The likelihood is discontinuous in $K$, so differentiate-and-solve will mislead you. But the maximum is immediately apparent once you write out the likelihood.*
+a. Find the ML estimate of $K$. *Hint: The likelihood is discontinuous in $K$, so differentiate-and-solve will mislead you. But the maximum is immediately apparent once you write out the likelihood. Use a verbal, logical argument here, rather than the usual recipe.*
 b. Find the method of moments estimate of $K$. *Hint: The mean of this distribution is $\tfrac{K}{2}$. Set the sample mean equal to the model mean and solve.*
-c. For these data, the method of moments estimate falls below the largest observation. This is unsatisfying because it's an estimate of $K$ that the data themselves rule out. How bad can this get? Construct a three-observation dataset that makes the ratio $\hat{K}_{MM} / \max(x)$ as small as you can. What is the smallest value the ratio can take with three observations?
-d. In a sentence or two, say what these two failures teach us about choosing an estimator.
+c. For these data, the method of moments estimate falls below the largest observation. This is unsatisfying because the data themselves rule out that estimate of $K$ as impossible. This raises the question: how bad can this get? Construct a three-observation dataset that makes the ratio $\hat{K}_{MM} / \max(x)$ as small as you can. What is the smallest value the ratio can take with three observations?
+d. In a sentence or two, describe what these two failures teach us about choosing an estimator.
 
 ::: {.hint label="For part (c)"}
 
-The ratio you're minimizing is $2 \cdot \text{avg}(x) / \max(x)$ (i.e., part (b)'s formula divided by the largest observation). With $\max(x)$ fixed, which direction should you push the other two observations to shrink the average? Work that out before you pick numbers.
-
-:::
-
-::: {.hint label="For part (c), a second nudge"}
-
-Fact: this distribution never produces a value below 0, so that's the floor for any observation you choose. Combined with part (b)'s formula, how far can you push $\text{avg}(x)$ down without changing $\max(x)$?
-
-:::
-
-::: {.hint label="Self-check"}
-
-Plug your candidate dataset from part (c) into the code below and confirm the ratio matches what you computed by hand.
-
-```{r discrete-uniform-hint-check}
-#| eval: false
-x <- c(a, b, c)               # your three-observation dataset from part (c)
-K_hat_mm <- 2 * mean(x)       # method of moments estimate, from part (b)
-ratio <- K_hat_mm / max(x)
-ratio
-```
+You are minimizing the ratio $2 \cdot \text{avg}(x) / \max(x)$ (i.e., part (b)'s formula divided by the largest observation). $\max(x)$ is fixed, so which direction should you push the other two observations to shrink the average?
 
 :::
 
@@ -617,11 +535,11 @@ $$
 L(K) = \prod_{i=1}^N \frac{1}{K+1} = \left(\frac{1}{K+1}\right)^N
 $$
 
-if every observation lies in $\{0, 1, \ldots, K\}$, and $0$ if *any* observation exceeds $K$. This function is not differentiable, so the recipe isn't useful. To make $L(K)$ as large as possible, we make $K$ as small as the data allow, so $\hat{K}_{ML} = \max(x) = 912$.
+if every observation lies in $\{0, 1, \ldots, K\}$, and $0$ if *any* observation exceeds $K$. This function is not differentiable, so the recipe isn't useful. Notice that making $K$ smaller makes each data point more likely, until we've made $K$ too small. So to make $L(K)$ as large as possible, we make $K$ as small as the data allow. That's $\hat{K}_{ML} = \max(x) = 912$.
 
 **Part (b)** Set the sample mean equal to the model mean, $\text{avg}(x) = \frac{\hat{K}_{MM}}{2}$. Then, solving for $\hat{K}_{MM}$ gives $\hat{K}_{MM} = 2 \cdot \text{avg}(x) = 2 \cdot 449 = 898$.
 
-**Part (c)** We want $2 \cdot \text{avg}(x)$ small while $\max(x)$ stays large, so push the other two observations as low as they can go, which is $x = (0, 0, 912)$. Then $\text{avg}(x) = 304$, $\hat{K}_{MM} = 608$, and the ratio is $608/912 = \tfrac{2}{3}$. This means that $\tfrac{2}{3}$ is the floor. With three observations, $\text{avg}(x) \geq \frac{\max(x)}{3}$.
+**Part (c)** We want $2 \cdot \text{avg}(x)$ small while $\max(x)$ stays large, so push the other two observations as low as they can go, which is $x = (0, 0, 912)$. Then $\text{avg}(x) = 304$, $\hat{K}_{MM} = 608$, and the ratio is $608/912 = \tfrac{2}{3}$. This means that $\tfrac{2}{3}$ is the smallest possible ratio. With three observations, $\text{avg}(x) \geq \frac{\max(x)}{3}$.
 
 $$
 \hat{K}_{MM} = 2 \cdot \text{avg}(x) \;\geq\; \frac{2}{3}\max(x).
@@ -629,13 +547,15 @@ $$
 
 **Part (d)** Both estimators "work" in the sense that the procedure produces a number. But each misbehaves differently. The ML estimate is the smallest *logically possible* value of $K$, which intuition says is probably too low. And the method of moments can produce values of $K$ the data have already contradicted.
 
+These diverging misbehaviors make this problem useful for thinking about how we evaluate models (a little later in the course), so remember this problem.
+
 :::
 
 # Checking the Model
 
 ## The Remaining Wait {ref="memorylessness"}
 
-The exponential distribution from [exponential-model]{.ex-ref} is our first model for durations. What does the model actually claim about waiting? This turns out to be really interesting and important!
+The exponential distribution from [exponential-model]{.ex-ref} is our first model for durations. However, this model makes a simple assumption about wait times that turns out to be really interesting and important!
 
 a. Show that the cdf of the exponential distribution is $F(t; \lambda) = \Pr(T \leq t) = 1 - e^{-\lambda t}$. Then define the *survival function* $S(t; \lambda) = \Pr(T > t) = 1 - F(t; \lambda)$ and interpret it (i.e., for an input $t$, what does $S$ return)?
 b. Suppose you've already waited $s$ units of time without the event occurring. Using the definition of conditional probability and the survival function, find $\Pr(T > t + s \mid T > s)$. Compare your answer to $\Pr(T > t)$. What do you notice? Write it down in one sentence *before* you start part (c).
@@ -648,7 +568,7 @@ c. Now check your sentence against a simulation. The code below draws 10,000 dur
     ```
 
     Compare the distribution of `remaining` to the distribution of the original `durations` (plotting both ECDFs in one panel works well). Do the plots confirm or refute your sentence from (b)?
-d. Name one political process that your finding might describe well, and one it clearly can't. Say why.
+d. Name one political process that your finding might describe well, and one that it might not. Explain.
 
 ::: {.hint label="For part (a)"}
 
@@ -690,9 +610,9 @@ $$
 \Pr(T > t + s \mid T > s) = \frac{\Pr(T > t + s)}{\Pr(T > s)} = \frac{e^{-\lambda (t + s)}}{e^{-\lambda s}} = e^{-\lambda t} = \Pr(T > t).
 $$
 
-Dividing exponentials subtracts the exponents, so the $s$ cancels and the two are exactly the same. **This is important**: the probability of waiting at least $t$ more units of time doesn't depend on how long you've already waited. The distribution of the remaining wait, given that you've waited $s$ already, is exactly the distribution of the original wait. This is the **memoryless property**, and the exponential is the *only* continuous distribution that has it.
+Notice that the $s$ cancels! Thus, the two are exactly the same. **This is important**: *the probability of waiting at least $t$ more units of time doesn't depend on how long you've already waited.* This is the **memoryless property**. The exponential is the *only* continuous distribution that has this property.
 
-**Part (c)** Here $s = 2$. The vector `remaining` holds the leftover durations of the draws that made it past time 2, so it is a sample from the distribution of $T - s$ given $T > s$. Plotting its ECDF over the ECDF of the original `durations` allows us to check part (b)'s claim at every $t$ at once.
+**Part (c)** Here $s = 2$. The vector `remaining` holds the remaining durations of the draws that made it past time 2. This makes `remaining` a sample from the distribution of $T - s$ given $T > s$. Plotting its ECDF over the ECDF of the original `durations` allows us to check part (b)'s claim.
 
 ```{r ex15-solution}
 #| message: false
@@ -711,9 +631,9 @@ ggplot(df, aes(x = duration, color = type)) +
   stat_ecdf()
 ```
 
-The two ECDFs sit right on top of each other! Of the 10,000 draws, only `r length(remaining)` survived past time 2, so the `remaining` curve rests on about a seventh as much data and wiggles around a little more.
+The two ECDFs sit right on top of each other! Of the 10,000 draws, only `r length(remaining)` survived past time 2, so the `remaining` curve uses less data and wiggles around a little more.
 
-**Part (d)** The property is perhaps plausible for waits "with no internal clock," such as the time between militarized disputes in a region or between filibusters in a session. (The classic non-political example is the time between lightning strikes, and [hockey]{.ex-ref} tests the time between hits in a hockey game.) Memorylessness fails for cabinet duration, the example mentioned back in [exponential-model]{.ex-ref}. If I ask how much longer a coalition will last, you'd definitely want to know how long it has lasted already. Human lifespans are similar. If I asked how much longer a person will live, you'd definitely want to know how old that person is now.
+**Part (d)** The property is perhaps plausible for wait times "with no internal clock," such as the time between militarized disputes in a region or between filibusters in a session. (Below, [hockey]{.ex-ref} looks at the time between hits in a hockey game.) Memorylessness fails for cabinet duration, the example mentioned back in [exponential-model]{.ex-ref}. If I ask how much longer a coalition will last, you'd definitely want to know how long it has lasted already. Human lifespans are similar. If I asked how much longer a person will live, you'd definitely want to know how old that person is now.
 
 :::
 
@@ -723,7 +643,7 @@ Herron's hockey data set records the time between hits[^hit] in the regulation p
 
 [^hit]: From [Wikipedia](https://en.wikipedia.org/wiki/Ice_hockey_statistics), a hit is: *"Intentionally initiated contact with the player possessing the puck that causes that player to lose possession of the puck."*
 
-Before looking at the data, do you expect an exponential model to fit the times between hits? Write down your prediction and your reasoning. Notice that your derivation in [memorylessness]{.ex-ref} *can't* settle this one. Whether hits actually behave this way is an empirical question. It could be that hits cluster (a hit sparks retaliation). Or maybe a long lull makes the next hit imminent.
+Before looking at the data, do you expect an exponential model to fit the times between hits? Do you expect memorylessness to work well here? Write down your prediction and your reasoning. It could be that hits cluster together (i.e., a hit sparks retaliation). Or maybe a long lull makes the next hit increasingly likely.
 
 Model `seconds_btw_hits` as exponential, estimate the rate and the mean, and use the predictive distribution to evaluate the fit. Were you right?
 
@@ -739,19 +659,14 @@ glimpse(hockey)
 
 ::: hint
 
-The general recipe for the predictive distribution is in the notes and it works for any fitted distribution. You've already derived a formula for $\hat{\lambda}$ in [exponential-model]{.ex-ref}. Get that number for the hockey data first. Then simulate.
+The general recipe for the predictive distribution is in the notes and it works for any fitted distribution. You've already derived a formula for $\hat{\lambda}$ in [exponential-model]{.ex-ref}. Get that estimate from the data. Then simulate fake data as we do in the notes.
 
 :::
 
-::: hint
-
-The notes offer a three-step procedure: estimate $\hat{\lambda}$ (you derived the estimator in [exponential-model]{.ex-ref}), simulate several fake data sets from the fitted exponential distribution, and compare them to the observed data with histograms or ECDFs. 
-
-:::
 
 ::: sol
 
-First the estimates, using $\hat{\lambda} = 1/\text{avg}(t)$:
+First obtain the estimates using $\hat{\lambda} = 1/\text{avg}(t)$:
 
 ```{r ex16-estimates}
 # drop the one missing value (the season's first hit has no predecessor)
@@ -765,7 +680,7 @@ mean(y)
 
 The mean time between hits is about 251 seconds (a hit every four minutes or so), which makes the rate $\hat{\lambda} \approx 0.004$ hits per second.
 
-Now the predictive check:
+Now do the predictive check:
 
 ```{r ex16-check}
 #| message: false
@@ -802,9 +717,9 @@ ggplot(gg_data2, aes(x = seconds_btw_hits, color = type, group = version)) +
   stat_ecdf()
 ```
 
-These distributions look *very* similar. In the ECDF overlay, the observed curve hides among the simulated ones. 
+These distributions look *very* similar. The observed ECDF hides among the ECDFs for the simulated data. 
 
-The exponential fits; this is perhaps substantively surprising. In sports we talk constantly about momentum, big swings, retaliation, tension building during a lull. If any of that mattered for hits, the time since the last hit would predict the time to the next one, but the distribution of hits seems memoryless.
+The exponential fits! This is perhaps substantively surprising. In sports, we talk constantly about momentum, big swings, retaliation, tension building. If any of that mattered for hits, the time since the last hit would predict the time to the next one, but the distribution of hits seems memoryless.
 
 :::
 
@@ -818,9 +733,9 @@ $$
 
 where $\mu$ is the location parameter (it shifts the distribution, like the normal's mean), $\sigma$ is the scale parameter (it spreads the distribution, like the normal's SD), and $\nu$ controls the heaviness of the tails. The $\mu$ and $\sigma$ work similarly to a normal model. Small $\nu$ means heavy tails, and as $\nu \to \infty$ the distribution converges to the normal. (For $\nu > 10$ or so, the $t$ and the normal distributions are hard to tell apart, and $\nu = 1$ is the Cauchy.)
 
-In R, `metRology::dt.scaled()` computes this density.^[`metRology` is on CRAN: `install.packages("metRology")`.] Be careful with the argument names in `metRology::dt.scaled()`. `mean` is the location $\mu$ (though $\mu$ isn't always a mean), `sd` is the scale $\sigma$ (though $\sigma$ isn't the SD), and `df` is $\nu$.
+We can use `metRology::dt.scaled()` to compute this density in R.^[`metRology` is on CRAN: `install.packages("metRology")`.] Be careful with the argument names in `metRology::dt.scaled()`. `mean` is the location $\mu$ (though $\mu$ isn't always a mean), `sd` is the scale $\sigma$ (though $\sigma$ isn't the SD), and `df` is $\nu$.
 
-We'll model cross-national GDP growth, which mixes a tight cluster of ordinary economies with a few extreme performers. The code below downloads percentage GDP growth for 2022 from the World Bank.^[The `WDI` package (CRAN) fetches the data live, so this chunk needs an internet connection.]
+We'll model cross-national GDP growth, which mixes a tight cluster of ordinary economies with a few extreme performers. The code below downloads percentage GDP growth for 2022 from the World Bank.
 
 ```{r ex17-data}
 #| cache: true
@@ -868,25 +783,15 @@ b. Now fit the location-scale *t*, estimating $\mu$, $\sigma$, and $\nu$ with `o
     ```
 
     Reasonable starting values are `c(median(y), sd(y), 10)`.
-c. Use the predictive distribution to compare the *t* model to the normal model. What is the ML estimate of $\nu$, and what does it give us?
+c. Use the predictive distribution to compare the *t* model to the normal model. How does the predictive distribution from the *t* compare to the normal? What is the ML estimate of $\nu$, and why might that matter?
 
 ::: {.hint label="For part (b)"}
 
-The density is undefined when the scale or the tail parameter is zero or negative. Decide what your function should return for those impossible values, so that `optim()` doesn't consider them.
+The density is undefined when the scale or the tail parameter is zero or negative. If `sigma` or `nu` is not positive, return `-Inf`; otherwise return `sum(dt.scaled(y, mean = mu, sd = sigma, df = nu, log = TRUE))`.
+
 
 :::
 
-::: {.hint label="For part (b), the code"}
-
-If `sigma` or `nu` is not positive, return `-Inf`; otherwise return `sum(dt.scaled(y, mean = mu, sd = sigma, df = nu, log = TRUE))`.
-
-:::
-
-::: {.hint label="Self-check"}
-
-Your normal-model estimates in part (a) must match the closed forms exactly so that $\hat{\mu}$ = `mean(y)` and $\hat{\sigma}$ = `sqrt(sum((y - mean(y))^2)/length(y))`. If your predictive simulations look off, check these two numbers before debugging anything else.
-
-:::
 
 ::: sol
 
@@ -992,9 +897,9 @@ ggplot(gg_data2, aes(x = pct_gdp_growth, color = type, group = version)) +
 
 The fitted *t* distributions match the observed data far better than the normal model. The simulated panels now show the tight central cluster *and* occasional extreme values. In the ECDF overlay, the observed curve is hard to pick out.
 
-The estimate of the degrees of freedom is $\hat{\nu} \approx 1.9$. This means that these data have extremely heavy tails (almost a Cauchy). A $t$ has a finite variance only when $\nu > 2$, so the fitted model doesn't have one. This is a sharp reminder that $\sigma$ is a "scale" and not an SD. 
+The estimate of the degrees of freedom is $\hat{\nu} \approx 1.9$. This means that these data have extremely heavy tails (almost a Cauchy). Of note: A $t$ has a finite variance only when $\nu > 2$, so the variance does not exist for the fitted model. 
 
-$\nu$ gives us a third parameter that separates "how spread out is the middle?" ($\sigma \approx 2.6$, against the normal's inflated 6.8) from "how common are extreme values?". With the tails handled by $\nu$, the scale can describe the typical countries. If you'd like to see what these heavy tails do for *robustness* (what happens to each model when one observation is wildly wrong), see [ep-corrupted]{.ex-ref}.
+$\nu$ gives us a third parameter that separates "how spread out is the middle?" ($\sigma \approx 2.6$, against the normal's inflated 6.8) from "how common are extreme values?". With the tails handled by $\nu$, the scale can describe the typical countries.
 
 :::
 
@@ -1002,21 +907,17 @@ $\nu$ gives us a third parameter that separates "how spread out is the middle?" 
 
 ## What Should a Model Match? {ref="reflection"}
 
-The exercises above repeatedly compare a fitted model against observed data, and the models often disagree with the data about everything *except* the mean. Three questions, a few sentences each:
+The exercises above repeatedly compare a fitted model against observed data, and the models often disagree with the data about everything *except* the mean. 
+
+Answer these three questions in a few sentences each:
 
 a. Is it important that a model mimic features of the data beyond the mean?
-b. When might the SD, the tails, or the behavior of waits matter *substantively*, for the political question itself?
-c. When might those features matter *statistically*, even if the mean is all you care about?
+b. When might the SD, the tails, or the behavior of wait times matter *substantively*?
+c. When might those features matter *statistically* (even if the mean is all you care about)?
 
 ::: {.hint label="For part (a)"}
 
-[four-models]{.ex-ref} earlier on this page fit several different models to the same data. Reread it and compare what varied across the fits to what didn't, then think about what that contrast implies for when matching the mean is enough.
-
-:::
-
-::: {.hint label="For part (b)"}
-
-Two of the exercises above already put this question in a concrete setting: [t-model]{.ex-ref} compared a normal model to a heavier-tailed model for a country's GDP growth, and [memorylessness]{.ex-ref} asked whether a wait so far should change your forecast of the wait still to come. Reread whichever is closer to where you're stuck, and ask what would go wrong for the actual political question, not just for the histogram, if you'd picked the wrong model.
+See [four-models]{.ex-ref} for an example.
 
 :::
 
@@ -1024,196 +925,10 @@ Two of the exercises above already put this question in a concrete setting: [t-m
 
 There's no single right answer here. But here are a few thoughts:
 
-**(a)** It depends on the target. [four-models]{.ex-ref} showed four wildly different models agreeing exactly about the mean, so for estimating a mean, mimicry beyond the mean can be surprisingly optional. But a model might be useful when we lean on the parts beyond the mean and some interesting quantities eventually do.
+**(a)** It depends on the target. [four-models]{.ex-ref} showed four wildly different models agreeing exactly about the mean. So for estimating a mean, mimicry beyond the mean can be surprisingly optional. 
 
-**(b)** Your question might concern more than the center. If you care about the *chance of an extreme outcome* (a deep recession, an unusually long stretch without a coup), the tails are the substance. If you care about *how long until an event, given the wait so far*, the memory structure is the substance. If you care about variability, then the scale or SD might matter most. A normal model of GDP growth answers tail questions badly even though its mean is fine.
+**(b)** Your question might ask about more than the center. If you care about the *chance of an extreme outcome* (a deep recession, an unusually long stretch without a coup), the tails matter substantively. If you care about *how long until an event, given the wait so far*, the memory structure is the substance. If you care about variability, then the scale or SD might matter most. A normal model of GDP growth answers tail questions badly even though its mean is fine.
 
 **(c)** Looking ahead, standard errors depend on more of the distribution than its center. A model whose spread or tails are wrong can deliver a fine point estimate with badly wrong uncertainty.
-
-:::
-
-# Extra Practice {.extra-practice}
-
-## Bernoulli Grid Search {ref="ep-grid"}
-
-Suppose you design a Bernoulli experiment that generates successes and failures with an unknown probability $\pi$. You want to estimate $\pi$, so you run the experiment three times and get the outcomes `y <- c(0, 1, 0)`, where `0` is a failure and `1` is a success.
-
-Use ML to estimate $\pi$. *But don't find the maximum analytically* or with a hill-climbing algorithm. Instead, use a *grid search*: use `seq()` to create ten to twenty candidate values of $\pi$, compute the log-likelihood for each candidate, and locate the candidate that produces the largest log-likelihood. Report your results in a figure. (A table works too, if you'd like both.)
-
-::: hint
-
-You'll need the Bernoulli log-likelihood as a function you can evaluate. That is, write $\log L(\pi) = k \log(\pi) + (N - k)\log(1 - \pi)$, with $k$ successes in $N$ trials, as an R function of $\pi$. Then you can give this R function the whole grid at once to compute the log-likelihoods for the entire grid.
-
-:::
-
-::: {.hint label="Self-check"}
-
-Your grid search and the closed-form Bernoulli estimate from your notes should land on nearly the same $\pi$. The grid is just more coarse. Compute both, store them, and check that they differ by less than your grid's spacing.
-
-```{r ep-grid-hint-check}
-#| eval: false
-# best_grid_pi: the pi your grid search returned as the best candidate
-# closed_form_pi: the closed-form Bernoulli estimate from your notes
-best_grid_pi <- NA
-closed_form_pi <- mean(y)
-abs(best_grid_pi - closed_form_pi)
-```
-
-:::
-
-::: sol
-
-First, create a function to compute the log-likelihood.
-
-```{r ep1-fn}
-# create function to compute log-likelihood
-compute_log_lik <- function(pi_grid, y) {
-  k <- sum(y)
-  N <- length(y)
-  log_lik <- k*log(pi_grid) + (N - k)*log(1 - pi_grid)
-  return(log_lik)
-}
-```
-
-One R gotcha worth highlighting: we named the argument `pi_grid`, not `pi`, because `pi` is R's built-in constant 3.14159.... Naming a variable `pi` works, but then a stray line that *forgot* to define it would silently use 3.14159... instead of producing an error. 
-
-Now compute the log-likelihood for 11 evenly spaced candidates from 0 to 1 and plot.
-
-```{r ep1-grid}
-#| warning: false
-# create data set
-y <- c(0, 1, 0)
-
-# candidate values and their log-likelihoods
-pi_grid <- seq(0, 1, length.out = 11)
-grid_df <- data.frame(pi_grid = pi_grid,
-                      log_lik = compute_log_lik(pi_grid, y))
-
-# plot log-likelihood against the candidates
-ggplot(grid_df, aes(x = pi_grid, y = log_lik)) +
-  geom_point() +
-  geom_line()
-```
-
-```{r ep1-table}
-# a table, for those who want the numbers
-grid_df |>
-  rename("Candidate Value" = pi_grid,
-         "Log-Likelihood" = log_lik) |>
-  tinytable::tt(digits = 3)
-```
-
-Among the candidates, $\pi = 0.3$ produces the largest log-likelihood (about $-1.92$, against $-1.94$ for $\pi = 0.4$). I knew the winner would be 0.3 or 0.4 before computing anything, because the ML estimate is the sample mean, $\text{avg}(y) = \frac{1}{3} \approx 0.33$, and the log-likelihood rises to that peak and falls away on both sides, so the best candidate has to be one of the two that bracket it. Which of the two wins depends on the shape of the curve, not only on distance. And notice that the grid *cannot* report $\frac{1}{3}$ itself, because 0.33 isn't a candidate, which is precisely the limitation [grid-miss]{.ex-ref} asked about. (The endpoints show as missing in the plot: at $\pi = 0$ and $\pi = 1$ the log-likelihood is $-\infty$.)
-
-:::
-
-## `optim()` Meets the Closed Form {ref="ep-optim"}
-
-We found that the sample average is the ML estimator of the parameter $\lambda$ of the Poisson distribution. For the data set `y <- c(12, 7, 9, 12, 10)`, show that maximizing the Poisson log-likelihood with `optim()` produces the same answer as the closed-form solution.
-
-::: hint
-
-You need a Poisson log-likelihood function before you can call `optim()`. See the example for the beta distribution in the notes. Then write the Poisson version yourself.
-
-:::
-
-::: hint
-
-Once you have a log-likelihood function, the beta example in the notes walks through every argument the `optim()` call needs, one by one, in the numbered list right after the call.
-
-:::
-
-::: {.hint label="Self-check"}
-
-Before calling `optim()`, check that the log-likelihood function itself works as expected. It should return a larger value at the closed-form estimate than at a nearby value that isn't the estimate.
-
-```{r ep-optim-hint-check}
-#| eval: false
-# evaluate your log-likelihood function at the closed-form estimate
-ll_fn(par = mean(y), y = y)
-
-# and at a nearby value that is NOT the estimate
-ll_fn(par = mean(y) + 1, y = y)
-
-# if ll_fn is correct, the first number is larger
-```
-
-:::
-
-::: sol
-
-First, the closed-form solution.
-
-```{r ep2-closed}
-# data set
-y <- c(12, 7, 9, 12, 10)
-
-# closed-form maximum
-mean(y)
-```
-
-Next, the numerical solution.
-
-```{r ep2-optim}
-# create log-likelihood function to maximize
-ll_pois <- function(par, y) {
-  sum(dpois(y, lambda = par, log = TRUE))
-}
-
-# maximize the log-likelihood function
-est <- optim(par = 1,
-             fn = ll_pois,
-             y = y,
-             control = list(fnscale = -1),
-             method = "Brent",
-             lower = 0, upper = 100)
-
-# print the lambda that maximizes the log-likelihood
-est$par
-```
-
-Both find $\hat{\lambda} = 10$. The numerical solution isn't *exactly* 10, because of *very* small numerical errors (the difference is around $10^{-8}$).
-
-:::
-
-
-## Corrupted Data {ref="ep-corrupted"}
-
-Take the WDI GDP-growth data from [t-model]{.ex-ref} and corrupt them by replacing one observation with a severe data-entry error. Perhaps replace one value of `pct_gdp_growth` with 10,000. Re-fit the normal and *t* models. How did each model's estimate of the *location* change? Why? Is resistance to corruption a desirable property?
-
-::: sol
-
-```{r ep4-corrupt}
-# save the variable as y (to simplify the code)
-y <- df$pct_gdp_growth
-
-# corrupt the data
-y_corrupt <- y
-y_corrupt[1] <- 10000
-
-# normal ml estimates, clean and corrupted
-c(mu_hat = mean(y),
-  sigma_hat = sqrt(sum((y - mean(y))^2)/length(y)))
-c(mu_hat = mean(y_corrupt),
-  sigma_hat = sqrt(sum((y_corrupt - mean(y_corrupt))^2)/length(y_corrupt)))
-```
-
-The data-entry error drags the normal model's estimated mean from about 4.4 to about 52. This is percentage GDP growth, so that's a huge error.
-
-```{r ep4-t}
-# t ml estimates, clean and corrupted (ll_t() comes from the heavy-tails exercise)
-est_clean <- optim(par = c(median(y), sd(y), 10),
-                   fn = ll_t, y = y,
-                   control = list(fnscale = -1), method = "Nelder-Mead")
-est_corrupt <- optim(par = c(median(y_corrupt), sd(y_corrupt), 10),
-                     fn = ll_t, y = y_corrupt,
-                     control = list(fnscale = -1), method = "Nelder-Mead")
-c(mu_clean = est_clean$par[1], mu_corrupt = est_corrupt$par[1],
-  nu_clean = est_clean$par[3], nu_corrupt = est_corrupt$par[3])
-```
-
-The *t* model's location estimate barely moves. It's about 4.4 in both the original and the corrupted data. With heavy tails available, the model can file the absurd observation under "weird draw" without letting it drag the location away from the correct value. Notice that $\hat{\nu}$ drops from about 1.9 to about 1.4, making the tails heavier still to accommodate this new, absurd value. The normal distribution has thin tails that make 10,000 essentially impossible. It has no option but to move the whole distribution toward this absurd value.
-
-Is the *t*'s behavior desirable? Often, yes! If data-entry errors happen, we'd rather our estimates not swing wildly with each error. However, the resistance applies to *correct* extreme observations, and whether those outliers should move the estimate of the typical value is a substantive question, not a statistical one. A robust model is a choice about which observations speak to "typical". That's a choice worth being thoughtful about.
 
 :::

@@ -22,6 +22,7 @@ sep 01 · **ml** · \[[slides](slides/wk02-slides.pdf)\]
 \[[notes](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html)\]
 \[[exercises](exercises/wk02-exercises.html)\] [*maximum likelihood;
 invariance principle; predictive distribution*]{.topics}
+[Please work through the notes on the [beta model/`optim()`](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html#sec-ml-ex-beta) and the [predictive distribution](https://pos5747.github.io/notes/wk02/03-predictive-distribution.html) especially carefully.]{.remarks}
 
 ------------------------------------------------------------------------
 

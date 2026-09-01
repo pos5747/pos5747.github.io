@@ -19,6 +19,12 @@ project:
     # solution gate to read.
     - "!exercises/wk*/"
 
+    # exercises/parked/ holds good exercises cut from a live week for time,
+    # kept verbatim for re-homing later (see exercises/README.md). Same hazard
+    # as the fragments above: no `distributed:` date, so the solution gate
+    # would leave every solution open on a discoverable page. Added 2026-09-01.
+    - "!exercises/parked/"
+
 execute:
   freeze: auto
 
