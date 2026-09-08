@@ -25,6 +25,15 @@ project:
     # would leave every solution open on a discoverable page. Added 2026-09-01.
     - "!exercises/parked/"
 
+    # 2026-09-05: the retired agent exercise pipeline (exercise-tools/, tools/,
+    # parked/, wkNN/, agent-workflow.md) moved to -old/exercise-pipeline-2026-09-05/.
+    # That archive still holds .qmd files (parked exercises, wk03 fragments)
+    # with no `distributed:` date, so the solution gate would leave them open
+    # if "*.qmd" reached them -- the same hazard the two exclusions above
+    # guard against. The two exclusions above are now empty matches (nothing
+    # left at those paths) and are kept, documented, and harmless.
+    - "!-old/"
+
 execute:
   freeze: auto
 
