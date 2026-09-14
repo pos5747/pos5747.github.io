@@ -23,13 +23,26 @@
 solution-delay-days: 3
 solution-unlock-time: "12:00"
 
+# browser = the text ships with the page and a script opens it on time, with
+#           no second render.  The release is genuinely automatic: publish the
+#           week once and the solutions appear Friday at noon whether or not
+#           anyone runs `make site` that day.  The cost is that the solution
+#           text is in the HTML from the moment the page goes up, so a student
+#           who opens View Source can read it early.  That is the same trade
+#           the always-open companion page already makes (the repo is public
+#           and `wkNN-exercises-sol.html` is a guessable URL): what the gate
+#           buys is that no student sees a live *Complete solution* button
+#           before the release moment, not secrecy.
 # render  = the solution text is absent from the page until you render after
-#           the release moment; students cannot read ahead.  Requires one
-#           `make site` and push after the date, which is the Tuesday-morning
-#           step the weekly cycle already includes.
-# browser = the text ships with the page and a script opens it on time,
-#           with no second render.  Convenient, but readable in View Source.
-solution-gate: render
+#           the release moment; students cannot read ahead.  But nothing
+#           happens on its own -- the page changes state only when someone
+#           runs `make site` and pushes after the date.  This was the default
+#           through Week 3, and it is why the Week 3 solutions did not open on
+#           schedule: the render that would have opened them came days late.
+#
+# Changed to `browser` on 2026-09-14, from Week 4 on, so the release needs no
+# render.  Weeks 1-3 are already past their release moment and are unaffected.
+solution-gate: browser
 
 # true  = show the hints that are written, and hide `::: {.hint .todo}`
 #         placeholders entirely

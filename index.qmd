@@ -33,7 +33,10 @@ method]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 15 · **X** [adding covariates;
+sep 15 · **X** · \[[slides](slides/wk04-slides.pdf)\]
+\[[materials](files/wk04-r.qmd)\]
+\[[notes](https://pos5747.github.io/notes/wk04/01-design-matrix.html)\]
+\[[exercises](exercises/wk04-exercises.html)\] [adding covariates;
 logit models; expected value and first difference]{.topics}
 
 ------------------------------------------------------------------------

@@ -8,5 +8,5 @@ title: "Materials"
 
 ## Diffs
 
-- Logit versus Poisson diff is [here](https://www.diffchecker.com/u0EHewB1/). *See bottom right of page for code you can copy.*
-- Poisson versus NB diff is [here](https://www.diffchecker.com/67AIcHV3/). *See bottom right of page for code you can copy.*
+- Logit versus Poisson diff is [here](https://www.diffchecker.com/iFHvmgoU/). *See bottom right of page for code you can copy.*
+- Poisson versus NB diff is [here](https://www.diffchecker.com/uaU7GwTh/). *See bottom right of page for code you can copy.*

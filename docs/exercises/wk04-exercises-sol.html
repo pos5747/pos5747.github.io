@@ -224,15 +224,11 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#ex-1" id="toc-ex-1" class="nav-link active" data-scroll-target="#ex-1"><span class="ex-num">Exercise 1</span> Berk (2010)</a></li>
   <li><a href="#ex-2" id="toc-ex-2" class="nav-link" data-scroll-target="#ex-2"><span class="ex-num">Exercise 2</span> Clark and Golder (2006), normal distribution</a></li>
-  <li><a href="#ex-3" id="toc-ex-3" class="nav-link" data-scroll-target="#ex-3"><span class="ex-num">Exercise 3</span> Long (1997) or King (1998)</a></li>
-  <li><a href="#ex-4" id="toc-ex-4" class="nav-link" data-scroll-target="#ex-4"><span class="ex-num">Exercise 4</span> Probit</a></li>
-  <li><a href="#ex-5" id="toc-ex-5" class="nav-link" data-scroll-target="#ex-5"><span class="ex-num">Exercise 5</span> Russett and Oneal (2001)</a></li>
-  <li><a href="#ex-6" id="toc-ex-6" class="nav-link" data-scroll-target="#ex-6"><span class="ex-num">Exercise 6</span> <em>Optional</em>: Berry, DeMeritt, and Esarey (2010)</a></li>
-  <li><a href="#ex-7" id="toc-ex-7" class="nav-link" data-scroll-target="#ex-7"><span class="ex-num">Exercise 7</span> Holland (2015)</a></li>
-  <li><a href="#ex-8" id="toc-ex-8" class="nav-link" data-scroll-target="#ex-8"><span class="ex-num">Exercise 8</span> King et al.&nbsp;(1990)</a></li>
-  <li><a href="#ex-9" id="toc-ex-9" class="nav-link" data-scroll-target="#ex-9"><span class="ex-num">Exercise 9</span> Clark and Golder (2006); <em>t</em> distribution</a></li>
-  <li><a href="#ex-10" id="toc-ex-10" class="nav-link" data-scroll-target="#ex-10"><span class="ex-num">Exercise 10</span> Connections</a></li>
-  <li><a href="#ex-11" id="toc-ex-11" class="nav-link" data-scroll-target="#ex-11"><span class="ex-num">Exercise 11</span> Be Creative</a></li>
+  <li><a href="#ex-3" id="toc-ex-3" class="nav-link" data-scroll-target="#ex-3"><span class="ex-num">Exercise 3</span> Probit</a></li>
+  <li><a href="#ex-4" id="toc-ex-4" class="nav-link" data-scroll-target="#ex-4"><span class="ex-num">Exercise 4</span> Russett and Oneal (2001)</a></li>
+  <li><a href="#ex-5" id="toc-ex-5" class="nav-link" data-scroll-target="#ex-5"><span class="ex-num">Exercise 5</span> Holland (2015)</a></li>
+  <li><a href="#ex-6" id="toc-ex-6" class="nav-link" data-scroll-target="#ex-6"><span class="ex-num">Exercise 6</span> Clark and Golder (2006); <em>t</em> distribution</a></li>
+  <li><a href="#ex-7" id="toc-ex-7" class="nav-link" data-scroll-target="#ex-7"><span class="ex-num">Exercise 7</span> Connections</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -267,7 +263,7 @@ window.Quarto = {
 <p>Read <span class="citation" data-cites="berk2010">Berk (<a href="#ref-berk2010" role="doc-biblioref">2010</a>, <a href="https://pos5747.github.io/notes/readings/Berk2010.pdf">pdf</a>)</span>.</p>
 <ol type="1">
 <li>Berk distinguishes Level I (descriptive), Level II (statistical inference), and Level III (causal inference) regression analyses. Summarize the features of each level in your own words. Explain why Berk argues that most regressions in criminology are Level I. Does his claim about criminology apply to political science as well?</li>
-<li>Select a recent empirical article in your subfield that uses non-experimental (i.e., observational) data. Identify how the authors use regression. At what level does the authors <em>claim</em> to operate? Use direct quotes if possible. At what level does the analysis <em>actually</em> operate? Explain.</li>
+<li>Select an empirical article you are already familiar with from your subfield that uses non-experimental (i.e., observational) data. Identify how the authors use regression. At what level does the authors <em>claim</em> to operate? Use direct quotes if possible. At what level does the analysis <em>actually</em> operate? Explain.</li>
 <li>Berk critiques observational regression treated as causal. He also lists common responses (e.g., “the assumptions are reasonable,” “we all have models,” “you have to make assumptions to make progress”). Pick one response and assess whether you find it persuasive. Defend your position. How might you design a study in your area that could move from Level I or II toward Level III without weak rhetorical defenses? Perhaps give an example.</li>
 <li>Berk concludes that, with rare exceptions, regression analyses of observational data should be treated as Level I. Do you agree? If you take Berk’s view seriously, what happens to publication standards, peer review, funding, and training?</li>
 </ol>
@@ -277,7 +273,7 @@ window.Quarto = {
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Clark and Golder (2006), normal distribution</h2>
-<p><span class="citation" data-cites="clark2006">Clark and Golder (<a href="#ref-clark2006" role="doc-biblioref">2006</a>)</span> fit the following regression model (that we’ve seen several times now).</p>
+<p><span class="citation" data-cites="clark2006">Clark and Golder (<a href="#ref-clark2006" role="doc-biblioref">2006</a>, <a href="https://pos5747.github.io/notes/readings/Clark2006.pdf">pdf</a>)</span> fit the following regression model (that we’ve seen several times now).</p>
 <p><img src="images/clipboard-1773489089.png" class="img-fluid"></p>
 <ol type="1">
 <li>Use an R formula and <code>model.matrix()</code> to create the required design matrix <code>X</code>. Think carefully about the formula needed.</li>
@@ -294,6 +290,12 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load Clark and Golder's data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cg <span class="ot">&lt;-</span> crdata<span class="sc">::</span>cg2006  <span class="co"># from my data package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>The table’s rows tell you which interactions the model includes. In an R formula, <code>a*b</code> adds <code>a</code>, <code>b</code>, and <code>a:b</code>. See <a href="https://pos5747.github.io/notes/wk04/02-formulas.html#interactions">Section 10.4</a> of the notes.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p><a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#the-linear-probability-model">Section 11.0.1</a> of the notes computes <code>solve(t(X)%*%X)%*%t(X)%*%y</code> on real data. <code>est_logit()</code> in <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#fitting-with-optim">Section 11.1.2</a> is the <code>optim()</code> code to adapt. Notice that <code>dnorm()</code> needs a positive <code>sd</code>, so give <span class="math inline">\(\sigma\)</span> a positive starting value.</p>
+</div></details>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution</strong></p>
 <div class="cell">
@@ -375,22 +377,16 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 </div></details>
 </section>
 <section id="ex-3" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Long (1997) or King (1998)</h2>
-<p>Read <em>either</em> <span class="citation" data-cites="King1998">King (<a href="#ref-King1998" role="doc-biblioref">1998</a>)</span> pp.&nbsp;97-115 (section 5 through 5.3) <strong>OR</strong> <span class="citation" data-cites="Long1997">Long (<a href="#ref-Long1997" role="doc-biblioref">1997</a>)</span> pp.&nbsp;34-84 (chapter 3). Write a short comparison to our notes on the logit model. Highlight the differences you find most interesting or important.</p>
-<p>Readings are <a href="https://www.dropbox.com/scl/fo/7b9bvt51jrthm25ssvd67/AJjPxAAOphm_K00S1q3_oM0?rlkey=88wab9fsove0tjyfpkjedzj4n&amp;dl=0">here</a>.</p>
-<p><em>Hint:</em> You might notice differences in their (i) notation, (ii) justifications for the link function, (iii) recommended quantities of interest, or (iv) treatment of the LPM (foil vs.&nbsp;viable approximation). Pick a couple of these contrasts (or others you discover). Explain each clearly in your own terms. Keep it concise and focused; perhaps 300 words or so.</p>
-<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
-<p><em>No solution intended.</em></p>
-</div></details>
-</section>
-<section id="ex-4" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Probit</h2>
+<h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Probit</h2>
 <p>The probit model uses the cdf of the normal distribution (e.g., often denoted as <span class="math inline">\(\Phi(\cdot)\)</span>; <code>pnorm()</code> in R) rather than the inverse logit.</p>
 <ol type="1">
 <li>Adapt the code from the notes to fit a probit model (or see <a href="https://gist.github.com/carlislerainey/7798659a9d5d8decb87352068a2d1655">this Gist</a>). Use the same <code>ZeligData::turnout</code> data and model specification <code>vote ~ age + educate + income + race</code>.</li>
 <li>Compare your probit coefficients to the logit coefficients from the notes. Notice that <a href="https://statmodeling.stat.columbia.edu/2006/06/06/take_logit_coef/">multiplying probit coefficients by 1.6</a> gives you roughly the logit coefficients.</li>
 <li>Adapt the code to compute the first difference and 90% confidence interval. Compare to the first difference and 90% confidence interval from the notes.</li>
 </ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The only change from the logit is the inverse link: use <code>pnorm()</code> in place of <code>plogis()</code>, both in the log-likelihood and in the function that computes the first difference. You are adapting <code>est_logit()</code> in <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#fitting-with-optim">Section 11.1.2</a> and the first-difference code in <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#two-quantities-of-interest">Section 11.2.2</a> of the notes.</p>
+</div></details>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
@@ -488,9 +484,9 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 </div>
 </div></details>
 </section>
-<section id="ex-5" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Russett and Oneal (2001)</h2>
-<p>This exercise uses data from <span class="citation" data-cites="Russett2001">Russett and Oneal (<a href="#ref-Russett2001" role="doc-biblioref">2001</a>)</span>. The model the probability of a dispute in a dyad-year as a function of several predictors. A quick summary of their book is <a href="https://adambrown.info/p/notes/russett_and_oneal_triangulating_peace">here</a>. For our purposes, we’ll focus on <code>dem.lo</code>, which is the lower of the two Polity scores in the dyad. For more details on the variables, see <code>?crdata::ro2001</code> or Table 1 on p.&nbsp;277 of <span class="citation" data-cites="oneal1997">Oneal and Russet (<a href="#ref-oneal1997" role="doc-biblioref">1997</a>)</span>.</p>
+<section id="ex-4" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Russett and Oneal (2001)</h2>
+<p>This exercise uses data from <span class="citation" data-cites="Russett2001">Russett and Oneal (<a href="#ref-Russett2001" role="doc-biblioref">2001</a>)</span>. The model the probability of a dispute in a dyad-year as a function of several predictors. A quick summary of their book is <a href="https://adambrown.info/p/notes/russett_and_oneal_triangulating_peace">here</a>. For our purposes, we’ll focus on <code>dem.lo</code>, which is the lower of the two Polity scores in the dyad. For more details on the variables, see <code>?crdata::ro2001</code> or Table 1 on p.&nbsp;277 of <span class="citation" data-cites="oneal1997">Oneal and Russet (<a href="#ref-oneal1997" role="doc-biblioref">1997</a>, <a href="https://pos5747.github.io/notes/readings/Oneal1997.pdf">pdf</a>)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load russett and oneal data from {crdata}</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ro <span class="ot">&lt;-</span> crdata<span class="sc">::</span>ro2001</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -522,23 +518,23 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_cvpcrb52uluhls4wpsyp = TinyTable.createTableFunctions("tinytable_cvpcrb52uluhls4wpsyp");
+      const tableFns_e7hwmqyg4xshyl7r2oca = TinyTable.createTableFunctions("tinytable_e7hwmqyg4xshyl7r2oca");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '14', j: 2 } ], css_id: 'tinytable_css_h45m3b0huzwx8x8wa8b7',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 } ], css_id: 'tinytable_css_ki5d80dv2mn89gzf5xzq',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_2yw4z5fguxqovdf920m9',}, 
-          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_lctj2dcsyva2m08d3ucd',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_aur4xzgjpbo20mlqeu31',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_uhnur5v4j6qdl1561m8t',}, 
+          { positions: [ { i: '14', j: 2 } ], css_id: 'tinytable_css_xsq7ie1m6av0vuzgnqro',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 } ], css_id: 'tinytable_css_yzzxom9vgcz8zu765z5l',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_yugo0i8g72f5g0uyh2r7',}, 
+          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_s2ses6ouuqns1giq3prd',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_hk9rm4yf5gzx2ibc1za9',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_6plwjs3lmru3pv0pmnwa',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_cvpcrb52uluhls4wpsyp.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_e7hwmqyg4xshyl7r2oca.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -547,15 +543,15 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_cvpcrb52uluhls4wpsyp td.tinytable_css_h45m3b0huzwx8x8wa8b7, #tinytable_cvpcrb52uluhls4wpsyp th.tinytable_css_h45m3b0huzwx8x8wa8b7 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_cvpcrb52uluhls4wpsyp td.tinytable_css_ki5d80dv2mn89gzf5xzq, #tinytable_cvpcrb52uluhls4wpsyp th.tinytable_css_ki5d80dv2mn89gzf5xzq { text-align: center }
-    #tinytable_cvpcrb52uluhls4wpsyp td.tinytable_css_2yw4z5fguxqovdf920m9, #tinytable_cvpcrb52uluhls4wpsyp th.tinytable_css_2yw4z5fguxqovdf920m9 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_cvpcrb52uluhls4wpsyp td.tinytable_css_lctj2dcsyva2m08d3ucd, #tinytable_cvpcrb52uluhls4wpsyp th.tinytable_css_lctj2dcsyva2m08d3ucd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_cvpcrb52uluhls4wpsyp td.tinytable_css_aur4xzgjpbo20mlqeu31, #tinytable_cvpcrb52uluhls4wpsyp th.tinytable_css_aur4xzgjpbo20mlqeu31 { text-align: left }
-    #tinytable_cvpcrb52uluhls4wpsyp td.tinytable_css_uhnur5v4j6qdl1561m8t, #tinytable_cvpcrb52uluhls4wpsyp th.tinytable_css_uhnur5v4j6qdl1561m8t {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_e7hwmqyg4xshyl7r2oca td.tinytable_css_xsq7ie1m6av0vuzgnqro, #tinytable_e7hwmqyg4xshyl7r2oca th.tinytable_css_xsq7ie1m6av0vuzgnqro {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_e7hwmqyg4xshyl7r2oca td.tinytable_css_yzzxom9vgcz8zu765z5l, #tinytable_e7hwmqyg4xshyl7r2oca th.tinytable_css_yzzxom9vgcz8zu765z5l { text-align: center }
+    #tinytable_e7hwmqyg4xshyl7r2oca td.tinytable_css_yugo0i8g72f5g0uyh2r7, #tinytable_e7hwmqyg4xshyl7r2oca th.tinytable_css_yugo0i8g72f5g0uyh2r7 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_e7hwmqyg4xshyl7r2oca td.tinytable_css_s2ses6ouuqns1giq3prd, #tinytable_e7hwmqyg4xshyl7r2oca th.tinytable_css_s2ses6ouuqns1giq3prd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_e7hwmqyg4xshyl7r2oca td.tinytable_css_hk9rm4yf5gzx2ibc1za9, #tinytable_e7hwmqyg4xshyl7r2oca th.tinytable_css_hk9rm4yf5gzx2ibc1za9 { text-align: left }
+    #tinytable_e7hwmqyg4xshyl7r2oca td.tinytable_css_6plwjs3lmru3pv0pmnwa, #tinytable_e7hwmqyg4xshyl7r2oca th.tinytable_css_6plwjs3lmru3pv0pmnwa {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_cvpcrb52uluhls4wpsyp" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_e7hwmqyg4xshyl7r2oca" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -632,6 +628,12 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 <li>Plot the estimated probability (i.e., expected value) of a dispute as <code>dem.lo</code> varies from -10 to 10 (in small steps, of maybe one unit or 0.1 units). Fix all other numeric variables at their medians and <code>alliesNot Allies</code>, <code>contiguityNoncontiguous</code>, and <code>powerMinor Powers</code> at 0. Interpret. Compare the information in this plot to the information in the table above. (Aside: How can these probabilities vary nonlinearly if the <code>dem.lo</code> variable is included in the linear predictor <em>linearly</em>?)</li>
 <li>What is the change in the probability of a dispute (i.e., “first difference”; <span class="math inline">\(\hat{\pi}_{max} - \hat{\pi}_{min}\)</span>) when <code>dem.lo</code> changes from its <em>minimum</em> to its <em>maximum</em>, fixing the other variables at the values described above? Notice that you can “kinda see” this value in the plot, but computing it directly gives you the exact value and the SE. The SE cannot be inferred from the plot.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 </ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p><a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#two-quantities-of-interest">Section 11.2.2</a> of the notes loops over the rows of <code>X_c</code> and computes the expected value and its SE at each one, then computes a first difference the same way. That code is the template for both parts here.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>For the aside: the linear predictor is linear in <code>dem.lo</code>, but the inverse logit is not. See <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#effects-are-not-constant">Section 11.2.1</a> of the notes.</p>
+</div></details>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution</strong></p>
 <div class="cell">
@@ -809,51 +811,9 @@ $ se_ev_hat  &lt;dbl&gt; 0.004693969, 0.004266219, 0.003886446, 0.003549778, 0.0
 </div>
 </div></details>
 </section>
-<section id="ex-6" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> <em>Optional</em>: Berry, DeMeritt, and Esarey (2010)</h2>
-<p>Replicate Figure 4 <span class="citation" data-cites="berry2010">Berry, DeMeritt, and Esarey (<a href="#ref-berry2010" role="doc-biblioref">2009</a>)</span> using <code>glm()</code> (or <code>optim()</code> if you want more practice), the invariance property, and the delta method with numerical gradients using <code>numDeriv::grad()</code>. You can find the <code>scobit.dta</code> data set <a href="https://www.dropbox.com/scl/fo/pvqagocje2ulry4ivnn99/AGd0lsPZvFXuveiyCLCArkE?rlkey=gd3ntw9m44qfaw2ye5y3ltanj&amp;dl=0">here</a>.</p>
-<p><em>Hints</em></p>
-<ul>
-<li>The <code>scobit.dta</code> data has variables that have been multiplied and squared, etc. <em>Do not use these variables.</em> Use R formulas to handle these interactions and polynomials.</li>
-<li>Reading down Table 1 on p.&nbsp;263, the variables you want are: <code>newvote</code>, <code>closing</code>, <code>neweduc</code>, <code>age</code>, <code>south</code>, and <code>gov</code>.</li>
-<li>The eight distinct values (i.e., 1, 2,…, 8) of <code>neweduc</code> correspond to the eight categories that Figure 4 presents along the x-axis.</li>
-<li>You must compute a <em>first difference</em> changing <code>closing</code> from 0 to its mean. However, you must compute this first difference for all eight values of <code>neweduc</code> (i.e., Figure 4 shows 8 first differences). You’ll need a plan to compute these <em>eight</em> first differences compactly. Perhaps use a for-loop (or <code>purrr::map</code> if you want a new challenge).</li>
-</ul>
-<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code to load and clean the data</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>scobit <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">read_dta</span>(<span class="st">"data/scobit.dta"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(newvote <span class="sc">!=</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">%&gt;%</span>  <span class="co"># weird -1s in data; unsure if sufficient</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 99,676
-Columns: 16
-$ state    &lt;dbl&gt; 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 9…
-$ vote     &lt;dbl&gt; 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2…
-$ age      &lt;dbl&gt; 60, 80, 32, 25, 55, 63, 20, 53, 49, 27, 58, 56, 34, 34, 35, 3…
-$ educ     &lt;dbl&gt; 13, 13, 13, 13, 11, 14, 11, 11, 13, 13, 11, 13, 19, 19, 15, 1…
-$ citizen  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-$ rweight  &lt;dbl&gt; 207134, 215836, 184639, 184883, 168557, 179148, 181510, 19285…
-$ south    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-$ gov      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-$ closing  &lt;dbl&gt; 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 2…
-$ age2     &lt;dbl&gt; 3600, 6400, 1024, 625, 3025, 3969, 400, 2809, 2401, 729, 3364…
-$ educ2    &lt;dbl&gt; 25, 25, 25, 25, 16, 36, 16, 16, 25, 25, 16, 25, 64, 64, 36, 2…
-$ cloeduc  &lt;dbl&gt; 145, 145, 145, 145, 116, 174, 116, 116, 145, 145, 116, 145, 2…
-$ cloeduc2 &lt;dbl&gt; 725, 725, 725, 725, 464, 1044, 464, 464, 725, 725, 464, 725, …
-$ newvote  &lt;dbl&gt; 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0…
-$ newage   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-$ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 1, 6…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the formula</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> newvote <span class="sc">~</span> <span class="fu">poly</span>(neweduc, <span class="dv">2</span>, <span class="at">raw =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> closing <span class="sc">+</span> <span class="fu">poly</span>(age, <span class="dv">2</span>, <span class="at">raw =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> south <span class="sc">+</span> gov</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><em>rest of solution TBA…</em></p>
-</div></details>
-</section>
-<section id="ex-7" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Holland (2015)</h2>
-<p><span class="citation" data-cites="Holland2015">Holland (<a href="#ref-Holland2015" role="doc-biblioref">2015</a>)</span> writes:</p>
+<section id="ex-5" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Holland (2015)</h2>
+<p><span class="citation" data-cites="Holland2015">Holland (<a href="#ref-Holland2015" role="doc-biblioref">2015</a>, <a href="https://pos5747.github.io/notes/readings/Holland2015.pdf">pdf</a>)</span> writes:</p>
 <blockquote class="blockquote">
 <p>My first hypothesis is that [the number of] enforcement operations [<code>operations</code>] drop off with the fraction of poor residents [<code>lower</code>] in an electoral district. So district poverty should be a negative and significant predictor of enforcement, but only in politically decentralized cities [Lima and Santiago]. Poverty should have no relationship with enforcement in politically centralized cities [Bogota] once one controls for the number of vendors (p.&nbsp;362)”</p>
 </blockquote>
@@ -864,51 +824,60 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
 <li>Simulate the five fake data sets from the two fitted models (i.e., the predictive distribution). Compare the five data sets to the observed data. <em>Note:</em> Now that we have covariates, each observation has it’s <em>own</em> parameters, to make sure to that <span class="math inline">\(\lambda\)</span>/<code>lambda</code> and <span class="math inline">\(\mu\)</span>/<code>mu</code> are specific to each observation for the Poisson and NB models, respectively. You can do this by giving <code>rpois()</code> a <em>vector</em> <code>lambda</code> of length <code>length(y)</code> or <code>nrow(X)</code> rather than a scalar, for example. <span class="math inline">\(\theta\)</span>/<code>size</code> is also needed to simulate fake data from the negative binomial distribution, but it’s constant.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>holland <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 <span class="sc">|&gt;</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">==</span> <span class="st">"santiago"</span>)</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co"># formula corresponds to model 1 for each city in holland (2015) table 2</span></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> operations <span class="sc">~</span> lower <span class="sc">+</span> vendors <span class="sc">+</span> budget <span class="sc">+</span> population</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>holland <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 <span class="sc">|&gt;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">==</span> <span class="st">"santiago"</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># formula corresponds to model 1 for each city in holland (2015) table 2</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> operations <span class="sc">~</span> lower <span class="sc">+</span> vendors <span class="sc">+</span> budget <span class="sc">+</span> population</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p><a href="https://pos5747.github.io/notes/wk02/03-predictive-distribution.html#example-poisson-distribution">Section 3.1</a> of the notes simulates five fake data sets from a Poisson model and compares them to the observed data. That code is the template for part 3.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p><code>predict(fit, type = "response")</code> returns each observation’s <span class="math inline">\(\lambda\)</span> or <span class="math inline">\(\mu\)</span>. <code>glm.nb()</code> stores <span class="math inline">\(\hat{\theta}\)</span> in <code>fit$theta</code>.</p>
+</div></details>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
-<p><em>solution needs to be updated</em></p>
+<p><strong>Solution</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formula corresponds to model 1 for each city in holland (2015) table 2</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> operations <span class="sc">~</span> lower <span class="sc">+</span> vendors <span class="sc">+</span> budget <span class="sc">+</span> population</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit poisson regression model for Santiago</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>fit_pois <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">family =</span> poisson, <span class="at">data =</span> holland)</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fit poisson regression model for Santiago</span></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>fit_nb <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glm.nb</span>(f, <span class="at">data =</span> holland)</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="fu">list</span>(fit_pois, fit_nb))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(numDeriv)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- part 1 ----</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co"># (holland and f come from the chunk above)</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the poisson and negative binomial models</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>fit_pois <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">family =</span> poisson, <span class="at">data =</span> holland)</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>fit_nb <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glm.nb</span>(f, <span class="at">data =</span> holland)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="co"># side-by-side table of coefficient and se estimates</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">"Poisson"</span> <span class="ot">=</span> fit_pois, <span class="st">"negative binomial"</span> <span class="ot">=</span> fit_nb), </span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">stars =</span> <span class="cn">TRUE</span>, <span class="at">gof_map =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_1k1nk09jmr15gl15xp9n = TinyTable.createTableFunctions("tinytable_1k1nk09jmr15gl15xp9n");
+      const tableFns_eswrmdfclwcrc5zcnemq = TinyTable.createTableFunctions("tinytable_eswrmdfclwcrc5zcnemq");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '16', j: 2 }, { i: '16', j: 3 } ], css_id: 'tinytable_css_42lhx791dlxilx4b2pst',}, 
-          { positions: [ { i: '10', j: 2 }, { i: '10', j: 3 } ], css_id: 'tinytable_css_h0vdtboe7eed6f6fdhkb',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 }, { i: '14', j: 2 }, { i: '15', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 }, { i: '9', j: 3 }, { i: '11', j: 3 }, { i: '12', j: 3 }, { i: '13', j: 3 }, { i: '14', j: 3 }, { i: '15', j: 3 } ], css_id: 'tinytable_css_9aivzuzv92ap8pala679',}, 
-          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_g3kv949uhccati10bcf0',}, 
-          { positions: [ { i: '16', j: 1 } ], css_id: 'tinytable_css_zhore9wsojnzmd6itpjc',}, 
-          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_r7nl712af90af3s88ayb',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 }, { i: '14', j: 1 }, { i: '15', j: 1 } ], css_id: 'tinytable_css_7d39z7euq5szuatu6b5l',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_m0ffmbokmxarr9bm4tiy',}, 
+          { positions: [ { i: '10', j: 2 }, { i: '10', j: 3 } ], css_id: 'tinytable_css_wsmqd1jqzg4hu03seu4v',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_gfr2z0iz29no5qh8qg4g',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_gtfsqww2wt9yoqqpspfd',}, 
+          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_wh17wmiqtt6gatq69dq7',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 } ], css_id: 'tinytable_css_zxvukk19v7mfwm20i8g5',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_rjlb38lcmb7cbracratd',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_1k1nk09jmr15gl15xp9n.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_eswrmdfclwcrc5zcnemq.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -917,30 +886,28 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_42lhx791dlxilx4b2pst, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_42lhx791dlxilx4b2pst {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_h0vdtboe7eed6f6fdhkb, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_h0vdtboe7eed6f6fdhkb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_9aivzuzv92ap8pala679, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_9aivzuzv92ap8pala679 { text-align: center }
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_g3kv949uhccati10bcf0, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_g3kv949uhccati10bcf0 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_zhore9wsojnzmd6itpjc, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_zhore9wsojnzmd6itpjc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_r7nl712af90af3s88ayb, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_r7nl712af90af3s88ayb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_7d39z7euq5szuatu6b5l, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_7d39z7euq5szuatu6b5l { text-align: left }
-    #tinytable_1k1nk09jmr15gl15xp9n td.tinytable_css_m0ffmbokmxarr9bm4tiy, #tinytable_1k1nk09jmr15gl15xp9n th.tinytable_css_m0ffmbokmxarr9bm4tiy {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_eswrmdfclwcrc5zcnemq td.tinytable_css_wsmqd1jqzg4hu03seu4v, #tinytable_eswrmdfclwcrc5zcnemq th.tinytable_css_wsmqd1jqzg4hu03seu4v {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_eswrmdfclwcrc5zcnemq td.tinytable_css_gfr2z0iz29no5qh8qg4g, #tinytable_eswrmdfclwcrc5zcnemq th.tinytable_css_gfr2z0iz29no5qh8qg4g { text-align: center }
+    #tinytable_eswrmdfclwcrc5zcnemq td.tinytable_css_gtfsqww2wt9yoqqpspfd, #tinytable_eswrmdfclwcrc5zcnemq th.tinytable_css_gtfsqww2wt9yoqqpspfd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_eswrmdfclwcrc5zcnemq td.tinytable_css_wh17wmiqtt6gatq69dq7, #tinytable_eswrmdfclwcrc5zcnemq th.tinytable_css_wh17wmiqtt6gatq69dq7 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_eswrmdfclwcrc5zcnemq td.tinytable_css_zxvukk19v7mfwm20i8g5, #tinytable_eswrmdfclwcrc5zcnemq th.tinytable_css_zxvukk19v7mfwm20i8g5 { text-align: left }
+    #tinytable_eswrmdfclwcrc5zcnemq td.tinytable_css_rjlb38lcmb7cbracratd, #tinytable_eswrmdfclwcrc5zcnemq th.tinytable_css_rjlb38lcmb7cbracratd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_1k1nk09jmr15gl15xp9n" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_eswrmdfclwcrc5zcnemq" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
                 <th scope="col" data-row="0" data-col="1"> </th>
-                <th scope="col" data-row="0" data-col="2">(1)</th>
-                <th scope="col" data-row="0" data-col="3">(2)</th>
+                <th scope="col" data-row="0" data-col="2">Poisson</th>
+                <th scope="col" data-row="0" data-col="3">negative binomial</th>
               </tr>
         </thead>
-        
+        <tfoot><tr><td colspan="3">+ p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td></tr></tfoot>
         <tbody>
                 <tr>
                   <td data-row="1" data-col="1">(Intercept)</td>
-                  <td data-row="1" data-col="2">2.619</td>
+                  <td data-row="1" data-col="2">2.619***</td>
                   <td data-row="1" data-col="3">2.706</td>
                 </tr>
                 <tr>
@@ -950,8 +917,8 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
                 </tr>
                 <tr>
                   <td data-row="3" data-col="1">lower</td>
-                  <td data-row="3" data-col="2">-0.038</td>
-                  <td data-row="3" data-col="3">-0.046</td>
+                  <td data-row="3" data-col="2">-0.038***</td>
+                  <td data-row="3" data-col="3">-0.046+</td>
                 </tr>
                 <tr>
                   <td data-row="4" data-col="1"></td>
@@ -960,7 +927,7 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
                 </tr>
                 <tr>
                   <td data-row="5" data-col="1">vendors</td>
-                  <td data-row="5" data-col="2">-0.221</td>
+                  <td data-row="5" data-col="2">-0.221+</td>
                   <td data-row="5" data-col="3">-0.188</td>
                 </tr>
                 <tr>
@@ -980,7 +947,7 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
                 </tr>
                 <tr>
                   <td data-row="9" data-col="1">population</td>
-                  <td data-row="9" data-col="2">0.015</td>
+                  <td data-row="9" data-col="2">0.015+</td>
                   <td data-row="9" data-col="3">0.021</td>
                 </tr>
                 <tr>
@@ -988,99 +955,213 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
                   <td data-row="10" data-col="2">(0.009)</td>
                   <td data-row="10" data-col="3">(0.027)</td>
                 </tr>
-                <tr>
-                  <td data-row="11" data-col="1">Num.Obs.</td>
-                  <td data-row="11" data-col="2">34</td>
-                  <td data-row="11" data-col="3">34</td>
-                </tr>
-                <tr>
-                  <td data-row="12" data-col="1">AIC</td>
-                  <td data-row="12" data-col="2">226.8</td>
-                  <td data-row="12" data-col="3">133.7</td>
-                </tr>
-                <tr>
-                  <td data-row="13" data-col="1">BIC</td>
-                  <td data-row="13" data-col="2">234.4</td>
-                  <td data-row="13" data-col="3">142.8</td>
-                </tr>
-                <tr>
-                  <td data-row="14" data-col="1">Log.Lik.</td>
-                  <td data-row="14" data-col="2">-108.395</td>
-                  <td data-row="14" data-col="3">-60.842</td>
-                </tr>
-                <tr>
-                  <td data-row="15" data-col="1">F</td>
-                  <td data-row="15" data-col="2">13.305</td>
-                  <td data-row="15" data-col="3">2.476</td>
-                </tr>
-                <tr>
-                  <td data-row="16" data-col="1">RMSE</td>
-                  <td data-row="16" data-col="2">4.40</td>
-                  <td data-row="16" data-col="3">4.79</td>
-                </tr>
         </tbody>
       </table>
     </div>
 <!-- hack to avoid NA insertion in last line -->
 </div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the negative binomial's extra parameter</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>fit_nb<span class="sc">$</span>theta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3675202</code></pre>
 </div>
-</div></details>
-</section>
-<section id="ex-8" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> King et al.&nbsp;(1990)</h2>
-<p>The <code>ZeligData::coalition</code> data comes from <span class="citation" data-cites="King1990">King et al. (<a href="#ref-King1990" role="doc-biblioref">1990</a>)</span>. The key variable is <code>duration</code>, which is the survival times of government coalitions in parliamentary democracies. Model <code>duration</code> using the Weibull distribution (<em>as described <a href="https://pos5747.github.io/notes/wk04/04-big-four.html#weibull">in the notes</a></em>–make sure to review this carefully!) using the variables <code>fract</code> and <code>numst2</code>. Compute the first difference and SE as <code>fract</code> moves from a low value to a high value for <code>numst2 == 0</code>.</p>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the mean and variance of the observed counts</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(holland<span class="sc">$</span>operations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.705882</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(holland<span class="sc">$</span>operations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 24.39572</code></pre>
+</div>
+</div>
 <ul>
-<li><code>duration</code>: The length of time (in months) that a cabinet survives before dissolution.</li>
-<li><code>fract</code>: Fractionalization index from Rae (1971), measuring the number and relative size of parties in parliament. Higher values indicate more parties of smaller average size (i.e., a more fragmented party system).</li>
-<li><code>numst2</code>: Numerical status of the cabinet, coded 1 for majority governments and 0 for minority governments.</li>
+<li>The coefficient estimates are similar. Both models use the inverse link <span class="math inline">\(e^{X_i\beta}\)</span>, so both describe the average count the same way.</li>
+<li>The standard errors are about two to four times larger for the negative binomial.</li>
+<li>The Poisson model assumes <span class="math inline">\(\text{Var}(y_i) = E(y_i)\)</span>. The observed counts have a mean of about 2.7 and a variance of about 24, so the Poisson standard errors are much too small.</li>
+<li><span class="math inline">\(\hat{\theta} \approx 0.37\)</span> is the extra parameter that lets the variance exceed the mean. Smaller values allow more extra variance.</li>
 </ul>
-<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
-<p><em>Solution TBA.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- part 2 ----</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># function to compute the first difference</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>fd_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(beta, hi, lo) {</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(hi<span class="sc">%*%</span>beta) <span class="sc">-</span> <span class="fu">exp</span>(lo<span class="sc">%*%</span>beta)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co"># make X_lo</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>X_lo <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"constant"</span>   <span class="ot">=</span> <span class="dv">1</span>, <span class="co"># intercept</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"lower"</span>      <span class="ot">=</span> <span class="fu">quantile</span>(holland<span class="sc">$</span>lower, <span class="at">probs =</span> <span class="fl">0.25</span>), </span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vendors"</span>    <span class="ot">=</span> <span class="fu">median</span>(holland<span class="sc">$</span>vendors),</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"budget"</span>     <span class="ot">=</span> <span class="fu">median</span>(holland<span class="sc">$</span>budget),</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"population"</span> <span class="ot">=</span> <span class="fu">median</span>(holland<span class="sc">$</span>population)</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a><span class="co"># make X_hi by modifying the relevant value of X_lo</span></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>X_hi <span class="ot">&lt;-</span> X_lo</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>X_hi[, <span class="st">"lower"</span>] <span class="ot">&lt;-</span> <span class="fu">quantile</span>(holland<span class="sc">$</span>lower, <span class="at">probs =</span> <span class="fl">0.75</span>) </span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a><span class="co"># function to compute the first difference and its 90% ci for a fitted model</span></span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>fd_ci <span class="ot">&lt;-</span> <span class="cf">function</span>(fit, hi, lo) {</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># pull the estimates out of the fitted model</span></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>  beta_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)</span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>  v_hat <span class="ot">&lt;-</span> <span class="fu">vcov</span>(fit)</span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># invariance property</span></span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a>  fd_hat <span class="ot">&lt;-</span> <span class="fu">fd_fn</span>(beta_hat, hi, lo)</span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># delta method</span></span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a>  grad_fd <span class="ot">&lt;-</span> <span class="fu">grad</span>(</span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">func =</span> fd_fn, </span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> beta_hat, </span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">hi =</span> hi,</span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">lo =</span> lo)  </span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a>  se_fd_hat <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(grad_fd <span class="sc">%*%</span> v_hat <span class="sc">%*%</span> grad_fd)</span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># estimate and 90% ci</span></span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">fd_hat =</span> fd_hat, </span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">lwr =</span> fd_hat <span class="sc">-</span> <span class="fl">1.64</span><span class="sc">*</span>se_fd_hat, </span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">upr =</span> fd_hat <span class="sc">+</span> <span class="fl">1.64</span><span class="sc">*</span>se_fd_hat)</span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a><span class="co"># the change in expected operations as lower moves from its 25th to its 75th percentile</span></span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">fd_ci</span>(fit_pois, X_hi, X_lo), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>fd_hat    lwr    upr 
+ -1.98  -2.86  -1.10 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">fd_ci</span>(fit_nb, X_hi, X_lo), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>fd_hat    lwr    upr 
+ -2.13  -5.14   0.87 </code></pre>
+</div>
+</div>
+<ul>
+<li>The estimates nearly agree at about two fewer operations in both models.</li>
+<li>The negative binomial’s 90% confidence interval is about three times wider and includes zero.</li>
+<li>Notice that the two models give about the same estimate, but different conclusions about how precise that estimate is.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- part 3 ----</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co"># each observation has its own lambda and mu, but theta is constant</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>lambda_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_pois, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>mu_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_nb, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>theta_hat <span class="ot">&lt;-</span> fit_nb<span class="sc">$</span>theta</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create observed data set</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>observed_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">operations =</span> holland<span class="sc">$</span>operations, </span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">type =</span> <span class="st">"observed"</span>)</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate five fake data sets from each model</span></span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>sim_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  sim_list[[i]] <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">operations =</span> <span class="fu">rpois</span>(<span class="fu">nrow</span>(holland), <span class="at">lambda =</span> lambda_hat),</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="fu">paste0</span>(<span class="st">"Poisson #"</span>, i)),</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(<span class="at">operations =</span> <span class="fu">rnbinom</span>(<span class="fu">nrow</span>(holland), <span class="at">mu =</span> mu_hat, <span class="at">size =</span> theta_hat),</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="fu">paste0</span>(<span class="st">"negative binomial #"</span>, i))</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a><span class="co"># combine the fake and observed data sets</span></span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>gg_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sim_list) <span class="sc">|&gt;</span></span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(observed_data) <span class="sc">|&gt;</span></span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 374
+Columns: 2
+$ operations &lt;dbl&gt; 0, 1, 1, 2, 4, 2, 0, 1, 4, 1, 1, 6, 8, 6, 0, 2, 2, 3, 5, 0,…
+$ type       &lt;chr&gt; "Poisson #1", "Poisson #1", "Poisson #1", "Poisson #1", "Po…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the observed and fake data sets</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg_data, <span class="fu">aes</span>(<span class="at">x =</span> operations)) <span class="sc">+</span> </span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk04-exercises-sol_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count the zeros and find the largest count in each data set</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>gg_data <span class="sc">|&gt;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">|&gt;</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">zeros =</span> <span class="fu">sum</span>(operations <span class="sc">==</span> <span class="dv">0</span>), </span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(operations), </span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">max =</span> <span class="fu">max</span>(operations)) <span class="sc">|&gt;</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 4
+   type                 zeros    sd   max
+   &lt;chr&gt;                &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 Poisson #1               9  2.29     8
+ 2 Poisson #2               4  2.50     9
+ 3 Poisson #3               7  2.53     9
+ 4 Poisson #4               7  3.06    10
+ 5 Poisson #5               7  2.58     9
+ 6 negative binomial #1    18 23.7    127
+ 7 negative binomial #2    16  3.62    18
+ 8 negative binomial #3    16 10.1     32
+ 9 negative binomial #4    17  9.26    47
+10 negative binomial #5    20  4.04    19
+11 observed                18  4.94    16</code></pre>
+</div>
+</div>
+<ul>
+<li>18 of the 34 districts have zero operations. The observed SD is about 4.9 and the largest count is 16.</li>
+<li>The Poisson data sets have too few zeros (about four to nine) and too little spread (SD of about 2.3 to 3.1). None of them produces a count larger than 10.</li>
+<li>The negative binomial data sets get the number of zeros about right (16 to 20) and do produce large counts. But the largest counts are sometimes much larger than anything observed, such as the 127 in the first data set.</li>
+</ul>
 </div></details>
 </section>
-<section id="ex-9" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> Clark and Golder (2006); <em>t</em> distribution</h2>
+<section id="ex-6" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Clark and Golder (2006); <em>t</em> distribution</h2>
 <p>The code below reproduces the coefficient estimates for the normal linear model from Clark and Golder (2006) as shown in an earlier exercise. Re-estimate their model using a location-scale <em>t</em> distribution (see Exercise 11 for Week 2) modeling the <code>mean</code> <span class="math inline">\(\mu = X\beta\)</span>. Use ML to estimate the coefficients <span class="math inline">\(\beta\)</span>, the scale <span class="math inline">\(\sigma\)</span>, and the df <span class="math inline">\(\nu\)</span>. Comment on the differences between the coefficient estimates and standard errors using the normal model and the <em>t</em>. What does the ML estimate <span class="math inline">\(\hat{\nu}\)</span> of the degrees of freedom parameter <span class="math inline">\(\nu\)</span> tell us about Clark and Golder’s data?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>cg <span class="ot">&lt;-</span> crdata<span class="sc">::</span>cg2006</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> enep <span class="sc">~</span> eneg<span class="sc">*</span><span class="fu">log</span>(average_magnitude) <span class="sc">+</span> eneg<span class="sc">*</span>upper_tier <span class="sc">+</span> en_pres<span class="sc">*</span>proximity</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co"># normal model</span></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">data =</span> cg, <span class="at">family =</span> gaussian)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>cg <span class="ot">&lt;-</span> crdata<span class="sc">::</span>cg2006</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> enep <span class="sc">~</span> eneg<span class="sc">*</span><span class="fu">log</span>(average_magnitude) <span class="sc">+</span> eneg<span class="sc">*</span>upper_tier <span class="sc">+</span> en_pres<span class="sc">*</span>proximity</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="co"># normal model</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">data =</span> cg, <span class="at">family =</span> gaussian)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For convenience, here is how me might make a quick table using <code>tinytable::tt()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a table</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">term =</span> <span class="fu">names</span>(<span class="fu">coef</span>(fit)),</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">beta_hat =</span> <span class="fu">coef</span>(fit),</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">se =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">vcov</span>(fit)))) <span class="sc">|&gt;</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tt</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">escape =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_latex</span>(<span class="at">placement =</span> <span class="st">"H"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a table</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">term =</span> <span class="fu">names</span>(<span class="fu">coef</span>(fit)),</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">beta_hat =</span> <span class="fu">coef</span>(fit),</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">se =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">vcov</span>(fit)))) <span class="sc">|&gt;</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tt</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">escape =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_latex</span>(<span class="at">placement =</span> <span class="st">"H"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_z6i2l5d4nglf4q67d87d = TinyTable.createTableFunctions("tinytable_z6i2l5d4nglf4q67d87d");
+      const tableFns_77dh3n8yj5m5x3bkoueg = TinyTable.createTableFunctions("tinytable_77dh3n8yj5m5x3bkoueg");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '9', j: 1 }, { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_aoxusy7g70sb86bgom2j',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_1m3opgifyryfsquzcpiz',}, 
+          { positions: [ { i: '9', j: 1 }, { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_tnfjjl6wvc65aw7vbn2t',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_zm7b50c2tlt6izoehsi4',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_z6i2l5d4nglf4q67d87d.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_77dh3n8yj5m5x3bkoueg.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1089,11 +1170,11 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_z6i2l5d4nglf4q67d87d td.tinytable_css_aoxusy7g70sb86bgom2j, #tinytable_z6i2l5d4nglf4q67d87d th.tinytable_css_aoxusy7g70sb86bgom2j {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_z6i2l5d4nglf4q67d87d td.tinytable_css_1m3opgifyryfsquzcpiz, #tinytable_z6i2l5d4nglf4q67d87d th.tinytable_css_1m3opgifyryfsquzcpiz {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_77dh3n8yj5m5x3bkoueg td.tinytable_css_tnfjjl6wvc65aw7vbn2t, #tinytable_77dh3n8yj5m5x3bkoueg th.tinytable_css_tnfjjl6wvc65aw7vbn2t {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_77dh3n8yj5m5x3bkoueg td.tinytable_css_zm7b50c2tlt6izoehsi4, #tinytable_77dh3n8yj5m5x3bkoueg th.tinytable_css_zm7b50c2tlt6izoehsi4 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_z6i2l5d4nglf4q67d87d" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_77dh3n8yj5m5x3bkoueg" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1155,52 +1236,56 @@ $ neweduc  &lt;dbl&gt; 5, 5, 5, 5, 4, 6, 4, 4, 5, 5, 4, 5, 8, 8, 6, 5, 5, 3, 5, 
 <!-- hack to avoid NA insertion in last line -->
 </div>
 </div>
-<p><em>Hints:</em></p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>The log-likelihood has the same shape as the one you wrote for <a href="#ex-2">Exercise 2</a>, with <span class="math inline">\(\nu\)</span> as a third parameter in <code>par</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <ul>
 <li>The R function <code>metRology::dt.scaled(..., log = TRUE)</code> computes the required log-likelihood for each observation.</li>
 <li>You need to estimate the <span class="math inline">\(\sigma =\)</span><code>sd</code> and <span class="math inline">\(\nu =\)</span> <code>df</code> parameters, but they are fixed.</li>
 <li>Model the <code>mean</code> as a with the usual linear predictor <span class="math inline">\(X_i\beta\)</span>. No inverse link function is needed, because <code>mean</code> is unbounded.</li>
 <li>When creating the log-likelihood function, the first argument must be a single parameter vector that include all parameters stacked into a single vector. I often call this <code>par</code>. Then extract <code>par</code> into <code>beta</code>, <code>sigma</code>, and <code>nu</code> immediately inside the function.</li>
 </ul>
+</div></details>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assuming code from question already included</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>mf <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(f, <span class="at">data =</span> cg)</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>X  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(f, <span class="at">data =</span> mf)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>y  <span class="ot">&lt;-</span> <span class="fu">model.response</span>(mf)</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="co"># t log-likelihood</span></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>t_ll <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y, X){</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># pull out parameters from par for easy reading</span></span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X)</span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> par[<span class="dv">1</span><span class="sc">:</span>k]</span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>  sigma <span class="ot">&lt;-</span> par[k<span class="sc">+</span><span class="dv">1</span>]  <span class="co"># 2nd to last</span></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>  nu <span class="ot">&lt;-</span> par[k<span class="sc">+</span><span class="dv">2</span>] <span class="co"># last</span></span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#</span></span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> X<span class="sc">%*%</span>beta</span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(metRology<span class="sc">::</span><span class="fu">dt.scaled</span>(y, </span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>                           <span class="at">mean =</span> mu, </span>
-<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sd =</span> sigma, </span>
-<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>                           <span class="at">df =</span> nu, </span>
-<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>                           <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a><span class="co"># use optim()</span></span>
-<span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a>par_start <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X)), <span class="dv">2</span>, <span class="dv">10</span>)</span>
-<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
-<span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">par     =</span> par_start,</span>
-<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn      =</span> t_ll,</span>
-<span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">y       =</span> y,</span>
-<span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">X       =</span> X,</span>
-<span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">method  =</span> <span class="st">"BFGS"</span>,</span>
-<span id="cb47-34"><a href="#cb47-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>), </span>
-<span id="cb47-35"><a href="#cb47-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span></span>
-<span id="cb47-36"><a href="#cb47-36" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assuming code from question already included</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>mf <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(f, <span class="at">data =</span> cg)</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>X  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(f, <span class="at">data =</span> mf)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>y  <span class="ot">&lt;-</span> <span class="fu">model.response</span>(mf)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="co"># t log-likelihood</span></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>t_ll <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y, X){</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># pull out parameters from par for easy reading</span></span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X)</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> par[<span class="dv">1</span><span class="sc">:</span>k]</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>  sigma <span class="ot">&lt;-</span> par[k<span class="sc">+</span><span class="dv">1</span>]  <span class="co"># 2nd to last</span></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>  nu <span class="ot">&lt;-</span> par[k<span class="sc">+</span><span class="dv">2</span>] <span class="co"># last</span></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#</span></span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> X<span class="sc">%*%</span>beta</span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(metRology<span class="sc">::</span><span class="fu">dt.scaled</span>(y, </span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>                           <span class="at">mean =</span> mu, </span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sd =</span> sigma, </span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>                           <span class="at">df =</span> nu, </span>
+<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>                           <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a><span class="co"># use optim()</span></span>
+<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a>par_start <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X)), <span class="dv">2</span>, <span class="dv">10</span>)</span>
+<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
+<span id="cb59-29"><a href="#cb59-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">par     =</span> par_start,</span>
+<span id="cb59-30"><a href="#cb59-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn      =</span> t_ll,</span>
+<span id="cb59-31"><a href="#cb59-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">y       =</span> y,</span>
+<span id="cb59-32"><a href="#cb59-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">X       =</span> X,</span>
+<span id="cb59-33"><a href="#cb59-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">method  =</span> <span class="st">"BFGS"</span>,</span>
+<span id="cb59-34"><a href="#cb59-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>), </span>
+<span id="cb59-35"><a href="#cb59-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span></span>
+<span id="cb59-36"><a href="#cb59-36" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in log(sd): NaNs produced
 Warning in log(sd): NaNs produced
@@ -1249,30 +1334,30 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in log(sd): NaNs produced</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">"term"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">colnames</span>(X), <span class="st">"sigma"</span>, <span class="st">"nu"</span>),</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">"beta_hat"</span> <span class="ot">=</span> est<span class="sc">$</span>par, </span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"se"</span> <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>est<span class="sc">$</span>hessian))))  <span class="sc">|&gt;</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tt</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">escape =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_latex</span>(<span class="at">placement =</span> <span class="st">"H"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">"term"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">colnames</span>(X), <span class="st">"sigma"</span>, <span class="st">"nu"</span>),</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">"beta_hat"</span> <span class="ot">=</span> est<span class="sc">$</span>par, </span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"se"</span> <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(<span class="sc">-</span>est<span class="sc">$</span>hessian))))  <span class="sc">|&gt;</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tt</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">escape =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_latex</span>(<span class="at">placement =</span> <span class="st">"H"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_tyq6dlvuccoeyjxtxiug = TinyTable.createTableFunctions("tinytable_tyq6dlvuccoeyjxtxiug");
+      const tableFns_r2f3dldef4gocjdskag1 = TinyTable.createTableFunctions("tinytable_r2f3dldef4gocjdskag1");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '11', j: 1 }, { i: '11', j: 2 }, { i: '11', j: 3 } ], css_id: 'tinytable_css_qaps18ujxma44e0j3uzk',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_yunpa2a2dr5l4n9l5zti',}, 
+          { positions: [ { i: '11', j: 1 }, { i: '11', j: 2 }, { i: '11', j: 3 } ], css_id: 'tinytable_css_9l8kqtymskw1a0p4y78g',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_knkeerm9jwss69anl1g4',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_tyq6dlvuccoeyjxtxiug.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_r2f3dldef4gocjdskag1.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1281,11 +1366,11 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_tyq6dlvuccoeyjxtxiug td.tinytable_css_qaps18ujxma44e0j3uzk, #tinytable_tyq6dlvuccoeyjxtxiug th.tinytable_css_qaps18ujxma44e0j3uzk {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_tyq6dlvuccoeyjxtxiug td.tinytable_css_yunpa2a2dr5l4n9l5zti, #tinytable_tyq6dlvuccoeyjxtxiug th.tinytable_css_yunpa2a2dr5l4n9l5zti {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_r2f3dldef4gocjdskag1 td.tinytable_css_9l8kqtymskw1a0p4y78g, #tinytable_r2f3dldef4gocjdskag1 th.tinytable_css_9l8kqtymskw1a0p4y78g {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_r2f3dldef4gocjdskag1 td.tinytable_css_knkeerm9jwss69anl1g4, #tinytable_r2f3dldef4gocjdskag1 th.tinytable_css_knkeerm9jwss69anl1g4 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_tyq6dlvuccoeyjxtxiug" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_r2f3dldef4gocjdskag1" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1360,10 +1445,10 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
 <p>The estimate of the degrees of freedom parameter is 2.3 with a standard error of about 0.3. This means that the distribution of the effective number of electoral parties deviates substantially from normal (when df &gt; 10, the <em>t</em> starts to look somewhat normal). <span class="math inline">\(\nu \approx 2.5\)</span> suggests that observed values often fall several standard deviations away from the mean. This has a nice substantive interpretation. While there seems to be some predictability to ENEP, some cases are highly unusual, which suggests “something different” might be going on in those cases.</p>
 </div></details>
 </section>
-<section id="ex-10" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> Connections</h2>
+<section id="ex-7" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Connections</h2>
 <p>We have covered a wide range of tools. Use the list below as a menu and sketch the connections between two or more ideas. Represent the connections in any format you prefer; a diagram with arrows might make sense to you or you might prefer short written explanations. Simply noting that two things are connected is insufficient—most things are related in this course. Focus on <em>why ideas are connected</em> or <em>how they fit together</em>.</p>
-<p>*Hint: Definitely describe the connections between maximum likelihood estimates, Fisher information, the invariance property, and the delta method. Try for 2-3 other collections of 3 to 8 things that fit together as well.</p>
+<p><em>Hint: Definitely describe the connections between maximum likelihood estimates, Fisher information, the invariance property, and the delta method. Try for 2-3 other collections of 3 to 8 things that fit together as well.</em></p>
 <ul>
 <li><strong>Mathematical Tools</strong>: log, first derivative, second derivative, gradient, Hessian, matrix multiplication, pdf/pmf, expected value, variance</li>
 <li><strong>Engines</strong>: OLS, maximum likelihood, method of moments; also likelihood function, log-likelihood function</li>
@@ -1374,21 +1459,8 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
 <li><strong>Estimate Evaluation</strong>: predictive distribution</li>
 <li><strong>Estimator Evaluation</strong>: sampling distribution, bias, consistency, coverage, asymptotic distribution of estimator, Monte Carlo simulation</li>
 <li><strong>R</strong>: <code>optim()</code>, <code>numDeriv()::grad()</code>, <code>%*%</code>, density + distribution + quantile + random number generator functions for various distributions</li>
-<li><strong>Data Sets</strong>: toothpaste cap, <code>ZeligData::turnout</code>, Clark and Golder’s (2006) <code>crdata::cg2006</code>, Lahman’s <code>batting_average</code>, WDI, <code>faithful</code>, Herron’s <code>hockey</code>, Holland’s (2015) <code>crdata::holland2015</code>, the UF Election Lab turnout rates, <code>ZeligData::coalition</code></li>
+<li><strong>Data Sets</strong>: toothpaste cap, <code>ZeligData::turnout</code>, Clark and Golder’s (2006) <code>crdata::cg2006</code>, Lahman’s <code>batting_average</code>, WDI, Herron’s <code>hockey</code>, Holland’s (2015) <code>crdata::holland2015</code>, the UF Election Lab turnout rates</li>
 </ul>
-<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
-<p><em>No solution intended.</em></p>
-</div></details>
-</section>
-<section id="ex-11" class="level2 ex-heading">
-<h2 class="ex-heading anchored" data-anchor-id="ex-11"><span class="ex-num">Exercise 11</span> Be Creative</h2>
-<p>We know how to build models.</p>
-<ol type="1">
-<li>Choose a distribution for <span class="math inline">\(y\)</span>. Many choices here.</li>
-<li>Choose the parameter(s) to model as functions of design matrix <span class="math inline">\(X\)</span> and those to model as fixed. 1-3 options here, usually.</li>
-<li>Choose an inverse link function that maps the unbounded linear predictor <span class="math inline">\(X_i \beta \in \mathbb R\)</span> onto the parameter space of the modeled parameters. A few options here.</li>
-</ol>
-<p>Make creative (or standard) choices at each step; see what model you can build! What sorts of data might your model fit well? (No need to fit this model or write the exact log-likelihood.)</p>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><em>No solution intended.</em></p>
 </div></details>
@@ -1405,23 +1477,11 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
 <div id="ref-berk2010" class="csl-entry" role="listitem">
 Berk, Richard. 2010. <span>“What You Can and Can<span>’</span>t Properly Do with Regression.”</span> <em>Journal of Quantitative Criminology</em> 26 (4): 481–87. <a href="https://doi.org/10.1007/s10940-010-9116-4">https://doi.org/10.1007/s10940-010-9116-4</a>.
 </div>
-<div id="ref-berry2010" class="csl-entry" role="listitem">
-Berry, William D., Jacqueline H. R. DeMeritt, and Justin Esarey. 2009. <span>“Testing for Interaction in Binary Logit and Probit Models: Is a Product Term Essential?”</span> <em>American Journal of Political Science</em> 54 (1): 248–66. <a href="https://doi.org/10.1111/j.1540-5907.2009.00429.x">https://doi.org/10.1111/j.1540-5907.2009.00429.x</a>.
-</div>
 <div id="ref-clark2006" class="csl-entry" role="listitem">
 Clark, William Roberts, and Matt Golder. 2006. <span>“Rehabilitating Duverger<span>’</span>s Theory.”</span> <em>Comparative Political Studies</em> 39 (6): 679–708. <a href="https://doi.org/10.1177/0010414005278420">https://doi.org/10.1177/0010414005278420</a>.
 </div>
 <div id="ref-Holland2015" class="csl-entry" role="listitem">
 Holland, Alisha C. 2015. <span>“The Distributive Politics of Enforcement.”</span> <em>American Journal of Political Science</em> 59 (2): 357–71. <a href="https://doi.org/10.1111/ajps.12125">https://doi.org/10.1111/ajps.12125</a>.
-</div>
-<div id="ref-King1998" class="csl-entry" role="listitem">
-King, Gary. 1998. <em>Unifying Political Methodology: The Likelihood Theory of Statistical Inference</em>. Revised. Ann Arbor, MI: University of Michigan Press.
-</div>
-<div id="ref-King1990" class="csl-entry" role="listitem">
-King, Gary, James E. Alt, Nancy Elizabeth Burns, and Michael Laver. 1990. <span>“A Unified Model of Cabinet Dissolution in Parliamentary Democracies.”</span> <em>American Journal of Political Science</em> 34 (3): 846. <a href="https://doi.org/10.2307/2111401">https://doi.org/10.2307/2111401</a>.
-</div>
-<div id="ref-Long1997" class="csl-entry" role="listitem">
-Long, J. Scott. 1997. <em>Regression Models for Categorical and Limited Dependent Variables</em>. Vol. 7. Advanced Quantitative Techniques in the Social Sciences. Thousand Oaks, CA: Sage.
 </div>
 <div id="ref-oneal1997" class="csl-entry" role="listitem">
 Oneal, John R., and Bruce M. Russet. 1997. <span>“The Classical Liberals Were Right: Democracy, Interdependence, and Conflict, 1950-1985.”</span> <em>International Studies Quarterly</em> 41 (2): 267–94. <a href="https://doi.org/10.1111/1468-2478.00042">https://doi.org/10.1111/1468-2478.00042</a>.

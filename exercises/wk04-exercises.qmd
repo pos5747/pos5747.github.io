@@ -16,7 +16,7 @@ library(tidyverse)
 Read @berk2010 [[pdf](https://pos5747.github.io/notes/readings/Berk2010.pdf)].
 
 1.  Berk distinguishes Level I (descriptive), Level II (statistical inference), and Level III (causal inference) regression analyses. Summarize the features of each level in your own words. Explain why Berk argues that most regressions in criminology are Level I. Does his claim about criminology apply to political science as well?
-2.  Select a recent empirical article in your subfield that uses non-experimental (i.e., observational) data. Identify how the authors use regression. At what level does the authors *claim* to operate? Use direct quotes if possible. At what level does the analysis *actually* operate? Explain.
+2.  Select an empirical article you are already familiar with from your subfield that uses non-experimental (i.e., observational) data. Identify how the authors use regression. At what level does the authors *claim* to operate? Use direct quotes if possible. At what level does the analysis *actually* operate? Explain.
 3.  Berk critiques observational regression treated as causal. He also lists common responses (e.g., "the assumptions are reasonable," "we all have models," "you have to make assumptions to make progress"). Pick one response and assess whether you find it persuasive. Defend your position. How might you design a study in your area that could move from Level I or II toward Level III without weak rhetorical defenses? Perhaps give an example.
 4.  Berk concludes that, with rare exceptions, regression analyses of observational data should be treated as Level I. Do you agree? If you take Berk’s view seriously, what happens to publication standards, peer review, funding, and training?
 
@@ -26,7 +26,7 @@ Read @berk2010 [[pdf](https://pos5747.github.io/notes/readings/Berk2010.pdf)].
 
 ## Clark and Golder (2006), normal distribution {ref="clark-golder-normal"}
 
-@clark2006 fit the following regression model (that we've seen several times now).
+@clark2006 [[pdf](https://pos5747.github.io/notes/readings/Clark2006.pdf)] fit the following regression model (that we've seen several times now).
 
 ![](images/clipboard-1773489089.png)
 
@@ -49,6 +49,18 @@ The least squares and ML estimates of the coefficients should match; for the nor
 # load Clark and Golder's data
 cg <- crdata::cg2006  # from my data package
 ```
+
+::: hint
+
+The table's rows tell you which interactions the model includes. In an R formula, `a*b` adds `a`, `b`, and `a:b`. See [Section 10.4](https://pos5747.github.io/notes/wk04/02-formulas.html#interactions) of the notes.
+
+:::
+
+::: hint
+
+[Section 11.0.1](https://pos5747.github.io/notes/wk04/03-logistic-regression.html#the-linear-probability-model) of the notes computes `solve(t(X)%*%X)%*%t(X)%*%y` on real data. `est_logit()` in [Section 11.1.2](https://pos5747.github.io/notes/wk04/03-logistic-regression.html#fitting-with-optim) is the `optim()` code to adapt. Notice that `dnorm()` needs a positive `sd`, so give $\sigma$ a positive starting value.
+
+:::
 
 ::: sol
 **Solution**
@@ -92,18 +104,6 @@ est$par  # matches ols from above
 
 :::
 
-## Long (1997) or King (1998) {ref="long-king"}
-
-Read *either* @King1998 pp. 97-115 (section 5 through 5.3) **OR** @Long1997 pp. 34-84 (chapter 3). Write a short comparison to our notes on the logit model. Highlight the differences you find most interesting or important.
-
-Readings are [here](https://www.dropbox.com/scl/fo/7b9bvt51jrthm25ssvd67/AJjPxAAOphm_K00S1q3_oM0?rlkey=88wab9fsove0tjyfpkjedzj4n&dl=0).
-
-*Hint:* You might notice differences in their (i) notation, (ii) justifications for the link function, (iii) recommended quantities of interest, or (iv) treatment of the LPM (foil vs. viable approximation). Pick a couple of these contrasts (or others you discover). Explain each clearly in your own terms. Keep it concise and focused; perhaps 300 words or so.
-
-::: sol
-*No solution intended.*
-:::
-
 ## Probit {ref="probit"}
 
 The probit model uses the cdf of the normal distribution (e.g., often denoted as $\Phi(\cdot)$; `pnorm()` in R) rather than the inverse logit. 
@@ -111,6 +111,12 @@ The probit model uses the cdf of the normal distribution (e.g., often denoted as
 1. Adapt the code from the notes to fit a probit model (or see [this Gist](https://gist.github.com/carlislerainey/7798659a9d5d8decb87352068a2d1655)). Use the same `ZeligData::turnout` data and model specification `vote ~ age + educate + income + race`. 
 1. Compare your probit coefficients to the logit coefficients from the notes. Notice that [multiplying probit coefficients by 1.6](https://statmodeling.stat.columbia.edu/2006/06/06/take_logit_coef/) gives you roughly the logit coefficients.
 1. Adapt the code to compute the first difference and 90% confidence interval. Compare to the first difference and 90% confidence interval from the notes.
+
+::: hint
+
+The only change from the logit is the inverse link: use `pnorm()` in place of `plogis()`, both in the log-likelihood and in the function that computes the first difference. You are adapting `est_logit()` in [Section 11.1.2](https://pos5747.github.io/notes/wk04/03-logistic-regression.html#fitting-with-optim) and the first-difference code in [Section 11.2.2](https://pos5747.github.io/notes/wk04/03-logistic-regression.html#two-quantities-of-interest) of the notes.
+
+:::
 
 ::: sol
 
@@ -197,7 +203,7 @@ fd_hat_probit + 1.64 * se_fd_hat_probit # upper
 
 ## Russett and Oneal (2001) {ref="russett-oneal"}
 
-This exercise uses data from @Russett2001. The model the probability of a dispute in a dyad-year as a function of several predictors. A quick summary of their book is [here](https://adambrown.info/p/notes/russett_and_oneal_triangulating_peace). For our purposes, we'll focus on `dem.lo`, which is the lower of the two Polity scores in the dyad. For more details on the variables, see `?crdata::ro2001` or Table 1 on p. 277 of @oneal1997.
+This exercise uses data from @Russett2001. The model the probability of a dispute in a dyad-year as a function of several predictors. A quick summary of their book is [here](https://adambrown.info/p/notes/russett_and_oneal_triangulating_peace). For our purposes, we'll focus on `dem.lo`, which is the lower of the two Polity scores in the dyad. For more details on the variables, see `?crdata::ro2001` or Table 1 on p. 277 of @oneal1997 [[pdf](https://pos5747.github.io/notes/readings/Oneal1997.pdf)].
 
 ```{r}
 # load russett and oneal data from {crdata}
@@ -232,6 +238,18 @@ Use `beta_hat` and `v_hat` from above with the invariance property and the delta
 1. What is the change in the probability of a dispute (i.e., "first difference"; $\hat{\pi}_{max} - \hat{\pi}_{min}$) when `dem.lo` changes from its *minimum* to its *maximum*, fixing the other variables at the values described above? Notice that you can "kinda see" this value in the plot, but computing it directly gives you the exact value and the SE. The SE cannot be inferred from the plot.[^1] 
 
 [^1]: I usually recommend computing a first difference as a change from the 25th to the 75th percentile, rather than the min-to the max. The min-max comparison can be sensitive to model specification and represent usual, unrealistic scenarios.
+
+::: hint
+
+[Section 11.2.2](https://pos5747.github.io/notes/wk04/03-logistic-regression.html#two-quantities-of-interest) of the notes loops over the rows of `X_c` and computes the expected value and its SE at each one, then computes a first difference the same way. That code is the template for both parts here.
+
+:::
+
+::: hint
+
+For the aside: the linear predictor is linear in `dem.lo`, but the inverse logit is not. See [Section 11.2.1](https://pos5747.github.io/notes/wk04/03-logistic-regression.html#effects-are-not-constant) of the notes.
+
+:::
 
 ::: sol
 
@@ -353,37 +371,9 @@ fd_hat + 1.64*se_fd_hat  # upper
 
 :::
 
-## *Optional*: Berry, DeMeritt, and Esarey (2010) {ref="berry-demeritt-esarey"}
-
-Replicate Figure 4 @berry2010 using `glm()` (or `optim()` if you want more practice), the invariance property, and the delta method with numerical gradients using `numDeriv::grad()`. You can find the `scobit.dta` data set [here](https://www.dropbox.com/scl/fo/pvqagocje2ulry4ivnn99/AGd0lsPZvFXuveiyCLCArkE?rlkey=gd3ntw9m44qfaw2ye5y3ltanj&dl=0).
-
-*Hints*
-
-- The `scobit.dta` data has variables that have been multiplied and squared, etc. *Do not use these variables.* Use R formulas to handle these interactions and polynomials.
-- Reading down Table 1 on p. 263, the variables you want are: `newvote`, `closing`, `neweduc`, `age`, `south`, and `gov`. 
-- The eight distinct values (i.e., 1, 2,..., 8) of `neweduc` correspond to the eight categories that Figure 4 presents along the x-axis.
-- You must compute a *first difference* changing `closing` from 0 to its mean. However, you must compute this first difference for all eight values of `neweduc` (i.e., Figure 4 shows 8 first differences). You'll need a plan to compute these *eight* first differences compactly. Perhaps use a for-loop (or `purrr::map` if you want a new challenge).
-
-
-
-::: sol
-```{r}
-# code to load and clean the data
-scobit <- haven::read_dta("data/scobit.dta") %>%
-  filter(newvote != -1) %>%  # weird -1s in data; unsure if sufficient
-  glimpse()
-
-# the formula
-f <- newvote ~ poly(neweduc, 2, raw = TRUE) + closing + poly(age, 2, raw = TRUE) + south + gov
-```
-
-*rest of solution TBA...*
-
-:::
-
 ## Holland (2015) {ref="holland-2015"}
 
-@Holland2015 writes:
+@Holland2015 [[pdf](https://pos5747.github.io/notes/readings/Holland2015.pdf)] writes:
 
 > My first hypothesis is that [the number of] enforcement operations [`operations`] drop off with the fraction of poor residents [`lower`] in an electoral district. So district poverty should be a negative and significant predictor of enforcement, but only in politically decentralized cities [Lima and Santiago]. Poverty should have no relationship with enforcement in politically centralized cities [Bogota] once one controls for the number of vendors (p. 362)"
 
@@ -402,36 +392,157 @@ holland <- crdata::holland2015 |>
 f <- operations ~ lower + vendors + budget + population
 ```
 
-::: sol
+::: hint
 
-*solution needs to be updated*
-
-```{r}
-# formula corresponds to model 1 for each city in holland (2015) table 2
-f <- operations ~ lower + vendors + budget + population
-
-# fit poisson regression model for Santiago
-fit_pois <- glm(f, family = poisson, data = holland)
-
-# fit poisson regression model for Santiago
-fit_nb <- MASS::glm.nb(f, data = holland)
-
-modelsummary::modelsummary(list(fit_pois, fit_nb))
-```
+[Section 3.1](https://pos5747.github.io/notes/wk02/03-predictive-distribution.html#example-poisson-distribution) of the notes simulates five fake data sets from a Poisson model and compares them to the observed data. That code is the template for part 3.
 
 :::
 
-## King et al. (1990) {ref="king-1990"}
+::: hint
 
-The `ZeligData::coalition` data comes from @King1990. The key variable is `duration`, which is the survival times of government coalitions in parliamentary democracies. Model `duration` using the Weibull distribution (*as described [in the notes](https://pos5747.github.io/notes/wk04/04-big-four.html#weibull)*--make sure to review this carefully!) using the variables `fract` and `numst2`. Compute the first difference and SE as `fract` moves from a low value to a high value for `numst2 == 0`. 
+`predict(fit, type = "response")` returns each observation's $\lambda$ or $\mu$. `glm.nb()` stores $\hat{\theta}$ in `fit$theta`.
 
-- `duration`: The length of time (in months) that a cabinet survives before dissolution.
-- `fract`: Fractionalization index from Rae (1971), measuring the number and relative size of parties in parliament. Higher values indicate more parties of smaller average size (i.e., a more fragmented party system).
-- `numst2`: Numerical status of the cabinet, coded 1 for majority governments and 0 for minority governments.
+:::
 
 ::: sol
-*Solution TBA.*
-::: 
+
+**Solution**
+
+```{r}
+# load packages
+library(tidyverse)
+library(numDeriv)
+library(modelsummary)
+
+# ---- part 1 ----
+# (holland and f come from the chunk above)
+
+# fit the poisson and negative binomial models
+fit_pois <- glm(f, family = poisson, data = holland)
+fit_nb <- MASS::glm.nb(f, data = holland)
+
+# side-by-side table of coefficient and se estimates
+modelsummary(list("Poisson" = fit_pois, "negative binomial" = fit_nb), 
+             stars = TRUE, gof_map = NA)
+
+# the negative binomial's extra parameter
+fit_nb$theta
+
+# the mean and variance of the observed counts
+mean(holland$operations)
+var(holland$operations)
+```
+
+- The coefficient estimates are similar. Both models use the inverse link $e^{X_i\beta}$, so both describe the average count the same way.
+- The standard errors are about two to four times larger for the negative binomial.
+- The Poisson model assumes $\text{Var}(y_i) = E(y_i)$. The observed counts have a mean of about 2.7 and a variance of about 24, so the Poisson standard errors are much too small.
+- $\hat{\theta} \approx 0.37$ is the extra parameter that lets the variance exceed the mean. Smaller values allow more extra variance.
+
+```{r}
+# ---- part 2 ----
+
+# function to compute the first difference
+fd_fn <- function(beta, hi, lo) {
+  exp(hi%*%beta) - exp(lo%*%beta)
+}
+
+# make X_lo
+X_lo <- cbind(
+  "constant"   = 1, # intercept
+  "lower"      = quantile(holland$lower, probs = 0.25), 
+  "vendors"    = median(holland$vendors),
+  "budget"     = median(holland$budget),
+  "population" = median(holland$population)
+)
+
+# make X_hi by modifying the relevant value of X_lo
+X_hi <- X_lo
+X_hi[, "lower"] <- quantile(holland$lower, probs = 0.75) 
+
+# function to compute the first difference and its 90% ci for a fitted model
+fd_ci <- function(fit, hi, lo) {
+  
+  # pull the estimates out of the fitted model
+  beta_hat <- coef(fit)
+  v_hat <- vcov(fit)
+  
+  # invariance property
+  fd_hat <- fd_fn(beta_hat, hi, lo)
+  
+  # delta method
+  grad_fd <- grad(
+    func = fd_fn, 
+    x = beta_hat, 
+    hi = hi,
+    lo = lo)  
+  se_fd_hat <- sqrt(grad_fd %*% v_hat %*% grad_fd)
+  
+  # estimate and 90% ci
+  c(fd_hat = fd_hat, 
+    lwr = fd_hat - 1.64*se_fd_hat, 
+    upr = fd_hat + 1.64*se_fd_hat)
+}
+
+# the change in expected operations as lower moves from its 25th to its 75th percentile
+round(fd_ci(fit_pois, X_hi, X_lo), 2)
+round(fd_ci(fit_nb, X_hi, X_lo), 2)
+```
+
+- The estimates nearly agree at about two fewer operations in both models.
+- The negative binomial's 90% confidence interval is about three times wider and includes zero.
+- Notice that the two models give about the same estimate, but different conclusions about how precise that estimate is.
+
+```{r}
+#| message: false
+#| warning: false
+
+# ---- part 3 ----
+
+# each observation has its own lambda and mu, but theta is constant
+lambda_hat <- predict(fit_pois, type = "response")
+mu_hat <- predict(fit_nb, type = "response")
+theta_hat <- fit_nb$theta
+
+# create observed data set
+observed_data <- tibble(operations = holland$operations, 
+                        type = "observed")
+
+# simulate five fake data sets from each model
+set.seed(1234)
+sim_list <- list()
+for (i in 1:5) {
+  sim_list[[i]] <- bind_rows(
+    tibble(operations = rpois(nrow(holland), lambda = lambda_hat),
+           type = paste0("Poisson #", i)),
+    tibble(operations = rnbinom(nrow(holland), mu = mu_hat, size = theta_hat),
+           type = paste0("negative binomial #", i))
+  )
+}
+
+# combine the fake and observed data sets
+gg_data <- bind_rows(sim_list) |>
+  bind_rows(observed_data) |>
+  glimpse()
+
+# plot the observed and fake data sets
+ggplot(gg_data, aes(x = operations)) + 
+  geom_histogram() + 
+  facet_wrap(vars(type))
+
+# count the zeros and find the largest count in each data set
+gg_data |>
+  group_by(type) |>
+  summarize(zeros = sum(operations == 0), 
+            sd = sd(operations), 
+            max = max(operations)) |>
+  print(n = 11)
+```
+
+- 18 of the 34 districts have zero operations. The observed SD is about 4.9 and the largest count is 16.
+- The Poisson data sets have too few zeros (about four to nine) and too little spread (SD of about 2.3 to 3.1). None of them produces a count larger than 10.
+- The negative binomial data sets get the number of zeros about right (16 to 20) and do produce large counts. But the largest counts are sometimes much larger than anything observed, such as the 127 in the first data set.
+
+:::
 
 ## Clark and Golder (2006); *t* distribution {ref="clark-golder-t"}
 
@@ -466,12 +577,20 @@ data.frame(term = names(coef(fit)),
   theme_latex(placement = "H")
 ```
 
-*Hints:* 
+::: hint
+
+The log-likelihood has the same shape as the one you wrote for [clark-golder-normal]{.ex-ref}, with $\nu$ as a third parameter in `par`.
+
+:::
+
+::: hint
 
 - The R function `metRology::dt.scaled(..., log = TRUE)` computes the required log-likelihood for each observation. 
 - You need to estimate the $\sigma =$`sd` and $\nu =$ `df` parameters, but they are fixed. 
 - Model the `mean` as a with the usual linear predictor $X_i\beta$. No inverse link function is needed, because `mean` is unbounded.
 - When creating the log-likelihood function, the first argument must be a single parameter vector that include all parameters stacked into a single vector. I often call this `par`. Then extract `par` into `beta`, `sigma`, and `nu` immediately inside the function.
+
+:::
 
 ::: sol
 
@@ -529,7 +648,7 @@ The estimate of the degrees of freedom parameter is 2.3 with a standard error of
 
 We have covered a wide range of tools. Use the list below as a menu and sketch the connections between two or more ideas. Represent the connections in any format you prefer; a diagram with arrows might make sense to you or you might prefer short written explanations. Simply noting that two things are connected is insufficient---most things are related in this course. Focus on *why ideas are connected* or *how they fit together*. 
 
-*Hint: Definitely describe the connections between maximum likelihood estimates, Fisher information, the invariance property, and the delta method. Try for 2-3 other collections of 3 to 8 things that fit together as well.
+*Hint: Definitely describe the connections between maximum likelihood estimates, Fisher information, the invariance property, and the delta method. Try for 2-3 other collections of 3 to 8 things that fit together as well.*
 
 - **Mathematical Tools**: log, first derivative, second derivative, gradient, Hessian, matrix multiplication, pdf/pmf, expected value, variance 
 - **Engines**: OLS, maximum likelihood, method of moments; also likelihood function, log-likelihood function
@@ -540,21 +659,7 @@ We have covered a wide range of tools. Use the list below as a menu and sketch t
 - **Estimate Evaluation**: predictive distribution
 - **Estimator Evaluation**: sampling distribution, bias, consistency, coverage, asymptotic distribution of estimator, Monte Carlo simulation
 - **R**: `optim()`, `numDeriv()::grad()`, `%*%`, density + distribution + quantile + random number generator functions for various distributions
-- **Data Sets**: toothpaste cap, `ZeligData::turnout`, Clark and Golder's (2006) `crdata::cg2006`, Lahman's `batting_average`, WDI, `faithful`, Herron's `hockey`, Holland's (2015) `crdata::holland2015`, the UF Election Lab turnout rates, `ZeligData::coalition`
-
-::: sol
-*No solution intended.*
-::: 
-
-## Be Creative {ref="be-creative"}
-
-We know how to build models.
-
-1. Choose a distribution for $y$. Many choices here.
-1. Choose the parameter(s) to model as functions of design matrix $X$ and those to model as fixed. 1-3 options here, usually.
-1. Choose an inverse link function that maps the unbounded linear predictor $X_i \beta \in \mathbb R$ onto the parameter space of the modeled parameters. A few options here.
-
-Make creative (or standard) choices at each step; see what model you can build! What sorts of data might your model fit well? (No need to fit this model or write the exact log-likelihood.)
+- **Data Sets**: toothpaste cap, `ZeligData::turnout`, Clark and Golder's (2006) `crdata::cg2006`, Lahman's `batting_average`, WDI, Herron's `hockey`, Holland's (2015) `crdata::holland2015`, the UF Election Lab turnout rates
 
 ::: sol
 *No solution intended.*
