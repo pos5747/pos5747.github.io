@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 4 Exercises – Modern Statistical Modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7ad6542725e80d1433b1f8ee26c2a1fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZV1MJ9E632"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="exercises.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Modern Statistical Modeling</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://pos5747.github.io/notes/"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research-project.html"> 
+<span class="menu-text">Research Project</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../workshop.html"> 
+<span class="menu-text">Workshop</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Exercises</h2>
+   
+  <ul class="collapse">
+  <li><a href="#ex-1" id="toc-ex-1" class="nav-link active" data-scroll-target="#ex-1"><span class="ex-num">Exercise 1</span> Berk (2010)</a></li>
+  <li><a href="#ex-2" id="toc-ex-2" class="nav-link" data-scroll-target="#ex-2"><span class="ex-num">Exercise 2</span> Clark and Golder (2006), normal distribution</a></li>
+  <li><a href="#ex-3" id="toc-ex-3" class="nav-link" data-scroll-target="#ex-3"><span class="ex-num">Exercise 3</span> Long (1997) or King (1998)</a></li>
+  <li><a href="#ex-4" id="toc-ex-4" class="nav-link" data-scroll-target="#ex-4"><span class="ex-num">Exercise 4</span> Probit</a></li>
+  <li><a href="#ex-5" id="toc-ex-5" class="nav-link" data-scroll-target="#ex-5"><span class="ex-num">Exercise 5</span> Russett and Oneal (2001)</a></li>
+  <li><a href="#ex-6" id="toc-ex-6" class="nav-link" data-scroll-target="#ex-6"><span class="ex-num">Exercise 6</span> <em>Optional</em>: Berry, DeMeritt, and Esarey (2010)</a></li>
+  <li><a href="#ex-7" id="toc-ex-7" class="nav-link" data-scroll-target="#ex-7"><span class="ex-num">Exercise 7</span> Holland (2015)</a></li>
+  <li><a href="#ex-8" id="toc-ex-8" class="nav-link" data-scroll-target="#ex-8"><span class="ex-num">Exercise 8</span> King et al.&nbsp;(1990)</a></li>
+  <li><a href="#ex-9" id="toc-ex-9" class="nav-link" data-scroll-target="#ex-9"><span class="ex-num">Exercise 9</span> Clark and Golder (2006); <em>t</em> distribution</a></li>
+  <li><a href="#ex-10" id="toc-ex-10" class="nav-link" data-scroll-target="#ex-10"><span class="ex-num">Exercise 10</span> Connections</a></li>
+  <li><a href="#ex-11" id="toc-ex-11" class="nav-link" data-scroll-target="#ex-11"><span class="ex-num">Exercise 11</span> Be Creative</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 4 Exercises</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="ex-notice ex-notice-wait" data-unlock="2026-09-18T12:00:00-04:00">Complete solutions open <strong>Friday, September 18 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<p><em>Note: These exercises are tending toward “tedious” and “rote.” However, I want to make sure that we understand the implementation of the basic framework, so there’s a lot of tedious repetition in this homework.</em></p>
+<section id="ex-1" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Berk (2010)</h2>
+<p>Read <span class="citation" data-cites="berk2010">Berk (<a href="#ref-berk2010" role="doc-biblioref">2010</a>, <a href="https://pos5747.github.io/notes/readings/Berk2010.pdf">pdf</a>)</span>.</p>
+<ol type="1">
+<li>Berk distinguishes Level I (descriptive), Level II (statistical inference), and Level III (causal inference) regression analyses. Summarize the features of each level in your own words. Explain why Berk argues that most regressions in criminology are Level I. Does his claim about criminology apply to political science as well?</li>
+<li>Select a recent empirical article in your subfield that uses non-experimental (i.e., observational) data. Identify how the authors use regression. At what level does the authors <em>claim</em> to operate? Use direct quotes if possible. At what level does the analysis <em>actually</em> operate? Explain.</li>
+<li>Berk critiques observational regression treated as causal. He also lists common responses (e.g., “the assumptions are reasonable,” “we all have models,” “you have to make assumptions to make progress”). Pick one response and assess whether you find it persuasive. Defend your position. How might you design a study in your area that could move from Level I or II toward Level III without weak rhetorical defenses? Perhaps give an example.</li>
+<li>Berk concludes that, with rare exceptions, regression analyses of observational data should be treated as Level I. Do you agree? If you take Berk’s view seriously, what happens to publication standards, peer review, funding, and training?</li>
+</ol>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-2" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Clark and Golder (2006), normal distribution</h2>
+<p><span class="citation" data-cites="clark2006">Clark and Golder (<a href="#ref-clark2006" role="doc-biblioref">2006</a>)</span> fit the following regression model (that we’ve seen several times now).</p>
+<p><img src="images/clipboard-1773489089.png" class="img-fluid"></p>
+<ol type="1">
+<li>Use an R formula and <code>model.matrix()</code> to create the required design matrix <code>X</code>. Think carefully about the formula needed.</li>
+<li>Reproduce their estimates with the matrix multiplication <span class="math inline">\((X^\top X)^{-1} X^\top y\)</span> or <code>solve(t(X) %*% X) %*% t(X) %*% y</code>.</li>
+<li>Reproduce their estimates using a normal linear model with <code>optim()</code>. You can easily adapt code like <code>est_logit()</code> from the notes, remembering that you must combine all parameters (i.e., the vector <span class="math inline">\(\beta\)</span> and scalar <span class="math inline">\(\sigma\)</span>) into a single vector <span class="math inline">\(\theta\)</span> to give <code>optim()</code>. See the template below.</li>
+</ol>
+<pre><code>normal_ll &lt;- function(par, y, X) {
+  beta  &lt;- par[1:ncol(X)]     # pull out the vector of betas
+  sigma &lt;- par[ncol(X) + 1]   # pull out the scalar sigma
+  ... [and so on]
+}</code></pre>
+<p>The least squares and ML estimates of the coefficients should match; for the normal linear model, the ML estimate is just the least squares solution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load Clark and Golder's data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cg <span class="ot">&lt;-</span> crdata<span class="sc">::</span>cg2006  <span class="co"># from my data package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-3" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Long (1997) or King (1998)</h2>
+<p>Read <em>either</em> <span class="citation" data-cites="King1998">King (<a href="#ref-King1998" role="doc-biblioref">1998</a>)</span> pp.&nbsp;97-115 (section 5 through 5.3) <strong>OR</strong> <span class="citation" data-cites="Long1997">Long (<a href="#ref-Long1997" role="doc-biblioref">1997</a>)</span> pp.&nbsp;34-84 (chapter 3). Write a short comparison to our notes on the logit model. Highlight the differences you find most interesting or important.</p>
+<p>Readings are <a href="https://www.dropbox.com/scl/fo/7b9bvt51jrthm25ssvd67/AJjPxAAOphm_K00S1q3_oM0?rlkey=88wab9fsove0tjyfpkjedzj4n&amp;dl=0">here</a>.</p>
+<p><em>Hint:</em> You might notice differences in their (i) notation, (ii) justifications for the link function, (iii) recommended quantities of interest, or (iv) treatment of the LPM (foil vs.&nbsp;viable approximation). Pick a couple of these contrasts (or others you discover). Explain each clearly in your own terms. Keep it concise and focused; perhaps 300 words or so.</p>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-4" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Probit</h2>
+<p>The probit model uses the cdf of the normal distribution (e.g., often denoted as <span class="math inline">\(\Phi(\cdot)\)</span>; <code>pnorm()</code> in R) rather than the inverse logit.</p>
+<ol type="1">
+<li>Adapt the code from the notes to fit a probit model (or see <a href="https://gist.github.com/carlislerainey/7798659a9d5d8decb87352068a2d1655">this Gist</a>). Use the same <code>ZeligData::turnout</code> data and model specification <code>vote ~ age + educate + income + race</code>.</li>
+<li>Compare your probit coefficients to the logit coefficients from the notes. Notice that <a href="https://statmodeling.stat.columbia.edu/2006/06/06/take_logit_coef/">multiplying probit coefficients by 1.6</a> gives you roughly the logit coefficients.</li>
+<li>Adapt the code to compute the first difference and 90% confidence interval. Compare to the first difference and 90% confidence interval from the notes.</li>
+</ol>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-5" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Russett and Oneal (2001)</h2>
+<p>This exercise uses data from <span class="citation" data-cites="Russett2001">Russett and Oneal (<a href="#ref-Russett2001" role="doc-biblioref">2001</a>)</span>. The model the probability of a dispute in a dyad-year as a function of several predictors. A quick summary of their book is <a href="https://adambrown.info/p/notes/russett_and_oneal_triangulating_peace">here</a>. For our purposes, we’ll focus on <code>dem.lo</code>, which is the lower of the two Polity scores in the dyad. For more details on the variables, see <code>?crdata::ro2001</code> or Table 1 on p.&nbsp;277 of <span class="citation" data-cites="oneal1997">Oneal and Russet (<a href="#ref-oneal1997" role="doc-biblioref">1997</a>)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load russett and oneal data from {crdata}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ro <span class="ot">&lt;-</span> crdata<span class="sc">::</span>ro2001</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fit the logit model <code>dispute ~ allies + lcaprat2 + contiguity + dem.lo + logdstab + power</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reproduce their simplest logistic regression model p. 314, table A3.1</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> dispute <span class="sc">~</span> allies <span class="sc">+</span> lcaprat2 <span class="sc">+</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  contiguity <span class="sc">+</span> dem.lo <span class="sc">+</span> logdstab <span class="sc">+</span> power</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">data =</span> ro)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># extract coefficient estimates</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># extract covariance estimates</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>v_hat <span class="ot">&lt;-</span> <span class="fu">vcov</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can make a summary of coefficient estimates with <code>modelsummary()</code>, but it isn’t very informative about the quantity of interest. We want to know how the probability of a dispute is changing!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(fit, <span class="at">stars =</span> <span class="cn">TRUE</span>, <span class="at">gof_map =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Profiled confidence intervals may take longer time to compute.
+  Use `ci_method="wald"` for faster computation of CIs.</code></pre>
+</div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_41l9sa8zmj0i3savgjrx = TinyTable.createTableFunctions("tinytable_41l9sa8zmj0i3savgjrx");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '14', j: 2 } ], css_id: 'tinytable_css_cvpcrb52uluhls4wpsyp',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 } ], css_id: 'tinytable_css_iuw171k4btq96riiivkt',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_uta3wr7s1j2flxbfefn9',}, 
+          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_bjp8atqigf2n6ksizbqn',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_tl2b1t0lwqgy737b4tlq',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_zxm6mir7oiyh8ve4sonf',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_41l9sa8zmj0i3savgjrx.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_41l9sa8zmj0i3savgjrx td.tinytable_css_cvpcrb52uluhls4wpsyp, #tinytable_41l9sa8zmj0i3savgjrx th.tinytable_css_cvpcrb52uluhls4wpsyp {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_41l9sa8zmj0i3savgjrx td.tinytable_css_iuw171k4btq96riiivkt, #tinytable_41l9sa8zmj0i3savgjrx th.tinytable_css_iuw171k4btq96riiivkt { text-align: center }
+    #tinytable_41l9sa8zmj0i3savgjrx td.tinytable_css_uta3wr7s1j2flxbfefn9, #tinytable_41l9sa8zmj0i3savgjrx th.tinytable_css_uta3wr7s1j2flxbfefn9 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_41l9sa8zmj0i3savgjrx td.tinytable_css_bjp8atqigf2n6ksizbqn, #tinytable_41l9sa8zmj0i3savgjrx th.tinytable_css_bjp8atqigf2n6ksizbqn {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_41l9sa8zmj0i3savgjrx td.tinytable_css_tl2b1t0lwqgy737b4tlq, #tinytable_41l9sa8zmj0i3savgjrx th.tinytable_css_tl2b1t0lwqgy737b4tlq { text-align: left }
+    #tinytable_41l9sa8zmj0i3savgjrx td.tinytable_css_zxm6mir7oiyh8ve4sonf, #tinytable_41l9sa8zmj0i3savgjrx th.tinytable_css_zxm6mir7oiyh8ve4sonf {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_41l9sa8zmj0i3savgjrx" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">(1)</th>
+              </tr>
+        </thead>
+        <tfoot><tr><td colspan="2">+ p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td></tr></tfoot>
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">(Intercept)</td>
+                  <td data-row="1" data-col="2">-0.468*</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1"></td>
+                  <td data-row="2" data-col="2">(0.186)</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">alliesNot Allies</td>
+                  <td data-row="3" data-col="2">0.694***</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1"></td>
+                  <td data-row="4" data-col="2">(0.063)</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">lcaprat2</td>
+                  <td data-row="5" data-col="2">-0.264***</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1"></td>
+                  <td data-row="6" data-col="2">(0.019)</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">contiguityNoncontiguous</td>
+                  <td data-row="7" data-col="2">-0.980***</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1"></td>
+                  <td data-row="8" data-col="2">(0.073)</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">dem.lo</td>
+                  <td data-row="9" data-col="2">-0.091***</td>
+                </tr>
+                <tr>
+                  <td data-row="10" data-col="1"></td>
+                  <td data-row="10" data-col="2">(0.005)</td>
+                </tr>
+                <tr>
+                  <td data-row="11" data-col="1">logdstab</td>
+                  <td data-row="11" data-col="2">-0.306***</td>
+                </tr>
+                <tr>
+                  <td data-row="12" data-col="1"></td>
+                  <td data-row="12" data-col="2">(0.026)</td>
+                </tr>
+                <tr>
+                  <td data-row="13" data-col="1">powerMinor Powers</td>
+                  <td data-row="13" data-col="2">-0.467***</td>
+                </tr>
+                <tr>
+                  <td data-row="14" data-col="1"></td>
+                  <td data-row="14" data-col="2">(0.070)</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p>Use <code>beta_hat</code> and <code>v_hat</code> from above with the invariance property and the delta method (via <code>numDeriv::grad()</code> and <code>for</code> loops) to compute the following quantities of interest and their 90% confidence interval.</p>
+<ol type="1">
+<li>Plot the estimated probability (i.e., expected value) of a dispute as <code>dem.lo</code> varies from -10 to 10 (in small steps, of maybe one unit or 0.1 units). Fix all other numeric variables at their medians and <code>alliesNot Allies</code>, <code>contiguityNoncontiguous</code>, and <code>powerMinor Powers</code> at 0. Interpret. Compare the information in this plot to the information in the table above. (Aside: How can these probabilities vary nonlinearly if the <code>dem.lo</code> variable is included in the linear predictor <em>linearly</em>?)</li>
+<li>What is the change in the probability of a dispute (i.e., “first difference”; <span class="math inline">\(\hat{\pi}_{max} - \hat{\pi}_{min}\)</span>) when <code>dem.lo</code> changes from its <em>minimum</em> to its <em>maximum</em>, fixing the other variables at the values described above? Notice that you can “kinda see” this value in the plot, but computing it directly gives you the exact value and the SE. The SE cannot be inferred from the plot.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ol>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-6" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> <em>Optional</em>: Berry, DeMeritt, and Esarey (2010)</h2>
+<p>Replicate Figure 4 <span class="citation" data-cites="berry2010">Berry, DeMeritt, and Esarey (<a href="#ref-berry2010" role="doc-biblioref">2009</a>)</span> using <code>glm()</code> (or <code>optim()</code> if you want more practice), the invariance property, and the delta method with numerical gradients using <code>numDeriv::grad()</code>. You can find the <code>scobit.dta</code> data set <a href="https://www.dropbox.com/scl/fo/pvqagocje2ulry4ivnn99/AGd0lsPZvFXuveiyCLCArkE?rlkey=gd3ntw9m44qfaw2ye5y3ltanj&amp;dl=0">here</a>.</p>
+<p><em>Hints</em></p>
+<ul>
+<li>The <code>scobit.dta</code> data has variables that have been multiplied and squared, etc. <em>Do not use these variables.</em> Use R formulas to handle these interactions and polynomials.</li>
+<li>Reading down Table 1 on p.&nbsp;263, the variables you want are: <code>newvote</code>, <code>closing</code>, <code>neweduc</code>, <code>age</code>, <code>south</code>, and <code>gov</code>.</li>
+<li>The eight distinct values (i.e., 1, 2,…, 8) of <code>neweduc</code> correspond to the eight categories that Figure 4 presents along the x-axis.</li>
+<li>You must compute a <em>first difference</em> changing <code>closing</code> from 0 to its mean. However, you must compute this first difference for all eight values of <code>neweduc</code> (i.e., Figure 4 shows 8 first differences). You’ll need a plan to compute these <em>eight</em> first differences compactly. Perhaps use a for-loop (or <code>purrr::map</code> if you want a new challenge).</li>
+</ul>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-7" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Holland (2015)</h2>
+<p><span class="citation" data-cites="Holland2015">Holland (<a href="#ref-Holland2015" role="doc-biblioref">2015</a>)</span> writes:</p>
+<blockquote class="blockquote">
+<p>My first hypothesis is that [the number of] enforcement operations [<code>operations</code>] drop off with the fraction of poor residents [<code>lower</code>] in an electoral district. So district poverty should be a negative and significant predictor of enforcement, but only in politically decentralized cities [Lima and Santiago]. Poverty should have no relationship with enforcement in politically centralized cities [Bogota] once one controls for the number of vendors (p.&nbsp;362)”</p>
+</blockquote>
+<p>In the lecture, we used <code>optim()</code> to fit a <em>Poisson regression model</em> [<a href="https://gist.github.com/carlislerainey/7a5cb5d23115079986092433910249b4">Gist</a>] and a <em>negative binomial regression model</em> to Holland’s data for Santiago.</p>
+<ol type="1">
+<li>Fit the same model below using <code>glm()</code> and <code>glm.nb()</code>. Compare the coefficients and standard errors. Use {modelsummary} to make a side-by-side table of coefficient and SE estimates. Explain the differences in the estimates across models.</li>
+<li>Compute a relevant quantity of interest. Explain the differences in the estimates across models.</li>
+<li>Simulate the five fake data sets from the two fitted models (i.e., the predictive distribution). Compare the five data sets to the observed data. <em>Note:</em> Now that we have covariates, each observation has it’s <em>own</em> parameters, to make sure to that <span class="math inline">\(\lambda\)</span>/<code>lambda</code> and <span class="math inline">\(\mu\)</span>/<code>mu</code> are specific to each observation for the Poisson and NB models, respectively. You can do this by giving <code>rpois()</code> a <em>vector</em> <code>lambda</code> of length <code>length(y)</code> or <code>nrow(X)</code> rather than a scalar, for example. <span class="math inline">\(\theta\)</span>/<code>size</code> is also needed to simulate fake data from the negative binomial distribution, but it’s constant.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>holland <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">==</span> <span class="st">"santiago"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># formula corresponds to model 1 for each city in holland (2015) table 2</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> operations <span class="sc">~</span> lower <span class="sc">+</span> vendors <span class="sc">+</span> budget <span class="sc">+</span> population</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-8" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> King et al.&nbsp;(1990)</h2>
+<p>The <code>ZeligData::coalition</code> data comes from <span class="citation" data-cites="King1990">King et al. (<a href="#ref-King1990" role="doc-biblioref">1990</a>)</span>. The key variable is <code>duration</code>, which is the survival times of government coalitions in parliamentary democracies. Model <code>duration</code> using the Weibull distribution (<em>as described <a href="https://pos5747.github.io/notes/wk04/04-big-four.html#weibull">in the notes</a></em>–make sure to review this carefully!) using the variables <code>fract</code> and <code>numst2</code>. Compute the first difference and SE as <code>fract</code> moves from a low value to a high value for <code>numst2 == 0</code>.</p>
+<ul>
+<li><code>duration</code>: The length of time (in months) that a cabinet survives before dissolution.</li>
+<li><code>fract</code>: Fractionalization index from Rae (1971), measuring the number and relative size of parties in parliament. Higher values indicate more parties of smaller average size (i.e., a more fragmented party system).</li>
+<li><code>numst2</code>: Numerical status of the cabinet, coded 1 for majority governments and 0 for minority governments.</li>
+</ul>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-9" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> Clark and Golder (2006); <em>t</em> distribution</h2>
+<p>The code below reproduces the coefficient estimates for the normal linear model from Clark and Golder (2006) as shown in an earlier exercise. Re-estimate their model using a location-scale <em>t</em> distribution (see Exercise 11 for Week 2) modeling the <code>mean</code> <span class="math inline">\(\mu = X\beta\)</span>. Use ML to estimate the coefficients <span class="math inline">\(\beta\)</span>, the scale <span class="math inline">\(\sigma\)</span>, and the df <span class="math inline">\(\nu\)</span>. Comment on the differences between the coefficient estimates and standard errors using the normal model and the <em>t</em>. What does the ML estimate <span class="math inline">\(\hat{\nu}\)</span> of the degrees of freedom parameter <span class="math inline">\(\nu\)</span> tell us about Clark and Golder’s data?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>cg <span class="ot">&lt;-</span> crdata<span class="sc">::</span>cg2006</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> enep <span class="sc">~</span> eneg<span class="sc">*</span><span class="fu">log</span>(average_magnitude) <span class="sc">+</span> eneg<span class="sc">*</span>upper_tier <span class="sc">+</span> en_pres<span class="sc">*</span>proximity</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># normal model</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">data =</span> cg, <span class="at">family =</span> gaussian)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For convenience, here is how me might make a quick table using <code>tinytable::tt()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a table</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">term =</span> <span class="fu">names</span>(<span class="fu">coef</span>(fit)),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">beta_hat =</span> <span class="fu">coef</span>(fit),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">se =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">vcov</span>(fit)))) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tt</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">escape =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_latex</span>(<span class="at">placement =</span> <span class="st">"H"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_zhore9wsojnzmd6itpjc = TinyTable.createTableFunctions("tinytable_zhore9wsojnzmd6itpjc");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '9', j: 1 }, { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_9aivzuzv92ap8pala679',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_g3kv949uhccati10bcf0',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_zhore9wsojnzmd6itpjc.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_zhore9wsojnzmd6itpjc td.tinytable_css_9aivzuzv92ap8pala679, #tinytable_zhore9wsojnzmd6itpjc th.tinytable_css_9aivzuzv92ap8pala679 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_zhore9wsojnzmd6itpjc td.tinytable_css_g3kv949uhccati10bcf0, #tinytable_zhore9wsojnzmd6itpjc th.tinytable_css_g3kv949uhccati10bcf0 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_zhore9wsojnzmd6itpjc" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">term</th>
+                <th scope="col" data-row="0" data-col="2">beta_hat</th>
+                <th scope="col" data-row="0" data-col="3">se</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">(Intercept)</td>
+                  <td data-row="1" data-col="2">2.916</td>
+                  <td data-row="1" data-col="3">0.176</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">eneg</td>
+                  <td data-row="2" data-col="2">0.112</td>
+                  <td data-row="2" data-col="3">0.071</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">log(average_magnitude)</td>
+                  <td data-row="3" data-col="2">0.078</td>
+                  <td data-row="3" data-col="3">0.116</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">upper_tier</td>
+                  <td data-row="4" data-col="2">-0.057</td>
+                  <td data-row="4" data-col="3">0.02</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">en_pres</td>
+                  <td data-row="5" data-col="2">0.264</td>
+                  <td data-row="5" data-col="3">0.064</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1">proximity</td>
+                  <td data-row="6" data-col="2">-3.098</td>
+                  <td data-row="6" data-col="3">0.352</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">eneg:log(average_magnitude)</td>
+                  <td data-row="7" data-col="2">0.264</td>
+                  <td data-row="7" data-col="3">0.067</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1">eneg:upper_tier</td>
+                  <td data-row="8" data-col="2">0.059</td>
+                  <td data-row="8" data-col="3">0.014</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">en_pres:proximity</td>
+                  <td data-row="9" data-col="2">0.683</td>
+                  <td data-row="9" data-col="3">0.137</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p><em>Hints:</em></p>
+<ul>
+<li>The R function <code>metRology::dt.scaled(..., log = TRUE)</code> computes the required log-likelihood for each observation.</li>
+<li>You need to estimate the <span class="math inline">\(\sigma =\)</span><code>sd</code> and <span class="math inline">\(\nu =\)</span> <code>df</code> parameters, but they are fixed.</li>
+<li>Model the <code>mean</code> as a with the usual linear predictor <span class="math inline">\(X_i\beta\)</span>. No inverse link function is needed, because <code>mean</code> is unbounded.</li>
+<li>When creating the log-likelihood function, the first argument must be a single parameter vector that include all parameters stacked into a single vector. I often call this <code>par</code>. Then extract <code>par</code> into <code>beta</code>, <code>sigma</code>, and <code>nu</code> immediately inside the function.</li>
+</ul>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-10" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> Connections</h2>
+<p>We have covered a wide range of tools. Use the list below as a menu and sketch the connections between two or more ideas. Represent the connections in any format you prefer; a diagram with arrows might make sense to you or you might prefer short written explanations. Simply noting that two things are connected is insufficient—most things are related in this course. Focus on <em>why ideas are connected</em> or <em>how they fit together</em>.</p>
+<p>*Hint: Definitely describe the connections between maximum likelihood estimates, Fisher information, the invariance property, and the delta method. Try for 2-3 other collections of 3 to 8 things that fit together as well.</p>
+<ul>
+<li><strong>Mathematical Tools</strong>: log, first derivative, second derivative, gradient, Hessian, matrix multiplication, pdf/pmf, expected value, variance</li>
+<li><strong>Engines</strong>: OLS, maximum likelihood, method of moments; also likelihood function, log-likelihood function</li>
+<li><strong>Distributions</strong>: Bernoulli, exponential, Weibull, log-normal, Poisson, negative binomial, <em>t</em>, normal, beta, uniform</li>
+<li><strong>Confidence intervals</strong>: parametric bootstrap, Fisher information, delta method, Wald method</li>
+<li><strong>Hypothesis Tests</strong>: <em>nothing so far</em></li>
+<li><strong>Quantities of Interest</strong>: invariance property, odds, exponential rate/mean, beta shape parameters to mean and variance, expected value, first difference</li>
+<li><strong>Estimate Evaluation</strong>: predictive distribution</li>
+<li><strong>Estimator Evaluation</strong>: sampling distribution, bias, consistency, coverage, asymptotic distribution of estimator, Monte Carlo simulation</li>
+<li><strong>R</strong>: <code>optim()</code>, <code>numDeriv()::grad()</code>, <code>%*%</code>, density + distribution + quantile + random number generator functions for various distributions</li>
+<li><strong>Data Sets</strong>: toothpaste cap, <code>ZeligData::turnout</code>, Clark and Golder’s (2006) <code>crdata::cg2006</code>, Lahman’s <code>batting_average</code>, WDI, <code>faithful</code>, Herron’s <code>hockey</code>, Holland’s (2015) <code>crdata::holland2015</code>, the UF Election Lab turnout rates, <code>ZeligData::coalition</code></li>
+</ul>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="ex-11" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-11"><span class="ex-num">Exercise 11</span> Be Creative</h2>
+<p>We know how to build models.</p>
+<ol type="1">
+<li>Choose a distribution for <span class="math inline">\(y\)</span>. Many choices here.</li>
+<li>Choose the parameter(s) to model as functions of design matrix <span class="math inline">\(X\)</span> and those to model as fixed. 1-3 options here, usually.</li>
+<li>Choose an inverse link function that maps the unbounded linear predictor <span class="math inline">\(X_i \beta \in \mathbb R\)</span> onto the parameter space of the modeled parameters. A few options here.</li>
+</ol>
+<p>Make creative (or standard) choices at each step; see what model you can build! What sorts of data might your model fit well? (No need to fit this model or write the exact log-likelihood.)</p>
+<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button></div>
+</section>
+<section id="references" class="level1 nonumber ex-section">
+
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-berk2010" class="csl-entry" role="listitem">
+Berk, Richard. 2010. <span>“What You Can and Can<span>’</span>t Properly Do with Regression.”</span> <em>Journal of Quantitative Criminology</em> 26 (4): 481–87. <a href="https://doi.org/10.1007/s10940-010-9116-4">https://doi.org/10.1007/s10940-010-9116-4</a>.
+</div>
+<div id="ref-berry2010" class="csl-entry" role="listitem">
+Berry, William D., Jacqueline H. R. DeMeritt, and Justin Esarey. 2009. <span>“Testing for Interaction in Binary Logit and Probit Models: Is a Product Term Essential?”</span> <em>American Journal of Political Science</em> 54 (1): 248–66. <a href="https://doi.org/10.1111/j.1540-5907.2009.00429.x">https://doi.org/10.1111/j.1540-5907.2009.00429.x</a>.
+</div>
+<div id="ref-clark2006" class="csl-entry" role="listitem">
+Clark, William Roberts, and Matt Golder. 2006. <span>“Rehabilitating Duverger<span>’</span>s Theory.”</span> <em>Comparative Political Studies</em> 39 (6): 679–708. <a href="https://doi.org/10.1177/0010414005278420">https://doi.org/10.1177/0010414005278420</a>.
+</div>
+<div id="ref-Holland2015" class="csl-entry" role="listitem">
+Holland, Alisha C. 2015. <span>“The Distributive Politics of Enforcement.”</span> <em>American Journal of Political Science</em> 59 (2): 357–71. <a href="https://doi.org/10.1111/ajps.12125">https://doi.org/10.1111/ajps.12125</a>.
+</div>
+<div id="ref-King1998" class="csl-entry" role="listitem">
+King, Gary. 1998. <em>Unifying Political Methodology: The Likelihood Theory of Statistical Inference</em>. Revised. Ann Arbor, MI: University of Michigan Press.
+</div>
+<div id="ref-King1990" class="csl-entry" role="listitem">
+King, Gary, James E. Alt, Nancy Elizabeth Burns, and Michael Laver. 1990. <span>“A Unified Model of Cabinet Dissolution in Parliamentary Democracies.”</span> <em>American Journal of Political Science</em> 34 (3): 846. <a href="https://doi.org/10.2307/2111401">https://doi.org/10.2307/2111401</a>.
+</div>
+<div id="ref-Long1997" class="csl-entry" role="listitem">
+Long, J. Scott. 1997. <em>Regression Models for Categorical and Limited Dependent Variables</em>. Vol. 7. Advanced Quantitative Techniques in the Social Sciences. Thousand Oaks, CA: Sage.
+</div>
+<div id="ref-oneal1997" class="csl-entry" role="listitem">
+Oneal, John R., and Bruce M. Russet. 1997. <span>“The Classical Liberals Were Right: Democracy, Interdependence, and Conflict, 1950-1985.”</span> <em>International Studies Quarterly</em> 41 (2): 267–94. <a href="https://doi.org/10.1111/1468-2478.00042">https://doi.org/10.1111/1468-2478.00042</a>.
+</div>
+<div id="ref-Russett2001" class="csl-entry" role="listitem">
+Russett, Bruce, and John R. Oneal. 2001. <em>Triangulating Peace: Democracy, Interdependence, and International Organizations</em>. New York: W. W. Norton &amp; Company.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>I usually recommend computing a first difference as a change from the 25th to the 75th percentile, rather than the min-to the max. The min-max comparison can be sensitive to model specification and represent usual, unrealistic scenarios.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<!-- Injected at the end of every exercise page (see _metadata.yml).
+     Two jobs: keep the countdown in the release notice current, and, when
+     `solution-gate: browser` is in force, open the solution panels the moment
+     the release time arrives. Under the default `render` gate there is
+     nothing on the page to open, so the reveal half simply finds nothing. -->
+<script>
+(function () {
+  var notice = document.querySelector(".ex-notice-wait");
+  var pending = Array.prototype.slice.call(
+    document.querySelectorAll(".ex-slot.ex-pending")
+  );
+  if (!notice && !pending.length) return;
+
+  var iso = (notice || pending[0]).getAttribute("data-unlock");
+  var unlock = new Date(iso);
+  if (isNaN(unlock)) return;
+
+  var readout = notice ? notice.querySelector(".ex-countdown") : null;
+
+  function remaining(ms) {
+    var mins = Math.floor(ms / 60000);
+    var days = Math.floor(mins / 1440);
+    var hours = Math.floor((mins % 1440) / 60);
+    if (days >= 1) {
+      return days + (days === 1 ? " day, " : " days, ") +
+             hours + (hours === 1 ? " hour" : " hours");
+    }
+    if (hours >= 1) {
+      var m = mins % 60;
+      return hours + (hours === 1 ? " hour, " : " hours, ") +
+             m + (m === 1 ? " minute" : " minutes");
+    }
+    return mins + (mins === 1 ? " minute" : " minutes");
+  }
+
+  function release() {
+    pending.forEach(function (slot) {
+      slot.classList.remove("ex-pending");
+    });
+    if (notice) {
+      notice.classList.remove("ex-notice-wait");
+      notice.classList.add("ex-notice-open");
+      notice.textContent = pending.length
+        ? "Complete solutions are available. Work each exercise before you open one."
+        : "Complete solutions are due to be posted — reload in a little while.";
+    }
+  }
+
+  function tick() {
+    var left = unlock - new Date();
+    if (left <= 0) { release(); return; }
+    if (readout) readout.textContent = remaining(left);
+    setTimeout(tick, left < 3600000 ? 30000 : 600000);
+  }
+
+  tick();
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/pos5747\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

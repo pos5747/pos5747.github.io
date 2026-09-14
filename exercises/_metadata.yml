@@ -63,3 +63,8 @@ format:
 filters:
   - exercises.lua
   - quarto
+
+# --- citations -------------------------------------------------------------
+# A copy of ../../exercises/references.bib (the PDF sources cite with @key).
+# Weeks that cite render a References section; weeks that do not are unaffected.
+bibliography: references.bib

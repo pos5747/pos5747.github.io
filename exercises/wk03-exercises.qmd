@@ -4,8 +4,6 @@ distributed: 2026-09-08
 show-hints: true
 ---
 
-CTK things to add: references to notes as hints (i.e., links to specific sessions.), references to other questions if there's an important link. missing solution, check that notation in exercises matches notes.
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```

@@ -237,15 +237,43 @@ window.Quarto = {
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-09-11T12:00:00-04:00">Complete solutions open <strong>Friday, September 11 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
-<p>CTK things to add: references to notes as hints (i.e., links to specific sessions.), references to other questions if there’s an important link. missing solution, check that notation in exercises matches notes.</p>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Mean v. median</h2>
 <p>Suppose <span class="math inline">\(y\)</span> follows a normal model with mean <span class="math inline">\(\mu\)</span> and SD <span class="math inline">\(\sigma\)</span>. Then <span class="math inline">\(\operatorname{avg}(y)\)</span> is the <em>best</em> unbiased estimator of <span class="math inline">\(\mu\)</span>. But <span class="math inline">\(\operatorname{median}(y)\)</span> is also an unbiased estimator of <span class="math inline">\(\mu\)</span>. Use a Monte Carlo simulation to show how <span class="math inline">\(\operatorname{avg}(y)\)</span> is a better estimator of <span class="math inline">\(\mu\)</span> than <span class="math inline">\(\operatorname{median}(y)\)</span>.</p>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>See <a href="https://pos5747.github.io/notes/wk03/01-sampling-distribution.html#example-normal-model">Section 4.2</a> of the notes for the sampling distribution of <span class="math inline">\(\operatorname{avg}(y)\)</span> under a normal model, and <a href="https://pos5747.github.io/notes/wk03/01-sampling-distribution.html#example-the-toothpaste-cap-problem">Section 4.1</a> for simulating a sampling distribution.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p>The average is better because the SE of the average estimator is smaller than the SE of the median estimator.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># sample size of y</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>n_mc_sims <span class="ot">&lt;-</span> <span class="dv">10000</span>   <span class="co"># monte carlo repetitions</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># containers</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mean_hat <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_mc_sims)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>median_hat <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_mc_sims)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate many data sets y; compute and store estimates for each</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_mc_sims) {</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  mean_hat[i]   <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  median_hat[i] <span class="ot">&lt;-</span> <span class="fu">median</span>(y)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(mean_hat)  <span class="co"># se of avg estimator</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3131982</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(median_hat)  <span class="co"># se of median estimator</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3683569</code></pre>
+</div>
+</div>
+</div></details>
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Asymptotics as approximations</h2>
@@ -262,7 +290,264 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>For the exponential model, the asymptotic sampling distribution of <span class="math inline">\(\hat{\lambda}\)</span> is <span class="math inline">\(\hat{\lambda} \overset{a}{\sim} N\left(\lambda,\; \frac{\lambda^2}{N}\right)\)</span>.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tinytable_tt_digits =</span> <span class="dv">3</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tinytable_latex_placement =</span> <span class="st">"H"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">50</span>  <span class="co"># sample size</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">10000</span>  <span class="co"># number of mc repetitions</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># loop</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>lambda_hat <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)  <span class="co"># container to store results</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a> y <span class="ot">&lt;-</span>  <span class="fu">rexp</span>(N, <span class="at">rate =</span> lambda)  <span class="co"># simulate data set</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a> lambda_hat[i] <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">mean</span>(y)  <span class="co"># compute and store estimate</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># empirical summaries</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>emp_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(lambda_hat)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>emp_sd   <span class="ot">&lt;-</span> <span class="fu">sd</span>(lambda_hat)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># asymptotic</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>asy_mean <span class="ot">&lt;-</span> lambda</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>asy_sd   <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(lambda<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> N)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co"># data frame of results</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">Statistic   =</span> <span class="fu">c</span>(<span class="st">"Mean"</span>, <span class="st">"SD"</span>),</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">Empirical   =</span> <span class="fu">c</span>(emp_mean, emp_sd),</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">Asymptotic  =</span> <span class="fu">c</span>(asy_mean, asy_sd)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co"># print table</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="fu">tt</span>(</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  res,</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits  =</span> <span class="dv">3</span>,   </span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">align   =</span> <span class="st">"lrr"</span>,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_zwumf4saz2p0psk8xh1n = TinyTable.createTableFunctions("tinytable_zwumf4saz2p0psk8xh1n");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '2', j: 1 }, { i: '2', j: 2 }, { i: '2', j: 3 } ], css_id: 'tinytable_css_z4idm2p7tfwr8qhh5rq0',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_zf7utkxabm5k2dvxlclc',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_zwumf4saz2p0psk8xh1n.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_zwumf4saz2p0psk8xh1n td.tinytable_css_z4idm2p7tfwr8qhh5rq0, #tinytable_zwumf4saz2p0psk8xh1n th.tinytable_css_z4idm2p7tfwr8qhh5rq0 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_zwumf4saz2p0psk8xh1n td.tinytable_css_zf7utkxabm5k2dvxlclc, #tinytable_zwumf4saz2p0psk8xh1n th.tinytable_css_zf7utkxabm5k2dvxlclc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_zwumf4saz2p0psk8xh1n" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">Statistic</th>
+                <th scope="col" data-row="0" data-col="2">Empirical</th>
+                <th scope="col" data-row="0" data-col="3">Asymptotic</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">Mean</td>
+                  <td data-row="1" data-col="2">2.04</td>
+                  <td data-row="1" data-col="3">2</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">SD</td>
+                  <td data-row="2" data-col="2">0.293</td>
+                  <td data-row="2" data-col="3">0.283</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># quantile comparison table</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.10</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.90</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>emp_q <span class="ot">&lt;-</span> <span class="fu">quantile</span>(lambda_hat, <span class="at">probs =</span> probs)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>asy_q <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(probs, <span class="at">mean =</span> asy_mean, <span class="at">sd =</span> asy_sd)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># combine into data frame</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>quant <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">p =</span> probs,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">empirical =</span> emp_q,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">asymptotic =</span> asy_q,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">difference =</span> emp_q <span class="sc">-</span> asy_q</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># make table</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">tt</span>(</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  quant,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits  =</span> <span class="dv">3</span>,   <span class="co"># 3 decimals for numbers</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">align   =</span> <span class="st">"lrr"</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_xnkxqhf2ne6pnk578lli = TinyTable.createTableFunctions("tinytable_xnkxqhf2ne6pnk578lli");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '9', j: 1 }, { i: '9', j: 2 }, { i: '9', j: 3 }, { i: '9', j: 4 } ], css_id: 'tinytable_css_tf27rr90i15qhqohn1ej',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 } ], css_id: 'tinytable_css_gk6353ueqf1hatybhs95',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_xnkxqhf2ne6pnk578lli.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_xnkxqhf2ne6pnk578lli td.tinytable_css_tf27rr90i15qhqohn1ej, #tinytable_xnkxqhf2ne6pnk578lli th.tinytable_css_tf27rr90i15qhqohn1ej {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_xnkxqhf2ne6pnk578lli td.tinytable_css_gk6353ueqf1hatybhs95, #tinytable_xnkxqhf2ne6pnk578lli th.tinytable_css_gk6353ueqf1hatybhs95 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_xnkxqhf2ne6pnk578lli" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">p</th>
+                <th scope="col" data-row="0" data-col="2">empirical</th>
+                <th scope="col" data-row="0" data-col="3">asymptotic</th>
+                <th scope="col" data-row="0" data-col="4">difference</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">0.01</td>
+                  <td data-row="1" data-col="2">1.47</td>
+                  <td data-row="1" data-col="3">1.34</td>
+                  <td data-row="1" data-col="4">0.1302</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">0.05</td>
+                  <td data-row="2" data-col="2">1.61</td>
+                  <td data-row="2" data-col="3">1.53</td>
+                  <td data-row="2" data-col="4">0.073</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">0.1</td>
+                  <td data-row="3" data-col="2">1.69</td>
+                  <td data-row="3" data-col="3">1.64</td>
+                  <td data-row="3" data-col="4">0.0503</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">0.25</td>
+                  <td data-row="4" data-col="2">1.83</td>
+                  <td data-row="4" data-col="3">1.81</td>
+                  <td data-row="4" data-col="4">0.0242</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">0.5</td>
+                  <td data-row="5" data-col="2">2.01</td>
+                  <td data-row="5" data-col="3">2</td>
+                  <td data-row="5" data-col="4">0.013</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1">0.75</td>
+                  <td data-row="6" data-col="2">2.22</td>
+                  <td data-row="6" data-col="3">2.19</td>
+                  <td data-row="6" data-col="4">0.028</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">0.9</td>
+                  <td data-row="7" data-col="2">2.43</td>
+                  <td data-row="7" data-col="3">2.36</td>
+                  <td data-row="7" data-col="4">0.0628</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1">0.95</td>
+                  <td data-row="8" data-col="2">2.56</td>
+                  <td data-row="8" data-col="3">2.47</td>
+                  <td data-row="8" data-col="4">0.0995</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">0.99</td>
+                  <td data-row="9" data-col="2">2.83</td>
+                  <td data-row="9" data-col="3">2.66</td>
+                  <td data-row="9" data-col="4">0.176</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot ecdf and asymptotic distribution</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>gg_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lambda_hat =</span> lambda_hat)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg_data, <span class="fu">aes</span>(<span class="at">x =</span> lambda_hat)) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>() <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) <span class="fu">pnorm</span>(x, </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">mean =</span> asy_mean, </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">sd =</span> asy_sd), </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ECDF of Simulated ML Estimates vs Asymptotic Sampling Distribution"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">hat</span>(lambda)),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Cumulative Probability"</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk03-exercises_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Discussion</em></p>
+<ul>
+<li><strong>Center (bias).</strong> The empirical mean of <span class="math inline">\(\hat{\lambda}\)</span> is about 2.04, compared to the true <span class="math inline">\(\lambda=2.000\)</span>. This is a difference of roughly 2%. At <span class="math inline">\(N=50\)</span>, this upward bias is present but quite small.</li>
+<li><strong>Spread.</strong> The empirical SD is about 0.293, while the asymptotic SD is 0.283. This difference is 3.7% of the asymptotic value, so the asymptotic variance formula provides an accurate description of variability.</li>
+<li><strong>Quantiles and tails.</strong> For the median, the empirical value is 2.013 compared to an asymptotic prediction of 2. At the 1% and 99% quantiles, the differences are about 0.13 and 0.176, respectively, which correspond to differences of only a few percent relative to the true scale. The ECDF and normal CDF curves are nearly indistinguishable except in the tails.</li>
+<li><strong>Bottom line.</strong> With <span class="math inline">\(N=50\)</span>, the asymptotic normal distribution closely matches the finite-sample distribution of <span class="math inline">\(\hat{\lambda}\)</span>. The bias is about 2%, the SD differs by about 4%, and quantile differences are small. The asymptotic normal approximation is accurate and reliable for practical use at this sample size.</li>
+</ul>
+</div></details>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> German Tank Problem</h2>
@@ -274,7 +559,165 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p><a href="#ex-1">Exercise 1</a> similarly compares two estimators. However, the mean and median are both unbiased in that case, so only the variance matters.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tinytable_tt_digits =</span> <span class="dv">3</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tinytable_latex_placement =</span> <span class="st">"H"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>K  <span class="ot">&lt;-</span> <span class="dv">100</span>               <span class="co"># true K</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>Ns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">25</span>, <span class="dv">1000</span>)    <span class="co"># sample sizes</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>R  <span class="ot">&lt;-</span> <span class="dv">10000</span>             <span class="co"># number of mc repetitions</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># container: list of data frames</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>res_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># loop over sample sizes</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (N <span class="cf">in</span> Ns) {</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  K_hat_mle <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)   <span class="co"># container for MLE</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  K_hat_mom <span class="ot">&lt;-</span> <span class="fu">numeric</span>(R)   <span class="co"># container for MOM</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span>K, N, <span class="at">replace =</span> <span class="cn">TRUE</span>)  <span class="co"># simulate data set</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    K_hat_mle[i] <span class="ot">&lt;-</span> <span class="fu">max</span>(y)                <span class="co"># MLE</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    K_hat_mom[i] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">mean</span>(y)           <span class="co"># MOM</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># empirical summaries</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  emp_mean_mle <span class="ot">&lt;-</span> <span class="fu">mean</span>(K_hat_mle)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  emp_sd_mle   <span class="ot">&lt;-</span> <span class="fu">sd</span>(K_hat_mle)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  emp_mean_mom <span class="ot">&lt;-</span> <span class="fu">mean</span>(K_hat_mom)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  emp_sd_mom   <span class="ot">&lt;-</span> <span class="fu">sd</span>(K_hat_mom)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># store results for this N</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  res_list[[<span class="fu">as.character</span>(N)]] <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">N          =</span> N,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">Estimator  =</span> <span class="fu">c</span>(<span class="st">"MLE"</span>, <span class="st">"MOM"</span>),</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean       =</span> <span class="fu">c</span>(emp_mean_mle, emp_mean_mom),</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">SD         =</span> <span class="fu">c</span>(emp_sd_mle,   emp_sd_mom),</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">Bias       =</span> <span class="fu">c</span>(emp_mean_mle <span class="sc">-</span> K, emp_mean_mom <span class="sc">-</span> K),</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE        =</span> <span class="fu">c</span>(<span class="fu">mean</span>((K_hat_mle <span class="sc">-</span> K)<span class="sc">^</span><span class="dv">2</span>), <span class="fu">mean</span>((K_hat_mom <span class="sc">-</span> K)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="co"># combine all into one data frame</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(res_list)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="co"># print table</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="fu">tt</span>(</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  res,</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">5</span>,</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">align  =</span> <span class="st">"lrrrrr"</span>,</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_mg20j66uyb3cbbbw3cjc = TinyTable.createTableFunctions("tinytable_mg20j66uyb3cbbbw3cjc");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '6', j: 1 }, { i: '6', j: 2 }, { i: '6', j: 3 }, { i: '6', j: 4 }, { i: '6', j: 5 }, { i: '6', j: 6 } ], css_id: 'tinytable_css_b300mvcbaob3a2cpta9v',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 }, { i: '0', j: 6 } ], css_id: 'tinytable_css_qnbbr2ven0e0yynbrx24',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_mg20j66uyb3cbbbw3cjc.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_mg20j66uyb3cbbbw3cjc td.tinytable_css_b300mvcbaob3a2cpta9v, #tinytable_mg20j66uyb3cbbbw3cjc th.tinytable_css_b300mvcbaob3a2cpta9v {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_mg20j66uyb3cbbbw3cjc td.tinytable_css_qnbbr2ven0e0yynbrx24, #tinytable_mg20j66uyb3cbbbw3cjc th.tinytable_css_qnbbr2ven0e0yynbrx24 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_mg20j66uyb3cbbbw3cjc" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">N</th>
+                <th scope="col" data-row="0" data-col="2">Estimator</th>
+                <th scope="col" data-row="0" data-col="3">Mean</th>
+                <th scope="col" data-row="0" data-col="4">SD</th>
+                <th scope="col" data-row="0" data-col="5">Bias</th>
+                <th scope="col" data-row="0" data-col="6">MSE</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">3</td>
+                  <td data-row="1" data-col="2">MLE</td>
+                  <td data-row="1" data-col="3">75.055</td>
+                  <td data-row="1" data-col="4">19.7364</td>
+                  <td data-row="1" data-col="5">-24.9454</td>
+                  <td data-row="1" data-col="6">1011.7588</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">3</td>
+                  <td data-row="2" data-col="2">MOM</td>
+                  <td data-row="2" data-col="3">99.952</td>
+                  <td data-row="2" data-col="4">33.59</td>
+                  <td data-row="2" data-col="5">-0.048467</td>
+                  <td data-row="2" data-col="6">1128.1803</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">25</td>
+                  <td data-row="3" data-col="2">MLE</td>
+                  <td data-row="3" data-col="3">96.665</td>
+                  <td data-row="3" data-col="4">3.6737</td>
+                  <td data-row="3" data-col="5">-3.3353</td>
+                  <td data-row="3" data-col="6">24.6191</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">25</td>
+                  <td data-row="4" data-col="2">MOM</td>
+                  <td data-row="4" data-col="3">100.191</td>
+                  <td data-row="4" data-col="4">11.7466</td>
+                  <td data-row="4" data-col="5">0.191144</td>
+                  <td data-row="4" data-col="6">138.0057</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">1000</td>
+                  <td data-row="5" data-col="2">MLE</td>
+                  <td data-row="5" data-col="3">100</td>
+                  <td data-row="5" data-col="4">0</td>
+                  <td data-row="5" data-col="5">0</td>
+                  <td data-row="5" data-col="6">0</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1">1000</td>
+                  <td data-row="6" data-col="2">MOM</td>
+                  <td data-row="6" data-col="3">99.993</td>
+                  <td data-row="6" data-col="4">1.8362</td>
+                  <td data-row="6" data-col="5">-0.007073</td>
+                  <td data-row="6" data-col="6">3.3712</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p>Notice that the ML estimator is severely biased downward in small samples. But it also has a much smaller variance. It’s not clear how to trade off these two. However, it’s worth noting that the severely biased ML estimator has a <em>smaller</em> mean-squared error.</p>
+<p><em>Which estimator do you recommend?</em> There isn’t an easy right answer here, just make an argument for one or the other from <em>principles</em> (e.g., bias, variance, MSE, or others).</p>
+</div></details>
 </section>
 <section id="ex-4" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Jensen’s Inequality</h2>
@@ -286,7 +729,40 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>First show that <span class="math inline">\(\hat{\mu}\)</span> is unbiased. Then use Jensen’s inequality to show that <span class="math inline">\(\hat{\lambda}\)</span> is biased upward. You do not need to find the size of the bias, just use Jensen’s inequality to show that the ML estimate of the rate is biased. To use Jensen’s inequality, let <span class="math inline">\(g(x)=1/x\)</span>, and notice that <span class="math inline">\(g(x)\)</span> is convex on <span class="math inline">\((0,\infty)\)</span> (since <span class="math inline">\(g''(x)=2/x^3&gt;0\)</span>).</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<p><em>1) Unbiasedness of the ML estimate of the mean</em></p>
+<p><span class="math inline">\(\hat{\mu} = \text{avg}(y) = \frac{1}{N} \sum_{i = 1}^N y_i\)</span> is the sample mean of iid observations. <span class="math inline">\(\mathbb E[y_i]=\frac{1}{\lambda}\)</span>. Then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E[\hat\mu]
+  &amp;= \mathbb E \left[ \frac{1}{N} \sum_{i = 1}^N y_i \right] &amp;&amp; \text{(definition of $\hat\mu$)}\\
+  &amp;= \frac{1}{N} \cdot \mathbb E \left[\sum_{i = 1}^N y_i \right] &amp;&amp; \text{(linearity)}\\
+  &amp;= \frac{1}{N} \cdot \left[\sum_{i = 1}^N \mathbb E (y_i) \right] &amp;&amp; \text{(sum of expectations)}\\
+  &amp;= \frac{1}{N} \cdot \left[\sum_{i = 1}^N \frac{1}{\lambda} \right] &amp;&amp; \text{(each has mean $1/\lambda$)}\\
+  &amp;= \frac{1}{N} \cdot \left[N \cdot \frac{1}{\lambda} \right] &amp;&amp; \text{(sum $N$ identical terms)}\\
+  &amp;= \frac{1}{\lambda} &amp;&amp; \text{(simplify)}\\
+  &amp;= \mu &amp;&amp; \text{(definition of $\mu$)}
+\end{aligned}
+\]</span></p>
+<p>Because <span class="math inline">\(\mathbb E(\hat\mu) = \mu\)</span>, <span class="math inline">\(\hat{\mu}\)</span> is an unbiased estimate of the mean.</p>
+<p><em>2) Bias of the ML estimate of the rate</em></p>
+<p><span class="math inline">\(\hat{\lambda} = \dfrac{1}{\text{avg}(y)} = \left(\dfrac{1}{N}\sum_{i=1}^N y_i\right)^{-1}\)</span>. Let <span class="math inline">\(g(x)=1/x\)</span>, and notice that <span class="math inline">\(g(x)\)</span> is convex on <span class="math inline">\((0,\infty)\)</span> (since <span class="math inline">\(g''(x)=2/x^3&gt;0\)</span>). Then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb E[\hat{\lambda}]
+  &amp;= \mathbb E\left[ \frac{1}{\text{avg}(y)} \right] &amp;&amp; \text{(definition of $\hat{\lambda}$)}\\
+  &amp;= \mathbb E\left[g\big(\text{avg}(y)\big)\right] &amp;&amp; \text{(definition of $g$ above)}\\
+  &amp;&gt; g\big(\mathbb E[\text{avg}(y)]\big) &amp;&amp; \text{(Jensen's inequality, $g$ convex)}\\
+  &amp;= \frac{1}{\mathbb E[\text{avg}(y)]} &amp;&amp; \text{(apply $g$)}\\
+  &amp;= \frac{1}{\frac{1}{N}\sum_{i=1}^N \mathbb E(y_i)} &amp;&amp; \text{(linearity of expectation)}\\
+  &amp;= \frac{1}{\frac{1}{N}\sum_{i=1}^N \frac{1}{\lambda}} &amp;&amp; \text{(each $y_i$ has mean $1/\lambda$)}\\
+  &amp;= \frac{1}{\frac{1}{N}\cdot N \cdot \frac{1}{\lambda}} &amp;&amp; \text{(sum of $N$ identical terms)}\\
+  &amp;= \lambda &amp;&amp; \text{(simplify)}
+\end{aligned}
+\]</span></p>
+<p>Since the inequality is strict for finite <span class="math inline">\(N\)</span> (the distribution of <span class="math inline">\(\text{avg}(y)\)</span> is non-degenerate), <span class="math inline">\(\mathbb E[\hat{\lambda}] &gt; \lambda\)</span>. Thus, the ML estimate of the <strong>rate</strong> is biased upward.</p>
+</div></details>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Poisson</h2>
@@ -294,20 +770,60 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>See <a href="https://pos5747.github.io/notes/wk03/03-fisher-information-matrix.html#theory">Section 6.2</a> of the notes for the four steps that turn the log-likelihood into an SE estimate, and <a href="https://pos5747.github.io/notes/wk03/03-fisher-information-matrix.html#example-exponential-model">Section 6.6</a> for those steps worked out for the exponential model.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<p>The log-likelihood is <span class="math inline">\(\ell(\lambda) = \sum_{i=1}^N \big[y_i \log \lambda - \lambda - \log(y_i!)\big]\)</span>.</p>
+<p>First, find the second derivative with respect to <span class="math inline">\(\lambda\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\ell(\lambda)
+&amp;= \sum_{i=1}^N \big[y_i \log \lambda - \lambda - \log(y_i!)\big]
+&amp;&amp; \text{Poisson log-likelihood} \\[6pt]
+\frac{\partial \ell}{\partial \lambda}
+&amp;= \sum_{i=1}^N \left( y_i \cdot \frac{1}{\lambda} - 1 - 0 \right)
+&amp;&amp; \text{use } \frac{d}{d\lambda}\log \lambda = \frac{1}{\lambda},\; \frac{d}{d\lambda}(-\lambda) = -1,\; \log(y_i!) \text{ is constant} \\[6pt]
+&amp;= \sum_{i=1}^N \left( \frac{y_i}{\lambda} - 1 \right)
+= \frac{1}{\lambda} \sum_{i=1}^N y_i - N
+&amp;&amp; \text{collect terms} \\[10pt]
+\frac{\partial^2 \ell}{\partial \lambda^2}
+&amp;= \frac{\partial}{\partial \lambda} \left( \frac{1}{\lambda} \sum_{i=1}^N y_i - N \right)
+&amp;&amp; \text{differentiate again} \\[6pt]
+&amp;= \sum_{i=1}^N \left( - \frac{y_i}{\lambda^2} \right) - 0
+&amp;&amp; \text{use } \frac{d}{d\lambda}\left(\frac{1}{\lambda}\right) = -\frac{1}{\lambda^2} \text{, } N \text{ is constant} \\[6pt]
+&amp;= - \sum_{i=1}^N \frac{y_i}{\lambda^2}.
+\end{aligned}
+\]</span></p>
+<p>The observed Fisher information is</p>
+<p><span class="math display">\[
+\mathcal I_{\text{obs}}(\lambda)
+= -\frac{\partial^2 \ell}{\partial \lambda^2}
+= \sum_{i=1}^N \frac{y_i}{\lambda^2}.
+\]</span></p>
+<p>Asymptotically, <span class="math inline">\(\operatorname{Var}(\hat\lambda) \approx \mathcal I_{\text{obs}}(\lambda)^{-1}\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>To find the estimate of the SE, replace <span class="math inline">\(\lambda\)</span> with <span class="math inline">\(\hat\lambda\)</span>:</p>
+<p><span class="math display">\[
+\widehat{\operatorname{SE}}(\hat\lambda)
+= \sqrt{\mathcal I_{\text{obs}}(\hat\lambda)^{-1}}
+= \sqrt{\frac{\hat\lambda^2}{\sum_{i=1}^N y_i}}
+= \sqrt{\frac{\hat\lambda^2}{N \hat\lambda}}
+= \sqrt{\frac{\hat\lambda}{N}}
+= \sqrt{\frac{\operatorname{avg}(y)}{N}},
+\]</span></p>
+<p>since <span class="math inline">\(\sum_{i=1}^N y_i = N \hat\lambda\)</span>.</p>
+</div></details>
 </section>
 <section id="ex-6" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> <code>operations</code></h2>
 <p>The code below loads the number of enforcement operations for each district in Bogota from Holland (2015) from the {crdata} package. See <code>?crdata::holland2015</code> for details.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load holland2015 data set from crdata package</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>holland2015 <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get operations in bogota only</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ops <span class="ot">&lt;-</span> holland2015<span class="sc">$</span>operations[holland2015<span class="sc">$</span>city <span class="sc">==</span> <span class="st">"bogota"</span>]</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>ops</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load holland2015 data set from crdata package</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>holland2015 <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get operations in bogota only</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ops <span class="ot">&lt;-</span> holland2015<span class="sc">$</span>operations[holland2015<span class="sc">$</span>city <span class="sc">==</span> <span class="st">"bogota"</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ops</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 15 10 15 20  8  4  8 16  4 28  2  8  4  4  4  4  8  3  4</code></pre>
 </div>
@@ -318,7 +834,98 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>See <a href="https://pos5747.github.io/notes/wk02/03-predictive-distribution.html#example-poisson-distribution">Section 3.1</a> of the notes for the predictive distribution of a Poisson model. <a href="https://pos5747.github.io/notes/appendicies/999-distributions.html#poisson-distribution">Section A.5</a> gives its SD.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution.</strong></p>
+<p>First, fit the Poisson model and compute the ML estimate and SE of <span class="math inline">\(\lambda\)</span> without using <code>optim()</code>, following the observed-information derivation above.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load holland2015 data set from crdata package</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>holland2015 <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get operations in bogota only</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ops <span class="ot">&lt;-</span> holland2015<span class="sc">$</span>operations[holland2015<span class="sc">$</span>city <span class="sc">==</span> <span class="st">"bogota"</span>]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate lambda with ml</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">length</span>(ops)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>lambda_hat_pois <span class="ot">&lt;-</span> <span class="fu">mean</span>(ops); lambda_hat_pois</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8.894737</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>se_lambda_hat_pois  <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(lambda_hat_pois <span class="sc">/</span> N); se_lambda_hat_pois</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6842105</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare predictive SD to data SD</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sd_pred_pois <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(lambda_hat_pois)   <span class="co"># predictive SD under Poisson</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>sd_data      <span class="ot">&lt;-</span> <span class="fu">sd</span>(ops)                 <span class="co"># empirical SD</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize results in a small table</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>res_pois <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Statistic =</span> <span class="fu">c</span>(<span class="st">"Predictive SD "</span>, <span class="st">"Data SD"</span>),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Value     =</span> <span class="fu">c</span>(sd_pred_pois, sd_data)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tt</span>(res_pois, <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">align =</span> <span class="st">"lr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_k11cpqavwy3rpojxqgh3 = TinyTable.createTableFunctions("tinytable_k11cpqavwy3rpojxqgh3");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '2', j: 1 }, { i: '2', j: 2 } ], css_id: 'tinytable_css_ny67ylz7nkb4mmx2e3ol',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_5s4s6hecfzcvh1uhkn4w',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_k11cpqavwy3rpojxqgh3.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_k11cpqavwy3rpojxqgh3 td.tinytable_css_ny67ylz7nkb4mmx2e3ol, #tinytable_k11cpqavwy3rpojxqgh3 th.tinytable_css_ny67ylz7nkb4mmx2e3ol {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_k11cpqavwy3rpojxqgh3 td.tinytable_css_5s4s6hecfzcvh1uhkn4w, #tinytable_k11cpqavwy3rpojxqgh3 th.tinytable_css_5s4s6hecfzcvh1uhkn4w {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_k11cpqavwy3rpojxqgh3" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">Statistic</th>
+                <th scope="col" data-row="0" data-col="2">Value</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">Predictive SD</td>
+                  <td data-row="1" data-col="2">2.98</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">Data SD</td>
+                  <td data-row="2" data-col="2">6.94</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p>This poses a big problem for our SE estimate. The SE estimate depends on the variance. If the variance is wildly underestimated, the the SE will be wildly underestimated as well.</p>
+</div></details>
 </section>
 <section id="ex-7" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Exponential</h2>
@@ -333,7 +940,58 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>For an exponential model with rate <span class="math inline">\(\lambda\)</span>, the density is <span class="math inline">\(f(y; \lambda) = \lambda e^{-\lambda y}\)</span>, so <span class="math inline">\(\ell(\lambda) = \sum \big(\log \lambda - \lambda y_i\big)\)</span>.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<p>The log-likelihood is <span class="math display">\[
+\ell(\lambda) \;=\; \sum_{i=1}^N \big[\log \lambda \;-\; \lambda y_i\big].
+\]</span></p>
+<p>First, find the second derivative with respect to <span class="math inline">\(\lambda\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\ell(\lambda)
+&amp;= \sum_{i=1}^N \big[\log \lambda - \lambda y_i\big]
+&amp;&amp; \text{Exponential log-likelihood} \\[6pt]
+\frac{\partial \ell}{\partial \lambda}
+&amp;= \sum_{i=1}^N \left(\frac{1}{\lambda} - y_i\right)
+&amp;&amp; \text{use } \frac{d}{d\lambda}\log \lambda = \frac{1}{\lambda},\; \frac{d}{d\lambda}(-\lambda y_i) = -y_i \\[6pt]
+&amp;= \frac{N}{\lambda} \;-\; \sum_{i=1}^N y_i
+&amp;&amp; \text{collect terms} \\[10pt]
+\frac{\partial^2 \ell}{\partial \lambda^2}
+&amp;= \frac{\partial}{\partial \lambda}\!\left(\frac{N}{\lambda} - \sum_{i=1}^N y_i\right)
+&amp;&amp; \text{differentiate again} \\[6pt]
+&amp;= -\,\frac{N}{\lambda^2} \;-\; 0
+&amp;&amp; \text{use } \frac{d}{d\lambda}\!\left(\frac{1}{\lambda}\right) = -\frac{1}{\lambda^2},\; \sum y_i \text{ is constant}.
+\end{aligned}
+\]</span></p>
+<p>The observed Fisher information is <span class="math display">\[
+\mathcal I_{\text{obs}}(\lambda)
+= -\frac{\partial^2 \ell}{\partial \lambda^2}
+= \frac{N}{\lambda^2}.
+\]</span></p>
+<p>To find the estimate of the SE, replace <span class="math inline">\(\lambda\)</span> with <span class="math inline">\(\hat\lambda\)</span>: <span class="math display">\[
+\widehat{\operatorname{SE}}(\hat\lambda)
+= \sqrt{\mathcal I_{\text{obs}}(\hat\lambda)^{-1}}
+= \sqrt{\frac{\hat\lambda^{2}}{N}}
+= \frac{\hat\lambda}{\sqrt{N}}
+= \frac{1}{\sqrt{N}\,\operatorname{avg}(y)}.
+\]</span></p>
+<p>Now suppose we use the invariance property to obtain <span class="math inline">\(\hat\mu = \dfrac{1}{\hat\lambda}\)</span>. Then we can use the delta method to estimate the SE with <span class="math inline">\(\tau(\lambda) = \dfrac{1}{\lambda}\)</span>.</p>
+<p>The first derivative is <span class="math inline">\(\tau'(\lambda) = -\frac{1}{\lambda^2}\)</span>.</p>
+<p>Plugging in, we have <span class="math display">\[
+\begin{aligned}
+\widehat{\operatorname{Var}}(\hat\mu)
+  &amp;\approx \big[\tau'(\hat\lambda)\big]^2 \cdot \widehat{\operatorname{Var}}(\hat\lambda)
+   \;=\; \left(\frac{1}{\hat\lambda^2}\right)^2 \cdot \frac{\hat\lambda^{2}}{N} \\[6pt]
+  &amp;= \frac{1}{N\,\hat\lambda^{2}}.
+\end{aligned}
+\]</span></p>
+<p>And the standard error is <span class="math display">\[
+\widehat{\mathrm{SE}}(\hat\mu)
+\;\approx\; \sqrt{\frac{1}{N\,\hat\lambda^{2}}}
+\;=\; \frac{1}{\sqrt{N}\,\hat\lambda}
+\;=\; \frac{\operatorname{avg}(y)}{\sqrt{N}}.
+\]</span></p>
+</div></details>
 </section>
 <section id="ex-8" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> Delta method, by hand</h2>
@@ -354,7 +1012,76 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p><a href="#ex-7">Exercise 7</a> is a one-parameter version of this multi-parameter calculation.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<p>First, find the gradient. For <span class="math inline">\(\tau(a,b)=a/b\)</span>,</p>
+<p><span class="math display">\[
+\nabla\tau(a,b)=
+\begin{bmatrix}
+\frac{\partial}{\partial a}(a/b)\\[6pt]
+\frac{\partial}{\partial b}(a/b)
+\end{bmatrix}
+=
+\begin{bmatrix}
+1/b\\[4pt]
+-\,a/b^2
+\end{bmatrix}.
+\]</span> Plugging in <span class="math inline">\((\hat a,\hat b)=(2,1)\)</span>, we have <span class="math inline">\(\nabla\tau(\hat a,\hat b)=\begin{bmatrix} 1\\[2pt] -2 \end{bmatrix}\)</span>.</p>
+<p>Now do the required matrix multiplication.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\mathrm{Var}}[\tau(\hat\theta)]
+&amp;\approx
+\overbrace{\begin{bmatrix}1 &amp; -2\end{bmatrix}}^{\nabla\tau(\hat\theta)^{\!\top}}
+\Biggl(
+\underbrace{\begin{bmatrix}
+1 &amp; \tfrac{1}{2}\\[2pt]
+\tfrac{1}{2} &amp; 1
+\end{bmatrix}}_{\widehat{\mathrm{Var}}(\hat\theta)}
+\underbrace{\begin{bmatrix}1\\ -2\end{bmatrix}}_{\nabla\tau(\hat\theta)}
+\Biggr) \\[10pt]
+&amp;=
+\begin{bmatrix}1 &amp; -2\end{bmatrix}
+\begin{bmatrix}
+1\cdot 1 + \tfrac{1}{2}\cdot(-2)\\[4pt]
+\tfrac{1}{2}\cdot 1 + 1\cdot(-2)
+\end{bmatrix}
+=
+\begin{bmatrix}1 &amp; -2\end{bmatrix}
+\begin{bmatrix}
+0\\[2pt]
+-1.5
+\end{bmatrix}
+= 0 + 3 = 3.
+\end{aligned}
+\]</span> Thus <span class="math inline">\(\widehat{\mathrm{Var}}[\widehat{\tau}]=3\)</span> and <span class="math inline">\(\widehat{\mathrm{SE}}(\widehat{\tau})=\sqrt{3}\)</span>.</p>
+<p>We can confirm our work with R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># given values</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>a_hat <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>b_hat <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>V_hat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># gradient at (a_hat, b_hat) for tau(a,b) = a/b</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>grad <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span> <span class="sc">/</span> b_hat, <span class="sc">-</span>a_hat <span class="sc">/</span> b_hat<span class="sc">^</span><span class="dv">2</span>)  <span class="co"># c(1, -2)</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># delta method</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>var_tau_hat <span class="ot">&lt;-</span> grad <span class="sc">%*%</span> V_hat <span class="sc">%*%</span> grad</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>se_tau_hat  <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_tau_hat)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>var_tau_hat  <span class="co"># 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>se_tau_hat   <span class="co"># sqrt(3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]
+[1,] 1.732051</code></pre>
+</div>
+</div>
+</div></details>
 </section>
 <section id="ex-9" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> Turnout rates, part 1</h2>
@@ -366,7 +1093,222 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>Fitting a beta model with <code>optim()</code> 1,000s of times might lead to a convergence error in a couple of fits. These might be important, but for the sake of <em>this exercise</em> we can ignore them.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load data as tibble </span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>turnout_2024 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>state,             <span class="sc">~</span>vep_turnout,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Alabama"</span>,          <span class="fl">0.5893</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Alaska"</span>,           <span class="fl">0.6378</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Arizona"</span>,          <span class="fl">0.6360</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Arkansas"</span>,         <span class="fl">0.5348</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"California"</span>,       <span class="fl">0.6206</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Colorado"</span>,         <span class="fl">0.7314</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Connecticut"</span>,      <span class="fl">0.6708</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Delaware"</span>,         <span class="fl">0.6702</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"District of Columbia"</span>, <span class="fl">0.6357</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Florida"</span>,          <span class="fl">0.6671</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Georgia"</span>,          <span class="fl">0.6826</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hawaii"</span>,           <span class="fl">0.5027</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Idaho"</span>,            <span class="fl">0.6344</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Illinois"</span>,         <span class="fl">0.6325</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Indiana"</span>,          <span class="fl">0.5869</span>,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Iowa"</span>,             <span class="fl">0.7078</span>,</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Kansas"</span>,           <span class="fl">0.6318</span>,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Kentucky"</span>,         <span class="fl">0.6219</span>,</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Louisiana"</span>,        <span class="fl">0.6077</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Maine"</span>,            <span class="fl">0.7424</span>,</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Maryland"</span>,         <span class="fl">0.6930</span>,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Massachusetts"</span>,    <span class="fl">0.6803</span>,</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Michigan"</span>,         <span class="fl">0.7464</span>,</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Minnesota"</span>,        <span class="fl">0.7635</span>,</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Mississippi"</span>,      <span class="fl">0.5745</span>,</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Missouri"</span>,         <span class="fl">0.6434</span>,</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Montana"</span>,          <span class="fl">0.6820</span>,</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nebraska"</span>,         <span class="fl">0.6796</span>,</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nevada"</span>,           <span class="fl">0.6580</span>,</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"New Hampshire"</span>,    <span class="fl">0.7405</span>,</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"New Jersey"</span>,       <span class="fl">0.6724</span>,</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"New Mexico"</span>,       <span class="fl">0.5957</span>,</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>  <span class="st">"New York"</span>,         <span class="fl">0.6044</span>,</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>  <span class="st">"North Carolina"</span>,   <span class="fl">0.7032</span>,</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  <span class="st">"North Dakota"</span>,     <span class="fl">0.6310</span>,</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ohio"</span>,             <span class="fl">0.6539</span>,</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Oklahoma"</span>,         <span class="fl">0.5328</span>,</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Oregon"</span>,           <span class="fl">0.7194</span>,</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Pennsylvania"</span>,     <span class="fl">0.7143</span>,</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Rhode Island"</span>,     <span class="fl">0.6328</span>,</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>  <span class="st">"South Carolina"</span>,   <span class="fl">0.6214</span>,</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>  <span class="st">"South Dakota"</span>,     <span class="fl">0.6400</span>,</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Tennessee"</span>,        <span class="fl">0.5761</span>,</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Texas"</span>,            <span class="fl">0.5657</span>,</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Utah"</span>,             <span class="fl">0.6415</span>,</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Vermont"</span>,          <span class="fl">0.7089</span>,</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Virginia"</span>,         <span class="fl">0.7119</span>,</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Washington"</span>,       <span class="fl">0.7017</span>,</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>  <span class="st">"West Virginia"</span>,    <span class="fl">0.5546</span>,</span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Wisconsin"</span>,        <span class="fl">0.7664</span>,</span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Wyoming"</span>,          <span class="fl">0.6128</span></span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="co"># beta log-likelihood</span></span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>beta_ll_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(theta, y) { </span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> theta[<span class="dv">1</span>] </span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> theta[<span class="dv">2</span>] </span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>  ll <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">dbeta</span>(y, <span class="at">shape1 =</span> alpha, <span class="at">shape2 =</span> beta, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ll)</span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a><span class="co"># create a function to fit the beta model</span></span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a>est_beta <span class="ot">&lt;-</span> <span class="cf">function</span>(y) {</span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>  est <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>), <span class="at">fn =</span> beta_ll_fn, <span class="at">y =</span> y,</span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>               <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">"BFGS"</span>) <span class="co"># for &gt;1d problems</span></span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (est<span class="sc">$</span>convergence <span class="sc">!=</span> <span class="dv">0</span>) <span class="fu">print</span>(<span class="st">"Model did not converge!"</span>)</span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">est =</span> est<span class="sc">$</span>par)</span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a><span class="co"># ml estimates</span></span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a>ml_est <span class="ot">&lt;-</span> <span class="fu">est_beta</span>(turnout_2024<span class="sc">$</span>vep_turnout)</span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> ml_est<span class="sc">$</span>est[<span class="dv">1</span>]; a  <span class="co"># alpha</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 39.59784</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> ml_est<span class="sc">$</span>est[<span class="dv">2</span>]; b  <span class="co"># beta</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 21.29332</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>a <span class="sc">/</span> (a <span class="sc">+</span> b)  <span class="co"># mean; using a and b for readability</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6503053</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>( (a <span class="sc">*</span> b) <span class="sc">/</span> ((a <span class="sc">+</span> b)<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (a <span class="sc">+</span> b <span class="sc">+</span> <span class="dv">1</span>)) ) <span class="co"># SD</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06061623</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parametric bootstrap</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>n_bs <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>bs_alpha_hat <span class="ot">&lt;-</span> </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  bs_beta_hat <span class="ot">&lt;-</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  bs_mu_hat <span class="ot">&lt;-</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  bs_sigma_hat <span class="ot">&lt;-</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">numeric</span>(n_bs)  <span class="co"># containers for the estimates</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_bs) {</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># bootstrap sample</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  bs_y <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="fu">length</span>(turnout_2024<span class="sc">$</span>vep_turnout), <span class="at">shape1 =</span> ml_est<span class="sc">$</span>est[<span class="dv">1</span>], <span class="at">shape2 =</span> ml_est<span class="sc">$</span>est[<span class="dv">2</span>])</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fit model to bootstrapped sample</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  bs_est <span class="ot">&lt;-</span> <span class="fu">est_beta</span>(bs_y)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># store ml estimates of alpha and beta for readability below</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  bs_a <span class="ot">&lt;-</span> bs_est<span class="sc">$</span>est[<span class="dv">1</span>]</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  bs_b <span class="ot">&lt;-</span> bs_est<span class="sc">$</span>est[<span class="dv">2</span>]</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute and store all qis</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  bs_alpha_hat[i] <span class="ot">&lt;-</span> bs_a</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  bs_beta_hat[i]  <span class="ot">&lt;-</span> bs_b</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  bs_mu_hat[i]    <span class="ot">&lt;-</span> bs_a <span class="sc">/</span> (bs_a <span class="sc">+</span> bs_b)</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>  bs_sigma_hat[i] <span class="ot">&lt;-</span> <span class="fu">sqrt</span>( (bs_a <span class="sc">*</span> bs_b) <span class="sc">/</span> ((bs_a <span class="sc">+</span> bs_b)<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (bs_a <span class="sc">+</span> bs_b <span class="sc">+</span> <span class="dv">1</span>)) )</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Model did not converge!"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bootstrap SEs</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>bs_se_alpha_hat <span class="ot">&lt;-</span> <span class="fu">sd</span>(bs_alpha_hat)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>bs_se_beta_hat  <span class="ot">&lt;-</span> <span class="fu">sd</span>(bs_beta_hat)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>bs_se_mu_hat    <span class="ot">&lt;-</span> <span class="fu">sd</span>(bs_mu_hat)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>bs_se_sigma_hat <span class="ot">&lt;-</span> <span class="fu">sd</span>(bs_sigma_hat)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># tinytable (avoid underscores in visible labels)</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>tab_df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter     =</span> <span class="fu">c</span>(<span class="st">"$</span><span class="sc">\\</span><span class="st">alpha$"</span>, <span class="st">"$</span><span class="sc">\\</span><span class="st">beta$"</span>, <span class="st">"$</span><span class="sc">\\</span><span class="st">mu$"</span>, <span class="st">"$</span><span class="sc">\\</span><span class="st">sigma$"</span>),</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">ML estimate</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="at">a_hat =</span> a, </span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">b_hat =</span> b, </span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">mu_hat =</span> a <span class="sc">/</span> (a <span class="sc">+</span> b), </span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sigma_hat =</span> <span class="fu">sqrt</span>( (a <span class="sc">*</span> b) <span class="sc">/</span> ((a <span class="sc">+</span> b)<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (a <span class="sc">+</span> b <span class="sc">+</span> <span class="dv">1</span>)) )),</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Bootstrap SE</span><span class="st">`</span><span class="ot">=</span> <span class="fu">c</span>(bs_se_alpha_hat, bs_se_beta_hat, bs_se_mu_hat, bs_se_sigma_hat)</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="fu">tt</span>(</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  tab_df,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Beta model: ML estimates and parametric-bootstrap standard errors."</span>,</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_dzamybzyyanizyw044qh = TinyTable.createTableFunctions("tinytable_dzamybzyyanizyw044qh");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 }, { i: '4', j: 3 } ], css_id: 'tinytable_css_e3518g83rss4p4dj31g5',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_jksyzno8o8oqt0p70z3z',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_dzamybzyyanizyw044qh.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_dzamybzyyanizyw044qh td.tinytable_css_e3518g83rss4p4dj31g5, #tinytable_dzamybzyyanizyw044qh th.tinytable_css_e3518g83rss4p4dj31g5 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_dzamybzyyanizyw044qh td.tinytable_css_jksyzno8o8oqt0p70z3z, #tinytable_dzamybzyyanizyw044qh th.tinytable_css_jksyzno8o8oqt0p70z3z {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_dzamybzyyanizyw044qh" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <caption>Beta model: ML estimates and parametric-bootstrap standard errors.</caption>
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">Parameter</th>
+                <th scope="col" data-row="0" data-col="2">ML estimate</th>
+                <th scope="col" data-row="0" data-col="3">Bootstrap SE</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">$\alpha$</td>
+                  <td data-row="1" data-col="2">39.5978</td>
+                  <td data-row="1" data-col="3">7.99754</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">$\beta$</td>
+                  <td data-row="2" data-col="2">21.2933</td>
+                  <td data-row="2" data-col="3">4.36365</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">$\mu$</td>
+                  <td data-row="3" data-col="2">0.6503</td>
+                  <td data-row="3" data-col="3">0.00827</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">$\sigma$</td>
+                  <td data-row="4" data-col="2">0.0606</td>
+                  <td data-row="4" data-col="3">0.00547</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</div></details>
 </section>
 <section id="ex-10" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> Turnout rates, part 2</h2>
@@ -378,7 +1320,135 @@ window.Quarto = {
 <p>This is like <a href="#ex-8">Exercise 8</a>, except that <span class="math inline">\(\widehat{\operatorname{Var}}(\hat\theta)\)</span> is computed by <code>optim()</code> rather than given in the text of the question..</p>
 <p>In <a href="#ex-5">Exercise 5</a>, you found the observed information for a single parameter. Here, the observed information is a <span class="math inline">\(2 \times 2\)</span> matrix.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution</strong></p>
+<p>First, find the variance matrix estimate with <code>optim()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(numDeriv)  <span class="co"># for numerical gradients</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># refit the model, this time keeping the hessian</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (turnout_2024 and beta_ll_fn come from part 1)</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>), <span class="at">fn =</span> beta_ll_fn, <span class="at">y =</span> turnout_2024<span class="sc">$</span>vep_turnout,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"BFGS"</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">hessian =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>theta_hat <span class="ot">&lt;-</span> est<span class="sc">$</span>par        <span class="co"># c(alpha_hat, beta_hat)</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>info_obs  <span class="ot">&lt;-</span> <span class="sc">-</span>est<span class="sc">$</span>hessian   <span class="co"># observed information (note the negative)</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>var_hat   <span class="ot">&lt;-</span> <span class="fu">solve</span>(info_obs)  <span class="co"># estimated covariance matrix of theta_hat</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>theta_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 39.59784 21.29332</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>var_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]     [,2]
+[1,] 61.29559 32.19541
+[2,] 32.19541 17.53257</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">diag</span>(var_hat))  <span class="co"># ses of alpha_hat and beta_hat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.829150 4.187191</code></pre>
+</div>
+</div>
+<p>Now use the delta method to convert the variance (matrix) estimates of <span class="math inline">\((\hat{alpha}, \hat{\beta})\)</span> to an estimate of the variance of <span class="math inline">\(\hat{\mu}\)</span>.</p>
+<ul>
+<li>The quantity of interest is <span class="math inline">\(\mu = \tau(\alpha, \beta) = \frac{\alpha}{\alpha + \beta}\)</span>.</li>
+<li>The delta method is <span class="math inline">\(\widehat{\operatorname{Var}}[\tau(\hat\theta)] \approx \nabla\tau(\hat\theta)^\top \widehat{\operatorname{Var}}(\hat\theta) \nabla\tau(\hat\theta)\)</span>.</li>
+</ul>
+<p>We could differentiate <span class="math inline">\(\tau()\)</span> by hand here, but <code>numDeriv::grad()</code> can do it numerically and that’s what the question asks us to do!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the quantity of interest as a function of theta</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>mu_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(theta) {</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> theta[<span class="dv">2</span>]</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  a <span class="sc">/</span> (a <span class="sc">+</span> b)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co"># numerical gradient of tau() evaluated at theta_hat</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>grad_mu <span class="ot">&lt;-</span> <span class="fu">grad</span>(<span class="at">func =</span> mu_fn, <span class="at">x =</span> theta_hat)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>grad_mu</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  0.005742948 -0.010679799</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># delta method</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>var_mu_hat <span class="ot">&lt;-</span> <span class="fu">t</span>(grad_mu) <span class="sc">%*%</span> var_hat <span class="sc">%*%</span> grad_mu</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>se_mu_hat  <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_mu_hat)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>se_mu_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            [,1]
+[1,] 0.008487219</code></pre>
+</div>
+</div>
+<p>Now compare the two of SEs for <span class="math inline">\(\hat{\mu}\)</span>. (<code>bs_se_mu_hat</code> is the bootstrap SE computed in part 1.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tinytable (avoid underscores in visible labels)</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>compare_df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter         =</span> <span class="fu">c</span>(<span class="st">"$</span><span class="sc">\\</span><span class="st">mu$"</span>),</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Bootstrap SE</span><span class="st">`</span>    <span class="ot">=</span> <span class="fu">c</span>(bs_se_mu_hat),</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Delta method SE</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(se_mu_hat)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tt</span>(</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  compare_df,</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Beta model: parametric-bootstrap and delta-method SEs compared"</span>,</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_ap40wfw1hh3kwy92fr50 = TinyTable.createTableFunctions("tinytable_ap40wfw1hh3kwy92fr50");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '1', j: 1 }, { i: '1', j: 2 }, { i: '1', j: 3 } ], css_id: 'tinytable_css_jlsrq9zqs6tre02qzmg1',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_qlm8dt72jzmcla7246qf',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_ap40wfw1hh3kwy92fr50.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_ap40wfw1hh3kwy92fr50 td.tinytable_css_jlsrq9zqs6tre02qzmg1, #tinytable_ap40wfw1hh3kwy92fr50 th.tinytable_css_jlsrq9zqs6tre02qzmg1 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_ap40wfw1hh3kwy92fr50 td.tinytable_css_qlm8dt72jzmcla7246qf, #tinytable_ap40wfw1hh3kwy92fr50 th.tinytable_css_qlm8dt72jzmcla7246qf {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_ap40wfw1hh3kwy92fr50" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <caption>Beta model: parametric-bootstrap and delta-method SEs compared</caption>
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">Parameter</th>
+                <th scope="col" data-row="0" data-col="2">Bootstrap SE</th>
+                <th scope="col" data-row="0" data-col="3">Delta method SE</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">$\mu$</td>
+                  <td data-row="1" data-col="2">0.00827</td>
+                  <td data-row="1" data-col="3">0.00849</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</div></details>
 </section>
 <section id="ex-11" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-11"><span class="ex-num">Exercise 11</span> Two CIs</h2>
@@ -393,12 +1463,63 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>This is like the parametric bootstrap from <a href="#ex-9">Exercise 9</a>. Repeatedly simulate <span class="math inline">\(y^{*(b)}_1,\dots,y^{*(b)}_N \stackrel{iid}{\sim} \text{Bernoulli}(\hat \pi)\)</span>, recompute <span class="math inline">\(\hat \pi^{*(b)} = \operatorname{avg}(y^{*(b)})\)</span>, and then take the empirical <span class="math inline">\(2.5^\text{th}\)</span> and <span class="math inline">\(97.5^\text{th}\)</span> percentiles of <span class="math inline">\(\{\hat \pi^{*(b)}\}\)</span>.</p>
 </div></details>
-<div class="ex-slot"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 11, 12pm</span></button></div>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Solution.</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"># data: N = 20 with exactly one success</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">0</span>, N <span class="sc">-</span> <span class="dv">1</span>))  <span class="co"># rare event sample</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">sample</span>(y)            <span class="co"># shuffle (irrelevant, but tidy)</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ml estimate and wald 95%ci</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>pi_hat   <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(pi_hat <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> pi_hat) <span class="sc">/</span> N)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>wald_ci <span class="ot">&lt;-</span> pi_hat <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">*</span> <span class="fl">1.96</span> <span class="sc">*</span> se</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>pi_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.05</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04873397</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>wald_ci</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.04551858  0.14551858</code></pre>
+</div>
+</div>
+<p>The Wald interval extends below 0, which is outside the parameter space <span class="math inline">\([0,1]\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parametric bootstrap w/ percentile 95% ci</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>n_bs <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>bs_est <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_bs)  <span class="co"># a container for the estimates</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_bs) {</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  bs_y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">20</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> pi_hat)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  bs_est[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(bs_y)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">quantile</span>(bs_est, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)), <span class="at">digits =</span> <span class="dv">2</span>)  <span class="co"># 95% ci</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 2.5% 97.5% 
+ 0.00  0.15 </code></pre>
+</div>
+</div>
+<p>The Wald interval uses a normal approximation centered at <span class="math inline">\(\hat \pi\)</span> with variance estimated by Fisher information. With extreme <span class="math inline">\(\hat \pi\)</span> near zero and small <span class="math inline">\(N\)</span>, this approximation is poor and the lower bound of the CI can dip below 0. In contrast, the parametric bootstrap respects the model’s support by construction (every <span class="math inline">\(\hat \pi^{*(b)} \in [0,1]\)</span>), so the percentile interval stays within <span class="math inline">\([0,1]\)</span> and typically provides more reasonable coverage in this setting.</p>
+</div></details>
 
 
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Rather than “approximately equals” (<span class="math inline">\(\approx\)</span>), it’s more technically correct to write “asymptotically equals.” However, we treat “asymptotically equals” to mean “approximately” in practice. Given the practical orientation of the course, it seems better to write “approximately” here.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <!-- Injected at the end of every exercise page (see _metadata.yml).
      Two jobs: keep the countdown in the release notice current, and, when
      `solution-gate: browser` is in force, open the solution panels the moment
