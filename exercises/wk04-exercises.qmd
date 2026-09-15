@@ -518,7 +518,28 @@ fd_hat + 1.64*se_fd_hat  # upper
 
 > My first hypothesis is that [the number of] enforcement operations [`operations`] drop off with the fraction of poor residents [`lower`] in an electoral district. So district poverty should be a negative and significant predictor of enforcement, but only in politically decentralized cities [Lima and Santiago]. Poverty should have no relationship with enforcement in politically centralized cities [Bogota] once one controls for the number of vendors (p. 362)"
 
-In the lecture, we used `optim()` to fit a *Poisson regression model* [[Gist](https://gist.github.com/carlislerainey/7a5cb5d23115079986092433910249b4)] and a *negative binomial regression model* to Holland's data for Santiago. 
+We can use `optim()` to fit a *Poisson regression model* [[Gist](https://gist.github.com/carlislerainey/7a5cb5d23115079986092433910249b4)] and a *negative binomial regression model* to Holland's data for Santiago. The logic of the Poisson regression model follows the logic of logistic regression: choose a distribution, choose an inverse link function, and fit the model with maximum likelihood.
+
+**The Poisson model.** The outcome `operations` is a count (0, 1, 2, ...). The Poisson distribution is a natural starting point for counts. It has one parameter $\lambda$, which is both the mean and the variance. In [Week 2](https://pos5747.github.io/notes/wk02/01-maximum-likelihood.html#example-poisson-distribution), we fit a Poisson model without covariates, so every observation had the same $\lambda$. Now we want $\lambda_i$ to depend on covariates, just as $\pi_i$ does in the logit model. But $\lambda_i$ *must be positive*, while $X_i\beta$ can be any real number. Thus we need an inverse link function that maps the real numbers onto the positive numbers. The usual choice is the exponential function, which makes the model
+
+$$y_i \sim \text{Poisson}(\lambda_i) \text{, where } \lambda_i = \exp(X_i\beta).$$
+
+Compare this to the logit model, where $\pi_i = \operatorname{logit}^{-1}(X_i\beta)$. (Only the distribution and the inverse link function change.)
+
+**The negative binomial model.** But the Poisson model makes a strong assumption. Because $\lambda_i$ is both the mean and the variance, the model assumes $\text{Var}(y_i) = E(y_i)$. Count data often have a variance much larger than the mean (we call this "overdispersion"). The negative binomial distribution relaxes this assumption. It has two parameters, a mean $\mu$ and a dispersion parameter $\theta$ (and its variance is $\mu + \mu^2/\theta$). The variance is always larger than the mean, and it grows as $\theta$ shrinks. (As $\theta \to \infty$, the negative binomial becomes the Poisson.) We model the mean exactly as in the Poisson model and treat $\theta$ as a single constant to estimate. The model is
+
+$$y_i \sim \text{NegBin}(\mu_i, \theta) \text{, where } \mu_i = \exp(X_i\beta).$$
+
+Notice that $\theta$ plays the same role as $\sigma^2$ in the normal linear model. It does not depend on covariates, and it does not appear in the linear predictor. It's a second parameter that describes the spread of the outcome, and we estimate it along with $\beta$.
+
+| Model | Distribution | Modeled parameter | Other parameters |
+|---|---|---|---|
+| Normal linear | $y_i \sim N(\mu_i, \sigma^2)$ | $\mu_i = X_i\beta$ | $\sigma^2$ |
+| Logit | $y_i \sim \text{Bernoulli}(\pi_i)$ | $\pi_i = \operatorname{logit}^{-1}(X_i\beta)$ | none |
+| Poisson | $y_i \sim \text{Poisson}(\lambda_i)$ | $\lambda_i = \exp(X_i\beta)$ | none |
+| Negative binomial | $y_i \sim \text{NegBin}(\mu_i, \theta)$ | $\mu_i = \exp(X_i\beta)$ | $\theta$ |
+
+In R, `glm(f, family = poisson)` fits the Poisson model and `MASS::glm.nb(f)` fits the negative binomial model. Both use the log link by default, so both have $\exp(X_i\beta)$ as the inverse link function.
 
 1. Fit the same model below using `glm()` and `glm.nb()`. Compare the coefficients and standard errors. Use {modelsummary} to make a side-by-side table of coefficient and SE estimates. Explain the differences in the estimates across models.
 1. Compute a relevant quantity of interest. Explain the differences in the estimates across models.
