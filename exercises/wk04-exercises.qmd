@@ -106,14 +106,14 @@ est$par  # matches ols from above
 
 ## Matching formulas to linear predictors {ref="formula-matching"}
 
-These use `ZeligData::turnout`, the data from the logit example in the notes. `race` is a factor with levels `others` (the baseline) and `white`; `age`, `educate`, and `income` are numeric.
+The formulas below use the `ZeligData::turnout` dataset. `race` is a factor with levels `others` (the baseline) and `white`; `age`, `educate`, and `income` are numeric.
 
 ```{r}
 # load the turnout data
 turnout <- ZeligData::turnout
 ```
 
-The table below pairs fifteen linear predictors with the fifteen formulas that produce them, but the formulas are scrambled. The linear predictors run from two columns in the design matrix up to seven.
+The table below pairs fifteen linear predictors with the fifteen formulas that produce them, **but formulas are scrambled.** 
 
 | | Linear predictor $\eta_i$ | | Formula |
 |---|-----------------------------|---|-----------|
@@ -137,7 +137,7 @@ The table below pairs fifteen linear predictors with the fifteen formulas that p
 1. Now run `model.matrix()` on the ones you were unsure about and compare the column names to your answer. Note any you got wrong and explain what you expected instead.
 1. Several of these are worth a second look. For each group below, explain what R did and why.
     - **G** and **J** both use `^`, and neither one produces a squared term. What does `^` do to the terms inside it, and why does `age^2` collapse to a single `age` column? Which formula in the table is the only one that puts an actual square in the design matrix?
-    - **K** and **O** both put a polynomial in `age` into the design matrix, one written out by hand and one built by `poly()`. What does `raw = TRUE` do? Refit **O** without it and compare the coefficients and the fitted values. Why does the fit not change?
+    - **K** and **O** both put a polynomial in `age` into the design matrix (one written out by hand and one built by `poly()`). What does `raw = TRUE` do? Refit **O** without it and compare the coefficients and the fitted values. Why does the fit not change?
     - **D** and **M** both use `:` without `*`. `age:educate` gives a product and no main effects, but `race:educate` gives *two* interaction columns where **F** gives one. Why does dropping the main effect change the number of interaction columns for the factor but not for the numeric variable?
     - **C** and **H** use the same two variables but produce a different number of columns. What restriction on C's coefficients does H impose?
     - **B** and **I** describe the same two groups. What does each coefficient means? Confirm that the two models produce the same fitted values. Why can a model not include an intercept *and* an indicator for both races?
@@ -214,54 +214,34 @@ The three that usually cause trouble:
 
 **Part 3.**
 
-*`^` on G and J.* `^n` crosses the terms inside the parentheses up to order `n`, and crossing a variable with itself just returns the variable.
+*G and J.* Inside a formula, `^2` means "interact all of these terms with each other, *up to* two at a time." It doesn't square anything. Interacting a variable with itself just gives that variable back, so **G** `age^2` is just `age`. **J** `(age + educate + income)^2` gives the three variables plus their three pairwise interactions. **K** is the only formula in the table that actually squares a variable. `I()` tells R to do the arithmetic rather than read `^` as a formula operator. See [Section 10.5.2](https://pos5747.github.io/notes/wk04/02-formulas.html#transformations-that-require-i).
 
-- **G** `age^2` therefore collapses to `age`: `(Intercept) | age`.
-- **J** `(age + educate + income)^2` gives the three main effects and the three pairwise products — again no squares.
-- **K** `age + I(age^2)` is the only formula in the table with an actual squared column. `I()` insulates the expression so that R evaluates `age^2` as arithmetic rather than as a formula operator. See [Section 10.5.2](https://pos5747.github.io/notes/wk04/02-formulas.html#transformations-that-require-i) of the notes.
-
-*`poly()` on K and O.* `poly(age, 3, raw = TRUE)` produces the columns `age`, `age^2`, and `age^3` (i.e., exactly what writing `age + I(age^2) + I(age^3)` by hand gives). **K** is the quadratic version of the same idea.
-
-Dropping `raw = TRUE` gives *orthogonal* polynomials (i.e., three columns that are linear combinations of the powers, rescaled to be uncorrelated with each other). The fitted values and the log-likelihood are identical; only the coefficients differ (i.e., the orthogonal coefficients are not the polynomial's $\beta_1$, $\beta_2$, and $\beta_3$.) See [Section 10.3.1](https://pos5747.github.io/notes/wk04/02-formulas.html#orthogonal-and-raw-polynomials) of the notes.
+*K and O.* With `raw = TRUE`, `poly()` gives you the columns `age`, `age^2`, and `age^3`. Those are the columns you'd write by hand, so the coefficients are the same. Without `raw = TRUE`, R uses three new columns that are mixtures of those powers, built to be uncorrelated with each other. Any fit you can get with one set of columns you can get with the other, so the predicted probabilities are identical. Only the coefficients change, and they aren't $\beta_1$, $\beta_2$, and $\beta_3$ from the equation. See [Section 10.3.1](https://pos5747.github.io/notes/wk04/02-formulas.html#orthogonal-and-raw-polynomials).
 
 ```{r}
-# raw powers, by hand and by poly()
 fit_raw  <- glm(vote ~ poly(age, 3, raw = TRUE), family = binomial, data = turnout)
 fit_hand <- glm(vote ~ age + I(age^2) + I(age^3), family = binomial, data = turnout)
-all.equal(unname(coef(fit_raw)), unname(coef(fit_hand)))
-
-# orthogonal polynomials, the default
 fit_orth <- glm(vote ~ poly(age, 3), family = binomial, data = turnout)
+
+all.equal(unname(coef(fit_raw)), unname(coef(fit_hand)))  # same coefficients
 rbind(raw = unname(coef(fit_raw)), orthogonal = unname(coef(fit_orth)))
-all.equal(fitted(fit_raw), fitted(fit_orth))
+all.equal(fitted(fit_raw), fitted(fit_orth))              # same fit
 ```
 
+*D, M, and F.* `:` adds the interaction. The two numeric variables have just one interaction between them, so **D** adds a single column. Howevver, R (re)codes a factor according to what else is in the model. **M** has no `racewhite` column, so R gives each race its own education slope and a shared intercept. **F** already has `racewhite`, so R adds only `racewhite:educate`, and that coefficient is the *difference* between the two slopes. See [Section 10.4](https://pos5747.github.io/notes/wk04/02-formulas.html#interactions).
 
-*`:` on D, M, and F.* `:` forms the product without adding the main effects.
+*C and H.* **C** gives income and education each its own coefficient. **H** forces them to share a coefficient (i.e., it adds the two variables together first, then estimates a single coefficient for the sum, so it estimates one fewer parameter). Note that the `+` inside `I()` is ordinary addition, not the formula operator.
 
-- **D** `age:educate` gives `(Intercept) | age:educate`. Two numeric variables have one product between them, so the column count does not depend on whether the main effects are there.
-- **M** `race:educate` gives `raceothers:educate` *and* `racewhite:educate` (i.e., a separate education slope for each race, with one shared intercept).
-- **F** `race*educate` already includes `racewhite`, so only `racewhite:educate` can be added. The education slope is $\beta_{\text{educate}}$ for others and $\beta_{\text{educate}} + \beta_{\text{interaction}}$ for white respondents. See [Section 10.4](https://pos5747.github.io/notes/wk04/02-formulas.html#interactions) of the notes.
-
-*C and H.* **C** estimates $\beta_1\text{income}_i + \beta_2\text{educate}_i$; **H** estimates a single coefficient on the sum, which is **C** with $\beta_1 = \beta_2$ imposed. H is C with one restriction, so it has one fewer column and one more residual degree of freedom. Notice that the `+` inside `I()` is arithmetic; without `I()` it is the formula operator that adds a term.
-
-*B and I.* The two are the same model written two ways, so they produce identical fitted values.
+*B and I.* These are the same model written two ways, in the sense that the predicted probabilities are identical. In **I**, the intercept is the log-odds of voting for `others`, and `racewhite` is how much higher whites are. In **B**, each coefficient is that group's own log-odds. You can't have the intercept and both indicators. The two indicators add up to a column of 1s, which is what the intercept already is, so this would create perfect collinearity. See [Section 9.6](https://pos5747.github.io/notes/wk04/01-design-matrix.html#categorical-variables-with-more-than-two-categories).
 
 ```{r}
-# the same two groups, parameterized two ways
 fit_i <- glm(vote ~ race, family = binomial, data = turnout)
 fit_b <- glm(vote ~ race - 1, family = binomial, data = turnout)
 
 coef(fit_i)
 coef(fit_b)
-
-# identical fits
 all.equal(fitted(fit_i), fitted(fit_b))
 ```
-
-- In **I**, the intercept is the log-odds of voting for `others` (the baseline) and `racewhite` is the *difference* between whites and others.
-- In **B**, `raceothers` and `racewhite` are each group's own log-odds. There is no baseline and no difference reported; note that `(Intercept) + racewhite` from I equals `racewhite` from B.
-- A factor with $m$ categories can contribute only $m - 1$ indicators alongside an intercept. The $m$ indicators sum to the column of 1s, so including all of them makes the design matrix collinear and the model unidentified. See [Section 9.6](https://pos5747.github.io/notes/wk04/01-design-matrix.html#categorical-variables-with-more-than-two-categories) of the notes.
 
 :::
 

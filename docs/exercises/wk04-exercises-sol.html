@@ -379,12 +379,12 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Matching formulas to linear predictors</h2>
-<p>These use <code>ZeligData::turnout</code>, the data from the logit example in the notes. <code>race</code> is a factor with levels <code>others</code> (the baseline) and <code>white</code>; <code>age</code>, <code>educate</code>, and <code>income</code> are numeric.</p>
+<p>The formulas below use the <code>ZeligData::turnout</code> dataset. <code>race</code> is a factor with levels <code>others</code> (the baseline) and <code>white</code>; <code>age</code>, <code>educate</code>, and <code>income</code> are numeric.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the turnout data</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>turnout <span class="ot">&lt;-</span> ZeligData<span class="sc">::</span>turnout</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The table below pairs fifteen linear predictors with the fifteen formulas that produce them, but the formulas are scrambled. The linear predictors run from two columns in the design matrix up to seven.</p>
+<p>The table below pairs fifteen linear predictors with the fifteen formulas that produce them, <strong>but formulas are scrambled.</strong></p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -499,7 +499,7 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 <li>Several of these are worth a second look. For each group below, explain what R did and why.
 <ul>
 <li><strong>G</strong> and <strong>J</strong> both use <code>^</code>, and neither one produces a squared term. What does <code>^</code> do to the terms inside it, and why does <code>age^2</code> collapse to a single <code>age</code> column? Which formula in the table is the only one that puts an actual square in the design matrix?</li>
-<li><strong>K</strong> and <strong>O</strong> both put a polynomial in <code>age</code> into the design matrix, one written out by hand and one built by <code>poly()</code>. What does <code>raw = TRUE</code> do? Refit <strong>O</strong> without it and compare the coefficients and the fitted values. Why does the fit not change?</li>
+<li><strong>K</strong> and <strong>O</strong> both put a polynomial in <code>age</code> into the design matrix (one written out by hand and one built by <code>poly()</code>). What does <code>raw = TRUE</code> do? Refit <strong>O</strong> without it and compare the coefficients and the fitted values. Why does the fit not change?</li>
 <li><strong>D</strong> and <strong>M</strong> both use <code>:</code> without <code>*</code>. <code>age:educate</code> gives a product and no main effects, but <code>race:educate</code> gives <em>two</em> interaction columns where <strong>F</strong> gives one. Why does dropping the main effect change the number of interaction columns for the factor but not for the numeric variable?</li>
 <li><strong>C</strong> and <strong>H</strong> use the same two variables but produce a different number of columns. What restriction on C’s coefficients does H impose?</li>
 <li><strong>B</strong> and <strong>I</strong> describe the same two groups. What does each coefficient means? Confirm that the two models produce the same fitted values. Why can a model not include an intercept <em>and</em> an indicator for both races?</li>
@@ -593,52 +593,36 @@ O: vote ~ poly(age, 3, raw = TRUE)
 <li><strong>M</strong> <code>race:educate</code> produces <code>raceothers:educate</code> <em>and</em> <code>racewhite:educate</code>: a separate education slope for each race, with one shared intercept.</li>
 </ul>
 <p><strong>Part 3.</strong></p>
-<p><em><code>^</code> on G and J.</em> <code>^n</code> crosses the terms inside the parentheses up to order <code>n</code>, and crossing a variable with itself just returns the variable.</p>
-<ul>
-<li><strong>G</strong> <code>age^2</code> therefore collapses to <code>age</code>: <code>(Intercept) | age</code>.</li>
-<li><strong>J</strong> <code>(age + educate + income)^2</code> gives the three main effects and the three pairwise products — again no squares.</li>
-<li><strong>K</strong> <code>age + I(age^2)</code> is the only formula in the table with an actual squared column. <code>I()</code> insulates the expression so that R evaluates <code>age^2</code> as arithmetic rather than as a formula operator. See <a href="https://pos5747.github.io/notes/wk04/02-formulas.html#transformations-that-require-i">Section 10.5.2</a> of the notes.</li>
-</ul>
-<p><em><code>poly()</code> on K and O.</em> <code>poly(age, 3, raw = TRUE)</code> produces the columns <code>age</code>, <code>age^2</code>, and <code>age^3</code> — exactly what writing <code>age + I(age^2) + I(age^3)</code> by hand gives, and <strong>K</strong> is the quadratic version of the same idea.</p>
+<p><em>G and J.</em> Inside a formula, <code>^2</code> means “interact all of these terms with each other, up to two at a time.” It doesn’t square anything. Interacting a variable with itself just gives that variable back, so <strong>G</strong> <code>age^2</code> is just <code>age</code>. <strong>J</strong> <code>(age + educate + income)^2</code> gives the three variables plus their three pairwise interactions. <strong>K</strong> is the only formula in the table that actually squares a variable. <code>I()</code> tells R to do the arithmetic rather than read <code>^</code> as a formula operator. See <a href="https://pos5747.github.io/notes/wk04/02-formulas.html#transformations-that-require-i">Section 10.5.2</a>.</p>
+<p><em>K and O.</em> With <code>raw = TRUE</code>, <code>poly()</code> gives you the columns <code>age</code>, <code>age^2</code>, and <code>age^3</code>. Those are the columns you’d write by hand, so the coefficients are the same. Without <code>raw = TRUE</code>, R uses three new columns that are mixtures of those powers, built to be uncorrelated with each other. Any fit you can get with one set of columns you can get with the other, so the predicted probabilities are identical. Only the coefficients change, and they aren’t <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, and <span class="math inline">\(\beta_3\)</span> from the equation. See <a href="https://pos5747.github.io/notes/wk04/02-formulas.html#orthogonal-and-raw-polynomials">Section 10.3.1</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># raw powers, by hand and by poly()</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>fit_raw  <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">3</span>, <span class="at">raw =</span> <span class="cn">TRUE</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fit_hand <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">3</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">unname</span>(<span class="fu">coef</span>(fit_raw)), <span class="fu">unname</span>(<span class="fu">coef</span>(fit_hand)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit_raw  <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">3</span>, <span class="at">raw =</span> <span class="cn">TRUE</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>fit_hand <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">3</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fit_orth <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">3</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">unname</span>(<span class="fu">coef</span>(fit_raw)), <span class="fu">unname</span>(<span class="fu">coef</span>(fit_hand)))  <span class="co"># same coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># orthogonal polynomials, the default</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>fit_orth <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">3</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">raw =</span> <span class="fu">unname</span>(<span class="fu">coef</span>(fit_raw)), <span class="at">orthogonal =</span> <span class="fu">unname</span>(<span class="fu">coef</span>(fit_orth)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">raw =</span> <span class="fu">unname</span>(<span class="fu">coef</span>(fit_raw)), <span class="at">orthogonal =</span> <span class="fu">unname</span>(<span class="fu">coef</span>(fit_orth)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                [,1]      [,2]          [,3]         [,4]
 raw        -2.736302 0.1917304  -0.002614735 9.716534e-06
 orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">fitted</span>(fit_raw), <span class="fu">fitted</span>(fit_orth))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">fitted</span>(fit_raw), <span class="fu">fitted</span>(fit_orth))              <span class="co"># same fit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
-<ul>
-<li>Dropping <code>raw = TRUE</code> gives <em>orthogonal</em> polynomials: three columns that are linear combinations of the powers, rescaled to be uncorrelated with each other.</li>
-<li>The two sets of columns span the same space, so the fitted values and the log-likelihood are identical. Only the coefficients differ, and the orthogonal ones are not the polynomial’s <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, and <span class="math inline">\(\beta_3\)</span>. See <a href="https://pos5747.github.io/notes/wk04/02-formulas.html#orthogonal-and-raw-polynomials">Section 10.3.1</a> of the notes.</li>
-</ul>
-<p><em><code>:</code> on D, M, and F.</em> <code>:</code> forms the product without adding the main effects.</p>
-<ul>
-<li><strong>D</strong> <code>age:educate</code> gives <code>(Intercept) | age:educate</code>. Two numeric variables have one product between them, so the column count does not depend on whether the main effects are there.</li>
-<li><strong>M</strong> <code>race:educate</code> gives <code>raceothers:educate</code> <em>and</em> <code>racewhite:educate</code> — a separate education slope for each race, with one shared intercept. A factor is coded against whatever else is in the model: with no <code>racewhite</code> main effect present, both slopes fit without collinearity.</li>
-<li><strong>F</strong> <code>race*educate</code> already includes <code>racewhite</code>, so only <code>racewhite:educate</code> can be added. The education slope is <span class="math inline">\(\beta_{\text{educate}}\)</span> for others and <span class="math inline">\(\beta_{\text{educate}} + \beta_{\text{interaction}}\)</span> for whites. See <a href="https://pos5747.github.io/notes/wk04/02-formulas.html#interactions">Section 10.4</a> of the notes.</li>
-</ul>
-<p><em>C and H.</em> <strong>C</strong> estimates <span class="math inline">\(\beta_1\text{income}_i + \beta_2\text{educate}_i\)</span>; <strong>H</strong> estimates a single coefficient on the sum, which is <strong>C</strong> with <span class="math inline">\(\beta_1 = \beta_2\)</span> imposed. H is C with one restriction, so it has one fewer column and one more residual degree of freedom. Notice that the <code>+</code> inside <code>I()</code> is arithmetic; without <code>I()</code> it is the formula operator that adds a term.</p>
-<p><em>B and I.</em> The two are the same model written two ways, so they produce identical fitted values.</p>
+<p><em>D, M, and F.</em> <code>:</code> adds the interaction and nothing else. Two numeric variables have just one interaction between them, so <strong>D</strong> adds a single column. But R codes a factor according to what else is in the model. <strong>M</strong> has no <code>racewhite</code> column, so R gives each race its own education slope and a shared intercept. <strong>F</strong> already has <code>racewhite</code>, so R adds only <code>racewhite:educate</code>, and that coefficient is the <em>difference</em> between the two slopes. See <a href="https://pos5747.github.io/notes/wk04/02-formulas.html#interactions">Section 10.4</a>.</p>
+<p><em>C and H.</em> <strong>C</strong> lets income and education each have its own coefficient. <strong>H</strong> forces them to share one. It adds the two variables together first, then estimates a single coefficient for the sum, so it estimates one fewer parameter. Notice that the <code>+</code> inside <code>I()</code> is ordinary addition, not the formula operator.</p>
+<p><em>B and I.</em> These are the same model written two ways, so the predicted probabilities are identical. In <strong>I</strong>, the intercept is the log-odds of voting for <code>others</code>, and <code>racewhite</code> is how much higher whites are. In <strong>B</strong>, each coefficient is that group’s own log-odds. You can’t have the intercept and both indicators. The two indicators add up to a column of 1s, which is what the intercept already is, so R can’t tell them apart. See <a href="https://pos5747.github.io/notes/wk04/01-design-matrix.html#categorical-variables-with-more-than-two-categories">Section 9.6</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the same two groups, parameterized two ways</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fit_i <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> race, <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>fit_b <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> race <span class="sc">-</span> <span class="dv">1</span>, <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fit_i <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> race, <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fit_b <span class="ot">&lt;-</span> <span class="fu">glm</span>(vote <span class="sc">~</span> race <span class="sc">-</span> <span class="dv">1</span>, <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)   racewhite 
   0.5181383   0.6699191 </code></pre>
@@ -648,17 +632,11 @@ orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
 <pre><code>raceothers  racewhite 
  0.5181383  1.1880573 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># identical fits</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">fitted</span>(fit_i), <span class="fu">fitted</span>(fit_b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">fitted</span>(fit_i), <span class="fu">fitted</span>(fit_b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
-<ul>
-<li>In <strong>I</strong>, the intercept is the log-odds of voting for <code>others</code> (the baseline) and <code>racewhite</code> is the <em>difference</em> between whites and others.</li>
-<li>In <strong>B</strong>, <code>raceothers</code> and <code>racewhite</code> are each group’s own log-odds. There is no baseline and no difference reported; note that <code>(Intercept) + racewhite</code> from I equals <code>racewhite</code> from B.</li>
-<li>A factor with <span class="math inline">\(m\)</span> categories can contribute only <span class="math inline">\(m - 1\)</span> indicators alongside an intercept. The <span class="math inline">\(m\)</span> indicators sum to the column of 1s, so including all of them makes the design matrix collinear and the model unidentified. See <a href="https://pos5747.github.io/notes/wk04/01-design-matrix.html#categorical-variables-with-more-than-two-categories">Section 9.6</a> of the notes.</li>
-</ul>
 </div></details>
 </section>
 <section id="ex-4" class="level2 ex-heading">
@@ -803,23 +781,23 @@ orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_68rzrepi45hq5mv4ujry = TinyTable.createTableFunctions("tinytable_68rzrepi45hq5mv4ujry");
+      const tableFns_vw175btixmzmc0975du7 = TinyTable.createTableFunctions("tinytable_vw175btixmzmc0975du7");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '14', j: 2 } ], css_id: 'tinytable_css_5v3axwhk0mbdt84ojzbf',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 } ], css_id: 'tinytable_css_l4uvigk0kbjjes7emta7',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_aqwhzx30i5bvbcv89llc',}, 
-          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_czwtz8lxmqkp8firss7z',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_nuzdfga65td2oreofh9u',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_fp1ncroril5letrrud0m',}, 
+          { positions: [ { i: '14', j: 2 } ], css_id: 'tinytable_css_6le3vnupz5l3w05jzzqm',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 } ], css_id: 'tinytable_css_k3gswpux5er6fbcczu2m',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_vjqknovwd2e5y6f6rvcp',}, 
+          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_cfjskty9ycb0ci6rmwd1',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_5pm7ytjz8s8jfw3xxdnx',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_r1kvnv2tdt5yuk8yuiv2',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_68rzrepi45hq5mv4ujry.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_vw175btixmzmc0975du7.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -828,15 +806,15 @@ orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_68rzrepi45hq5mv4ujry td.tinytable_css_5v3axwhk0mbdt84ojzbf, #tinytable_68rzrepi45hq5mv4ujry th.tinytable_css_5v3axwhk0mbdt84ojzbf {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_68rzrepi45hq5mv4ujry td.tinytable_css_l4uvigk0kbjjes7emta7, #tinytable_68rzrepi45hq5mv4ujry th.tinytable_css_l4uvigk0kbjjes7emta7 { text-align: center }
-    #tinytable_68rzrepi45hq5mv4ujry td.tinytable_css_aqwhzx30i5bvbcv89llc, #tinytable_68rzrepi45hq5mv4ujry th.tinytable_css_aqwhzx30i5bvbcv89llc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_68rzrepi45hq5mv4ujry td.tinytable_css_czwtz8lxmqkp8firss7z, #tinytable_68rzrepi45hq5mv4ujry th.tinytable_css_czwtz8lxmqkp8firss7z {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_68rzrepi45hq5mv4ujry td.tinytable_css_nuzdfga65td2oreofh9u, #tinytable_68rzrepi45hq5mv4ujry th.tinytable_css_nuzdfga65td2oreofh9u { text-align: left }
-    #tinytable_68rzrepi45hq5mv4ujry td.tinytable_css_fp1ncroril5letrrud0m, #tinytable_68rzrepi45hq5mv4ujry th.tinytable_css_fp1ncroril5letrrud0m {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_vw175btixmzmc0975du7 td.tinytable_css_6le3vnupz5l3w05jzzqm, #tinytable_vw175btixmzmc0975du7 th.tinytable_css_6le3vnupz5l3w05jzzqm {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_vw175btixmzmc0975du7 td.tinytable_css_k3gswpux5er6fbcczu2m, #tinytable_vw175btixmzmc0975du7 th.tinytable_css_k3gswpux5er6fbcczu2m { text-align: center }
+    #tinytable_vw175btixmzmc0975du7 td.tinytable_css_vjqknovwd2e5y6f6rvcp, #tinytable_vw175btixmzmc0975du7 th.tinytable_css_vjqknovwd2e5y6f6rvcp {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_vw175btixmzmc0975du7 td.tinytable_css_cfjskty9ycb0ci6rmwd1, #tinytable_vw175btixmzmc0975du7 th.tinytable_css_cfjskty9ycb0ci6rmwd1 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_vw175btixmzmc0975du7 td.tinytable_css_5pm7ytjz8s8jfw3xxdnx, #tinytable_vw175btixmzmc0975du7 th.tinytable_css_5pm7ytjz8s8jfw3xxdnx { text-align: left }
+    #tinytable_vw175btixmzmc0975du7 td.tinytable_css_r1kvnv2tdt5yuk8yuiv2, #tinytable_vw175btixmzmc0975du7 th.tinytable_css_r1kvnv2tdt5yuk8yuiv2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_68rzrepi45hq5mv4ujry" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_vw175btixmzmc0975du7" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1146,23 +1124,23 @@ $ se_ev_hat  &lt;dbl&gt; 0.004693969, 0.004266219, 0.003886446, 0.003549778, 0.0
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_8yb0u0xks072g4q0ogiv = TinyTable.createTableFunctions("tinytable_8yb0u0xks072g4q0ogiv");
+      const tableFns_zm5v413cjkm4dl9awiyx = TinyTable.createTableFunctions("tinytable_zm5v413cjkm4dl9awiyx");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '10', j: 2 }, { i: '10', j: 3 } ], css_id: 'tinytable_css_3u308xc10sdsmua1zokh',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_dhpoaaos1d6y1xq0plx3',}, 
-          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_ma9nxp0mkzmmkn56ml56',}, 
-          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_5m0vyly4zy5y15qmr79v',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 } ], css_id: 'tinytable_css_ph1yqx4w7pni1i32q700',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_9jvxlo8em52v90f0lu23',}, 
+          { positions: [ { i: '10', j: 2 }, { i: '10', j: 3 } ], css_id: 'tinytable_css_r5afcpluo0pfgn8itwon',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_kxkzcgnu1o3mbg8bjw7t',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_aqcmylrxpxcw5kgux8qf',}, 
+          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_39inve55nb5o531hp8eg',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 } ], css_id: 'tinytable_css_w7xmqbygwkq5mebdmw5p',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_0dib5ini9mqrm7yamg9s',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_8yb0u0xks072g4q0ogiv.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_zm5v413cjkm4dl9awiyx.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1171,15 +1149,15 @@ $ se_ev_hat  &lt;dbl&gt; 0.004693969, 0.004266219, 0.003886446, 0.003549778, 0.0
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_8yb0u0xks072g4q0ogiv td.tinytable_css_3u308xc10sdsmua1zokh, #tinytable_8yb0u0xks072g4q0ogiv th.tinytable_css_3u308xc10sdsmua1zokh {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_8yb0u0xks072g4q0ogiv td.tinytable_css_dhpoaaos1d6y1xq0plx3, #tinytable_8yb0u0xks072g4q0ogiv th.tinytable_css_dhpoaaos1d6y1xq0plx3 { text-align: center }
-    #tinytable_8yb0u0xks072g4q0ogiv td.tinytable_css_ma9nxp0mkzmmkn56ml56, #tinytable_8yb0u0xks072g4q0ogiv th.tinytable_css_ma9nxp0mkzmmkn56ml56 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_8yb0u0xks072g4q0ogiv td.tinytable_css_5m0vyly4zy5y15qmr79v, #tinytable_8yb0u0xks072g4q0ogiv th.tinytable_css_5m0vyly4zy5y15qmr79v {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_8yb0u0xks072g4q0ogiv td.tinytable_css_ph1yqx4w7pni1i32q700, #tinytable_8yb0u0xks072g4q0ogiv th.tinytable_css_ph1yqx4w7pni1i32q700 { text-align: left }
-    #tinytable_8yb0u0xks072g4q0ogiv td.tinytable_css_9jvxlo8em52v90f0lu23, #tinytable_8yb0u0xks072g4q0ogiv th.tinytable_css_9jvxlo8em52v90f0lu23 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_zm5v413cjkm4dl9awiyx td.tinytable_css_r5afcpluo0pfgn8itwon, #tinytable_zm5v413cjkm4dl9awiyx th.tinytable_css_r5afcpluo0pfgn8itwon {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_zm5v413cjkm4dl9awiyx td.tinytable_css_kxkzcgnu1o3mbg8bjw7t, #tinytable_zm5v413cjkm4dl9awiyx th.tinytable_css_kxkzcgnu1o3mbg8bjw7t { text-align: center }
+    #tinytable_zm5v413cjkm4dl9awiyx td.tinytable_css_aqcmylrxpxcw5kgux8qf, #tinytable_zm5v413cjkm4dl9awiyx th.tinytable_css_aqcmylrxpxcw5kgux8qf {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_zm5v413cjkm4dl9awiyx td.tinytable_css_39inve55nb5o531hp8eg, #tinytable_zm5v413cjkm4dl9awiyx th.tinytable_css_39inve55nb5o531hp8eg {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_zm5v413cjkm4dl9awiyx td.tinytable_css_w7xmqbygwkq5mebdmw5p, #tinytable_zm5v413cjkm4dl9awiyx th.tinytable_css_w7xmqbygwkq5mebdmw5p { text-align: left }
+    #tinytable_zm5v413cjkm4dl9awiyx td.tinytable_css_0dib5ini9mqrm7yamg9s, #tinytable_zm5v413cjkm4dl9awiyx th.tinytable_css_0dib5ini9mqrm7yamg9s {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_8yb0u0xks072g4q0ogiv" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_zm5v413cjkm4dl9awiyx" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1434,19 +1412,19 @@ $ type       &lt;chr&gt; "Poisson #1", "Poisson #1", "Poisson #1", "Poisson #1",
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_5w6vf0kvo4qd13leumdw = TinyTable.createTableFunctions("tinytable_5w6vf0kvo4qd13leumdw");
+      const tableFns_slep9n4nn745q0wgdmqf = TinyTable.createTableFunctions("tinytable_slep9n4nn745q0wgdmqf");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '9', j: 1 }, { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_ilq3tb9fljpm6fx8zvmp',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_11l1g3814cs6foaz8apn',}, 
+          { positions: [ { i: '9', j: 1 }, { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_3krkdeuw33s69qo7nr4x',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_bvzyx1q33qtn8z7mlp1d',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_5w6vf0kvo4qd13leumdw.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_slep9n4nn745q0wgdmqf.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1455,11 +1433,11 @@ $ type       &lt;chr&gt; "Poisson #1", "Poisson #1", "Poisson #1", "Poisson #1",
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_5w6vf0kvo4qd13leumdw td.tinytable_css_ilq3tb9fljpm6fx8zvmp, #tinytable_5w6vf0kvo4qd13leumdw th.tinytable_css_ilq3tb9fljpm6fx8zvmp {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_5w6vf0kvo4qd13leumdw td.tinytable_css_11l1g3814cs6foaz8apn, #tinytable_5w6vf0kvo4qd13leumdw th.tinytable_css_11l1g3814cs6foaz8apn {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_slep9n4nn745q0wgdmqf td.tinytable_css_3krkdeuw33s69qo7nr4x, #tinytable_slep9n4nn745q0wgdmqf th.tinytable_css_3krkdeuw33s69qo7nr4x {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_slep9n4nn745q0wgdmqf td.tinytable_css_bvzyx1q33qtn8z7mlp1d, #tinytable_slep9n4nn745q0wgdmqf th.tinytable_css_bvzyx1q33qtn8z7mlp1d {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_5w6vf0kvo4qd13leumdw" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_slep9n4nn745q0wgdmqf" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1630,19 +1608,19 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_5vc4spmil14f5endj4pw = TinyTable.createTableFunctions("tinytable_5vc4spmil14f5endj4pw");
+      const tableFns_hwymbgdhurskxvo7r7sr = TinyTable.createTableFunctions("tinytable_hwymbgdhurskxvo7r7sr");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '11', j: 1 }, { i: '11', j: 2 }, { i: '11', j: 3 } ], css_id: 'tinytable_css_n64fhjj7kb5q1s6l4j1e',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_9ot56yfchmfqk74xw4lm',}, 
+          { positions: [ { i: '11', j: 1 }, { i: '11', j: 2 }, { i: '11', j: 3 } ], css_id: 'tinytable_css_lcqmiupfbvd4usk13tay',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_r5myuqwrb0r64v1kho52',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_5vc4spmil14f5endj4pw.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_hwymbgdhurskxvo7r7sr.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1651,11 +1629,11 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_5vc4spmil14f5endj4pw td.tinytable_css_n64fhjj7kb5q1s6l4j1e, #tinytable_5vc4spmil14f5endj4pw th.tinytable_css_n64fhjj7kb5q1s6l4j1e {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_5vc4spmil14f5endj4pw td.tinytable_css_9ot56yfchmfqk74xw4lm, #tinytable_5vc4spmil14f5endj4pw th.tinytable_css_9ot56yfchmfqk74xw4lm {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_hwymbgdhurskxvo7r7sr td.tinytable_css_lcqmiupfbvd4usk13tay, #tinytable_hwymbgdhurskxvo7r7sr th.tinytable_css_lcqmiupfbvd4usk13tay {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_hwymbgdhurskxvo7r7sr td.tinytable_css_r5myuqwrb0r64v1kho52, #tinytable_hwymbgdhurskxvo7r7sr th.tinytable_css_r5myuqwrb0r64v1kho52 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_5vc4spmil14f5endj4pw" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_hwymbgdhurskxvo7r7sr" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
