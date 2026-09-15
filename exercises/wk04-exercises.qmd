@@ -104,6 +104,167 @@ est$par  # matches ols from above
 
 :::
 
+## Matching formulas to linear predictors {ref="formula-matching"}
+
+These use `ZeligData::turnout`, the data from the logit example in the notes. `race` is a factor with levels `others` (the baseline) and `white`; `age`, `educate`, and `income` are numeric.
+
+```{r}
+# load the turnout data
+turnout <- ZeligData::turnout
+```
+
+The table below pairs fifteen linear predictors with the fifteen formulas that produce them, but the formulas are scrambled. The linear predictors run from two columns in the design matrix up to seven.
+
+| | Linear predictor $\eta_i$ | | Formula |
+|---|-----------------------------|---|-----------|
+| 1 | $\beta_0 + \beta_1\text{age}_i$ | A | `vote ~ age*educate` |
+| 2 | $\beta_0 + \beta_1\log(\text{age}_i)$ | B | `vote ~ race - 1` |
+| 3 | $\beta_0 + \beta_1\sqrt{\text{income}_i}$ | C | `vote ~ income + educate` |
+| 4 | $\beta_0 + \beta_1\text{white}_i$, where $\text{white}_i = 1$ for white respondents | D | `vote ~ age:educate` |
+| 5 | a separate intercept for each race, and no common intercept | E | `vote ~ sqrt(income)` |
+| 6 | $\beta_0 + \beta_1(\text{income}_i + \text{educate}_i)$ | F | `vote ~ race*educate` |
+| 7 | $\beta_0 + \beta_1(\text{age}_i \times \text{educate}_i)$ | G | `vote ~ age^2` |
+| 8 | $\beta_0 + \beta_1\text{age}_i + \beta_2\text{educate}_i$ | H | `vote ~ I(income + educate)` |
+| 9 | $\beta_0 + \beta_1\text{income}_i + \beta_2\text{educate}_i$ | I | `vote ~ race` |
+| 10 | $\beta_0 + \beta_1\text{age}_i + \beta_2\text{age}_i^2$ | J | `vote ~ (age + educate + income)^2` |
+| 11 | one intercept shared by both races, but a separate education slope for each | K | `vote ~ age + I(age^2)` |
+| 12 | $\beta_0 + \beta_1\text{age}_i + \beta_2\text{age}_i^2 + \beta_3\text{age}_i^3$ | L | `vote ~ log(age)` |
+| 13 | $\beta_0 + \beta_1\text{age}_i + \beta_2\text{educate}_i + \beta_3(\text{age}_i \times \text{educate}_i)$ | M | `vote ~ race:educate` |
+| 14 | $\beta_0 + \beta_1\text{white}_i + \beta_2\text{educate}_i + \beta_3(\text{white}_i \times \text{educate}_i)$ | N | `vote ~ age + educate` |
+| 15 | all three of `age`, `educate`, and `income`, plus all three pairwise products | O | `vote ~ poly(age, 3, raw = TRUE)` |
+
+1. Match each linear predictor to the one formula that produces it. Each formula is used exactly once. Work these out *without* running R.
+1. Now run `model.matrix()` on the ones you were unsure about and compare the column names to your answer. Note any you got wrong and explain what you expected instead.
+1. Several of these are worth a second look. For each group below, explain what R did and why.
+    - **G** and **J** both use `^`, and neither one produces a squared term. What does `^` do to the terms inside it, and why does `age^2` collapse to a single `age` column? Which formula in the table is the only one that puts an actual square in the design matrix?
+    - **K** and **O** both put a polynomial in `age` into the design matrix, one written out by hand and one built by `poly()`. What does `raw = TRUE` do? Refit **O** without it and compare the coefficients and the fitted values. Why does the fit not change?
+    - **D** and **M** both use `:` without `*`. `age:educate` gives a product and no main effects, but `race:educate` gives *two* interaction columns where **F** gives one. Why does dropping the main effect change the number of interaction columns for the factor but not for the numeric variable?
+    - **C** and **H** use the same two variables but produce a different number of columns. What restriction on C's coefficients does H impose?
+    - **B** and **I** describe the same two groups. What does each coefficient means? Confirm that the two models produce the same fitted values. Why can a model not include an intercept *and* an indicator for both races?
+
+::: hint
+
+We need four operators:
+
+-  `+` adds a column 
+- `:` forms a product
+-  `*` expands to both main effects and the product
+-  `-` removes 
+
+Important: `^` is *not* arithmetic. It probably doesn't work like you expect.
+
+See [Section 10.4](https://pos5747.github.io/notes/wk04/02-formulas.html#interactions) for `*` and `:`, [Section 10.5.2](https://pos5747.github.io/notes/wk04/02-formulas.html#transformations-that-require-i) for `^` and `I()`.
+
+See [Section 10.2](https://pos5747.github.io/notes/wk04/02-formulas.html#factors) for factors and dummy variables.
+
+:::
+
+::: hint
+
+
+
+For part 3, a categorical variable with $m$ categories contributes $m - 1$ indicators when the model has an intercept. See the "On the baseline" callout in [Section 9.6](https://pos5747.github.io/notes/wk04/01-design-matrix.html#categorical-variables-with-more-than-two-categories) of the notes.
+
+:::
+
+::: sol
+
+**Solution**
+
+**Part 1.** 1-G, 2-L, 3-E, 4-I, 5-B, 6-H, 7-D, 8-N, 9-C, 10-K, 11-M, 12-O, 13-A, 14-F, 15-J
+
+**Part 2.**
+
+```{r}
+# load data
+turnout <- ZeligData::turnout
+
+# the fifteen formulas, labeled as in the table
+formulas <- c(
+  A = "vote ~ age*educate",
+  B = "vote ~ race - 1",
+  C = "vote ~ income + educate",
+  D = "vote ~ age:educate",
+  E = "vote ~ sqrt(income)",
+  F = "vote ~ race*educate",
+  G = "vote ~ age^2",
+  H = "vote ~ I(income + educate)",
+  I = "vote ~ race",
+  J = "vote ~ (age + educate + income)^2",
+  K = "vote ~ age + I(age^2)",
+  L = "vote ~ log(age)",
+  M = "vote ~ race:educate",
+  N = "vote ~ age + educate",
+  O = "vote ~ poly(age, 3, raw = TRUE)"
+)
+
+# print the column names of each design matrix
+for (i in seq_along(formulas)) {
+  X <- model.matrix(as.formula(formulas[i]), data = turnout)
+  cat(names(formulas)[i], ": ", formulas[i], "\n",
+      "   ", paste(colnames(X), collapse = " | "), "\n", sep = "")
+}
+```
+
+The three that usually cause trouble:
+
+- **G** `age^2` produces `(Intercept)` and `age` only, so it matches 1 rather than 10.
+- **H** `I(income + educate)` produces one coefficient on the sum; **C** `income + educate` produces two.
+- **M** `race:educate` produces `raceothers:educate` *and* `racewhite:educate`: a separate education slope for each race, with one shared intercept.
+
+**Part 3.**
+
+*`^` on G and J.* `^n` crosses the terms inside the parentheses up to order `n`, and crossing a variable with itself just returns the variable.
+
+- **G** `age^2` therefore collapses to `age`: `(Intercept) | age`.
+- **J** `(age + educate + income)^2` gives the three main effects and the three pairwise products — again no squares.
+- **K** `age + I(age^2)` is the only formula in the table with an actual squared column. `I()` insulates the expression so that R evaluates `age^2` as arithmetic rather than as a formula operator. See [Section 10.5.2](https://pos5747.github.io/notes/wk04/02-formulas.html#transformations-that-require-i) of the notes.
+
+*`poly()` on K and O.* `poly(age, 3, raw = TRUE)` produces the columns `age`, `age^2`, and `age^3` (i.e., exactly what writing `age + I(age^2) + I(age^3)` by hand gives). **K** is the quadratic version of the same idea.
+
+Dropping `raw = TRUE` gives *orthogonal* polynomials (i.e., three columns that are linear combinations of the powers, rescaled to be uncorrelated with each other). The fitted values and the log-likelihood are identical; only the coefficients differ (i.e., the orthogonal coefficients are not the polynomial's $\beta_1$, $\beta_2$, and $\beta_3$.) See [Section 10.3.1](https://pos5747.github.io/notes/wk04/02-formulas.html#orthogonal-and-raw-polynomials) of the notes.
+
+```{r}
+# raw powers, by hand and by poly()
+fit_raw  <- glm(vote ~ poly(age, 3, raw = TRUE), family = binomial, data = turnout)
+fit_hand <- glm(vote ~ age + I(age^2) + I(age^3), family = binomial, data = turnout)
+all.equal(unname(coef(fit_raw)), unname(coef(fit_hand)))
+
+# orthogonal polynomials, the default
+fit_orth <- glm(vote ~ poly(age, 3), family = binomial, data = turnout)
+rbind(raw = unname(coef(fit_raw)), orthogonal = unname(coef(fit_orth)))
+all.equal(fitted(fit_raw), fitted(fit_orth))
+```
+
+
+*`:` on D, M, and F.* `:` forms the product without adding the main effects.
+
+- **D** `age:educate` gives `(Intercept) | age:educate`. Two numeric variables have one product between them, so the column count does not depend on whether the main effects are there.
+- **M** `race:educate` gives `raceothers:educate` *and* `racewhite:educate` (i.e., a separate education slope for each race, with one shared intercept).
+- **F** `race*educate` already includes `racewhite`, so only `racewhite:educate` can be added. The education slope is $\beta_{\text{educate}}$ for others and $\beta_{\text{educate}} + \beta_{\text{interaction}}$ for white respondents. See [Section 10.4](https://pos5747.github.io/notes/wk04/02-formulas.html#interactions) of the notes.
+
+*C and H.* **C** estimates $\beta_1\text{income}_i + \beta_2\text{educate}_i$; **H** estimates a single coefficient on the sum, which is **C** with $\beta_1 = \beta_2$ imposed. H is C with one restriction, so it has one fewer column and one more residual degree of freedom. Notice that the `+` inside `I()` is arithmetic; without `I()` it is the formula operator that adds a term.
+
+*B and I.* The two are the same model written two ways, so they produce identical fitted values.
+
+```{r}
+# the same two groups, parameterized two ways
+fit_i <- glm(vote ~ race, family = binomial, data = turnout)
+fit_b <- glm(vote ~ race - 1, family = binomial, data = turnout)
+
+coef(fit_i)
+coef(fit_b)
+
+# identical fits
+all.equal(fitted(fit_i), fitted(fit_b))
+```
+
+- In **I**, the intercept is the log-odds of voting for `others` (the baseline) and `racewhite` is the *difference* between whites and others.
+- In **B**, `raceothers` and `racewhite` are each group's own log-odds. There is no baseline and no difference reported; note that `(Intercept) + racewhite` from I equals `racewhite` from B.
+- A factor with $m$ categories can contribute only $m - 1$ indicators alongside an intercept. The $m$ indicators sum to the column of 1s, so including all of them makes the design matrix collinear and the model unidentified. See [Section 9.6](https://pos5747.github.io/notes/wk04/01-design-matrix.html#categorical-variables-with-more-than-two-categories) of the notes.
+
+:::
+
 ## Probit {ref="probit"}
 
 The probit model uses the cdf of the normal distribution (e.g., often denoted as $\Phi(\cdot)$; `pnorm()` in R) rather than the inverse logit. 
