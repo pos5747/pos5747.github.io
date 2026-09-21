@@ -255,7 +255,7 @@ window.Quarto = {
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-09-18T12:00:00-04:00">Complete solutions open <strong>Friday, September 18 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <p><em>Note: These exercises are tending toward “tedious” and “rote.” However, I want to make sure that we understand the implementation of the basic framework, so there’s a lot of tedious repetition in this homework.</em></p>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Berk (2010)</h2>
@@ -266,11 +266,9 @@ window.Quarto = {
 <li>Berk critiques observational regression treated as causal. He also lists common responses (e.g., “the assumptions are reasonable,” “we all have models,” “you have to make assumptions to make progress”). Pick one response and assess whether you find it persuasive. Defend your position. How might you design a study in your area that could move from Level I or II toward Level III without weak rhetorical defenses? Perhaps give an example.</li>
 <li>Berk concludes that, with rare exceptions, regression analyses of observational data should be treated as Level I. Do you agree? If you take Berk’s view seriously, what happens to publication standards, peer review, funding, and training?</li>
 </ol>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><em>No solution intended.</em></p>
 </div></details>
-</div>
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Clark and Golder (2006), normal distribution</h2>
@@ -297,7 +295,6 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p><a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#the-linear-probability-model">Section 11.0.1</a> of the notes computes <code>solve(t(X)%*%X)%*%t(X)%*%y</code> on real data. <code>est_logit()</code> in <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#fitting-with-optim">Section 11.1.2</a> is the <code>optim()</code> code to adapt. Notice that <code>dnorm()</code> needs a positive <code>sd</code>, so give <span class="math inline">\(\sigma\)</span> a positive starting value.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution</strong></p>
 <div class="cell">
@@ -377,7 +374,6 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 </div>
 </div>
 </div></details>
-</div>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Matching formulas to linear predictors</h2>
@@ -522,7 +518,6 @@ Warning in dnorm(y, mu, sigma, log = TRUE): NaNs produced</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>For part 3, a categorical variable with <span class="math inline">\(m\)</span> categories contributes <span class="math inline">\(m - 1\)</span> indicators when the model has an intercept. See the “On the baseline” callout in <a href="https://pos5747.github.io/notes/wk04/01-design-matrix.html#categorical-variables-with-more-than-two-categories">Section 9.6</a> of the notes.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution</strong></p>
 <p><strong>Part 1.</strong> 1-G, 2-L, 3-E, 4-I, 5-B, 6-H, 7-D, 8-N, 9-C, 10-K, 11-M, 12-O, 13-A, 14-F, 15-J</p>
@@ -641,7 +636,6 @@ orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
 </div>
 </div>
 </div></details>
-</div>
 </section>
 <section id="ex-4" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Probit</h2>
@@ -654,7 +648,6 @@ orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>The only change from the logit is the inverse link: use <code>pnorm()</code> in place of <code>plogis()</code>, both in the log-likelihood and in the function that computes the first difference. You are adapting <code>est_logit()</code> in <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#fitting-with-optim">Section 11.1.2</a> and the first-difference code in <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#two-quantities-of-interest">Section 11.2.2</a> of the notes.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
@@ -751,7 +744,6 @@ orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
 </div>
 </div>
 </div></details>
-</div>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Russett and Oneal (2001)</h2>
@@ -903,7 +895,6 @@ orthogonal  1.114008 8.3811586 -15.519527075 2.478206e+00</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>For the aside: the linear predictor is linear in <code>dem.lo</code>, but the inverse logit is not. See <a href="https://pos5747.github.io/notes/wk04/03-logistic-regression.html#effects-are-not-constant">Section 11.2.1</a> of the notes.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution</strong></p>
 <div class="cell">
@@ -1080,7 +1071,6 @@ $ se_ev_hat  &lt;dbl&gt; 0.004693969, 0.004266219, 0.003886446, 0.003549778, 0.0
 </div>
 </div>
 </div></details>
-</div>
 </section>
 <section id="ex-6" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Holland (2015)</h2>
@@ -1157,7 +1147,6 @@ $ se_ev_hat  &lt;dbl&gt; 0.004693969, 0.004266219, 0.003886446, 0.003549778, 0.0
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p><code>predict(fit, type = "response")</code> returns each observation’s <span class="math inline">\(\lambda\)</span> or <span class="math inline">\(\mu\)</span>. <code>glm.nb()</code> stores <span class="math inline">\(\hat{\theta}\)</span> in <code>fit$theta</code>.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution</strong></p>
 <div class="cell">
@@ -1439,7 +1428,6 @@ $ type       &lt;chr&gt; "Poisson #1", "Poisson #1", "Poisson #1", "Poisson #1",
 <li>The negative binomial data sets get the number of zeros about right (16 to 20) and do produce large counts. But the largest counts are sometimes much larger than anything observed, such as the 127 in the first data set.</li>
 </ul>
 </div></details>
-</div>
 </section>
 <section id="ex-7" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Clark and Golder (2006); <em>t</em> distribution</h2>
@@ -1569,7 +1557,6 @@ $ type       &lt;chr&gt; "Poisson #1", "Poisson #1", "Poisson #1", "Poisson #1",
 <li>When creating the log-likelihood function, the first argument must be a single parameter vector that include all parameters stacked into a single vector. I often call this <code>par</code>. Then extract <code>par</code> into <code>beta</code>, <code>sigma</code>, and <code>nu</code> immediately inside the function.</li>
 </ul>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution.</strong></p>
 <div class="cell">
@@ -1767,7 +1754,6 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
 </div>
 <p>The estimate of the degrees of freedom parameter is 2.3 with a standard error of about 0.3. This means that the distribution of the effective number of electoral parties deviates substantially from normal (when df &gt; 10, the <em>t</em> starts to look somewhat normal). <span class="math inline">\(\nu \approx 2.5\)</span> suggests that observed values often fall several standard deviations away from the mean. This has a nice substantive interpretation. While there seems to be some predictability to ENEP, some cases are highly unusual, which suggests “something different” might be going on in those cases.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-8" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> Connections</h2>
@@ -1785,11 +1771,9 @@ Warning in stats::dt((x - mean)/sd, df, ncp = ncp, log = TRUE): NaNs produced</c
 <li><strong>R</strong>: <code>optim()</code>, <code>numDeriv()::grad()</code>, <code>%*%</code>, density + distribution + quantile + random number generator functions for various distributions</li>
 <li><strong>Data Sets</strong>: toothpaste cap, <code>ZeligData::turnout</code>, Clark and Golder’s (2006) <code>crdata::cg2006</code>, Lahman’s <code>batting_average</code>, WDI, Herron’s <code>hockey</code>, Holland’s (2015) <code>crdata::holland2015</code>, the UF Election Lab turnout rates</li>
 </ul>
-<div class="ex-slot ex-pending" data-unlock="2026-09-18T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 18, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><em>No solution intended.</em></p>
 </div></details>
-</div>
 </section>
 <section id="references" class="level1 nonumber ex-section">
 

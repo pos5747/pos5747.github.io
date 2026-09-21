@@ -41,7 +41,10 @@ logit models; expected value and first difference]{.topics}
 
 ------------------------------------------------------------------------
 
-sep 22 · **{marginaleffects}**
+sep 22 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\]
+\[[materials](files/wk05-r.qmd)\]
+\[[notes](https://pos5747.github.io/notes/wk05/01-marginaleffects.html)\]
+\[[exercises](exercises/wk05-exercises.html)\]
 [{marginaleffects}; information criteria; zero inflation]{.topics}
 
 ------------------------------------------------------------------------
