@@ -252,7 +252,7 @@ window.Quarto = {
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-09-25T12:00:00-04:00">Complete solutions open <strong>Friday, September 25 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <p>Note: The important <strong>prospectus</strong> is due on Sep.&nbsp;29.</p>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Clark and Golder (2006)</h2>
@@ -278,7 +278,6 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>For part 2, <code>variables = list(eneg = "minmax")</code> specifies the comparison and <code>newdata = datagrid(...)</code> builds the grid. See the <a href="https://pos5747.github.io/notes/wk05/01-marginaleffects.html#grid">Grid</a> section of the notes.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-25T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 25, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -376,7 +375,6 @@ window.Quarto = {
 <p>This curve is the vertical distance between the two curves in part 1. At magnitude 1, the first difference is about 4.2 - 2.7 = 1.5. At magnitude 150, it’s about 23.4 - 4.4 = 18.9. <code>comparisons()</code> computes the two expected values, takes their difference, and uses the delta method to get the SE of that difference.</p>
 <p><em>Note: Because this is a linear model, the “other covariates” only matter if they are included in interactions with variables of interest.</em></p>
 </div></details>
-</div>
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Radean and Beger (2025)</h2>
@@ -454,7 +452,6 @@ Comparison: 10 - -10</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>For part 2, leave out <code>newdata</code>. Without <code>newdata</code>, <code>comparisons()</code> returns one first difference for each row of the data.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-25T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 25, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -518,7 +515,6 @@ Comparison: 10 - -10</code></pre>
 <p>The average first difference is about <span class="math inline">\(-0.06\)</span>. But the first differences for individual dyad-years range from about <span class="math inline">\(-0.32\)</span> to about <span class="math inline">\(-0.005\)</span>. The single summary doesn’t show that the effect of democracy depends heavily on the baseline risk of a dispute.</p>
 <p>I split the figure by contiguity because neighbors have a much higher baseline risk. For contiguous dyads, most of the first differences are larger than the average. For noncontiguous dyads, most are smaller.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Zero-inflated negative binomial</h2>
@@ -531,7 +527,6 @@ Comparison: 10 - -10</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>There are two ways to get a zero. The observation can be a structural zero (with probability <span class="math inline">\(\pi\)</span>). Or it can be a draw from the negative binomial (with probability <span class="math inline">\(1 - \pi\)</span>) that happens to equal zero. See the <a href="https://pos5747.github.io/notes/wk05/03-zero-inflation.html#pmf">pmf</a> in the notes.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-25T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 25, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <p>First, compute the negative binomial part’s probability of a zero.</p>
@@ -588,7 +583,6 @@ E(y) = \pi \times 0 + (1 - \pi) \mu = 0.75 \times 4 = 3.
 </div>
 <p>The two columns are the same. {marginaleffects} works with <span class="math inline">\(E(y_i) = (1 - \hat{\pi}_i)\hat{\mu}_i\)</span>, which combines both parts of the model.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-4" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Hultman, Kathman, and Shannon (2013)</h2>
@@ -635,7 +629,6 @@ Warning
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p><code>simulate(fit, nsim = 5)</code> returns a data frame with one column per fake data set. These counts are so skewed that a histogram isn’t very useful. Instead, compare a few summaries (e.g., the share of zeros, the 90th percentile, and the maximum) of the observed data and each fake data set.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-09-25T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 25, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -890,7 +883,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </div></details>
-</div>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> de Kadt and Grzymala-Busse (2025)</h2>
@@ -899,22 +891,18 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>If the researcher firmly believes they are not engaged in counterfactual reasoning—they purely want to ‘describe the data’—then the use of multivariate regression is itself a peculiar choice.</p>
 </blockquote>
 <p>What do you make of their argument about multiple regression and control variables? Are control variables <em>always</em> about causal inference? Are control variables ever useful for description? Explain with one example (perhaps from your prospectus). Write two or three paragraphs (about 300 words).</p>
-<div class="ex-slot ex-pending" data-unlock="2026-09-25T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 25, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><em>No solution intended. Answers will vary.</em></p>
 </div></details>
-</div>
 </section>
 <section id="ex-6" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> {marginaleffects}</h2>
 <p>Write your own one-page cheatsheet for the {marginaleffects} package. Organize it around the <a href="https://pos5747.github.io/notes/wk05/01-marginaleffects.html#framework">three choices</a> in the notes (i.e., quantity, grid, and aggregation). <em>At a minimum</em>, your cheatsheet should describe <code>predictions()</code>, <code>comparisons()</code>, their <code>avg_*()</code> variants, and <code>datagrid()</code>, along with the arguments <code>type</code>, <code>variables</code>, <code>comparison</code>, <code>newdata</code>, and <code>by</code>.</p>
 <p>Use <span class="citation" data-cites="me">Arel-Bundock, Greifer, and Heiss (<a href="#ref-me" role="doc-biblioref">2024</a>, <a href="https://pos5747.github.io/notes/readings/Arel-Bundock2024.pdf">pdf</a>)</span> as a reference.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> You don’t need to read it cover to cover. Look up what you need for your cheatsheet.</p>
 <p><em>For inspiration: What are the important functions? What are the important arguments? What are good default practices—and how do these deviate from {marginaleffects} defaults? You can stick closely to the perspective in the <a href="https://pos5747.github.io/notes/wk05/01-marginaleffects.html">notes</a> or deviate far from that perspective.</em></p>
-<div class="ex-slot ex-pending" data-unlock="2026-09-25T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Sep 25, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><em>No solution intended. Answers will vary.</em></p>
 </div></details>
-</div>
 
 
 

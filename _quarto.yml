@@ -83,6 +83,17 @@ resources:
   - "!slides/**/.DS_Store"
   - "!slides/**/.stamp/**"
   - "!slides/**/.notes-audit/**"
+  # HTML (revealjs) decks live in their own folder, e.g. slides/wk06-ordered/,
+  # a nested Quarto project rendered in place with `quarto render` there (the
+  # site never renders slides/). Only the .html, its _files/, images/, and
+  # styles.css publish; the source, cache, and project files stay home.
+  # Added 2026-09-28.
+  - "!slides/**/*.qmd"
+  - "!slides/**/*_cache/**"
+  - "!slides/**/_quarto.yml"
+  - "!slides/**/*.bib"
+  - "!slides/**/.quarto/**"
+  - "!slides/**/.gitignore"
   - data/
 
 

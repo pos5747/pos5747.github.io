@@ -49,8 +49,13 @@ sep 22 · **{marginaleffects}** · \[[slides](slides/wk05-slides.pdf)\]
 
 ------------------------------------------------------------------------
 
-sep 29 · **bayes** [Bayesian
-inference; rejection sampling; a Bayesian invariance property; censoring; duration models]{.topics} [Due Sep. 29: prospectus for research paper.]{.remarks}
+sep 29 · **bayes** · \[[slides](slides/wk06-slides.pdf)\]
+\[[ordered logit slides](slides/wk06-ordered/ordered.html)\]
+\[[materials](files/wk06-r.qmd)\]
+\[[notes](https://pos5747.github.io/notes/wk06/01-bayes.html)\]
+\[[exercises](exercises/wk06-exercises.html)\]
+[Bayesian
+inference; rejection sampling; a Bayesian invariance property; ordered logit]{.topics} [Due Sep. 29: prospectus for research paper.]{.remarks}
 
 ------------------------------------------------------------------------
 

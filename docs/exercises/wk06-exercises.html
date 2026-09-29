@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 6 Exercises – Modern Statistical Modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7ad6542725e80d1433b1f8ee26c2a1fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZV1MJ9E632"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="exercises.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Modern Statistical Modeling</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://pos5747.github.io/notes/"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research-project.html"> 
+<span class="menu-text">Research Project</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../workshop.html"> 
+<span class="menu-text">Workshop</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Exercises</h2>
+   
+  <ul class="collapse">
+  <li><a href="#ex-1" id="toc-ex-1" class="nav-link active" data-scroll-target="#ex-1"><span class="ex-num">Exercise 1</span> Bayes’ Readings</a></li>
+  <li><a href="#ex-2" id="toc-ex-2" class="nav-link" data-scroll-target="#ex-2"><span class="ex-num">Exercise 2</span> Bernoulli</a></li>
+  <li><a href="#ex-3" id="toc-ex-3" class="nav-link" data-scroll-target="#ex-3"><span class="ex-num">Exercise 3</span> Poisson</a></li>
+  <li><a href="#ex-4" id="toc-ex-4" class="nav-link" data-scroll-target="#ex-4"><span class="ex-num">Exercise 4</span> Rejection</a></li>
+  <li><a href="#ex-5" id="toc-ex-5" class="nav-link" data-scroll-target="#ex-5"><span class="ex-num">Exercise 5</span> Posterior mean of the odds</a></li>
+  <li><a href="#ex-6" id="toc-ex-6" class="nav-link" data-scroll-target="#ex-6"><span class="ex-num">Exercise 6</span> Ordered logit probabilities</a></li>
+  <li><a href="#ex-7" id="toc-ex-7" class="nav-link" data-scroll-target="#ex-7"><span class="ex-num">Exercise 7</span> Red State, Blue State: Part 1</a></li>
+  <li><a href="#ex-8" id="toc-ex-8" class="nav-link" data-scroll-target="#ex-8"><span class="ex-num">Exercise 8</span> Red State, Blue State: Part 2(a)</a></li>
+  <li><a href="#ex-9" id="toc-ex-9" class="nav-link" data-scroll-target="#ex-9"><span class="ex-num">Exercise 9</span> Red State, Blue State: Part 2(b)</a></li>
+  <li><a href="#ex-10" id="toc-ex-10" class="nav-link" data-scroll-target="#ex-10"><span class="ex-num">Exercise 10</span> Exam review</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 6 Exercises</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="ex-notice ex-notice-wait" data-unlock="2026-10-02T12:00:00-04:00">Complete solutions open <strong>Friday, October 2 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<section id="ex-1" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Bayes’ Readings</h2>
+<p><strong>Readings</strong></p>
+<ul>
+<li>Read <span class="citation" data-cites="western1994">Western and Jackman (<a href="#ref-western1994" role="doc-biblioref">1994</a>, <a href="https://pos5747.github.io/notes/readings/Western1994.pdf">pdf</a>)</span>. I recommend <span class="citation" data-cites="jackman2004">Jackman (<a href="#ref-jackman2004" role="doc-biblioref">2004</a>, <a href="https://pos5747.github.io/notes/readings/Jackman2004.pdf">pdf</a>)</span> as well.</li>
+<li>Read section 2.6 (pp.&nbsp;57-61) of Gill (2014; on Canvas) on Bayesian versus non-Bayesian approaches. I recommend ch.&nbsp;1 for helpful context and the rest of ch.&nbsp;2 for a second pass through the Bayesian engine from the notes.</li>
+<li>I recommend pp.&nbsp;97-128 of Gill (2014; on Canvas) on prior distributions. Gill provides some helpful history on thinking about the prior distribution, including conjugate priors, uniform priors, invariant priors, improper priors, and elicited priors.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ul>
+<p><strong>Question</strong></p>
+<p>In this course, we have now studied two general engines: maximum likelihood and Bayesian inference. How should we think about the relationship between the two? Are they best understood as competing, incompatible alternatives? Or simply as interchangeable tools? If they compete, which approach is right, and why? If they are interchangeable, when might one be more useful than the other?</p>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><em>No solution intended. Answers will vary.</em></p>
+</div></details>
+</div>
+</section>
+<section id="ex-2" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Bernoulli</h2>
+<p>A pollster conducts a sample survey using a simple random sample of 500 adults. Of the 500 respondents, 220 say they approve of the job Donald Trump is doing as president.</p>
+<ol type="1">
+<li>Using a Bernoulli model with a beta prior, compute the posterior mean and 90% credible interval for the percent of the population that approve. Choose reasonable values for the parameters of the prior distribution. You may use a flat, “weakly informative,” or informative prior. Compute the posterior mean and a 90% credible interval.</li>
+<li>Using the posterior from above, what’s the chance that the population percent is larger than 50%? Larger than 45%?</li>
+<li>From part 1, how absurd can you make the beta prior without meaningful changes in the 90% credible interval?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>The beta prior is conjugate to the Bernoulli likelihood, so a beta(<span class="math inline">\(\alpha^*\)</span>, <span class="math inline">\(\beta^*\)</span>) prior and <span class="math inline">\(k\)</span> successes in <span class="math inline">\(N\)</span> trials give a beta(<span class="math inline">\(\alpha^* + k\)</span>, <span class="math inline">\(\beta^* + N - k\)</span>) posterior. See <a href="https://pos5747.github.io/notes/wk06/01-bayes.html#the-posterior">The Posterior</a> in the notes. Then use <code>qbeta()</code> for the interval and <code>pbeta()</code> for part 2.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>For part 3, choose a new <code>alpha_star</code> and <code>beta_star</code>, plot the prior with the code below, then recompute the 90% credible interval from part 1 and compare.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the prior</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dbeta, <span class="at">n =</span> <span class="dv">1001</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">shape1 =</span> alpha_star, <span class="at">shape2 =</span> beta_star)) <span class="sc">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"pi: the proportion who approve"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"prior density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (1)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bayesian credible interval</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># --------------------------</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># data</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">220</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># prior; uniform</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>alpha_star <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>beta_star <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>alpha_prime <span class="ot">&lt;-</span> alpha_star <span class="sc">+</span> k</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>beta_prime <span class="ot">&lt;-</span> beta_star <span class="sc">+</span> (N <span class="sc">-</span> k)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># find posterior mean</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(alpha_prime<span class="sc">/</span>(alpha_prime <span class="sc">+</span> beta_prime), <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.44</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 90% percentile credible interval</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">qbeta</span>(<span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), alpha_prime, beta_prime), <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.404 0.477</code></pre>
+</div>
+</div>
+<p><strong>Part (2)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior probabilities</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># larger than 50%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbeta</span>(<span class="fl">0.5</span>, alpha_prime, beta_prime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.00364417</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># larger than 45%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbeta</span>(<span class="fl">0.45</span>, alpha_prime, beta_prime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.328787</code></pre>
+</div>
+</div>
+<p><strong>Part (3)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prior robustness checks</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># prior; absurdly informative</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>alpha_star <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>beta_star <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>alpha_prime <span class="ot">&lt;-</span> alpha_star <span class="sc">+</span> k</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>beta_prime <span class="ot">&lt;-</span> beta_star <span class="sc">+</span> (N <span class="sc">-</span> k)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 90% percentile credible interval</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">qbeta</span>(<span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), alpha_prime, beta_prime), <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.41 0.49</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot "absurd" prior that *barely* changes the ci</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dbeta, <span class="at">n =</span> <span class="dv">1001</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">shape1 =</span> alpha_star, <span class="at">shape2 =</span> beta_star)) <span class="sc">+</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Pi"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Prior Density"</span>) <span class="sc">+</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk06-exercises_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>At least to me, it’s really surprising how little impact this extremely informative prior has on the inferences. We get basically the same confidence interval, but using an absurdly strong and implausible prior.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-3" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Poisson</h2>
+<p>Suppose you model a data set <span class="math inline">\(y = \{y_1, y_2, ..., y_N\}\)</span> as iid draws from a Poisson distribution with parameter (mean) <span class="math inline">\(\lambda\)</span>, so that <span class="math inline">\(f(y_i; \lambda) = \frac{\lambda^{y_i}e^{-\lambda}}{y_i !}\)</span>. The Gamma distribution is the conjugate prior, so that <span class="math inline">\(f(\lambda) = \frac{\beta^\alpha}{\Gamma(\alpha)} \lambda ^{\alpha - 1}e^{-\beta\lambda}\)</span>.</p>
+<ol type="1">
+<li>Multiply the likelihood by the prior, drop the constants, and show that the posterior is a gamma distribution. What are its parameters?</li>
+<li>Use this Poisson model to make inferences about the <span class="math inline">\(\lambda\)</span> the expected number of operations in Santiago for Holland’s (2015) data.
+<ol type="a">
+<li>State a sensible prior for <span class="math inline">\(\lambda\)</span>, the expected number of enforcement operations per district in Santiago. First write down a guess and a give-or-take for <span class="math inline">\(\lambda\)</span> in words, then translate that guess into the gamma prior’s <span class="math inline">\(\alpha^*\)</span> and <span class="math inline">\(\beta^*\)</span> using the gamma’s mean <span class="math inline">\(\alpha/\beta\)</span> and SD <span class="math inline">\(\sqrt{\alpha}/\beta\)</span>, and plot the prior to check that it puts most of its probability on plausible values and very little on absurd ones. A sensible prior here reflects what you believe(d) about operations per district before seeing the counts, not one tuned to match them. (Or perhaps is “weakly informative” in the sense that it near-zero prior density on the truly absurd values very close to zero and very far from zero.)</li>
+<li>Compute the posterior mean and 90% credible interval. Interpret.</li>
+</ol></li>
+<li>Compare the posterior mean and 90% credible interval to the ML estimate and 90% confidence interval. How does the <em>interpretation</em> of the two intervals differ?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>For part 1, you will find <a href="https://pos5747.github.io/notes/wk06/01-bayes.html#example-exponential-distribution">Example: Exponential Distribution</a> in the notes very helpful. The steps are the same and the math is very similar:</p>
+<ol type="1">
+<li>multiply the likelihood by the gamma prior</li>
+<li>drop the terms that don’t depend on <span class="math inline">\(\lambda\)</span>,</li>
+<li>collect the powers of <span class="math inline">\(\lambda\)</span> and the powers of <span class="math inline">\(e\)</span>.</li>
+</ol>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>For part 2(a), <code>qgamma(c(0.05, 0.95), alpha_star, beta_star)</code> gives the range the prior considers plausible.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prior parameters: choose these to match your guess and give-or-take</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>alpha_star <span class="ot">&lt;-</span> <span class="dv">2</span>    <span class="co"># shape</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>beta_star  <span class="ot">&lt;-</span> <span class="fl">0.5</span>  <span class="co"># rate</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># prior mean and sd, to check against your guess</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>alpha_star<span class="sc">/</span>beta_star          <span class="co"># mean</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(alpha_star)<span class="sc">/</span>beta_star    <span class="co"># sd</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the prior</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dgamma, <span class="at">n =</span> <span class="dv">1001</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">shape =</span> alpha_star, <span class="at">rate =</span> beta_star)) <span class="sc">+</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"lambda: expected operations per district in Santiago"</span>,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"prior density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 3</span></summary><div class="ex-reveal-body">
+<p>For part 2(b), the data are <code>crdata::holland2015</code>, filtered to <code>city == "santiago"</code> (as in Week 3), and <code>qgamma()</code> takes the shape <span class="math inline">\(\alpha\)</span> and then the rate <span class="math inline">\(\beta\)</span>.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part (1)</strong></p>
+<p>The likelihood is the product of the <span class="math inline">\(N\)</span> pmfs:</p>
+<p><span class="math display">\[
+f(y \mid \lambda) = \prod_{i = 1}^N \frac{\lambda^{y_i}e^{-\lambda}}{y_i !} = \left[ \frac{1}{\prod_{i = 1}^N y_i !} \right] \lambda^{\sum_{i = 1}^N y_i} e^{-N\lambda}.
+\]</span></p>
+<p>Multiply the likelihood by the prior:</p>
+<p><span class="math display">\[
+f(\lambda \mid y) \propto \left[ \frac{1}{\prod_{i = 1}^N y_i !} \right] \lambda^{\sum_{i = 1}^N y_i} e^{-N\lambda} \times \left[ \frac{{\beta^*}^{\alpha^*}}{\Gamma(\alpha^*)} \right] \lambda^{\alpha^* - 1} e^{-\beta^*\lambda}.
+\]</span></p>
+<p>The two terms in square brackets don’t depend on <span class="math inline">\(\lambda\)</span>, so they’re part of the normalizing constant and we can drop them. Collecting the powers of <span class="math inline">\(\lambda\)</span> and the powers of <span class="math inline">\(e\)</span> gives</p>
+<p><span class="math display">\[
+f(\lambda \mid y) \propto \lambda^{\left( \alpha^* + \sum_{i = 1}^N y_i \right) - 1} e^{-(\beta^* + N)\lambda},
+\]</span></p>
+<p>which is a gamma distribution with shape <span class="math inline">\(\alpha^\prime = \alpha^* + \sum_{i = 1}^N y_i\)</span> and rate <span class="math inline">\(\beta^\prime = \beta^* + N\)</span> (up to the normalizing constant <span class="math inline">\(\frac{{\beta^\prime}^{\alpha^\prime}}{\Gamma(\alpha^\prime)}\)</span>). So the posterior is <span class="math inline">\(\text{gamma}(\alpha^* + \sum_{i = 1}^N y_i, \beta^* + N)\)</span>. We add the sum of the counts to the prior shape and the number of observations to the prior rate.</p>
+<p><strong>Part (2a)</strong></p>
+<p>I don’t have much sense of the enforcement environment in Santiago, but a guess of a handful of operations per district, give or take a handful, seems reasonable. That’s not zero enforcement, and it’s not dozens of operations in every district either. This guess translates into a gamma prior with mean <span class="math inline">\(\alpha^*/\beta^* = 4\)</span> and SD <span class="math inline">\(\sqrt{\alpha^*}/\beta^* \approx 2.8\)</span>, so I chose <span class="math inline">\(\alpha^* = 2\)</span> and <span class="math inline">\(\beta^* = 0.5\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prior parameters: choose these to match your guess and give-or-take</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>alpha_star <span class="ot">&lt;-</span> <span class="dv">2</span>    <span class="co"># shape</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>beta_star  <span class="ot">&lt;-</span> <span class="fl">0.5</span>  <span class="co"># rate</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># prior mean and sd, to check against your guess</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>alpha_star<span class="sc">/</span>beta_star          <span class="co"># mean</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(alpha_star)<span class="sc">/</span>beta_star    <span class="co"># sd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.828427</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5th and 95th percentiles the prior considers plausible</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), alpha_star, beta_star)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.710723 9.487729</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the prior</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dgamma, <span class="at">n =</span> <span class="dv">1001</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">shape =</span> alpha_star, <span class="at">rate =</span> beta_star)) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"lambda: expected operations per district in Santiago"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"prior density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk06-exercises_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The prior’s 5th and 95th percentiles are about 0.7 and 9.5 operations per district, so it puts most of its probability on a handful of operations and very little on zero or on dozens. It is also weakly informative in the sense of the prompt: it puts almost no prior probability on the truly absurd values, about 0.5% below 0.2 operations per district and about 0.5% above 15.</p>
+<p><strong>Part (2b)</strong></p>
+<p>From part 1, the posterior distribution is <span class="math inline">\(\text{Gamma}(\alpha^* + \sum{y}, \beta^* + N)\)</span>, where <span class="math inline">\(\alpha^*\)</span> and <span class="math inline">\(\beta^*\)</span> are the prior parameters for the gamma distribution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>sant <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">==</span> <span class="st">"santiago"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> sant<span class="sc">$</span>operations</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>alpha_prime <span class="ot">&lt;-</span> alpha_star <span class="sc">+</span> <span class="fu">sum</span>(y)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>beta_prime <span class="ot">&lt;-</span> beta_star <span class="sc">+</span> <span class="fu">length</span>(y)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(alpha_prime, beta_prime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 94.0 34.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior mean</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>alpha_prime<span class="sc">/</span>beta_prime</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.724638</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 90% credible interval</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), alpha_prime, beta_prime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.279448 3.202766</code></pre>
+</div>
+</div>
+<p>There are 34 districts and 92 operations, so the posterior is <span class="math inline">\(\text{Gamma}(2 + 92, 0.5 + 34) = \text{Gamma}(94, 34.5)\)</span>. The posterior mean is about 2.72 operations per district, and there’s a 90% chance that <span class="math inline">\(\lambda\)</span> falls between about 2.28 and 3.20.</p>
+<p><strong>Part (3)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ml estimate</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>lambda_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>lambda_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.705882</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># se from the fisher information</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>se_hat <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(lambda_hat<span class="sc">/</span><span class="fu">length</span>(y))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 90% ci</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>lambda_hat <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.645</span>, <span class="fl">1.645</span>)<span class="sc">*</span>se_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.241815 3.169950</code></pre>
+</div>
+</div>
+<p>The ML estimate is about 2.71, and the 90% CI runs from about 2.24 to 3.17. The posterior mean is a bit larger (2.72 rather than 2.71) because the prior has a mean of 4, which pulls the posterior mean up slightly. But the prior carries very little weight (<span class="math inline">\(\beta^* = 0.5\)</span> acts like half an observation, against 34 real observations), so the two intervals are very similar.</p>
+<p>We interpret frequentist 90% CI by claiming that the parameter falls within the interval (realizing that we’ll be wrong at most 10% of the time in the long run). We interpret the Bayesian 90% CI by saying that there’s a 90% chance that the parameter falls within the interval.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-4" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Rejection</h2>
+<p>For the Bernoulli model, the beta distribution is the conjugate prior. And the beta distribution is especially nice because it’s flexible. The flexibility allows it to represent a wide range of prior beliefs. However, the beta distribution can be awkward to work with. We are most familiar with a normal distribution. This exercise highlights how posterior simulation can greatly simplify Bayesian inference.</p>
+<p>For example, let’s use the toothpaste cap problem and data. Before collecting data, we might think that the chance of a top is about 15%, give or take 10% or so. This suggests a normal distribution with <span class="math inline">\(\mu = 0.15\)</span> and <span class="math inline">\(\sigma = 0.1\)</span>. However, the normal distribution has support outside the [0, 1] support of <span class="math inline">\(\pi\)</span>. But this can still work! We can simply set the normal pdf to zero outside the [0, 1] interval and renormalize the distribution. This gives us the <em>truncated normal</em> distribution.</p>
+<p>Let’s use the usual Bernoulli likelihood and the truncated normal prior, find the unnormalized posterior distribution, and use the rejection algorithm to obtain a sample from the posterior distribution.</p>
+<p><strong>Bernoulli likelihood</strong></p>
+<p>To begin, recall that the probability mass function (pmf) of a single Bernoulli trial with success probability <span class="math inline">\(\pi\)</span> is</p>
+<p><span class="math display">\[
+f(y \mid \pi) = \pi^y (1-\pi)^{1-y}, \quad y \in \{0,1\}.
+\]</span> Because the trials are independent, the joint likelihood for <span class="math inline">\(n\)</span> observations <span class="math inline">\(y_1,\dots,y_n\)</span> is the product</p>
+<p><span class="math display">\[
+f(y \mid \pi) = \prod_{i=1}^n \pi^{y_i} (1-\pi)^{1-y_i}.
+\]</span> Collecting terms, let <span class="math inline">\(k = \sum_{i=1}^n y_i\)</span> be the total number of successes. Then the likelihood simplifies to</p>
+<p><span class="math display">\[
+f(y \mid \pi) = \pi^k (1-\pi)^{n-k}.
+\]</span> Notice that this expression is the likelihood function <span class="math inline">\(L(\pi) = f(y \mid \pi)\)</span>. We just denote them slightly differently to emphasize different pieces depending on whether we are using maximum likelihood or finding the posterior.</p>
+<p><strong>Truncated normal prior</strong></p>
+<p>Suppose we want to model prior information about <span class="math inline">\(\pi\)</span> using a truncated normal distribution. Begin with the usual normal distribution, then restrict the support to the interval <span class="math inline">\([0,1]\)</span> since <span class="math inline">\(\pi\)</span> must be a valid probability. Formally, if <span class="math inline">\(Z \sim \mathcal{N}(\mu,\sigma^2)\)</span>, then the truncated normal prior is defined as</p>
+<p><span class="math display">\[
+f(\pi) = \frac{\phi\!\left(\tfrac{\pi-\mu}{\sigma}\right)}{\sigma \left[\Phi\!\left(\tfrac{1-\mu}{\sigma}\right) - \Phi\!\left(\tfrac{0-\mu}{\sigma}\right)\right]},
+\quad 0 \le \pi \le 1,
+\]</span> where <span class="math inline">\(\phi(\cdot)\)</span> is the standard normal density and <span class="math inline">\(\Phi(\cdot)\)</span> is the standard normal distribution function. The denominator is important–<span class="math inline">\(\sigma \left[\Phi\!\left(\tfrac{1-\mu}{\sigma}\right) - \Phi\!\left(\tfrac{0-\mu}{\sigma}\right)\right]\)</span> serves as a normalizing constant so that the density integrates to one over the admissible interval.</p>
+<p>This prior can be especially useful when we have an approximate guess for <span class="math inline">\(\pi\)</span> and a give-or-take (i.e., an SD) around that guess. It’s quite intuitive to model this guess using a normal distribution.</p>
+<p>For example, in the toothpaste cap problem, if we believe the probability is about <span class="math inline">\(0.15\)</span> give-or-take <span class="math inline">\(0.10\)</span>, then the truncated normal prior places most of its mass near <span class="math inline">\(0.15\)</span> but avoids assigning probability outside the valid range of <span class="math inline">\([0,1]\)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk06-exercises_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Unnormalized Posterior</strong></p>
+<p>To find the posterior distribution, we multiply the likelihood times the prior. Bayes’ rule tells us</p>
+<p><span class="math display">\[
+f(\pi \mid y) \propto f(y \mid \pi) \, f(\pi),
+\]</span> where <span class="math inline">\(f(y \mid \pi)\)</span> is the likelihood and <span class="math inline">\(f(\pi)\)</span> is the prior.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Substituting in the expressions we derived above, we obtain</p>
+<p><span class="math display">\[
+f(\pi \mid y) \propto \underbrace{\left[ \pi^k (1-\pi)^{n-k} \right]}_{\text{Bernoulli likelihood}} \cdot \underbrace{\left[
+\frac{\phi\!\left(\tfrac{\pi-\mu}{\sigma}\right)}{\sigma \left[\Phi\!\left(\tfrac{1-\mu}{\sigma}\right) - \Phi\!\left(\tfrac{0-\mu}{\sigma}\right)\right]} \right]}_{\text{truncated normal prior}},
+\quad 0 \le \pi \le 1.
+\]</span> This is the <em>unnormalized</em> posterior (i.e., it does NOT integrate to one, as required of pdfs). To make this a <em>proper</em> posterior, we would need to find the normalizing constant for the right-hand side. However, the rejection algorithm does not require a proper posterior—the unnormalized posterior is sufficient.</p>
+<p>But we can take further advantage of this. The denominator <span class="math inline">\(\sigma \left[\Phi\!\left(\tfrac{1-\mu}{\sigma}\right) - \Phi\!\left(\tfrac{0-\mu}{\sigma}\right)\right]\)</span> of the prior is <em>also a constant</em> with respect to <span class="math inline">\(\pi\)</span>. For sampling purposes we can treat it as part of the proportionality constant. Thus, the unnormalized posterior density is</p>
+<p><span class="math display">\[
+f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}\right), \quad 0 \le \pi \le 1.
+\]</span></p>
+<p>Conveniently, the difficult truncation part of the prior just drops out, and we are left with a regular normal pdf.</p>
+<p>We can write this function easily in R and plot it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># unnormalized posterior for our data and prior</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(pi, <span class="at">k =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="dv">150</span>, <span class="at">mu =</span> <span class="fl">0.15</span>, <span class="at">sigma =</span> <span class="fl">0.10</span>) {</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    pi <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> pi <span class="sc">&gt;</span> <span class="dv">1</span>,  <span class="co"># check if outside [0, 1]</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>,                <span class="co"># return 0 if outside [0, 1]</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    (pi<span class="sc">^</span>k) <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">-</span> pi)<span class="sc">^</span>(n <span class="sc">-</span> k)) <span class="sc">*</span> <span class="fu">dnorm</span>(pi, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that the posterior densities are <em>very</em> small. This will be numerically challenging. For this reason, we tend to perform the computation using the unnormalized log-posterior. However, the intuition for the algorithm isn’t immediately obvious. Since our goal here is to learn the intuition, we’re sticking with the unlogged posterior.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> f, <span class="at">n =</span> <span class="dv">1001</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk06-exercises_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From the figure, we can see that an envelope constant <span class="math inline">\(M = 8 \times 10^{-14}\)</span> would work well. From there, we can let the algorithm do the work.</p>
+<p><strong>Tasks</strong></p>
+<ol type="1">
+<li>For the toothpaste cap problem data (<span class="math inline">\(k = 8\)</span>; <span class="math inline">\(n = 150\)</span>) and the model and priors discussed above (Bernoulli likelihood; truncated normal prior with <span class="math inline">\(\mu = 0.15\)</span> and <span class="math inline">\(\sigma = 0.10\)</span>), use the rejection algorithm to find the posterior mean and a 90% credible interval for the odds <em>of failure</em>. That is, generate posterior simulations of <span class="math inline">\(\pi\)</span>, transform those simulations using <span class="math inline">\(\text{odds of failure} = \frac{1 - \pi}{\pi}\)</span>, and then summarize the simulations.</li>
+<li>Explain why the algorithm works. Why must <span class="math inline">\(M\)</span> be at least as large as the maximum of <span class="math inline">\(f\)</span>? What goes wrong if <span class="math inline">\(M\)</span> is too small? If <span class="math inline">\(M\)</span> is ten times larger than it needs to be, what changes about the samples? What changes about the run?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>For part 1, you can borrow <code>rej()</code> from the <a href="https://pos5747.github.io/notes/wk06/02-rejection-sampling.html#rejection-sampling">Rejection Sampling</a> section of the notes. Then transform each simulation of <span class="math inline">\(\pi\)</span> into the odds of failure before you summarize. For part 2, the <a href="https://pos5747.github.io/notes/wk06/02-rejection-sampling.html#beta4-10-example">beta(4, 10) figure</a> in the notes shows the acceptance probability at four proposals. Think about how the histogram of accepted draws is built from uniform proposals.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<p>First, borrow the rejection algorithm from the notes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>rej <span class="ot">&lt;-</span> <span class="cf">function</span>(f, S, M) {</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># record start time</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create containers and initialize counters</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  samples <span class="ot">&lt;-</span> <span class="fu">numeric</span>(S)  <span class="co"># container to store samples</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  rejects <span class="ot">&lt;-</span> <span class="cn">NULL</span>  <span class="co"># container to track rejected values; for teaching; slow!</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># currently trying to take sample 1</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  n_prop <span class="ot">&lt;-</span> <span class="dv">0</span>  <span class="co"># count proposals (for an acceptance-rate message)</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># so long as the current sample s is less </span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   than the desired samples S.</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   do the following:</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (s <span class="sc">&lt;=</span> S) { </span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A: propose z ~ uniform(0,1)</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># B: draw u ~ uniform(0,1)</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    u <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># C: Accept or reject</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>    fz <span class="ot">&lt;-</span> <span class="fu">f</span>(z) <span class="co"># compute once, for effeciency</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>      <span class="do">## scenario 1: u &lt;= f(z)/M  →  Accept</span></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (u <span class="sc">&lt;=</span> fz <span class="sc">/</span> M) {</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>        samples[s] <span class="ot">&lt;-</span> z</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>        s <span class="ot">&lt;-</span> s <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>      } </span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>      <span class="do">## scenario 2: f(z) &gt; M  →  shouldn't happen; error</span></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (fz <span class="sc">&gt;</span> M) <span class="fu">stop</span>(<span class="st">"Stop: Envelope M is too small."</span>)  <span class="co"># find appropriate M</span></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>      <span class="do">## scenario 3: u &gt; f(z)/M  →  Reject</span></span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>      <span class="do">##   tracking these values just for teaching and learning--not needed usually</span></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (u <span class="sc">&gt;</span> fz <span class="sc">/</span> M) {</span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>         rejects <span class="ot">&lt;-</span> <span class="fu">c</span>(rejects, z)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># track total proposals so far</span></span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a>    n_prop <span class="ot">&lt;-</span> n_prop <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a> <span class="co"># print a summary report</span></span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(</span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(</span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"💪 Successfully generated "</span>, scales<span class="sc">::</span><span class="fu">comma</span>(S), <span class="st">" samples! 🎉</span><span class="sc">\n\n</span><span class="st">"</span>,</span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"✅ Accepted samples: "</span>, scales<span class="sc">::</span><span class="fu">comma</span>(S), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb33-50"><a href="#cb33-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"❌ Rejected samples: "</span>, scales<span class="sc">::</span><span class="fu">comma</span>(<span class="fu">length</span>(rejects)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb33-51"><a href="#cb33-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"﹪ Acceptance rate: "</span>, scales<span class="sc">::</span><span class="fu">percent</span>(S <span class="sc">/</span> n_prop, <span class="at">accuracy =</span> <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a>      <span class="st">"⏰ Total time: "</span>, prettyunits<span class="sc">::</span><span class="fu">pretty_dt</span>(<span class="fu">Sys.time</span>() <span class="sc">-</span> start_time)</span>
+<span id="cb33-53"><a href="#cb33-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-54"><a href="#cb33-54" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-55"><a href="#cb33-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-56"><a href="#cb33-56" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return</span></span>
+<span id="cb33-57"><a href="#cb33-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb33-58"><a href="#cb33-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_prop =</span> n_prop,</span>
+<span id="cb33-59"><a href="#cb33-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">acc_rate =</span> S <span class="sc">/</span> n_prop,</span>
+<span id="cb33-60"><a href="#cb33-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">samples =</span> samples,</span>
+<span id="cb33-61"><a href="#cb33-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">rejects =</span> rejects</span>
+<span id="cb33-62"><a href="#cb33-62" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, create the unnormalized posterior.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># unnormalized posterior for our data and prior</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(pi, <span class="at">k =</span> <span class="dv">8</span>, <span class="at">n =</span> <span class="dv">150</span>, <span class="at">mu =</span> <span class="fl">0.15</span>, <span class="at">sigma =</span> <span class="fl">0.10</span>) {</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    pi <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> pi <span class="sc">&gt;</span> <span class="dv">1</span>,  <span class="co"># check if outside [0, 1]</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>,                <span class="co"># return 0 if outside [0, 1]</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    (pi<span class="sc">^</span>k) <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">-</span> pi)<span class="sc">^</span>(n <span class="sc">-</span> k)) <span class="sc">*</span> <span class="fu">dnorm</span>(pi, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now run the rejection algorithm. <span class="math inline">\(S = 1,000\)</span> samples should be sufficient. The question identifies <span class="math inline">\(M = 8 \times 10^{-14}\)</span> as a good choice.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rej</span>(f, <span class="at">S =</span> <span class="dv">1000</span>, <span class="at">M =</span> <span class="fl">8e-14</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>💪 Successfully generated 1,000 samples! 🎉
+
+✅ Accepted samples: 1,000
+❌ Rejected samples: 23,446
+﹪ Acceptance rate: 4%
+⏰ Total time: 1.2s</code></pre>
+</div>
+</div>
+<p>Finally, transform the posterior samples to obtain simulations of the quantity of interest and then summarize those simulations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>pi_tilde <span class="ot">&lt;-</span> r<span class="sc">$</span>samples  <span class="co"># extract simulations of pi</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>oof_tilde <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> pi_tilde)<span class="sc">/</span>pi_tilde  <span class="co"># transform to odds of failure</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(oof_tilde)  <span class="co"># posterior mean</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16.97433</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(oof_tilde, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))  <span class="co"># 90% equal-tailed ci</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       5%       95% 
+ 9.241741 28.875474 </code></pre>
+</div>
+</div>
+<p>In this problem, we use a Bernoulli likelihood with <span class="math inline">\(k=8\)</span> successes out of <span class="math inline">\(n=150\)</span> trials. We model our prior beliefs with a truncated normal distribution with <span class="math inline">\(\mu=0.15\)</span> and <span class="math inline">\(\sigma=0.10\)</span>, reflecting a belief that the chance of success is “about 15% give or take 10 percentage points or so” (but constrained to the <span class="math inline">\([0,1]\)</span> range). Combining these with Bayes’ rule yields the posterior, which we sampled from using a rejection algorithm. The posterior mean of the odds of failure is about 17.0, with a 90% credible interval from 9.2 to 28.9. This means that, after updating our beliefs with the data, we conclude that failure is about 17 times more likely than success, with a 90% probability that the odds of failure fall between about 9:1 and 29:1.</p>
+<p><strong>Part 2</strong></p>
+<p>The algorithm proposes values of <span class="math inline">\(\pi\)</span> uniformly, so every value is proposed equally often, and it accepts a proposal <span class="math inline">\(z\)</span> with probability <span class="math inline">\(f(z)/M\)</span>. Near the posterior mode, <span class="math inline">\(f(z)/M\)</span> is close to one and the algorithm keeps almost every proposal. In the tails, <span class="math inline">\(f(z)/M\)</span> is close to zero and the algorithm throws almost every proposal away. The accepted draws pile up in proportion to <span class="math inline">\(f\)</span>, so their histogram has the shape of <span class="math inline">\(f\)</span>. (The notes’ figure for the beta(4, 10) target shows this. The stacked histogram of accepted and rejected proposals is flat because the proposals are uniform, and the accepted draws alone take the shape of the target.)</p>
+<p><span class="math inline">\(M\)</span> must be at least the maximum of <span class="math inline">\(f\)</span> so that <span class="math inline">\(f(z)/M\)</span> is a probability. If <span class="math inline">\(M\)</span> is too small, then <span class="math inline">\(f(z)/M &gt; 1\)</span> near the mode, and the algorithm accepts <em>every</em> proposal there. It can’t accept more than all of them, so the region around the mode is under-represented relative to the tails, and the samples come from the wrong distribution. This is why <code>rej()</code> stops with an error when it sees <span class="math inline">\(f(z) &gt; M\)</span>.</p>
+<p>If <span class="math inline">\(M\)</span> is ten times larger than it needs to be, the samples are still correct. Every acceptance probability is divided by the same constant, so the <em>relative</em> acceptance rates across values of <span class="math inline">\(\pi\)</span> don’t change, and the accepted draws still take the shape of <span class="math inline">\(f\)</span>. The run changes instead. The acceptance rate falls by a factor of ten, so the algorithm needs about ten times as many proposals (and about ten times as long) to collect the same <span class="math inline">\(S\)</span> samples. This is why we choose <span class="math inline">\(M\)</span> just above the maximum of <span class="math inline">\(f\)</span>.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-5" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Posterior mean of the odds</h2>
+<p>Suppose a small pilot survey of 20 adults finds that 6 approve of the job Donald Trump is doing as president. Use a Bernoulli model with a uniform prior (i.e., a beta(1, 1) prior) for the proportion <span class="math inline">\(\pi\)</span> who approve. Suppose the quantity of interest is the <em>odds</em> of approval <span class="math inline">\(\pi/(1 - \pi)\)</span>.</p>
+<ol type="1">
+<li>Find the posterior distribution of <span class="math inline">\(\pi\)</span>. Simulate 100,000 draws from it.</li>
+<li>Compute the posterior mean of the odds two ways. First, transform each simulation of <span class="math inline">\(\pi\)</span> into the odds and then average (i.e., transform, then summarize). Second, average the simulations of <span class="math inline">\(\pi\)</span> and then transform that average into the odds (i.e., summarize, then transform). Which one is the posterior mean of the odds? Which is larger? Why?</li>
+<li>Compute the 90% credible interval for the odds the same two ways (i.e., use the 5th and 95th percentiles instead of the average). What do you notice? Why?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>See <a href="https://pos5747.github.io/notes/wk06/02-rejection-sampling.html#a-bayesian-invariance-property">A Bayesian Invariance Property</a> in the notes. The odds <span class="math inline">\(\pi/(1 - \pi)\)</span> is a convex function of <span class="math inline">\(\pi\)</span>, so think about Jensen’s inequality.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<p>The uniform prior is beta(1, 1). With <span class="math inline">\(k = 6\)</span> and <span class="math inline">\(N = 20\)</span>, the posterior is beta(<span class="math inline">\(1 + 6\)</span>, <span class="math inline">\(1 + 20 - 6\)</span>) = beta(7, 15).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>alpha_prime <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">6</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>beta_prime <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">20</span> <span class="sc">-</span> <span class="dv">6</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate from the posterior</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>pi_tilde <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">100000</span>, alpha_prime, beta_prime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Part 2</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># transform, then summarize</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>odds_tilde <span class="ot">&lt;-</span> pi_tilde<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> pi_tilde)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(odds_tilde)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5004554</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize, then transform</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>mean_pi <span class="ot">&lt;-</span> <span class="fu">mean</span>(pi_tilde)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>mean_pi<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> mean_pi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4671975</code></pre>
+</div>
+</div>
+<p>Transform-then-summarize gives about 0.50. Summarize-then-transform gives about 0.47. The first is the posterior mean of the odds. The simulation-based invariance property in the notes says that we get simulations of the odds by transforming each simulation of <span class="math inline">\(\pi\)</span>, and then we summarize those. (For the beta distribution, we can also find this mean in closed form. It’s <span class="math inline">\(\frac{\alpha'}{\beta' - 1} = \frac{7}{14} = 0.5\)</span>, which matches.)</p>
+<p>Transform-then-summarize is larger because the odds is a convex function of <span class="math inline">\(\pi\)</span>. By Jensen’s inequality, the average of a convex function is at least the function of the average. For example, a simulation of <span class="math inline">\(\pi\)</span> that’s 0.15 above the posterior mean (i.e., about 0.47) gives odds of about 0.88, which is 0.41 above the odds at the posterior mean. A simulation that’s 0.15 below (i.e., about 0.17) gives odds of about 0.20, which is only 0.27 below. The large simulations push the average of the odds up more than the small simulations pull it down.</p>
+<p>This is the same inequality that made the ML estimate of the odds biased in Week 3. There, <span class="math inline">\(E(\hat{\pi}) = \pi\)</span>, but <span class="math inline">\(E\left[\hat{\pi}/(1 - \hat{\pi})\right] &gt; \pi/(1 - \pi)\)</span>. Here, the expectation is over the posterior rather than the sampling distribution, but the math is the same.</p>
+<p><strong>Part 3</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># transform, then summarize</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(odds_tilde, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       5%       95% 
+0.2017653 0.9499302 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize, then transform</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>q_pi <span class="ot">&lt;-</span> <span class="fu">quantile</span>(pi_tilde, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>q_pi<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> q_pi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       5%       95% 
+0.2017653 0.9499302 </code></pre>
+</div>
+</div>
+<p>The two intervals are <em>exactly</em> the same (about 0.20 to 0.95)! The odds is an <em>increasing</em> function of <span class="math inline">\(\pi\)</span>, so it doesn’t change the order of the simulations. The simulation of <span class="math inline">\(\pi\)</span> at the 5th percentile becomes the simulation of the odds at the 5th percentile, and so on. This means that we <em>can</em> freely transform the endpoints of a percentile credible interval (and the posterior median) with an increasing function. We cannot freely transform the posterior mean.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-6" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Ordered logit probabilities</h2>
+<p>The <a href="https://pos5747.github.io/notes/wk06/03-ordered-logit.html">notes</a> define the ordered logit through its <em>cumulative</em> probabilities</p>
+<p><span class="math display">\[
+\Pr(Y_i \leq j) = \operatorname{logit}^{-1}(\alpha_j - \eta_i), \qquad j = 1, \ldots, J-1,
+\]</span></p>
+<p>where the linear predictor <span class="math inline">\(\eta_i = X_i\beta\)</span> has no intercept and the cutpoints are ordered so that <span class="math inline">\(\alpha_1 &lt; \alpha_2 &lt; \cdots &lt; \alpha_{J-1}\)</span>.</p>
+<ol type="1">
+<li>Show that <span class="math inline">\(\Pr(Y_i = j) = \operatorname{logit}^{-1}(\alpha_j - \eta_i) - \operatorname{logit}^{-1}(\alpha_{j-1} - \eta_i)\)</span> for <span class="math inline">\(j = 2, \ldots, J-1\)</span>. What are <span class="math inline">\(\Pr(Y_i = 1)\)</span> and <span class="math inline">\(\Pr(Y_i = J)\)</span>?</li>
+<li>The figure in the notes uses <span class="math inline">\(J = 4\)</span>, the cutpoints <span class="math inline">\(\alpha = (-2.5, -1.3, 1.3)\)</span>, and <span class="math inline">\(\eta_i = -1.5\)</span>. Use <code>plogis()</code> to compute the four category probabilities. Do they sum to one?</li>
+<li>Why doesn’t <span class="math inline">\(\eta_i\)</span> include an intercept? What would happen if you added an intercept <span class="math inline">\(\beta_0\)</span> to <span class="math inline">\(\eta_i\)</span>?</li>
+<li>Every cutpoint shares the same coefficients <span class="math inline">\(\beta\)</span>. Show that increasing <span class="math inline">\(x_{ik}\)</span> by one unit changes the log-odds <span class="math inline">\(\log\left[\frac{\Pr(Y_i \leq j)}{\Pr(Y_i &gt; j)}\right]\)</span> by <span class="math inline">\(-\beta_k\)</span> for <em>every</em> <span class="math inline">\(j\)</span>. This is called the “proportional odds” assumption. What does this assumption get us? What does it cost?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>The event <span class="math inline">\(Y_i \leq j\)</span> happens when <span class="math inline">\(Y_i \leq j - 1\)</span> or when <span class="math inline">\(Y_i = j\)</span>, and these two events can’t both happen. For part 4, notice that the log-odds is the logit of <span class="math inline">\(\Pr(Y_i \leq j)\)</span>, and the logit undoes the inverse logit.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<p>The events <span class="math inline">\(Y_i \leq j - 1\)</span> and <span class="math inline">\(Y_i = j\)</span> can’t both happen, and together they make up the event <span class="math inline">\(Y_i \leq j\)</span>. So the probabilities add:</p>
+<p><span class="math display">\[
+\Pr(Y_i \leq j) = \Pr(Y_i \leq j - 1) + \Pr(Y_i = j).
+\]</span></p>
+<p>Solving for <span class="math inline">\(\Pr(Y_i = j)\)</span>, we have</p>
+<p><span class="math display">\[
+\Pr(Y_i = j) = \Pr(Y_i \leq j) - \Pr(Y_i \leq j - 1) = \operatorname{logit}^{-1}(\alpha_j - \eta_i) - \operatorname{logit}^{-1}(\alpha_{j-1} - \eta_i).
+\]</span></p>
+<p>The two end categories only have one cutpoint each. For the lowest category, <span class="math inline">\(\Pr(Y_i = 1) = \Pr(Y_i \leq 1) = \operatorname{logit}^{-1}(\alpha_1 - \eta_i)\)</span>. For the highest category, <span class="math inline">\(\Pr(Y_i = J) = 1 - \Pr(Y_i \leq J - 1) = 1 - \operatorname{logit}^{-1}(\alpha_{J-1} - \eta_i)\)</span>. (If you set <span class="math inline">\(\alpha_0 = -\infty\)</span> and <span class="math inline">\(\alpha_J = \infty\)</span>, then the general formula covers these two cases as well, since <span class="math inline">\(\operatorname{logit}^{-1}(-\infty) = 0\)</span> and <span class="math inline">\(\operatorname{logit}^{-1}(\infty) = 1\)</span>.)</p>
+<p><strong>Part 2</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cutpoints and linear predictor from the figure in the notes</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.5</span>, <span class="sc">-</span><span class="fl">1.3</span>, <span class="fl">1.3</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>eta <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">1.5</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co"># cumulative probabilities Pr(Y &lt;= j), j = 1, 2, 3</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>cum_p <span class="ot">&lt;-</span> <span class="fu">plogis</span>(alpha <span class="sc">-</span> eta)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>cum_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2689414 0.5498340 0.9426758</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># category probabilities Pr(Y = j), j = 1, 2, 3, 4</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(cum_p[<span class="dv">1</span>], cum_p[<span class="dv">2</span>] <span class="sc">-</span> cum_p[<span class="dv">1</span>], cum_p[<span class="dv">3</span>] <span class="sc">-</span> cum_p[<span class="dv">2</span>], <span class="dv">1</span> <span class="sc">-</span> cum_p[<span class="dv">3</span>])</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.26894142 0.28089258 0.39284183 0.05732418</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>The four probabilities are about 0.27, 0.28, 0.39, and 0.06, and they sum to one. These match the figure in the notes.</p>
+<p><strong>Part 3</strong></p>
+<p>Suppose we add an intercept, so that the linear predictor is <span class="math inline">\(\beta_0 + X_i\beta\)</span>. Then</p>
+<p><span class="math display">\[
+\alpha_j - (\beta_0 + X_i\beta) = (\alpha_j - \beta_0) - X_i\beta.
+\]</span></p>
+<p>This means that a model with intercept <span class="math inline">\(\beta_0\)</span> and cutpoints <span class="math inline">\(\alpha_j\)</span> gives exactly the same probabilities as a model with no intercept and cutpoints <span class="math inline">\(\alpha_j - \beta_0\)</span>. If we change the intercept and change every cutpoint by the same amount, all probabilities remain the same. If the probabilities remain the same, then the likelihood is the same for every value of <span class="math inline">\(\beta_0\)</span> (i.e., the model is not identified). Another way to think about this is that the cutpoints already play the role of the intercept, so we don’t need <span class="math inline">\(\beta_0\)</span>.</p>
+<p>Notice that with <span class="math inline">\(J = 2\)</span> categories, the ordered logit is the usual logit. There’s one cutpoint and <span class="math inline">\(\Pr(Y_i = 2) = 1 - \operatorname{logit}^{-1}(\alpha_1 - \eta_i) = \operatorname{logit}^{-1}(\eta_i - \alpha_1)\)</span>, so <span class="math inline">\(-\alpha_1\)</span> is the logit’s intercept.</p>
+<p><strong>Part 4</strong></p>
+<p>The logit undoes the inverse logit, so</p>
+<p><span class="math display">\[
+\log\left[\frac{\Pr(Y_i \leq j)}{\Pr(Y_i &gt; j)}\right] = \operatorname{logit}\left[\Pr(Y_i \leq j)\right] = \alpha_j - \eta_i = \alpha_j - \beta_1 x_{i1} - \cdots - \beta_k x_{ik} - \cdots.
+\]</span></p>
+<p>If <span class="math inline">\(x_{ik}\)</span> increases by one unit, then <span class="math inline">\(\eta_i\)</span> increases by <span class="math inline">\(\beta_k\)</span>, and the log-odds decreases by <span class="math inline">\(\beta_k\)</span>. The cutpoint <span class="math inline">\(\alpha_j\)</span> is the only part of this expression that depends on <span class="math inline">\(j\)</span>, and it doesn’t change. So the log-odds changes by <span class="math inline">\(-\beta_k\)</span> for every <span class="math inline">\(j\)</span>.</p>
+<p>The assumption gets us a much smaller model (i.e., more parsimonious). We need only one coefficient per explanatory variable, rather than <span class="math inline">\(J - 1\)</span> of them (i.e., one per cutpoint). Fewer parameters means more precise estimates. It also gives the coefficients a simple interpretation. A positive <span class="math inline">\(\beta_k\)</span> moves probability toward the higher categories, and a negative <span class="math inline">\(\beta_k\)</span> moves it toward the lower categories.</p>
+<p>But the assumption costs us flexibility. An explanatory variable can only move the probabilities in one direction along the scale. The model cannot describe a variable that pushes people toward <em>both</em> ends. For example, political interest might make people more likely to be strong Democrats <em>and</em> more likely to be strong Republicans, while making them less likely to be independents. The ordered logit cannot capture that pattern.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-7" class="level2 ex-heading page-columns page-full">
+<h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Red State, Blue State: Part 1</h2>
+<p>Over the next several weeks, we’ll be looking at patterns of income and voting at the level of US states and individual survey respondents. You’ll find that some important and puzzling patterns emerge.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>The “Red State, Blue State” exercises are motivated by the patterns in Gelman, Shor, Bafumi, and Park (2007), “Rich State, Poor State, Red State, Blue State: What’s the Matter with Connecticut?” <em>Quarterly Journal of Political Science</em> 2: 345–367 [<a href="https://pos5747.github.io/notes/readings/Gelman2007.pdf">pdf</a>]. The states, the income scale, the models, and the questions all come from that paper. We’ll rarely cite it in the exercises themselves.</p>
+</div></div><p>The data below have one row per state per presidential election from 1976 to 2024 (50 states; no DC). <code>rep_share</code> is the Republican share of the two-party vote. <code>pc_income</code> is per-capita personal income in thousands of 2024 dollars, so the values are comparable across years.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>red_state <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/files/red-state-part1.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 650
+Columns: 6
+$ year       &lt;dbl&gt; 1976, 1976, 1976, 1976, 1976, 1976, 1976, 1976, 1976, 1976,…
+$ state      &lt;chr&gt; "Alabama", "Alaska", "Arizona", "Arkansas", "California", "…
+$ state_abbr &lt;chr&gt; "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",…
+$ region     &lt;chr&gt; "South", "West", "West", "South", "West", "West", "Northeas…
+$ pc_income  &lt;dbl&gt; 30.0, 68.6, 34.8, 28.9, 43.9, 39.7, 43.8, 40.9, 36.1, 32.4,…
+$ rep_share  &lt;dbl&gt; 0.4333, 0.6189, 0.5861, 0.3495, 0.5092, 0.5591, 0.5261, 0.4…</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>Make a scatterplot of <code>rep_share</code> against <code>pc_income</code>, with one panel per election. Add a fitted line.</li>
+<li>Describe what happens to the relationship over time. When did rich states become blue states?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p><code>facet_wrap(vars(year))</code> makes one panel per election, and <code>geom_smooth(method = "lm", se = FALSE)</code> adds the fitted line.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scatterplot, one panel per election</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(red_state, <span class="fu">aes</span>(<span class="at">x =</span> pc_income, <span class="at">y =</span> rep_share)) <span class="sc">+</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(year)) <span class="sc">+</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Per-capita income (thousands of 2024 dollars)"</span>,</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Republican share of the two-party vote"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk06-exercises_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Part 2</strong></p>
+<p>In 1976 and 1980, richer states voted a little more Republican. There’s not much relationship from 1982 to 1990. From 1992 onward, richer states voted a little more Democratic. The slope steepens through 2000 and 2004 and then stays about the same through 2024. The conclusion is this: rich states became blue states during the 1980s and 1990s; the pattern has remained for the last twenty years.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-8" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> Red State, Blue State: Part 2(a)</h2>
+<p>Part 1 was about the relationship between income and voting at the <em>state</em> level. But we might also ask about <em>individuals</em>—within a state, how does income relate to party ID? (Let’s use party ID rather than vote choice so we can use an ordinal model!)</p>
+<p>Let’s start with Mississippi, which is the poorest state, and use data from the 2024 Cooperative Election Study (CES).</p>
+<p>The data have one row per respondent and seven variables.</p>
+<ul>
+<li><code>pid</code> is the seven-point party ID, from “1. Strong Democrat” to “7. Strong Republican” (the numeric prefix makes the alphabetical order match the ordinal order).</li>
+<li><code>income</code> is a five-point scale, from −2 (under $20k) to 2 ($200k and up); each category holds about a fifth of respondents nationally, except the top one, which holds the richest 5%.</li>
+<li>The state variables are constant within the file, which includes only respondents from Mississippi.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data; pid as an ordered factor</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>ms <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/files/red-state-part2-mississippi.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pid =</span> <span class="fu">factor</span>(pid, <span class="at">ordered =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 451
+Columns: 7
+$ state_name             &lt;chr&gt; "Mississippi", "Mississippi", "Mississippi", "M…
+$ state_abbr             &lt;chr&gt; "MS", "MS", "MS", "MS", "MS", "MS", "MS", "MS",…
+$ region                 &lt;chr&gt; "South", "South", "South", "South", "South", "S…
+$ state_median_income    &lt;dbl&gt; 59.1, 59.1, 59.1, 59.1, 59.1, 59.1, 59.1, 59.1,…
+$ rs_state_median_income &lt;dbl&gt; -0.8803473, -0.8803473, -0.8803473, -0.8803473,…
+$ income                 &lt;dbl&gt; -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,…
+$ pid                    &lt;ord&gt; 1. Strong Democrat, 1. Strong Democrat, 1. Stro…</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>Use <code>MASS::polr()</code> to fit an ordered logit of <code>pid</code> on <code>income</code>. Interpret the sign of the coefficient.</li>
+<li>Use <code>predictions()</code> to plot the probability of each of the seven categories as <code>income</code> moves from −2 to 2. Then plot the cumulative probabilities <span class="math inline">\(\Pr(Y \geq j)\)</span> for <span class="math inline">\(j = 2, \ldots, 7\)</span>. (The notes compute both <span class="math inline">\(\Pr(Y \leq j)\)</span> and <span class="math inline">\(\Pr(Y \geq j)\)</span>, so you can adapt that code.)</li>
+<li>Use <code>comparisons()</code> to compute the change in <span class="math inline">\(\Pr(Y \geq 5)\)</span> (i.e., the probability that a respondent identifies with or leans toward the Republican Party) as <code>income</code> moves from −1 to 1. What do you conclude about income and party ID in Mississippi?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>For part 1, <code>polr()</code> needs the outcome as an ordered factor (the load chunk above does this) and <code>Hess = TRUE</code> to compute standard errors. Use <code>MASS::polr()</code> rather than <code>library(MASS)</code>, because {MASS} has its own <code>select()</code> that masks <code>dplyr::select()</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>For part 2, <code>predictions()</code> returns one row per category per row of <code>newdata</code>: <code>group</code> holds the category and <code>estimate</code> its probability. The plotting and bookkeeping below are done. Fill in the <code>predictions()</code> call, the sort, and the running sum. See <a href="https://pos5747.github.io/notes/wk06/03-ordered-logit.html#cumulative-probabilities">Computing cumulative probabilities</a> in the notes for the running-sum idea.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># category probabilities as income moves from -2 to 2</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="co"># p_ms &lt;- predictions(...)  # one row per category per value of income</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot Pr(Y = j) against income, one line per category</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_ms, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> estimate, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a><span class="co"># cumulative probabilities Pr(Y &gt;= j): add up categories 7, 6, ..., j</span></span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>cumulative_ms <span class="ot">&lt;-</span> p_ms <span class="sc">|&gt;</span></span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arrange(): sort so the highest category comes first within each income</span></span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(income) <span class="sc">|&gt;</span></span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># mutate(): a running sum of estimate with cumsum() gives cumulative_prob</span></span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb62-15"><a href="#cb62-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">as.integer</span>(group) <span class="sc">&gt;</span> <span class="dv">1</span>)  <span class="co"># Pr(Y &gt;= 1) is always 1</span></span>
+<span id="cb62-16"><a href="#cb62-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-17"><a href="#cb62-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot Pr(Y &gt;= j) against income, one line per category</span></span>
+<span id="cb62-18"><a href="#cb62-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cumulative_ms, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> cumulative_prob, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb62-19"><a href="#cb62-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb62-20"><a href="#cb62-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 3</span></summary><div class="ex-reveal-body">
+<p>For part 3: without <code>hypothesis</code>, <code>comparisons()</code> returns one first difference for each of the seven categories. <span class="math inline">\(\Pr(Y \geq 5)\)</span> is the sum of the probabilities of categories 5, 6, and 7, so <code>hypothesis = "b5 + b6 + b7 = 0"</code> adds the 5th, 6th, and 7th rows and computes the SE of that sum. Fill in the <code>variables</code> argument (Week 5’s <code>list()</code> form).</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change in Pr(Y &gt;= 5) as income moves from -1 to 1</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># comparisons(fit_ms,</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co">#             variables = ...,  # income from -1 to 1</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co">#             newdata = datagrid(),</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co">#             hypothesis = "b5 + b6 + b7 = 0",</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="co">#             conf_level = 0.9)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit ordered logit model</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>fit_ms <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">polr</span>(pid <span class="sc">~</span> income, <span class="at">data =</span> ms, <span class="at">Hess =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_ms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+MASS::polr(formula = pid ~ income, data = ms, Hess = TRUE)
+
+Coefficients:
+        Value Std. Error t value
+income 0.3405    0.07946   4.285
+
+Intercepts:
+                                                                Value  
+1. Strong Democrat|2. Not very strong Democrat                  -1.1180
+2. Not very strong Democrat|3. Independent (leans Democrat)     -0.6597
+3. Independent (leans Democrat)|4. Independent                  -0.4170
+4. Independent|5. Independent (leans Republican)                 0.0973
+5. Independent (leans Republican)|6. Not very strong Republican  0.5475
+6. Not very strong Republican|7. Strong Republican               1.1025
+                                                                Std. Error
+1. Strong Democrat|2. Not very strong Democrat                   0.1161   
+2. Not very strong Democrat|3. Independent (leans Democrat)      0.1082   
+3. Independent (leans Democrat)|4. Independent                   0.1058   
+4. Independent|5. Independent (leans Republican)                 0.1041   
+5. Independent (leans Republican)|6. Not very strong Republican  0.1072   
+6. Not very strong Republican|7. Strong Republican               0.1178   
+                                                                t value
+1. Strong Democrat|2. Not very strong Democrat                  -9.6318
+2. Not very strong Democrat|3. Independent (leans Democrat)     -6.0976
+3. Independent (leans Democrat)|4. Independent                  -3.9425
+4. Independent|5. Independent (leans Republican)                 0.9343
+5. Independent (leans Republican)|6. Not very strong Republican  5.1096
+6. Not very strong Republican|7. Strong Republican               9.3573
+
+Residual Deviance: 1621.07 
+AIC: 1635.07 </code></pre>
+</div>
+</div>
+<p>I use <code>MASS::polr()</code> rather than <code>library(MASS)</code> because {MASS} has its own <code>select()</code>, which masks <code>dplyr::select()</code>.</p>
+<p>The coefficient for <code>income</code> is about 0.34 (SE about 0.08). Higher-income respondents in Mississippi identify as more Republican.</p>
+<p><strong>Part 2</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of each category as income varies</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>p_ms <span class="ot">&lt;-</span> <span class="fu">predictions</span>(fit_ms, <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">income =</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span>))</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot category probabilities</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_ms, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> estimate, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk06-exercises_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cumulative probabilities Pr(Y &gt;= j): add up categories 7, 6, ..., j</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>cumulative_ms <span class="ot">&lt;-</span> p_ms <span class="sc">|&gt;</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(income, <span class="fu">desc</span>(group)) <span class="sc">|&gt;</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(income) <span class="sc">|&gt;</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cumulative_prob =</span> <span class="fu">cumsum</span>(estimate),</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">ge_label =</span> <span class="fu">paste0</span>(<span class="st">"Pr(Y ≥ "</span>, <span class="fu">as.integer</span>(group), <span class="st">")"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">as.integer</span>(group) <span class="sc">&gt;</span> <span class="dv">1</span>)  <span class="co"># Pr(Y &gt;= 1) is always 1</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plot cumulative probabilities</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cumulative_ms, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> cumulative_prob, <span class="at">color =</span> ge_label)) <span class="sc">+</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk06-exercises_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The probability of being a “Strong Democrat” decreases from about 0.39 at the lowest income level to about 0.14 at the highest incomes. The probability of being a “Strong Republican” increases from about 0.14 to about 0.40. <span class="math inline">\(\Pr(Y \geq 5)\)</span> (the probability of “5. Independent (leans Republican),” “6. Not very strong Republican,” or “7. Strong Republican”) goes from about 0.32 to about 0.64.</p>
+<p><strong>Part 3</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change in Pr(Y &gt;= 5) as income moves from -1 to 1</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_ms,</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">income =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)),</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(),</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">hypothesis =</span> <span class="st">"b5 + b6 + b7 = 0"</span>,</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">conf_level =</span> <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Hypothesis Estimate Std. Error    z Pr(&gt;|z|)    S 5.0 % 95.0 %
+ b5+b6+b7=0    0.168     0.0388 4.33   &lt;0.001 16.0 0.104  0.232
+
+Type: probs</code></pre>
+</div>
+</div>
+<p>Moving from the $20–40k bracket to the $80–200k bracket raises <span class="math inline">\(\Pr(Y \geq 5)\)</span> by about 0.17 (90% CI from about 0.10 to 0.23). In Mississippi, richer people are much more likely to identify with or lean toward the Republican Party.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-9" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> Red State, Blue State: Part 2(b)</h2>
+<p>Now the richest state.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data; pid as an ordered factor</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>ct <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/files/red-state-part2-connecticut.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pid =</span> <span class="fu">factor</span>(pid, <span class="at">ordered =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 520
+Columns: 7
+$ state_name             &lt;chr&gt; "Connecticut", "Connecticut", "Connecticut", "C…
+$ state_abbr             &lt;chr&gt; "CT", "CT", "CT", "CT", "CT", "CT", "CT", "CT",…
+$ region                 &lt;chr&gt; "Northeast", "Northeast", "Northeast", "Northea…
+$ state_median_income    &lt;dbl&gt; 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96,…
+$ rs_state_median_income &lt;dbl&gt; 0.6099186, 0.6099186, 0.6099186, 0.6099186, 0.6…
+$ income                 &lt;dbl&gt; -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2,…
+$ pid                    &lt;ord&gt; 1. Strong Democrat, 1. Strong Democrat, 1. Stro…</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>Repeat parts 1 and 3 of Part 2(a) for the 520 respondents from Connecticut.</li>
+<li>Compare the two states. Does income matter more in Mississippi or in Connecticut?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>Copy your code from parts 1 and 3 of Part 2(a) and change <code>ms</code> to <code>ct</code>.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit ordered logit model</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>fit_ct <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">polr</span>(pid <span class="sc">~</span> income, <span class="at">data =</span> ct, <span class="at">Hess =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_ct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+MASS::polr(formula = pid ~ income, data = ct, Hess = TRUE)
+
+Coefficients:
+         Value Std. Error t value
+income 0.07854    0.06922   1.135
+
+Intercepts:
+                                                                Value  
+1. Strong Democrat|2. Not very strong Democrat                  -0.7798
+2. Not very strong Democrat|3. Independent (leans Democrat)     -0.3046
+3. Independent (leans Democrat)|4. Independent                   0.1908
+4. Independent|5. Independent (leans Republican)                 0.9848
+5. Independent (leans Republican)|6. Not very strong Republican  1.4792
+6. Not very strong Republican|7. Strong Republican               1.9707
+                                                                Std. Error
+1. Strong Democrat|2. Not very strong Democrat                   0.0947   
+2. Not very strong Democrat|3. Independent (leans Democrat)      0.0890   
+3. Independent (leans Democrat)|4. Independent                   0.0883   
+4. Independent|5. Independent (leans Republican)                 0.0986   
+5. Independent (leans Republican)|6. Not very strong Republican  0.1128   
+6. Not very strong Republican|7. Strong Republican               0.1337   
+                                                                t value
+1. Strong Democrat|2. Not very strong Democrat                  -8.2378
+2. Not very strong Democrat|3. Independent (leans Democrat)     -3.4245
+3. Independent (leans Democrat)|4. Independent                   2.1605
+4. Independent|5. Independent (leans Republican)                 9.9835
+5. Independent (leans Republican)|6. Not very strong Republican 13.1124
+6. Not very strong Republican|7. Strong Republican              14.7383
+
+Residual Deviance: 1889.04 
+AIC: 1903.04 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change in Pr(Y &gt;= 5) as income moves from -1 to 1</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_ct,</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">income =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)),</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(),</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">hypothesis =</span> <span class="st">"b5 + b6 + b7 = 0"</span>,</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">conf_level =</span> <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Hypothesis Estimate Std. Error    z Pr(&gt;|z|)   S   5.0 % 95.0 %
+ b5+b6+b7=0   0.0311     0.0273 1.14    0.256 2.0 -0.0139 0.0761
+
+Type: probs</code></pre>
+</div>
+</div>
+<p>The coefficient for <code>income</code> is about 0.08 (SE about 0.07), and the change in <span class="math inline">\(\Pr(Y \geq 5)\)</span> is about 0.03 (90% CI from about −0.01 to 0.08). In Connecticut, income has little relationship with party ID.</p>
+<p><strong>Part 2</strong></p>
+<p>Income and partisanship are strongly related in Mississippi (a first difference of about 0.17, 90% CI from about 0.10 to 0.23) and barely related in Connecticut (about 0.03, 90% CI from about −0.01 to 0.08). That is, we see a strong relationship the poorest state and a weak relationship in the richest state.</p>
+<p>Might income matter more in poor states?</p>
+</div></details>
+</div>
+</section>
+<section id="ex-10" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> Exam review</h2>
+<p>Prepare for the exam. There’s not a devoted review week, so please plan ahead. The questions will follow directly from the lectures, notes, and review exercises. The exam will be a mixture very short objective questions (e.g., multiple choice, fill-in-the-blank, matching); short, open-ended questions requiring 1-3 sentences; and longer open-ended questions requiring several sentences and/or longer derivations. In developing the exam questions, I draw from examples in the slides, notes, and exercises.</p>
+<p>I hesitate to give a “study guide” because it might lead you to <em>exclude</em> material that appears on the exam. Nonetheless, here are some things to definitely <em>include</em> in your preparation:</p>
+<ol type="1">
+<li>The mathematics emphasized during week 1, especially those tools that have come up repeatedly (e.g., logs, gradient, Hessian).</li>
+<li>ML, Fisher information, invariance property, delta method; and how all these fit together.</li>
+<li>Explain “consistency.”</li>
+<li>Define the predictive distribution. Explain how we can use it to evaluate a fitted model. Connect this to Poisson versus negative binomial models of counts.</li>
+<li>Explain the <code>optim()</code> function, including its arguments.</li>
+<li>What is the “sampling distribution”? What are the three features we care about? Connect these three features to other relevant concepts.</li>
+<li>What is a parametric bootstrap and how can it be used to create a 90% CI?</li>
+<li>Work out closed form SEs using Fisher information and delta method for simple examples.</li>
+<li>Explain “coverage” and describe how we might use a Monte Carlo simulation to evaluate coverage.</li>
+<li>Demonstrate the equivalence of scalar and matrix forms of <span class="math inline">\(X_i\beta\)</span>.</li>
+<li>Explain how to use R formulas to include interactions, polynomials, and qualitative variables in a design matrix. Explain what the design matrix looks like in each case (i.e., what columns does it have)?</li>
+<li>Be familiar with the special formula operators, like <code>+</code>, <code>*</code>, <code>:</code>, and <code>^</code>. Understand when <code>I()</code> is needed and not.</li>
+<li>Explain the logit model. How is a probit model different?</li>
+<li>What is a first difference and expected value?</li>
+<li>Explain how to use <code>glm()</code> to fit logit and probit models.</li>
+<li>Explain how to use {marginaleffects}. What is the conceptual framework? What are the main functions? What are the main arguments to those functions? What is a good default?</li>
+<li>Describe AIC/BIC and how to use them to choose among models.</li>
+<li>Explain how to add zero-inflation to a likelihood.</li>
+<li>Explain how to use R to fit our suite of count models (i.e., Poisson, NB, ZINB)</li>
+<li>Explain the basic logic of Bayesian inference.</li>
+<li>Explain “conjugate prior.” Give an example.</li>
+<li>Find the posterior for simple, conjugate problems like Bernoulli and Poisson.</li>
+<li>Explain how to obtain point estimates and interval estimates from posterior simulations.</li>
+<li>Explain the right way to compute the posterior mean for a transformation.</li>
+<li>Explain a simple rejection algorithm to sample from a distribution.</li>
+<li>Explain the ordered logit model. What are the cutpoints? Why doesn’t the linear predictor include an intercept? Why must the cutpoints be ordered? How do the cutpoints and the linear predictor give the probability of each category?</li>
+<li>Explain how to use <code>MASS::polr()</code> and {marginaleffects} to fit an ordered logit model and compute category probabilities, cumulative probabilities, and first differences.</li>
+<li>Explain the Metropolis algorithm. What are burn-in, <span class="math inline">\(\hat{R}\)</span>, and the effective sample size (ESS)? What does the tuning parameter do?</li>
+<li>Explain what Stan does. How is a Stan model organized (i.e., the data, parameters, and model blocks)? Explain how to fit a Stan model with {rstan} or {cmdstanr} and how to check convergence.</li>
+<li>Explain how to use <code>brms::brm()</code> to fit models like the ones we fit with <code>glm()</code>. Explain how to use {marginaleffects} to compute quantities of interest from the fit.</li>
+<li>Explain the multinomial logit model. What does the softmax function do? How does it generalize the inverse-logit function? Why does the model need a baseline category?</li>
+<li>Using the normal linear model, the zero-inflated negative binomial model, and the ordered logit model as examples, explain how the expected value and first difference unify our interpretations of these complicated models.</li>
+</ol>
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-jackman2004" class="csl-entry" role="listitem">
+Jackman, Simon. 2004. <span>“Bayesian Analysis for Political Research.”</span> <em>Annual Review of Political Science</em> 7 (1): 483–505. <a href="https://doi.org/10.1146/annurev.polisci.7.012003.104706">https://doi.org/10.1146/annurev.polisci.7.012003.104706</a>.
+</div>
+<div id="ref-western1994" class="csl-entry" role="listitem">
+Western, Bruce, and Simon Jackman. 1994. <span>“Bayesian Inference for Comparative Research.”</span> <em>The American Political Science Review</em> 88 (2): 412–23. <a href="https://doi.org/10.2307/2944713">https://doi.org/10.2307/2944713</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Most modern priors are “weakly informative,” meaning that they rule out only <em>absurd</em> values of the parameters, like variances <em>very</em> close to zero or logistic regression probabilities <em>very</em> close to zero or one. However, for modern thinking on prior distributions, see the <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations">Stan wiki</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Notice that the meaning of <span class="math inline">\(f\)</span> depends on the context; <span class="math inline">\(f\)</span> represents the prior, likelihood, and posterior. This is a common sloppiness in probability theory because the context usually makes the meaning clear.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<!-- Injected at the end of every exercise page (see _metadata.yml).
+     Two jobs: keep the countdown in the release notice current, and, when
+     `solution-gate: browser` is in force, open the solution panels the moment
+     the release time arrives. Under the default `render` gate there is
+     nothing on the page to open, so the reveal half simply finds nothing. -->
+<script>
+(function () {
+  var notice = document.querySelector(".ex-notice-wait");
+  var pending = Array.prototype.slice.call(
+    document.querySelectorAll(".ex-slot.ex-pending")
+  );
+  if (!notice && !pending.length) return;
+
+  var iso = (notice || pending[0]).getAttribute("data-unlock");
+  var unlock = new Date(iso);
+  if (isNaN(unlock)) return;
+
+  var readout = notice ? notice.querySelector(".ex-countdown") : null;
+
+  function remaining(ms) {
+    var mins = Math.floor(ms / 60000);
+    var days = Math.floor(mins / 1440);
+    var hours = Math.floor((mins % 1440) / 60);
+    if (days >= 1) {
+      return days + (days === 1 ? " day, " : " days, ") +
+             hours + (hours === 1 ? " hour" : " hours");
+    }
+    if (hours >= 1) {
+      var m = mins % 60;
+      return hours + (hours === 1 ? " hour, " : " hours, ") +
+             m + (m === 1 ? " minute" : " minutes");
+    }
+    return mins + (mins === 1 ? " minute" : " minutes");
+  }
+
+  function release() {
+    pending.forEach(function (slot) {
+      slot.classList.remove("ex-pending");
+    });
+    if (notice) {
+      notice.classList.remove("ex-notice-wait");
+      notice.classList.add("ex-notice-open");
+      notice.textContent = pending.length
+        ? "Complete solutions are available. Work each exercise before you open one."
+        : "Complete solutions are due to be posted — reload in a little while.";
+    }
+  }
+
+  function tick() {
+    var left = unlock - new Date();
+    if (left <= 0) { release(); return; }
+    if (readout) readout.textContent = remaining(left);
+    setTimeout(tick, left < 3600000 ? 30000 : 600000);
+  }
+
+  tick();
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/pos5747\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

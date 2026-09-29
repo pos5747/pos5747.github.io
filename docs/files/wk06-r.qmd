@@ -13,6 +13,12 @@ title: "Materials"
 
 - An R script to illustrate the rejection algorithm via a weird example is [here](https://gist.github.com/carlislerainey/813b09bce0a9f1d8cc688d3217abb700)
 
-## Duration Models
+## Ordered logit
 
-- An R script to illustrate fitting duration models is [here](https://gist.github.com/carlislerainey/c7cff60219bf4b484673523bfc3a347e). 
+<!-- TODO: no R script exists yet for the ordered-logit example. The
+     future-slides/wk12-slides/ordered.qmd deck (Fall 2025, week 12) has the
+     polr()/{marginaleffects}/cumulative-probability code this section should
+     link, adapted into
+     5747website/slides/wk06-slides-material/R/lecture-example-05-ordered-logit.R
+     -- but nothing has been posted as a Gist yet. Carlisle: post that script
+     (or an excerpt) as a Gist and link it here. -->
