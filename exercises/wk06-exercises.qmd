@@ -17,8 +17,8 @@ library(marginaleffects)
 **Readings**
 
 - Read @western1994 [[pdf](https://pos5747.github.io/notes/readings/Western1994.pdf)]. I recommend @jackman2004 [[pdf](https://pos5747.github.io/notes/readings/Jackman2004.pdf)] as well.
-- Read section 2.6 (pp. 57-61) of Gill (2014; on Canvas) on Bayesian versus non-Bayesian approaches. I recommend ch. 1 for helpful context and the rest of ch. 2 for a second pass through the Bayesian engine from the notes.
-- I recommend pp. 97-128 of Gill (2014; on Canvas) on prior distributions. Gill provides some helpful history on thinking about the prior distribution, including conjugate priors, uniform priors, invariant priors, improper priors, and elicited priors.^[Most modern priors are "weakly informative," meaning that they rule out only *absurd* values of the parameters, like variances *very* close to zero or logistic regression probabilities *very* close to zero or one. However, for modern thinking on prior distributions, see the [Stan wiki](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations).]
+- Read section 2.6 (pp. 57-61) of Gill (2014; on [Dropbox](https://www.dropbox.com/scl/fo/7b9bvt51jrthm25ssvd67/AJjPxAAOphm_K00S1q3_oM0?rlkey=88wab9fsove0tjyfpkjedzj4n&dl=0)) on Bayesian versus non-Bayesian approaches. I recommend ch. 1 for helpful context and the rest of ch. 2 for a second pass through the Bayesian engine from the notes.
+- I recommend pp. 97-128 of Gill (2014; on [Dropbox](https://www.dropbox.com/scl/fo/7b9bvt51jrthm25ssvd67/AJjPxAAOphm_K00S1q3_oM0?rlkey=88wab9fsove0tjyfpkjedzj4n&dl=0)) on prior distributions. Gill provides some helpful history on thinking about the prior distribution, including conjugate priors, uniform priors, invariant priors, improper priors, and elicited priors.^[Most modern priors are "weakly informative," meaning that they rule out only *absurd* values of the parameters, like variances *very* close to zero or logistic regression probabilities *very* close to zero or one. However, for modern thinking on prior distributions, see the [Stan wiki](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations).]
 
 **Question**
 
