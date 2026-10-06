@@ -222,72 +222,29 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
           display:block!important;
       }</style></aside>
 </section>
-<section id="today" class="slide level2">
-<h2>Today</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Time</th>
-<th style="text-align: right;">Min</th>
-<th style="text-align: left;">Section</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">9:15</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">Where we are</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">9:25</td>
-<td style="text-align: right;">35</td>
-<td style="text-align: left;">Metropolis</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">10:00</td>
-<td style="text-align: right;">25</td>
-<td style="text-align: left;">Stan</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">10:25</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;"><span class="muted">Break</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">10:30</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">{brms}</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">10:45</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">LOOIC</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">11:00</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: left;">Multinomial logit</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">11:20</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">Wrap</td>
-</tr>
-</tbody>
-</table>
-<aside class="notes">
-<p>[CTK: one line on the arc of the day: last week we sampled with rejection; today we sample with Metropolis, then Stan, then {brms}.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="then-and-now" class="slide level2">
+<h2>Then and now</h2>
+<p>15 years ago, posterior simulation made “big” or “complex” models tractable, but…</p>
+<ul>
+<li>human hard (100s or 1000s of lines of code)</li>
+<li>computer hard (days, sometimes weeks)</li>
+</ul>
+<p>now…</p>
+<ul>
+<li>human trivial (1 line!)</li>
+<li>computer easy-to-moderate (minutes or hours)</li>
+</ul>
+</section>
+<section id="goals-for-the-day" class="slide level2">
+<h2>Goals for the day</h2>
+<p>Bayesian simulation is a <strong>huge</strong> topic. The theory and practice are both much more complicated than ML, but it’s much more powerful.</p>
+<p>Goals for the day:</p>
+<ol type="1">
+<li>Understand posterior simulation (via MCMC) versus point estimation (via ML)</li>
+<li>Understand the implications of <em>dependent</em> MCMC samples.</li>
+<li>See Stan in action.</li>
+<li>Set up <code>brm()</code> as an alternative to <code>glm()</code> (and similar)</li>
+</ol>
 </section>
 <section id="where-we-are" class="slide level2">
 <h2>Where we are</h2>
@@ -588,12 +545,15 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 </section>
 <section id="the-accepted-draws" class="slide level2">
 <h2>The accepted draws</h2>
-
-<img data-src="img/rej-sampler.gif" width="1280" class="r-stretch"><div class="caption">
-<p>Left: the proposal box, −2 to 2, in two of its five dimensions. Blue: 4,000 draws from the normal approximation to the posterior (<code>glm()</code> coefficients and covariance). Red: the 11 accepted draws. Gray dots: a sample of the proposals. Right: the counters count every proposal. True speed for the first six seconds, then sped up (the badge says by how much).</p>
+<div class="r-stack">
+<p><img src="img/rej-sampler-start.png" width="1280"></p>
+<p><img class="fragment" src="img/rej-sampler-start.png" data-gif="img/rej-sampler.gif" data-still="img/rej-sampler-start.png" width="1280"></p>
+</div>
+<div class="caption">
+<p>Left: the proposal box, −2 to 2, in two of its five dimensions. Blue: 4,000 draws from the normal approximation to the posterior (<code>glm()</code> coefficients and covariance). Red: the 11 accepted draws. Gray dots: a sample of the proposals. Right: the counters count every proposal. The speed matches the real computation for the first six seconds, then it speeds up.</p>
 </div>
 <aside class="notes">
-<p>The run from the previous two slides, as it happened: the hidden chunk after the run replays its random stream to recover when each draw was accepted, checks that the replay matches <code>rej_wide</code> exactly, and rebuilds <code>img/rej-sampler.gif</code> with <code>wk07-lecture-material/rej-gif/make-rej-gif.R</code> from the run’s own count and time, so the draws, the rate, and the hours here are the slide’s numbers. Added 2026-10-06 for the [CTK] cue after “Two costs of rejection”.</p>
+<p>The run from the previous two slides, as it happened: the hidden chunk after the run replays its random stream to recover when each draw was accepted, checks that the replay matches <code>rej_wide</code> exactly, and rebuilds <code>img/rej-sampler.gif</code> (shown on click; <code>img/rej-sampler-start.png</code> is its first frame, extracted with {magick}) with <code>wk07-lecture-material/rej-gif/make-rej-gif.R</code> from the run’s own count and time, so the draws, the rate, and the hours here are the slide’s numbers. Added 2026-10-06 for the [CTK] cue after “Two costs of rejection”.</p>
 <p>[CTK: the accepted draws sit where the posterior is; the box is enormous by comparison, and in five dimensions the ratio of volumes is far smaller than this two-dimensional picture shows. This is cost 2 from two slides ago, made concrete. Metropolis and Stan get the same posterior in seconds; that is Part 1 and Part 2 of the exercise.]</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2738,25 +2698,17 @@ Comparison: 0.5 - -0.5</code></pre>
 <h1>LOOIC</h1>
 
 </section>
-<section id="why-not-the-aic" class="slide level2">
+<section id="why-not-the-aic" class="slide level2 smaller">
 <h2>Why not the AIC?</h2>
 <p>In <em>Information Criteria</em>, we compared Poisson and NB for Holland’s Santiago data with AIC and BIC. However, when we have posterior <em>simulations</em>, the AIC and BIC work poorly because we do not have a single point estimate. Instead, we have a <em>distribution</em>.</p>
+<p>The AIC also works poorly with posterior simulations for two other reasons.</p>
+<ol type="1">
+<li>Plugging in a point estimate (e.g., the posterior mean) ignores the uncertainty in the posterior, while the LOOIC averages over all the draws.</li>
+<li>The AIC’s penalty counts parameters, but a prior that pulls the estimates toward zero makes a model less flexible than its count of parameters suggests. With a strong prior or a hierarchical model, <span class="math inline">\(k\)</span> overstates the model’s effective number of parameters.</li>
+</ol>
 <div class="key">
 <p>When we have a sample from the posterior, we can instead use the LOOIC.</p>
 </div>
-<aside class="notes">
-<p>From the chapter’s aside: The AIC also works poorly with posterior simulations for two other reasons. First, plugging in a point estimate (e.g., the posterior mean) ignores the uncertainty in the posterior, while the LOOIC averages over all the draws. Second, the AIC’s penalty counts parameters, but a prior that pulls the estimates toward zero makes a model less flexible than its count of parameters suggests. With a strong prior or a hierarchical model, <span class="math inline">\(k\)</span> overstates the model’s effective number of parameters.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="example-linear-or-cubic-age" class="slide level2 smaller">
 <h2>Example: Linear or cubic age?</h2>
@@ -2795,7 +2747,7 @@ Comparison: 0.5 - -0.5</code></pre>
           display:block!important;
       }</style></aside>
 </section>
-<section id="compute-the-looic" class="slide level2 smaller">
+<section id="compute-the-looic" class="slide level2 evensmaller">
 <h2>Compute the LOOIC</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -2841,6 +2793,11 @@ See help('pareto-k-diagnostic') for details.</code></pre>
 </div>
 </div>
 </div></div>
+<ul>
+<li><code>elpd_loo</code> (higher is better)</li>
+<li><code>p_loo</code> (effective number of parameters)</li>
+<li><code>looic</code> = −2 <span class="math inline">\(\times\)</span> <code>elpd_loo</code> (lower is better)</li>
+</ul>
 </section>
 <section id="compare-the-two-models" class="slide level2 smaller">
 <h2>Compare the two models</h2>
@@ -2853,6 +2810,37 @@ See help('pareto-k-diagnostic') for details.</code></pre>
  fit_linear_brm      -5.8     4.1    0.92                    </code></pre>
 </div>
 </div>
+<ul>
+<li><code>loo_compare()</code> prints the best model in the top row, and <code>elpd_diff</code> is relative to that best model.</li>
+<li><code>loo_compare()</code> reports differences on the ELPD scale. ELPD differences are half the size of LOOIC differences and have the opposite sign (higher ELPD is better; lower LOOIC is better). Multiply by (−2) for the LOOIC scale (e.g., −5.8 elpd becomes 11.6 LOOIC).</li>
+<li><code>se_diff</code> is the SE of the <em>difference</em>.</li>
+</ul>
+<p>Some rules of thumb:</p>
+<ul>
+<li>For |<code>elpd_diff</code>| &lt; 4, the models predict about equally well, regardless of <code>se_diff</code>.</li>
+<li>For |<code>elpd_diff</code>| &gt; 4 <strong>AND</strong> large compared to <code>se_diff</code>: a meaningful difference (see <code>?loo-glossary</code>).</li>
+</ul>
+<div class="key">
+<p>The cubic model is ahead by 5.8 <code>elpd</code> with an <code>se_diff</code> of 4.1. This is modest evidence for the cubic.</p>
+</div>
+<aside class="notes">
+<p>From the chapter: It’s fine to use either. But the LOOIC connects nicely to the AIC and BIC, so that’s the one I’ve emphasized here.</p>
+<p>From the chapter’s footnote: Compare Raftery’s table for BIC differences in Information Criteria, where we established “about 10” as a big difference between the models. Remember that LOOIC differences are twice elpd differences, so 4 elpd is the same as 8 LOOIC.</p>
+<p>From the chapter’s aside: Raftery’s table in Information Criteria calls a BIC difference larger than 10 “very strong” evidence. The BIC, like the AIC and LOOIC, is on the <span class="math inline">\(-2 \times \log\)</span> scale, so a BIC difference of 10 is the same size as a difference of 5 on the elpd scale.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-aic-and-bic-for-comparison" class="slide level2 smaller">
+<h2>The AIC and BIC, for comparison</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># AIC and BIC from glm() fits, for comparison</span></span>
 <span id="cb108-2"><a href="" aria-hidden="true" tabindex="-1"></a>fit_linear_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(f_linear, <span class="at">family =</span> binomial, <span class="at">data =</span> turnout)</span>
@@ -2870,16 +2858,11 @@ fit_linear_glm  5 2062
 fit_cubic_glm   7 2062</code></pre>
 </div>
 </div>
-<div class="key">
-<p>The cubic model is ahead by 5.8 <code>elpd</code> with an <code>se_diff</code> of 4.1. This is modest evidence for the cubic.</p>
-</div>
 <div class="caption">
 <p>(The AIC is 2022.4 for the cubic and 2034.0 for the linear, and the BIC is 2061.6 and 2062.0.)</p>
 </div>
 <aside class="notes">
-<p>We haven’t described what the LOOIC is yet, but the cubic model is ahead by 5.8 <code>elpd</code> with an <code>se_diff</code> of 4.1.</p>
 <p>[CTK: the printed AIC/BIC tables round to whole numbers (options(digits = 3)); the caption gives one decimal.]</p>
-<p>Let’s dig into the LOOIC.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2891,554 +2874,6 @@ fit_cubic_glm   7 2062</code></pre>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="recall-the-aic" class="slide level2">
-<h2>Recall the AIC</h2>
-<p><span class="math display">\[
-\text{AIC} = -2 \ell(\hat{\theta}) + 2k
-\]</span></p>
-<p>Here, we have two parts:</p>
-<ul>
-<li><span class="math inline">\(-2\ell(\hat{\theta})\)</span> measures in-sample fit.</li>
-<li>We can think of <span class="math inline">\(2k\)</span> as the penalty for using the same data to fit and to evaluate the model.</li>
-</ul>
-</section>
-<section id="the-looic-idea" class="slide level2">
-<h2>The LOOIC idea</h2>
-<p>LOOIC is based on the logic of <em>leave-one-out (LOO) cross-validation</em>.</p>
-<p>We could simply leave out observation <span class="math inline">\(i\)</span>, fit to the other <span class="math inline">\(N - 1\)</span> observations, and then ask: how much predictive density does the fit put on the held-out <span class="math inline">\(y_i\)</span>?</p>
-<p>Then we could repeat for every <span class="math inline">\(i\)</span>.</p>
-</section>
-<section id="brute-force-2000-refits" class="slide level2 smaller">
-<h2>Brute force: 2,000 refits</h2>
-<p>Refit the linear <code>turnout</code> model 2,000 times, dropping one respondent each time.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(turnout)</span>
-<span id="cb112-2"><a href="" aria-hidden="true" tabindex="-1"></a>loo_ml <span class="ot">&lt;-</span> <span class="fu">numeric</span>(N)</span>
-<span id="cb112-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N) {</span>
-<span id="cb112-4"><a href="" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(f_linear,</span>
-<span id="cb112-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> binomial,</span>
-<span id="cb112-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> turnout[<span class="sc">-</span>i, ])</span>
-<span id="cb112-7"><a href="" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit,</span>
-<span id="cb112-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">newdata =</span> turnout[i, ],</span>
-<span id="cb112-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb112-10"><a href="" aria-hidden="true" tabindex="-1"></a>  loo_ml[i] <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(</span>
-<span id="cb112-11"><a href="" aria-hidden="true" tabindex="-1"></a>    turnout<span class="sc">$</span>vote[i],</span>
-<span id="cb112-12"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p,</span>
-<span id="cb112-13"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb112-14"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb112-15"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(loo_ml)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -1017</code></pre>
-</div>
-</div>
-<div class="key">
-<p>The log-likelihoods of the held-out vote at the refit’s <span class="math inline">\(\hat{\theta}\)</span> sum to −1017.3.</p>
-</div>
-<aside class="notes">
-<p>From the chapter’s aside: Let’s see brute force leave-one-out cross-validation with ML.</p>
-<p>[CTK: this loop takes about a minute; it is the “refit N times” that PSIS avoids.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="textelpd_textloo-and-looic" class="slide level2 smaller">
-<h2><span class="math inline">\(\text{elpd}_{\text{loo}}\)</span> and LOOIC</h2>
-<p>We formalize this intuition with the <span class="math inline">\(\text{elpd}_{\text{loo}}\)</span>.</p>
-<p><span class="math display">\[
-\text{elpd}_{\text{loo}} = \sum_{i=1}^{N} \log f(y_i \mid y_{-i}), \quad \text{where} \quad f(y_i \mid y_{-i}) = \int f(y_i \mid \theta)\, f(\theta \mid y_{-i})\, d\theta
-\]</span></p>
-<ul>
-<li><span class="math inline">\(y_{-i}\)</span> = every observation except <span class="math inline">\(i\)</span></li>
-<li>elpd = “expected log predictive density” (higher is better)</li>
-<li>But there’s a problem—we have no <span class="math inline">\(\hat{\theta}\)</span> to plug in. So instead, we average <span class="math inline">\(y_i\)</span>’s likelihood over the posterior fit <em>without</em> <span class="math inline">\(y_i\)</span>. This requires computing the posterior without <span class="math inline">\(y_i\)</span>, which means refitting the model <span class="math inline">\(N\)</span> times.</li>
-</ul>
-<p>Then we can define the LOOIC as follows.</p>
-<p><span class="math display">\[
-\text{LOOIC} = -2 \times \text{elpd}_{\text{loo}}
-\]</span></p>
-<ul>
-<li>The <span class="math inline">\(-2\)</span> only puts LOO on AIC’s scale (i.e., lower is better!)</li>
-<li>No explicit penalty term needed, because of the cross-validation logic.</li>
-</ul>
-</section>
-<section id="in-sample-fit-and-p_textloo" class="slide level2 smaller">
-<h2>In-sample fit and <span class="math inline">\(p_{\text{loo}}\)</span></h2>
-<ul>
-<li>Averaging over draws from the <em>full-data</em> posterior gives the log pointwise predictive density (lppd) <span class="math inline">\(= \sum_{i=1}^N \log \left( \frac{1}{S} \sum_{s=1}^S f(y_i \mid \theta^{(s)}) \right)\)</span>. This is just the posterior version of <span class="math inline">\(\ell(\hat{\theta})\)</span>. Each <span class="math inline">\(y_i\)</span> helped produce the draws, so, like <span class="math inline">\(\ell(\hat{\theta})\)</span>, it is in-sample and too optimistic.</li>
-<li>We can compute <span class="math inline">\(p_{\text{loo}} = \text{lppd} - \text{elpd}_{\text{loo}}\)</span>, so <span class="math inline">\(\text{LOOIC} = -2\,\text{lppd} + 2\,p_{\text{loo}}\)</span>. Notice that this has the same form as <span class="math inline">\(\text{AIC} = -2\ell(\hat{\theta}) + 2k\)</span>. While AIC assumes the penalty, LOO measures it. <code>loo()</code> calls <span class="math inline">\(p_{\text{loo}}\)</span> the “effective number of parameters”.</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># S × N matrix of log f(y_i | beta^(s)): 4,000 draws by 2,000 respondents</span></span>
-<span id="cb114-2"><a href="" aria-hidden="true" tabindex="-1"></a>ll <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">log_lik</span>(fit_linear_brm)  <span class="co"># brms::, since the sawtooth example defined log_lik()</span></span>
-<span id="cb114-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(ll)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4000 2000</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># lppd: average the likelihood over the draws, then take the log and sum</span></span>
-<span id="cb116-2"><a href="" aria-hidden="true" tabindex="-1"></a>lppd <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">log</span>(<span class="fu">colMeans</span>(<span class="fu">exp</span>(ll))))</span>
-<span id="cb116-3"><a href="" aria-hidden="true" tabindex="-1"></a>lppd</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -1012</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># p_loo: lppd minus elpd_loo</span></span>
-<span id="cb118-2"><a href="" aria-hidden="true" tabindex="-1"></a>lppd <span class="sc">-</span> loo_linear_brm<span class="sc">$</span>estimates[<span class="st">"elpd_loo"</span>, <span class="st">"Estimate"</span>]</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.32</code></pre>
-</div>
-</div>
-<div class="key">
-<p>This matches the <code>p_loo</code> of 5.3 from <code>loo()</code> above.</p>
-</div>
-<aside class="notes">
-<p>But exact LOO is computationally expensive. Sampling from <em>one</em> posterior is usually time-consuming. Can we avoid sampling from <em>N</em> of them? Yes!</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="psis-loo-from-one-fit" class="slide level2 smaller">
-<h2>PSIS: LOO from one fit</h2>
-<p>Instead of dropping observations one-by-one, <code>loo()</code> uses Pareto-smoothed importance sampling (PSIS) on the draws from the <em>one</em> full-data fit.</p>
-<ul>
-<li>Here’s the intuition of importance sampling: the full-data draws are “close” to draws from <span class="math inline">\(f(\theta \mid y_{-i})\)</span>, so we can weight each by <span class="math inline">\(1/f(y_i \mid \theta^{(s)})\)</span>. This weighting gives <span class="math inline">\(f(y_i \mid y_{-i}) \approx \left[ \frac{1}{S} \sum_{s=1}^S \frac{1}{f(y_i \mid \theta^{(s)})} \right]^{-1}\)</span> (average the reciprocal of the likelihood, then take the reciprocal).</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># average 1/f over the draws, take the reciprocal, take the log, and sum</span></span>
-<span id="cb120-2"><a href="" aria-hidden="true" tabindex="-1"></a>elpd_is <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">-</span><span class="fu">log</span>(<span class="fu">colMeans</span>(<span class="fu">exp</span>(<span class="sc">-</span>ll))))</span>
-<span id="cb120-3"><a href="" aria-hidden="true" tabindex="-1"></a>elpd_is</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -1017</code></pre>
-</div>
-</div>
-<div class="key">
-<p>This matches <code>loo()</code>’s −1017.2… <em>with no refits</em>!</p>
-</div>
-<aside class="notes">
-<p>From the chapter’s footnote: This is exact, not a Jensen’s-inequality approximation. When the observations are independent given <span class="math inline">\(\theta\)</span>, <span class="math inline">\(f(\theta \mid y) \propto f(y_i \mid \theta)\, f(\theta \mid y_{-i})\)</span>, so the average of <span class="math inline">\(1/f(y_i \mid \theta)\)</span> over the full-data posterior is <em>exactly</em> <span class="math inline">\(1/f(y_i \mid y_{-i})\)</span>. The <span class="math inline">\(\approx\)</span> comes only from using <span class="math inline">\(S\)</span> draws.</p>
-<p>Reference: Vehtari, Gelman, and Gabry (2017).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="pareto-hatk" class="slide level2">
-<h2>Pareto <span class="math inline">\(\hat{k}\)</span></h2>
-<p>But this raw version can be unstable. If a few draws give <span class="math inline">\(y_i\)</span> a tiny likelihood, their weights <span class="math inline">\(1/f(y_i \mid \theta^{(s)})\)</span> are huge, and those few draws dominate the average. PSIS replaces the largest weights with smoothed values from a Pareto distribution fit to them.</p>
-<p>The estimated shape of that Pareto distribution, <span class="math inline">\(\hat{k}\)</span>, is a diagnostic, one per observation.</p>
-<ul>
-<li>If <span class="math inline">\(\hat{k} \le 0.7\)</span>, the PSIS estimate for that observation is reliable.</li>
-<li>If <span class="math inline">\(\hat{k} &gt; 0.7\)</span>, it is not.</li>
-</ul>
-<p>For both <code>turnout</code> models, every <span class="math inline">\(\hat{k}\)</span> is below 0.7.</p>
-<aside class="notes">
-<p>From the chapter’s aside: A large <span class="math inline">\(\hat{k}\)</span> usually means the observation is influential: the posterior changes a lot when we leave it out, so the full-data draws are a poor stand-in for draws from <span class="math inline">\(f(\theta \mid y_{-i})\)</span> (Vehtari, Gelman, and Gabry 2017).</p>
-<p>(Largest <span class="math inline">\(\hat{k}\)</span> across both <code>turnout</code> models: 0.23.)</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="example-poisson-vs.-negative-binomial-again" class="slide level2 smaller">
-<h2>Example: Poisson vs.&nbsp;negative binomial, again</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># load data for santiago</span></span>
-<span id="cb122-2"><a href="" aria-hidden="true" tabindex="-1"></a>sant <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015 <span class="sc">|&gt;</span></span>
-<span id="cb122-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">==</span> <span class="st">"santiago"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb122-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create rescaled columns (see below)</span></span>
-<span id="cb122-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(lower, vendors, budget, population), arm<span class="sc">::</span>rescale,</span>
-<span id="cb122-6"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">.names =</span> <span class="st">"rs_{.col}"</span>))</span>
-<span id="cb122-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># formula corresponds to model 1 for each city in holland (2015) table 2</span></span>
-<span id="cb122-9"><a href="" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> operations <span class="sc">~</span> rs_lower <span class="sc">+</span> rs_vendors <span class="sc">+</span> rs_budget <span class="sc">+</span> rs_population</span>
-<span id="cb122-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># poisson regression</span></span>
-<span id="cb122-12"><a href="" aria-hidden="true" tabindex="-1"></a>pois_fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(f, <span class="at">family =</span> poisson, <span class="at">data =</span> sant)</span>
-<span id="cb122-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># nb regression</span></span>
-<span id="cb122-15"><a href="" aria-hidden="true" tabindex="-1"></a>nb_fit <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glm.nb</span>(f, <span class="at">data =</span> sant)</span>
-<span id="cb122-16"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb122-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># AIC from wk05; df is k</span></span>
-<span id="cb122-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(pois_fit, nb_fit)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         df AIC
-pois_fit  5 227
-nb_fit    6 134</code></pre>
-</div>
-</div>
-</section>
-<section id="fit-the-same-two-models-with-brm" class="slide level2 smaller">
-<h2>Fit the same two models with <code>brm()</code></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the same two models with brm(), using the default priors</span></span>
-<span id="cb124-2"><a href="" aria-hidden="true" tabindex="-1"></a>pois_brm <span class="ot">&lt;-</span> <span class="fu">brm</span>(f, <span class="at">data =</span> sant, <span class="at">family =</span> poisson,</span>
-<span id="cb124-3"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">iter =</span> <span class="dv">3000</span>,  <span class="co"># 1,500 draws per chain after warmup</span></span>
-<span id="cb124-4"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
-<span id="cb124-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-6"><a href="" aria-hidden="true" tabindex="-1"></a>nb_brm <span class="ot">&lt;-</span> <span class="fu">brm</span>(f, <span class="at">data =</span> sant, <span class="at">family =</span> negbinomial,</span>
-<span id="cb124-7"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">iter =</span> <span class="dv">3000</span>,</span>
-<span id="cb124-8"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span></code></pre></div>
-</div>
-<p>We rescaled the predictors above. On their original scales (<code>budget</code> runs up to 1,118), {brms}’s random starting values put <span class="math inline">\(\log \mu\)</span> in the hundreds or thousands, and some chains never recover (R-hat above 3). Rescaling changes the coefficients but not the fit, so the AIC is the same as before.</p>
-<div class="key">
-<p>Check convergence before computing LOO.</p>
-</div>
-</section>
-<section id="check-convergence" class="slide level2 smaller">
-<h2>Check convergence</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Poisson</span></span>
-<span id="cb125-2"><a href="" aria-hidden="true" tabindex="-1"></a>pois_brm <span class="sc">|&gt;</span></span>
-<span id="cb125-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_draws_df</span>(<span class="at">variable =</span> <span class="st">"^b_"</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb125-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_draws</span>(<span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 3
-  variable         rhat ess_bulk
-  &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;
-1 b_Intercept      1.00    3610.
-2 b_rs_lower       1.00    2842.
-3 b_rs_vendors     1.00    3051.
-4 b_rs_budget      1.00    3385.
-5 b_rs_population  1.00    3057.</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># negative binomial</span></span>
-<span id="cb127-2"><a href="" aria-hidden="true" tabindex="-1"></a>nb_brm <span class="sc">|&gt;</span></span>
-<span id="cb127-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_draws_df</span>(<span class="at">variable =</span> <span class="st">"^b_"</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb127-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_draws</span>(<span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 3
-  variable         rhat ess_bulk
-  &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;
-1 b_Intercept      1.00    3401.
-2 b_rs_lower       1.00    3445.
-3 b_rs_vendors     1.00    3469.
-4 b_rs_budget      1.00    2758.
-5 b_rs_population  1.00    3014.</code></pre>
-</div>
-</div>
-</div></div>
-<aside class="notes">
-<p>Across every parameter <code>summary()</code> reports in both fits (not only the b_ rows shown): largest R-hat 1.00, smallest bulk ESS 2,758.</p>
-<p>[CTK: the chapter also compares ML estimates with posterior means (Poisson close to <code>glm()</code>; NB within half a posterior SD of <code>glm.nb()</code>).]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="loo-for-each-model" class="slide level2 smaller">
-<h2><code>loo()</code> for each model</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="" aria-hidden="true" tabindex="-1"></a>loo_pois <span class="ot">&lt;-</span> <span class="fu">loo</span>(pois_brm)</span>
-<span id="cb129-2"><a href="" aria-hidden="true" tabindex="-1"></a>loo_pois</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Computed from 6000 by 34 log-likelihood matrix.
-
-         Estimate   SE
-elpd_loo   -129.2 31.9
-p_loo        29.2 10.5
-looic       258.4 63.8
-------
-MCSE of elpd_loo is NA.
-MCSE and ESS estimates assume MCMC draws (r_eff in [0.5, 0.9]).
-
-Pareto k diagnostic values:
-                         Count Pct.    Min. ESS
-(-Inf, 0.7]   (good)     27    79.4%   438     
-   (0.7, 1]   (bad)       4    11.8%   &lt;NA&gt;    
-   (1, Inf)   (very bad)  3     8.8%   &lt;NA&gt;    
-See help('pareto-k-diagnostic') for details.</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="" aria-hidden="true" tabindex="-1"></a>loo_nb <span class="ot">&lt;-</span> <span class="fu">loo</span>(nb_brm)</span>
-<span id="cb131-2"><a href="" aria-hidden="true" tabindex="-1"></a>loo_nb</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Computed from 6000 by 34 log-likelihood matrix.
-
-         Estimate   SE
-elpd_loo    -68.5 12.0
-p_loo         6.3  2.8
-looic       136.9 24.1
-------
-MCSE of elpd_loo is NA.
-MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 0.8]).
-
-Pareto k diagnostic values:
-                         Count Pct.    Min. ESS
-(-Inf, 0.7]   (good)     32    94.1%   724     
-   (0.7, 1]   (bad)       2     5.9%   &lt;NA&gt;    
-   (1, Inf)   (very bad)  0     0.0%   &lt;NA&gt;    
-See help('pareto-k-diagnostic') for details.</code></pre>
-</div>
-</div>
-</div></div>
-<div class="key">
-<p>However, for the Poisson, 7 of 34 observations have Pareto <span class="math inline">\(\hat{k}\)</span> above 0.7. And the NB has 2 of 34.</p>
-</div>
-<aside class="notes">
-<p>We understand the following:</p>
-<ul>
-<li><code>elpd_loo</code> (higher is better)</li>
-<li><code>p_loo</code> (effective number of parameters)</li>
-<li><code>looic</code> = −2 <span class="math inline">\(\times\)</span> <code>elpd_loo</code></li>
-</ul>
-<p>This means that our PSIS approximation might not be working well.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="fixing-high-hatk-refit-for-those-observations" class="slide level2">
-<h2>Fixing high <span class="math inline">\(\hat{k}\)</span>: refit for those observations</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="" aria-hidden="true" tabindex="-1"></a>reloo_pois <span class="ot">&lt;-</span> <span class="fu">loo</span>(pois_brm,</span>
-<span id="cb133-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">reloo =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb133-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">reloo_args =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>)</span>
-<span id="cb133-4"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb133-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb133-6"><a href="" aria-hidden="true" tabindex="-1"></a>reloo_nb <span class="ot">&lt;-</span> <span class="fu">loo</span>(nb_brm,</span>
-<span id="cb133-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">reloo =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb133-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">reloo_args =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>)</span>
-<span id="cb133-9"><a href="" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-</div>
-<ul>
-<li><code>reloo = TRUE</code>: for each observation with <span class="math inline">\(\hat{k} &gt; 0.7\)</span>, refit the model without that observation and compute exact LOO; use PSIS for the rest.</li>
-<li><code>reloo_args</code>: pass a seed to the refits, so the numbers reproduce.</li>
-</ul>
-<aside class="notes">
-<p>It doesn’t take much time here (7 refits for the Poisson, and 2 for the NB).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="after-reloo" class="slide level2 evensmaller">
-<h2>After <code>reloo</code></h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="" aria-hidden="true" tabindex="-1"></a>reloo_pois</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Computed from 6000 by 34 log-likelihood matrix.
-
-         Estimate   SE
-elpd_loo   -131.0 32.5
-p_loo        31.0 11.3
-looic       262.1 65.0
-------
-MCSE of elpd_loo is 0.5.
-MCSE and ESS estimates assume MCMC draws (r_eff in [0.5, 0.9]).
-
-All Pareto k estimates are good (k &lt; 0.7).
-See help('pareto-k-diagnostic') for details.</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="" aria-hidden="true" tabindex="-1"></a>reloo_nb</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Computed from 6000 by 34 log-likelihood matrix.
-
-         Estimate   SE
-elpd_loo    -69.4 12.6
-p_loo         7.2  3.7
-looic       138.8 25.3
-------
-MCSE of elpd_loo is 0.2.
-MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 0.8]).
-
-All Pareto k estimates are good (k &lt; 0.7).
-See help('pareto-k-diagnostic') for details.</code></pre>
-</div>
-</div>
-</div></div>
-<div class="key">
-<p>Before, the difference was 121.5, suggesting that the NB is much better. Now it’s 123.3, suggesting the same.</p>
-</div>
-<aside class="notes">
-<p>Here, <code>reloo = TRUE</code> means that we compute LOO for the flagged observations and PSIS for the rest.</p>
-<p>As we can see, the LOOIC has changed a little.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="loo_compare" class="slide level2 smaller">
-<h2><code>loo_compare()</code></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># compare models with PSIS-LOO</span></span>
-<span id="cb138-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_pois, loo_nb)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    model elpd_diff se_diff p_worse diag_diff      diag_elpd
-   nb_brm       0.0     0.0      NA           2 k_psis &gt; 0.7
- pois_brm     -60.8    22.6    1.00   N &lt; 100 7 k_psis &gt; 0.7</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># compare models after refitting the high-k observations</span></span>
-<span id="cb140-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(reloo_pois, reloo_nb)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    model elpd_diff se_diff p_worse diag_diff diag_elpd
-   nb_brm       0.0     0.0      NA                    
- pois_brm     -61.7    22.4    1.00   N &lt; 100          </code></pre>
-</div>
-</div>
-<aside class="notes">
-<p>Observations:</p>
-<ul>
-<li>After using <code>reloo = TRUE</code>, NB beats Poisson by 61.7 elpd (se_diff of 22.4, so about 2.7 SEs). With PSIS alone, the difference was 60.8 (se_diff of 22.6, so about 2.7 SEs). This is a huge difference on the elpd scale, but the SE is also really wide.</li>
-<li><code>p_worse</code> is a normal-approximation probability that a model predicts worse than the top model (i.e., <code>pnorm(0, elpd_diff, se_diff)</code>). It’s 1.00 for the Poisson, which is a bad sign for that model.</li>
-<li>The <code>diag_diff</code> column warns “N &lt; 100.” With only 34 observations, <code>se_diff</code> is probably too small, so <code>p_worse</code> is probably too close to 1. The loo documentation suggests doubling <code>se_diff</code> as a rough, conservative fix (see <code>?loo-glossary</code>). Doubled, the difference is about 61.7 / 44.9 ≈ 1.4 SEs.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="reading-loo_compare" class="slide level2">
-<h2>Reading <code>loo_compare()</code></h2>
-<div class="defbox">
-<p><strong>ELPD or LOOIC?</strong></p>
-<p><code>loo_compare()</code> reports differences on the ELPD scale. ELPD differences are half the size of LOOIC differences and have the opposite sign (higher ELPD is better; lower LOOIC is better). It’s fine to use either. But the LOOIC connects nicely to the AIC and BIC, so that’s the one I’ve emphasized here.</p>
-</div>
-<ul>
-<li><code>loo_compare()</code> prints the best model in the top row, and <code>elpd_diff</code> is relative to that best model.</li>
-<li><code>elpd_diff</code> is on the elpd scale, so multiply by (−2) for the LOOIC scale (e.g., −61.65 elpd becomes 123.3 LOOIC).</li>
-<li><code>se_diff</code> is the SE of the <em>difference</em>.</li>
-</ul>
-<aside class="notes">
-<p>From the chapter’s aside: Raftery’s table in Information Criteria calls a BIC difference larger than 10 “very strong” evidence. The BIC, like the AIC and LOOIC, is on the <span class="math inline">\(-2 \times \log\)</span> scale, so a BIC difference of 10 is the same size as a difference of 5 on the elpd scale.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="interpreting-elpd_diff-and-se_diff" class="slide level2">
-<h2>Interpreting <code>elpd_diff</code> and <code>se_diff</code></h2>
-<p>Some rules of thumb:</p>
-<ul>
-<li>For |<code>elpd_diff</code>| &lt; 4, the models predict about equally well, regardless of <code>se_diff</code>.</li>
-<li>For |<code>elpd_diff</code>| &gt; 4 <strong>AND</strong> large compared to <code>se_diff</code>: a meaningful difference (see <code>?loo-glossary</code>).</li>
-</ul>
-<aside class="notes">
-<p>From the chapter’s footnote: Compare Raftery’s table for BIC differences in Information Criteria, where we established “about 10” as a big difference between the models. Remember that LOOIC differences are twice elpd differences, so 4 elpd is the same as 8 LOOIC.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="looic-next-to-aic" class="slide level2 smaller">
-<h2>LOOIC next to AIC</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># AIC and k from the ML fits; LOOIC and p_loo from the brm() fits (after reloo)</span></span>
-<span id="cb142-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb142-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">c</span>(<span class="st">"Poisson"</span>, <span class="st">"Negative binomial"</span>),</span>
-<span id="cb142-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">k     =</span> <span class="fu">AIC</span>(pois_fit, nb_fit)<span class="sc">$</span>df,</span>
-<span id="cb142-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_loo =</span> <span class="fu">c</span>(reloo_pois<span class="sc">$</span>estimates[<span class="st">"p_loo"</span>, <span class="st">"Estimate"</span>],</span>
-<span id="cb142-6"><a href="" aria-hidden="true" tabindex="-1"></a>            reloo_nb<span class="sc">$</span>estimates[<span class="st">"p_loo"</span>, <span class="st">"Estimate"</span>]),</span>
-<span id="cb142-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">AIC   =</span> <span class="fu">AIC</span>(pois_fit, nb_fit)<span class="sc">$</span>AIC,</span>
-<span id="cb142-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">LOOIC =</span> <span class="fu">c</span>(reloo_pois<span class="sc">$</span>estimates[<span class="st">"looic"</span>, <span class="st">"Estimate"</span>],</span>
-<span id="cb142-9"><a href="" aria-hidden="true" tabindex="-1"></a>            reloo_nb<span class="sc">$</span>estimates[<span class="st">"looic"</span>, <span class="st">"Estimate"</span>])</span>
-<span id="cb142-10"><a href="" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb142-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(p_loo<span class="sc">:</span>LOOIC, \(x) <span class="fu">round</span>(x, <span class="dv">1</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb142-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb142-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">digits =</span> <span class="dv">5</span>)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>              model k p_loo   AIC LOOIC
-1           Poisson 5  31.0 226.8 262.1
-2 Negative binomial 6   7.2 133.7 138.8</code></pre>
-</div>
-</div>
-<p>NB is much better by both criteria. The AIC difference is 93.1. The LOOIC difference is 123.3.</p>
-<p>Notice that the NB’s <span class="math inline">\(p_{\text{loo}}\)</span> (7.2) is close to its <span class="math inline">\(k\)</span> (6), but the Poisson’s <span class="math inline">\(p_{\text{loo}}\)</span> (31.0) is about six times its <span class="math inline">\(k\)</span> (5). The AIC assumes the penalty, and LOO measures it.</p>
 </section>
 <section id="aic-and-loo" class="slide level2 statement">
 <h2>AIC and LOO</h2>
@@ -3475,64 +2910,64 @@ See help('pareto-k-diagnostic') for details.</code></pre>
 <div class="columns">
 <div class="column" style="width:68%;">
 <div id="s6-softmax-widget" class="cell">
-<div class="sourceCode cell-code hidden" id="cb144" data-startfrom="4" data-source-offset="-26"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 3;"><span id="cb144-4"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z1 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="st">"z1"</span>})<span class="op">;</span></span>
-<span id="cb144-5"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span>   <span class="dt">label</span><span class="op">:</span> <span class="st">"z2"</span>})<span class="op">;</span></span>
-<span id="cb144-6"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span>   <span class="dt">label</span><span class="op">:</span> <span class="st">"z3"</span>})<span class="op">;</span></span>
-<span id="cb144-7"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z4 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"z4"</span>})<span class="op">;</span></span>
-<span id="cb144-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Softmax pieces</span></span>
-<span id="cb144-10"><a href="" aria-hidden="true" tabindex="-1"></a>sm_labels <span class="op">=</span> [<span class="st">"Pr(A)"</span><span class="op">,</span><span class="st">"Pr(B)"</span><span class="op">,</span><span class="st">"Pr(C)"</span><span class="op">,</span><span class="st">"Pr(D)"</span>]<span class="op">;</span></span>
-<span id="cb144-11"><a href="" aria-hidden="true" tabindex="-1"></a>sm_zs <span class="op">=</span> [sm_z1<span class="op">,</span> sm_z2<span class="op">,</span> sm_z3<span class="op">,</span> sm_z4]<span class="op">;</span></span>
-<span id="cb144-12"><a href="" aria-hidden="true" tabindex="-1"></a>sm_exps <span class="op">=</span> sm_zs<span class="op">.</span><span class="fu">map</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>)<span class="op">;</span></span>
-<span id="cb144-13"><a href="" aria-hidden="true" tabindex="-1"></a>sm_sumexp <span class="op">=</span> sm_exps<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b<span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
-<span id="cb144-14"><a href="" aria-hidden="true" tabindex="-1"></a>sm_ps <span class="op">=</span> sm_exps<span class="op">.</span><span class="fu">map</span>(e <span class="kw">=&gt;</span> e <span class="op">/</span> sm_sumexp)<span class="op">;</span></span>
-<span id="cb144-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Data for stacked bar (one row, four segments)</span></span>
-<span id="cb144-17"><a href="" aria-hidden="true" tabindex="-1"></a>sm_data <span class="op">=</span> sm_ps<span class="op">.</span><span class="fu">map</span>((p<span class="op">,</span> i) <span class="kw">=&gt;</span> ({ <span class="dt">label</span><span class="op">:</span> sm_labels[i]<span class="op">,</span> <span class="dt">value</span><span class="op">:</span> p<span class="op">,</span> <span class="dt">row</span><span class="op">:</span> <span class="st">"softmax"</span> }))<span class="op">;</span></span>
-<span id="cb144-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// === Two-column layout: sliders (left) + live table (right) ===</span></span>
-<span id="cb144-20"><a href="" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb144-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> container <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
-<span id="cb144-22"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  display:flex;</span></span>
-<span id="cb144-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  gap:24px;</span></span>
-<span id="cb144-24"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  align-items:flex-start;</span></span>
-<span id="cb144-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  padding-top:8px;</span></span>
-<span id="cb144-26"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb144-27"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-28"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Left column: sliders</span></span>
-<span id="cb144-29"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> left <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:grid; gap:10px; min-width:220px;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb144-30"><a href="" aria-hidden="true" tabindex="-1"></a>left<span class="op">.</span><span class="fu">append</span>(viewof sm_z1<span class="op">,</span> viewof sm_z2<span class="op">,</span> viewof sm_z3<span class="op">,</span> viewof sm_z4)<span class="op">;</span></span>
-<span id="cb144-31"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-32"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Right column: table</span></span>
-<span id="cb144-33"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> rows <span class="op">=</span> sm_labels<span class="op">.</span><span class="fu">map</span>((cls<span class="op">,</span> i) <span class="kw">=&gt;</span> ({</span>
-<span id="cb144-34"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Class</span><span class="op">:</span> cls<span class="op">,</span></span>
-<span id="cb144-35"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">z</span><span class="op">:</span> sm_zs[i]<span class="op">,</span></span>
-<span id="cb144-36"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">"exp(z)"</span><span class="op">:</span> sm_exps[i]<span class="op">,</span></span>
-<span id="cb144-37"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Probability</span><span class="op">:</span> sm_ps[i]</span>
-<span id="cb144-38"><a href="" aria-hidden="true" tabindex="-1"></a>}))<span class="op">;</span></span>
-<span id="cb144-39"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-40"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> right <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
-<span id="cb144-41"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  min-width:240px;</span></span>
-<span id="cb144-42"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  max-width:560px;</span></span>
-<span id="cb144-43"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  padding:4px 0;</span></span>
-<span id="cb144-44"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  font-size:1.6rem;</span></span>
-<span id="cb144-45"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  line-height:1.1;</span></span>
-<span id="cb144-46"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
-<span id="cb144-47"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-48"><a href="" aria-hidden="true" tabindex="-1"></a>right<span class="op">.</span><span class="fu">append</span>(</span>
-<span id="cb144-49"><a href="" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(rows<span class="op">,</span> {</span>
-<span id="cb144-50"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">columns</span><span class="op">:</span> [<span class="st">"Class"</span><span class="op">,</span> <span class="st">"z"</span><span class="op">,</span> <span class="st">"exp(z)"</span><span class="op">,</span> <span class="st">"Probability"</span>]<span class="op">,</span></span>
-<span id="cb144-51"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">format</span><span class="op">:</span> {</span>
-<span id="cb144-52"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">z</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="op">,</span></span>
-<span id="cb144-53"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">"exp(z)"</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="op">,</span></span>
-<span id="cb144-54"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Probability</span><span class="op">:</span> d <span class="kw">=&gt;</span> (d <span class="op">*</span> <span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>) <span class="op">+</span> <span class="st">"%"</span></span>
-<span id="cb144-55"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb144-56"><a href="" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb144-57"><a href="" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span>
-<span id="cb144-58"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-59"><a href="" aria-hidden="true" tabindex="-1"></a>container<span class="op">.</span><span class="fu">append</span>(left<span class="op">,</span> right)<span class="op">;</span></span>
-<span id="cb144-60"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> container<span class="op">;</span></span>
-<span id="cb144-61"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode cell-code hidden" id="cb112" data-startfrom="4" data-source-offset="-26"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 3;"><span id="cb112-4"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z1 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span>  <span class="dt">label</span><span class="op">:</span> <span class="st">"z1"</span>})<span class="op">;</span></span>
+<span id="cb112-5"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span>   <span class="dt">label</span><span class="op">:</span> <span class="st">"z2"</span>})<span class="op">;</span></span>
+<span id="cb112-6"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span>   <span class="dt">label</span><span class="op">:</span> <span class="st">"z3"</span>})<span class="op">;</span></span>
+<span id="cb112-7"><a href="" aria-hidden="true" tabindex="-1"></a>viewof sm_z4 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"z4"</span>})<span class="op">;</span></span>
+<span id="cb112-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Softmax pieces</span></span>
+<span id="cb112-10"><a href="" aria-hidden="true" tabindex="-1"></a>sm_labels <span class="op">=</span> [<span class="st">"Pr(A)"</span><span class="op">,</span><span class="st">"Pr(B)"</span><span class="op">,</span><span class="st">"Pr(C)"</span><span class="op">,</span><span class="st">"Pr(D)"</span>]<span class="op">;</span></span>
+<span id="cb112-11"><a href="" aria-hidden="true" tabindex="-1"></a>sm_zs <span class="op">=</span> [sm_z1<span class="op">,</span> sm_z2<span class="op">,</span> sm_z3<span class="op">,</span> sm_z4]<span class="op">;</span></span>
+<span id="cb112-12"><a href="" aria-hidden="true" tabindex="-1"></a>sm_exps <span class="op">=</span> sm_zs<span class="op">.</span><span class="fu">map</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">exp</span>)<span class="op">;</span></span>
+<span id="cb112-13"><a href="" aria-hidden="true" tabindex="-1"></a>sm_sumexp <span class="op">=</span> sm_exps<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b<span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb112-14"><a href="" aria-hidden="true" tabindex="-1"></a>sm_ps <span class="op">=</span> sm_exps<span class="op">.</span><span class="fu">map</span>(e <span class="kw">=&gt;</span> e <span class="op">/</span> sm_sumexp)<span class="op">;</span></span>
+<span id="cb112-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Data for stacked bar (one row, four segments)</span></span>
+<span id="cb112-17"><a href="" aria-hidden="true" tabindex="-1"></a>sm_data <span class="op">=</span> sm_ps<span class="op">.</span><span class="fu">map</span>((p<span class="op">,</span> i) <span class="kw">=&gt;</span> ({ <span class="dt">label</span><span class="op">:</span> sm_labels[i]<span class="op">,</span> <span class="dt">value</span><span class="op">:</span> p<span class="op">,</span> <span class="dt">row</span><span class="op">:</span> <span class="st">"softmax"</span> }))<span class="op">;</span></span>
+<span id="cb112-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// === Two-column layout: sliders (left) + live table (right) ===</span></span>
+<span id="cb112-20"><a href="" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb112-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> container <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
+<span id="cb112-22"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  display:flex;</span></span>
+<span id="cb112-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  gap:24px;</span></span>
+<span id="cb112-24"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  align-items:flex-start;</span></span>
+<span id="cb112-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  padding-top:8px;</span></span>
+<span id="cb112-26"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb112-27"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-28"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Left column: sliders</span></span>
+<span id="cb112-29"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> left <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:grid; gap:10px; min-width:220px;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb112-30"><a href="" aria-hidden="true" tabindex="-1"></a>left<span class="op">.</span><span class="fu">append</span>(viewof sm_z1<span class="op">,</span> viewof sm_z2<span class="op">,</span> viewof sm_z3<span class="op">,</span> viewof sm_z4)<span class="op">;</span></span>
+<span id="cb112-31"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-32"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">// Right column: table</span></span>
+<span id="cb112-33"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> rows <span class="op">=</span> sm_labels<span class="op">.</span><span class="fu">map</span>((cls<span class="op">,</span> i) <span class="kw">=&gt;</span> ({</span>
+<span id="cb112-34"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Class</span><span class="op">:</span> cls<span class="op">,</span></span>
+<span id="cb112-35"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">z</span><span class="op">:</span> sm_zs[i]<span class="op">,</span></span>
+<span id="cb112-36"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">"exp(z)"</span><span class="op">:</span> sm_exps[i]<span class="op">,</span></span>
+<span id="cb112-37"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Probability</span><span class="op">:</span> sm_ps[i]</span>
+<span id="cb112-38"><a href="" aria-hidden="true" tabindex="-1"></a>}))<span class="op">;</span></span>
+<span id="cb112-39"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-40"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> right <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="</span></span>
+<span id="cb112-41"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  min-width:240px;</span></span>
+<span id="cb112-42"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  max-width:560px;</span></span>
+<span id="cb112-43"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  padding:4px 0;</span></span>
+<span id="cb112-44"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  font-size:1.6rem;</span></span>
+<span id="cb112-45"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">  line-height:1.1;</span></span>
+<span id="cb112-46"><a href="" aria-hidden="true" tabindex="-1"></a><span class="vs">"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb112-47"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-48"><a href="" aria-hidden="true" tabindex="-1"></a>right<span class="op">.</span><span class="fu">append</span>(</span>
+<span id="cb112-49"><a href="" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(rows<span class="op">,</span> {</span>
+<span id="cb112-50"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">columns</span><span class="op">:</span> [<span class="st">"Class"</span><span class="op">,</span> <span class="st">"z"</span><span class="op">,</span> <span class="st">"exp(z)"</span><span class="op">,</span> <span class="st">"Probability"</span>]<span class="op">,</span></span>
+<span id="cb112-51"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">format</span><span class="op">:</span> {</span>
+<span id="cb112-52"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">z</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="op">,</span></span>
+<span id="cb112-53"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">"exp(z)"</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="op">,</span></span>
+<span id="cb112-54"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Probability</span><span class="op">:</span> d <span class="kw">=&gt;</span> (d <span class="op">*</span> <span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>) <span class="op">+</span> <span class="st">"%"</span></span>
+<span id="cb112-55"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb112-56"><a href="" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb112-57"><a href="" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span>
+<span id="cb112-58"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-59"><a href="" aria-hidden="true" tabindex="-1"></a>container<span class="op">.</span><span class="fu">append</span>(left<span class="op">,</span> right)<span class="op">;</span></span>
+<span id="cb112-60"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> container<span class="op">;</span></span>
+<span id="cb112-61"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div id="s6-softmax-widget-1">
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -3610,39 +3045,39 @@ See help('pareto-k-diagnostic') for details.</code></pre>
 </div>
 </div>
 </div>
-<div class="sourceCode cell-code hidden" id="cb145" data-startfrom="64" data-source-offset="-1604"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 63;"><span id="cb145-64"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb145-65"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">width</span><span class="op">:</span> <span class="dv">940</span><span class="op">,</span></span>
-<span id="cb145-66"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">height</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
-<span id="cb145-67"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span></span>
-<span id="cb145-68"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marginRight</span><span class="op">:</span> <span class="dv">36</span><span class="op">,</span></span>
-<span id="cb145-69"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">46</span><span class="op">,</span></span>
-<span id="cb145-70"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb145-71"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
-<span id="cb145-72"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> (d <span class="op">*</span> <span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>) <span class="op">+</span> <span class="st">"%"</span><span class="op">,</span></span>
-<span id="cb145-73"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">label</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
-<span id="cb145-74"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">tickSize</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span></span>
-<span id="cb145-75"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">tickPadding</span><span class="op">:</span> <span class="dv">8</span></span>
-<span id="cb145-76"><a href="" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span>
-<span id="cb145-77"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">y</span><span class="op">:</span> { <span class="dt">axis</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
-<span id="cb145-78"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb145-79"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">fontSize</span><span class="op">:</span> <span class="st">"22px"</span><span class="op">,</span></span>
-<span id="cb145-80"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">fontFamily</span><span class="op">:</span> <span class="st">"Source Sans 3, sans-serif"</span></span>
-<span id="cb145-81"><a href="" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span>
-<span id="cb145-82"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">color</span><span class="op">:</span> {</span>
-<span id="cb145-83"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb145-84"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">label</span><span class="op">:</span> <span class="st">"Class"</span><span class="op">,</span></span>
-<span id="cb145-85"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">range</span><span class="op">:</span> [<span class="st">"#e41a1c"</span><span class="op">,</span> <span class="st">"#377eb8"</span><span class="op">,</span> <span class="st">"#4daf4a"</span><span class="op">,</span> <span class="st">"#984ea3"</span>]<span class="op">,</span></span>
-<span id="cb145-86"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">swatchSize</span><span class="op">:</span> <span class="dv">22</span><span class="op">,</span></span>
-<span id="cb145-87"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">style</span><span class="op">:</span> { <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"22px"</span> }</span>
-<span id="cb145-88"><a href="" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span>
-<span id="cb145-89"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb145-90"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">barX</span>(</span>
-<span id="cb145-91"><a href="" aria-hidden="true" tabindex="-1"></a>sm_data<span class="op">,</span></span>
-<span id="cb145-92"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">stackX</span>({ <span class="dt">x</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"row"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">sort</span><span class="op">:</span> { <span class="dt">fill</span><span class="op">:</span> <span class="kw">null</span> } })</span>
-<span id="cb145-93"><a href="" aria-hidden="true" tabindex="-1"></a>)<span class="op">,</span></span>
-<span id="cb145-94"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>])</span>
-<span id="cb145-95"><a href="" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb145-96"><a href="" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<div class="sourceCode cell-code hidden" id="cb113" data-startfrom="64" data-source-offset="-1604"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 63;"><span id="cb113-64"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb113-65"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">width</span><span class="op">:</span> <span class="dv">940</span><span class="op">,</span></span>
+<span id="cb113-66"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">height</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
+<span id="cb113-67"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span></span>
+<span id="cb113-68"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marginRight</span><span class="op">:</span> <span class="dv">36</span><span class="op">,</span></span>
+<span id="cb113-69"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">46</span><span class="op">,</span></span>
+<span id="cb113-70"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb113-71"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb113-72"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> (d <span class="op">*</span> <span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>) <span class="op">+</span> <span class="st">"%"</span><span class="op">,</span></span>
+<span id="cb113-73"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">label</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
+<span id="cb113-74"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">tickSize</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span></span>
+<span id="cb113-75"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">tickPadding</span><span class="op">:</span> <span class="dv">8</span></span>
+<span id="cb113-76"><a href="" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span>
+<span id="cb113-77"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">y</span><span class="op">:</span> { <span class="dt">axis</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
+<span id="cb113-78"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb113-79"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">fontSize</span><span class="op">:</span> <span class="st">"22px"</span><span class="op">,</span></span>
+<span id="cb113-80"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">fontFamily</span><span class="op">:</span> <span class="st">"Source Sans 3, sans-serif"</span></span>
+<span id="cb113-81"><a href="" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span>
+<span id="cb113-82"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb113-83"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb113-84"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">label</span><span class="op">:</span> <span class="st">"Class"</span><span class="op">,</span></span>
+<span id="cb113-85"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">range</span><span class="op">:</span> [<span class="st">"#e41a1c"</span><span class="op">,</span> <span class="st">"#377eb8"</span><span class="op">,</span> <span class="st">"#4daf4a"</span><span class="op">,</span> <span class="st">"#984ea3"</span>]<span class="op">,</span></span>
+<span id="cb113-86"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">swatchSize</span><span class="op">:</span> <span class="dv">22</span><span class="op">,</span></span>
+<span id="cb113-87"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">style</span><span class="op">:</span> { <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"22px"</span> }</span>
+<span id="cb113-88"><a href="" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span>
+<span id="cb113-89"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb113-90"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">barX</span>(</span>
+<span id="cb113-91"><a href="" aria-hidden="true" tabindex="-1"></a>sm_data<span class="op">,</span></span>
+<span id="cb113-92"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">stackX</span>({ <span class="dt">x</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"row"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">sort</span><span class="op">:</span> { <span class="dt">fill</span><span class="op">:</span> <span class="kw">null</span> } })</span>
+<span id="cb113-93"><a href="" aria-hidden="true" tabindex="-1"></a>)<span class="op">,</span></span>
+<span id="cb113-94"><a href="" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>])</span>
+<span id="cb113-95"><a href="" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb113-96"><a href="" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div id="s6-softmax-widget-12">
 <div id="ojs-cell-1-12" data-nodetype="expression">
@@ -3660,20 +3095,20 @@ See help('pareto-k-diagnostic') for details.</code></pre>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_uq8vju2nsv0bewixjqs4 = TinyTable.createTableFunctions("tinytable_uq8vju2nsv0bewixjqs4");
+      const tableFns_54wvysuqorstpytnv7ue = TinyTable.createTableFunctions("tinytable_54wvysuqorstpytnv7ue");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_glbdgbmfu3flagci70ky',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_azn5tgjjjs56bxeqtupr',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_a3kngjrw2zn4m2d3jbg7',}, 
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_tp01dut16vlzdevs02rf',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_4su77rxkphll60t77u5a',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_qgcaguo98srmgh5h2s4u',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_uq8vju2nsv0bewixjqs4.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_54wvysuqorstpytnv7ue.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3682,12 +3117,12 @@ See help('pareto-k-diagnostic') for details.</code></pre>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_uq8vju2nsv0bewixjqs4 td.tinytable_css_glbdgbmfu3flagci70ky, #tinytable_uq8vju2nsv0bewixjqs4 th.tinytable_css_glbdgbmfu3flagci70ky {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_uq8vju2nsv0bewixjqs4 td.tinytable_css_azn5tgjjjs56bxeqtupr, #tinytable_uq8vju2nsv0bewixjqs4 th.tinytable_css_azn5tgjjjs56bxeqtupr { text-align: right }
-    #tinytable_uq8vju2nsv0bewixjqs4 td.tinytable_css_a3kngjrw2zn4m2d3jbg7, #tinytable_uq8vju2nsv0bewixjqs4 th.tinytable_css_a3kngjrw2zn4m2d3jbg7 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_54wvysuqorstpytnv7ue td.tinytable_css_tp01dut16vlzdevs02rf, #tinytable_54wvysuqorstpytnv7ue th.tinytable_css_tp01dut16vlzdevs02rf {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_54wvysuqorstpytnv7ue td.tinytable_css_4su77rxkphll60t77u5a, #tinytable_54wvysuqorstpytnv7ue th.tinytable_css_4su77rxkphll60t77u5a { text-align: right }
+    #tinytable_54wvysuqorstpytnv7ue td.tinytable_css_qgcaguo98srmgh5h2s4u, #tinytable_54wvysuqorstpytnv7ue th.tinytable_css_qgcaguo98srmgh5h2s4u {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_uq8vju2nsv0bewixjqs4" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_54wvysuqorstpytnv7ue" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -3766,20 +3201,20 @@ y_i \in \{1, 2, \ldots, J\}.
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_qj7awcko9ywfchgcrfte = TinyTable.createTableFunctions("tinytable_qj7awcko9ywfchgcrfte");
+      const tableFns_2xjehlmb0w0kw2z9e181 = TinyTable.createTableFunctions("tinytable_2xjehlmb0w0kw2z9e181");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_qhscgkbir1cm2h4n734u',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_ccfewj2pi299xijhwoz6',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_9w1jvm8drilwx65cdxa9',}, 
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_s6f95d8dafvco4oo4u8t',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_3o29kph2u4bm3hfposgj',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_t4w109aqa1alhrr9itq3',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_qj7awcko9ywfchgcrfte.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_2xjehlmb0w0kw2z9e181.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3788,12 +3223,12 @@ y_i \in \{1, 2, \ldots, J\}.
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_qj7awcko9ywfchgcrfte td.tinytable_css_qhscgkbir1cm2h4n734u, #tinytable_qj7awcko9ywfchgcrfte th.tinytable_css_qhscgkbir1cm2h4n734u {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_qj7awcko9ywfchgcrfte td.tinytable_css_ccfewj2pi299xijhwoz6, #tinytable_qj7awcko9ywfchgcrfte th.tinytable_css_ccfewj2pi299xijhwoz6 { text-align: right }
-    #tinytable_qj7awcko9ywfchgcrfte td.tinytable_css_9w1jvm8drilwx65cdxa9, #tinytable_qj7awcko9ywfchgcrfte th.tinytable_css_9w1jvm8drilwx65cdxa9 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_2xjehlmb0w0kw2z9e181 td.tinytable_css_s6f95d8dafvco4oo4u8t, #tinytable_2xjehlmb0w0kw2z9e181 th.tinytable_css_s6f95d8dafvco4oo4u8t {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_2xjehlmb0w0kw2z9e181 td.tinytable_css_3o29kph2u4bm3hfposgj, #tinytable_2xjehlmb0w0kw2z9e181 th.tinytable_css_3o29kph2u4bm3hfposgj { text-align: right }
+    #tinytable_2xjehlmb0w0kw2z9e181 td.tinytable_css_t4w109aqa1alhrr9itq3, #tinytable_2xjehlmb0w0kw2z9e181 th.tinytable_css_t4w109aqa1alhrr9itq3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_qj7awcko9ywfchgcrfte" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_2xjehlmb0w0kw2z9e181" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -3834,20 +3269,20 @@ y_i \in \{1, 2, \ldots, J\}.
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_l2u094dfdkjc2pjathvv = TinyTable.createTableFunctions("tinytable_l2u094dfdkjc2pjathvv");
+      const tableFns_u96jan4tc3i9mizgno2m = TinyTable.createTableFunctions("tinytable_u96jan4tc3i9mizgno2m");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_051dz2unvob57fhbxqgb',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_hk90sdtk8y9ltjfudhto',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_4yr09qzl0dmmuspdptxb',}, 
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_03v4crbrz2zd8o3ng2j6',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_384rhmvrdys3azkvcit8',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_jw9cov4rvpp0v9la3fcx',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_l2u094dfdkjc2pjathvv.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_u96jan4tc3i9mizgno2m.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3856,12 +3291,12 @@ y_i \in \{1, 2, \ldots, J\}.
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_l2u094dfdkjc2pjathvv td.tinytable_css_051dz2unvob57fhbxqgb, #tinytable_l2u094dfdkjc2pjathvv th.tinytable_css_051dz2unvob57fhbxqgb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_l2u094dfdkjc2pjathvv td.tinytable_css_hk90sdtk8y9ltjfudhto, #tinytable_l2u094dfdkjc2pjathvv th.tinytable_css_hk90sdtk8y9ltjfudhto { text-align: right }
-    #tinytable_l2u094dfdkjc2pjathvv td.tinytable_css_4yr09qzl0dmmuspdptxb, #tinytable_l2u094dfdkjc2pjathvv th.tinytable_css_4yr09qzl0dmmuspdptxb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_u96jan4tc3i9mizgno2m td.tinytable_css_03v4crbrz2zd8o3ng2j6, #tinytable_u96jan4tc3i9mizgno2m th.tinytable_css_03v4crbrz2zd8o3ng2j6 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_u96jan4tc3i9mizgno2m td.tinytable_css_384rhmvrdys3azkvcit8, #tinytable_u96jan4tc3i9mizgno2m th.tinytable_css_384rhmvrdys3azkvcit8 { text-align: right }
+    #tinytable_u96jan4tc3i9mizgno2m td.tinytable_css_jw9cov4rvpp0v9la3fcx, #tinytable_u96jan4tc3i9mizgno2m th.tinytable_css_jw9cov4rvpp0v9la3fcx {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_l2u094dfdkjc2pjathvv" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_u96jan4tc3i9mizgno2m" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -3919,12 +3354,12 @@ y_i \in \{1, 2, \ldots, J\}.
 <li>Predictors: <code>party_id</code> (−3 to 3), <code>economy</code> (1 = much better to 5 = much worse)</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># load data; keep complete cases on the model's variables</span></span>
-<span id="cb146-2"><a href="" aria-hidden="true" tabindex="-1"></a>vote <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/data/bush-approval-1992.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb146-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(vote_1992, party_id, economy) <span class="sc">|&gt;</span></span>
-<span id="cb146-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
-<span id="cb146-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vote_1992 =</span> <span class="fu">factor</span>(vote_1992, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Bush"</span>, <span class="st">"Clinton"</span>, <span class="st">"Perot"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb146-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># load data; keep complete cases on the model's variables</span></span>
+<span id="cb114-2"><a href="" aria-hidden="true" tabindex="-1"></a>vote <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/data/bush-approval-1992.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb114-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(vote_1992, party_id, economy) <span class="sc">|&gt;</span></span>
+<span id="cb114-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb114-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vote_1992 =</span> <span class="fu">factor</span>(vote_1992, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Bush"</span>, <span class="st">"Clinton"</span>, <span class="st">"Perot"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb114-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 592
 Columns: 3
@@ -3952,9 +3387,9 @@ $ economy   &lt;dbl&gt; 4, 4, 3, 3, 5, 5, 4, 2, 4, 3, 5, 4, 4, 4, 5, 5, 4, 5, 4,
 <section id="multinom" class="slide level2 smaller">
 <h2><code>multinom()</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># fit multinomial logit; first level (Bush) is the baseline</span></span>
-<span id="cb148-2"><a href="" aria-hidden="true" tabindex="-1"></a>fit_vote <span class="ot">&lt;-</span> <span class="fu">multinom</span>(vote_1992 <span class="sc">~</span> party_id <span class="sc">+</span> economy, <span class="at">data =</span> vote, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb148-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_vote)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># fit multinomial logit; first level (Bush) is the baseline</span></span>
+<span id="cb116-2"><a href="" aria-hidden="true" tabindex="-1"></a>fit_vote <span class="ot">&lt;-</span> <span class="fu">multinom</span>(vote_1992 <span class="sc">~</span> party_id <span class="sc">+</span> economy, <span class="at">data =</span> vote, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb116-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_vote)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 multinom(formula = vote_1992 ~ party_id + economy, data = vote, 
@@ -3994,24 +3429,24 @@ AIC: 882 </code></pre>
 <h2>Probabilities with {marginaleffects}</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of each candidate as party ID varies</span></span>
-<span id="cb150-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_vote <span class="ot">&lt;-</span> <span class="fu">predictions</span>(</span>
-<span id="cb150-3"><a href="" aria-hidden="true" tabindex="-1"></a>  fit_vote,</span>
-<span id="cb150-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">party_id =</span> <span class="sc">-</span><span class="dv">3</span><span class="sc">:</span><span class="dv">3</span>),</span>
-<span id="cb150-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"probs"</span>)</span>
-<span id="cb150-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb150-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># colors follow the factor levels:</span></span>
-<span id="cb150-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Bush, Clinton, Perot</span></span>
-<span id="cb150-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_vote,</span>
-<span id="cb150-10"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> party_id, <span class="at">y =</span> estimate,</span>
-<span id="cb150-11"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high,</span>
-<span id="cb150-12"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> group, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb150-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb150-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb150-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_lecture</span>() <span class="sc">+</span></span>
-<span id="cb150-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_lecture</span>() <span class="sc">+</span></span>
-<span id="cb150-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Party ID"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>,</span>
-<span id="cb150-18"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Candidate"</span>, <span class="at">fill =</span> <span class="st">"Candidate"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of each candidate as party ID varies</span></span>
+<span id="cb118-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_vote <span class="ot">&lt;-</span> <span class="fu">predictions</span>(</span>
+<span id="cb118-3"><a href="" aria-hidden="true" tabindex="-1"></a>  fit_vote,</span>
+<span id="cb118-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">party_id =</span> <span class="sc">-</span><span class="dv">3</span><span class="sc">:</span><span class="dv">3</span>),</span>
+<span id="cb118-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"probs"</span>)</span>
+<span id="cb118-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># colors follow the factor levels:</span></span>
+<span id="cb118-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Bush, Clinton, Perot</span></span>
+<span id="cb118-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_vote,</span>
+<span id="cb118-10"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> party_id, <span class="at">y =</span> estimate,</span>
+<span id="cb118-11"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high,</span>
+<span id="cb118-12"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> group, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb118-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb118-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb118-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_lecture</span>() <span class="sc">+</span></span>
+<span id="cb118-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_lecture</span>() <span class="sc">+</span></span>
+<span id="cb118-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Party ID"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>,</span>
+<span id="cb118-18"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Candidate"</span>, <span class="at">fill =</span> <span class="st">"Candidate"</span>)</span></code></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -4040,14 +3475,14 @@ AIC: 882 </code></pre>
 <section id="first-differences" class="slide level2">
 <h2>First differences</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># change in each candidate's probability as the economy goes from</span></span>
-<span id="cb151-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># "better" (2) to "worse" (4), for a typical respondent</span></span>
-<span id="cb151-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_vote,</span>
-<span id="cb151-4"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">economy =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>)),</span>
-<span id="cb151-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>),</span>
-<span id="cb151-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"probs"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb151-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb151-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, contrast, group, estimate, conf.low, conf.high)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># change in each candidate's probability as the economy goes from</span></span>
+<span id="cb119-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># "better" (2) to "worse" (4), for a typical respondent</span></span>
+<span id="cb119-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_vote,</span>
+<span id="cb119-4"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">economy =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>)),</span>
+<span id="cb119-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>),</span>
+<span id="cb119-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"probs"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb119-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb119-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, contrast, group, estimate, conf.low, conf.high)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 6
   term    contrast group   estimate conf.low conf.high
@@ -4075,15 +3510,15 @@ AIC: 882 </code></pre>
 <section id="brm" class="slide level2">
 <h2><code>brm()</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the same model with brm(); categorical() is the multinomial logit,</span></span>
-<span id="cb153-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># with the first level (Bush) as the baseline</span></span>
-<span id="cb153-3"><a href="" aria-hidden="true" tabindex="-1"></a>fit_vote_brm <span class="ot">&lt;-</span> <span class="fu">brm</span>(vote_1992 <span class="sc">~</span> party_id <span class="sc">+</span> economy,</span>
-<span id="cb153-4"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> vote,</span>
-<span id="cb153-5"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">categorical</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
-<span id="cb153-6"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb153-7"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb153-8"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb153-9"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">seed =</span> <span class="dv">1234</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the same model with brm(); categorical() is the multinomial logit,</span></span>
+<span id="cb121-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># with the first level (Bush) as the baseline</span></span>
+<span id="cb121-3"><a href="" aria-hidden="true" tabindex="-1"></a>fit_vote_brm <span class="ot">&lt;-</span> <span class="fu">brm</span>(vote_1992 <span class="sc">~</span> party_id <span class="sc">+</span> economy,</span>
+<span id="cb121-4"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> vote,</span>
+<span id="cb121-5"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">categorical</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb121-6"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb121-7"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb121-8"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb121-9"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">seed =</span> <span class="dv">1234</span>)</span></code></pre></div>
 </div>
 </section>
 <section id="brm-vs.-multinom" class="slide level2 compare">
@@ -4095,29 +3530,29 @@ AIC: 882 </code></pre>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_pw8n4dhuk9sxrnv9ge2n = TinyTable.createTableFunctions("tinytable_pw8n4dhuk9sxrnv9ge2n");
+      const tableFns_964fftjblmxfamtrf8kl = TinyTable.createTableFunctions("tinytable_964fftjblmxfamtrf8kl");
       // tinytable span after
-      window.addEventListener('load', function () { tableFns_pw8n4dhuk9sxrnv9ge2n.spanCell(5, 1, 1, 5) })
-      window.addEventListener('load', function () { tableFns_pw8n4dhuk9sxrnv9ge2n.spanCell(1, 1, 1, 5) })
+      window.addEventListener('load', function () { tableFns_964fftjblmxfamtrf8kl.spanCell(5, 1, 1, 5) })
+      window.addEventListener('load', function () { tableFns_964fftjblmxfamtrf8kl.spanCell(1, 1, 1, 5) })
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '-1', j: 5 } ], css_id: 'tinytable_css_3nzp9briihpxve1cbgzj',}, 
-          { positions: [ { i: '-1', j: 3 } ], css_id: 'tinytable_css_4r01jnq5kmwp0hsegsxl',}, 
-          { positions: [ { i: '8', j: 2 }, { i: '8', j: 3 }, { i: '8', j: 4 }, { i: '8', j: 5 } ], css_id: 'tinytable_css_70kmfvycrff9b1gy1pmd',}, 
-          { positions: [ { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '6', j: 4 }, { i: '7', j: 4 }, { i: '2', j: 5 }, { i: '3', j: 5 }, { i: '4', j: 5 }, { i: '6', j: 5 }, { i: '7', j: 5 } ], css_id: 'tinytable_css_fl5mgbml2y1c0p5gsf3x',}, 
-          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_86o0zd6tmztpf9q4yk28',}, 
-          { positions: [ { i: '-1', j: 2 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_tryjgd9qk7s1t0klllal',}, 
-          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_ypklojy8pk6vpfmxjkyz',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '5', j: 1 }, { i: '1', j: 2 }, { i: '5', j: 2 }, { i: '1', j: 3 }, { i: '5', j: 3 }, { i: '1', j: 4 }, { i: '5', j: 4 }, { i: '1', j: 5 }, { i: '5', j: 5 } ], css_id: 'tinytable_css_ylaum4ma35hiyrf70yfl',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_kfma5g45o0r3jit5vexp',}, 
-          { positions: [ { i: '-1', j: 1 } ], css_id: 'tinytable_css_ng5vzkcnpvo1asbwlmmu',}, 
+          { positions: [ { i: '-1', j: 5 } ], css_id: 'tinytable_css_3kdwk0yod29qujwcmul3',}, 
+          { positions: [ { i: '-1', j: 3 } ], css_id: 'tinytable_css_rtqfhww31mo7ylqf63i3',}, 
+          { positions: [ { i: '8', j: 2 }, { i: '8', j: 3 }, { i: '8', j: 4 }, { i: '8', j: 5 } ], css_id: 'tinytable_css_l588qkvupvhfntzgryn9',}, 
+          { positions: [ { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '6', j: 4 }, { i: '7', j: 4 }, { i: '2', j: 5 }, { i: '3', j: 5 }, { i: '4', j: 5 }, { i: '6', j: 5 }, { i: '7', j: 5 } ], css_id: 'tinytable_css_jg8jq60vi08f1ji0jilt',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_yt1oxskakp41coqa8koa',}, 
+          { positions: [ { i: '-1', j: 2 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_jhqf4fjulcw3v0r8a0wc',}, 
+          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_mmyuu710gkkx8vrqhtdv',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '5', j: 1 }, { i: '1', j: 2 }, { i: '5', j: 2 }, { i: '1', j: 3 }, { i: '5', j: 3 }, { i: '1', j: 4 }, { i: '5', j: 4 }, { i: '1', j: 5 }, { i: '5', j: 5 } ], css_id: 'tinytable_css_37lrph62kixjpt2rpjpg',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_jqsqsique2ejn0qigvd2',}, 
+          { positions: [ { i: '-1', j: 1 } ], css_id: 'tinytable_css_4uyfd2vpuduj9ybygebt',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_pw8n4dhuk9sxrnv9ge2n.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_964fftjblmxfamtrf8kl.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -4126,19 +3561,19 @@ AIC: 882 </code></pre>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_3nzp9briihpxve1cbgzj, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_3nzp9briihpxve1cbgzj {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_4r01jnq5kmwp0hsegsxl, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_4r01jnq5kmwp0hsegsxl {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_70kmfvycrff9b1gy1pmd, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_70kmfvycrff9b1gy1pmd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_fl5mgbml2y1c0p5gsf3x, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_fl5mgbml2y1c0p5gsf3x { text-align: right }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_86o0zd6tmztpf9q4yk28, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_86o0zd6tmztpf9q4yk28 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_tryjgd9qk7s1t0klllal, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_tryjgd9qk7s1t0klllal {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_ypklojy8pk6vpfmxjkyz, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_ypklojy8pk6vpfmxjkyz {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_ylaum4ma35hiyrf70yfl, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_ylaum4ma35hiyrf70yfl { text-align: left }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_kfma5g45o0r3jit5vexp, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_kfma5g45o0r3jit5vexp {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_pw8n4dhuk9sxrnv9ge2n td.tinytable_css_ng5vzkcnpvo1asbwlmmu, #tinytable_pw8n4dhuk9sxrnv9ge2n th.tinytable_css_ng5vzkcnpvo1asbwlmmu {  position: relative; --border-bottom: 0; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_3kdwk0yod29qujwcmul3, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_3kdwk0yod29qujwcmul3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_rtqfhww31mo7ylqf63i3, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_rtqfhww31mo7ylqf63i3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_l588qkvupvhfntzgryn9, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_l588qkvupvhfntzgryn9 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_jg8jq60vi08f1ji0jilt, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_jg8jq60vi08f1ji0jilt { text-align: right }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_yt1oxskakp41coqa8koa, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_yt1oxskakp41coqa8koa {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_jhqf4fjulcw3v0r8a0wc, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_jhqf4fjulcw3v0r8a0wc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_mmyuu710gkkx8vrqhtdv, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_mmyuu710gkkx8vrqhtdv {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_37lrph62kixjpt2rpjpg, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_37lrph62kixjpt2rpjpg { text-align: left }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_jqsqsique2ejn0qigvd2, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_jqsqsique2ejn0qigvd2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_4uyfd2vpuduj9ybygebt, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_4uyfd2vpuduj9ybygebt {  position: relative; --border-bottom: 0; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_pw8n4dhuk9sxrnv9ge2n" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_964fftjblmxfamtrf8kl" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
 <tr>
@@ -4239,25 +3674,25 @@ AIC: 882 </code></pre>
 <h2><code>brm()</code> + {marginaleffects}</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># for brms categorical fits (and only those), predictions()</span></span>
-<span id="cb154-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># drops the newdata columns and returns rowid + group, so</span></span>
-<span id="cb154-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># build the grid first and join party_id back by rowid</span></span>
-<span id="cb154-4"><a href="" aria-hidden="true" tabindex="-1"></a>grid_vote <span class="ot">&lt;-</span> <span class="fu">datagrid</span>(<span class="at">model =</span> fit_vote_brm,</span>
-<span id="cb154-5"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">party_id =</span> <span class="sc">-</span><span class="dv">3</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb154-6"><a href="" aria-hidden="true" tabindex="-1"></a>p_vote_brm <span class="ot">&lt;-</span> <span class="fu">predictions</span>(fit_vote_brm,</span>
-<span id="cb154-7"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> grid_vote) <span class="sc">|&gt;</span></span>
-<span id="cb154-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(grid_vote, rowid, party_id),</span>
-<span id="cb154-9"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"rowid"</span>)</span>
-<span id="cb154-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_vote_brm,</span>
-<span id="cb154-11"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> party_id, <span class="at">y =</span> estimate,</span>
-<span id="cb154-12"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high,</span>
-<span id="cb154-13"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> group, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb154-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb154-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb154-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_lecture</span>() <span class="sc">+</span></span>
-<span id="cb154-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_lecture</span>() <span class="sc">+</span></span>
-<span id="cb154-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Party ID"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>,</span>
-<span id="cb154-19"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Candidate"</span>, <span class="at">fill =</span> <span class="st">"Candidate"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># for brms categorical fits (and only those), predictions()</span></span>
+<span id="cb122-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># drops the newdata columns and returns rowid + group, so</span></span>
+<span id="cb122-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># build the grid first and join party_id back by rowid</span></span>
+<span id="cb122-4"><a href="" aria-hidden="true" tabindex="-1"></a>grid_vote <span class="ot">&lt;-</span> <span class="fu">datagrid</span>(<span class="at">model =</span> fit_vote_brm,</span>
+<span id="cb122-5"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">party_id =</span> <span class="sc">-</span><span class="dv">3</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb122-6"><a href="" aria-hidden="true" tabindex="-1"></a>p_vote_brm <span class="ot">&lt;-</span> <span class="fu">predictions</span>(fit_vote_brm,</span>
+<span id="cb122-7"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> grid_vote) <span class="sc">|&gt;</span></span>
+<span id="cb122-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(grid_vote, rowid, party_id),</span>
+<span id="cb122-9"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"rowid"</span>)</span>
+<span id="cb122-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_vote_brm,</span>
+<span id="cb122-11"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> party_id, <span class="at">y =</span> estimate,</span>
+<span id="cb122-12"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high,</span>
+<span id="cb122-13"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> group, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb122-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb122-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb122-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_lecture</span>() <span class="sc">+</span></span>
+<span id="cb122-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_lecture</span>() <span class="sc">+</span></span>
+<span id="cb122-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Party ID"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>,</span>
+<span id="cb122-19"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Candidate"</span>, <span class="at">fill =</span> <span class="st">"Candidate"</span>)</span></code></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -4283,7 +3718,38 @@ AIC: 882 </code></pre>
           display:block!important;
       }</style></aside>
 </section>
-<section id="another-example-balancing-the-federal-budget" class="slide level2">
+<section id="another-example-balancing-the-federal-budget" class="slide level2 smaller">
+<h2>Another example: Balancing the federal budget</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 2012 CCES; "Raise taxes" first, so it is the baseline</span></span>
+<span id="cb123-2"><a href="" aria-hidden="true" tabindex="-1"></a>cces <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/data/cces2012-budget.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb123-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">budget =</span> <span class="fu">factor</span>(budget, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Raise taxes"</span>,</span>
+<span id="cb123-4"><a href="" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"Cut defense spending"</span>,</span>
+<span id="cb123-5"><a href="" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"Cut domestic spending"</span>)))</span></code></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># fit multinomial logit; party ID from 1 (strong Democrat) to 7 (strong Republican)</span></span>
+<span id="cb124-2"><a href="" aria-hidden="true" tabindex="-1"></a>fit_budget <span class="ot">&lt;-</span> <span class="fu">multinom</span>(budget <span class="sc">~</span> party_id <span class="sc">+</span> female <span class="sc">+</span> income, <span class="at">data =</span> cces, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of each choice as party ID varies</span></span>
+<span id="cb125-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_budget <span class="ot">&lt;-</span> <span class="fu">predictions</span>(fit_budget, <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">party_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>), <span class="at">type =</span> <span class="st">"probs"</span>)</span></code></pre></div>
+</div>
+<aside class="notes">
+<p>This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="another-example-balancing-the-federal-budget-1" class="slide level2">
 <h2>Another example: Balancing the federal budget</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
@@ -4318,27 +3784,65 @@ AIC: 882 </code></pre>
           display:block!important;
       }</style></aside>
 </section>
-<section id="callback-ordered-logit-with-brm" class="slide level2 smaller">
-<h2>Callback: ordered logit with <code>brm()</code></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the wk06 Bush approval data and model</span></span>
-<span id="cb155-2"><a href="" aria-hidden="true" tabindex="-1"></a>approval <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/data/bush-approval-1992.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb155-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bush_approval =</span> <span class="fu">factor</span>(bush_approval, <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb155-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb155-5"><a href="" aria-hidden="true" tabindex="-1"></a>f_approval <span class="ot">&lt;-</span> bush_approval <span class="sc">~</span> military_force <span class="sc">+</span> ideology_distance <span class="sc">+</span></span>
-<span id="cb155-6"><a href="" aria-hidden="true" tabindex="-1"></a>  economy <span class="sc">+</span> party_id <span class="sc">+</span> education</span>
-<span id="cb155-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb155-8"><a href="" aria-hidden="true" tabindex="-1"></a>fit_approval <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">polr</span>(f_approval, <span class="at">data =</span> approval, <span class="at">Hess =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb155-9"><a href="" aria-hidden="true" tabindex="-1"></a>fit_approval_brm <span class="ot">&lt;-</span> <span class="fu">brm</span>(f_approval,</span>
-<span id="cb155-10"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data =</span> approval,</span>
-<span id="cb155-11"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">family =</span> <span class="fu">cumulative</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
-<span id="cb155-12"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb155-13"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb155-14"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb155-15"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">seed =</span> <span class="dv">1234</span>)</span></code></pre></div>
+<section id="brm-fits-every-model-weve-seen-so-far" class="slide level2">
+<h2><code>brm()</code> fits every model we’ve seen so far</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 12%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">ML</th>
+<th style="text-align: left;"><code>brm(family = ...)</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Normal (linear)</td>
+<td style="text-align: left;"><code>lm()</code></td>
+<td style="text-align: left;"><code>gaussian()</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Logit</td>
+<td style="text-align: left;"><code>glm(family = binomial)</code></td>
+<td style="text-align: left;"><code>bernoulli()</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poisson</td>
+<td style="text-align: left;"><code>glm(family = poisson)</code></td>
+<td style="text-align: left;"><code>poisson()</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Negative binomial</td>
+<td style="text-align: left;"><code>MASS::glm.nb()</code></td>
+<td style="text-align: left;"><code>negbinomial()</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Zero-inflated NB</td>
+<td style="text-align: left;"><code>glmmTMB::glmmTMB()</code></td>
+<td style="text-align: left;"><code>zero_inflated_negbinomial()</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ordered logit</td>
+<td style="text-align: left;"><code>MASS::polr()</code></td>
+<td style="text-align: left;"><code>cumulative(link = "logit")</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Multinomial logit</td>
+<td style="text-align: left;"><code>nnet::multinom()</code></td>
+<td style="text-align: left;"><code>categorical()</code></td>
+</tr>
+</tbody>
+</table>
+<div class="key">
+<p>We can use <code>brm()</code> to fit all the models we’ve seen so far in the course.</p>
 </div>
 <aside class="notes">
-<p>[CTK: wk06’s <code>polr()</code> fit, now with <code>brm(family = cumulative("logit"))</code>; same parameterization (cutpoints = <code>Intercept[j]</code>)]</p>
+<p>[CTK: wk06’s <code>polr()</code> fit works as <code>brm(family = cumulative("logit"))</code>, same parameterization (cutpoints = <code>Intercept[j]</code>); this slide replaced the two-slide ordered callback 2026-10-06]</p>
+<p>[CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -4350,32 +3854,6 @@ AIC: 882 </code></pre>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="callback-ordered-logit-with-brm-1" class="slide level2">
-<h2>Callback: ordered logit with <code>brm()</code></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior means next to the ML estimates (polr() calls the cutpoints zeta)</span></span>
-<span id="cb156-2"><a href="" aria-hidden="true" tabindex="-1"></a>ml_approval <span class="ot">&lt;-</span> <span class="fu">c</span>(fit_approval<span class="sc">$</span>zeta, <span class="fu">coef</span>(fit_approval))</span>
-<span id="cb156-3"><a href="" aria-hidden="true" tabindex="-1"></a>bayes_approval <span class="ot">&lt;-</span> <span class="fu">fixef</span>(fit_approval_brm)[, <span class="st">"Estimate"</span>]</span>
-<span id="cb156-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb156-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">polr_term =</span> <span class="fu">names</span>(ml_approval),</span>
-<span id="cb156-6"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">polr =</span> ml_approval,</span>
-<span id="cb156-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">brm_term =</span> <span class="fu">names</span>(bayes_approval),</span>
-<span id="cb156-8"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">brm =</span> bayes_approval)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 4
-  polr_term                               polr brm_term              brm
-  &lt;chr&gt;                                  &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;
-1 1. Strongly disapprove|2. Disapprove -7.00   Intercept[1]      -7.04  
-2 2. Disapprove|3. Approve             -5.51   Intercept[2]      -5.54  
-3 3. Approve|4. Strongly approve       -3.27   Intercept[3]      -3.29  
-4 military_force                       -0.560  military_force    -0.565 
-5 ideology_distance                    -0.364  ideology_distance -0.367 
-6 economy                              -0.597  economy           -0.601 
-7 party_id                              0.440  party_id           0.442 
-8 education                            -0.0724 education         -0.0722</code></pre>
-</div>
-</div>
 </section>
 <section id="ordered-vs.-nominal" class="slide level2">
 <h2>Ordered vs.&nbsp;nominal</h2>
@@ -4895,6 +4373,18 @@ AIC: 882 </code></pre>
           ev.currentSlide.querySelectorAll('img[src$=".gif"]').forEach(function (img) {
             var src = img.src; img.src = ''; img.src = src;
           });
+        });
+        // A gif that should start on click: the slide shows its first
+        // frame (a still png) and a fragment img carries the gif in
+        // data-gif. Revealing the fragment swaps the gif in (from frame
+        // 0, same clear-and-set trick); hiding it swaps the still back.
+        Reveal.on('fragmentshown', function (ev) {
+          var f = ev.fragment;
+          if (f.dataset && f.dataset.gif) { f.src = ''; f.src = f.dataset.gif; }
+        });
+        Reveal.on('fragmenthidden', function (ev) {
+          var f = ev.fragment;
+          if (f.dataset && f.dataset.gif) { f.src = f.dataset.still; }
         });
         Reveal.layout();
       }

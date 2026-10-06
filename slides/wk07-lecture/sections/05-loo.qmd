@@ -9,16 +9,17 @@ f1 <- function(x) sub("^-", "−", sprintf("%.1f", x))
 f2 <- function(x) sub("^-", "−", sprintf("%.2f", x))
 ```
 
-## Why not the AIC?
+## Why not the AIC? {.smaller}
 
 In *Information Criteria*, we compared Poisson and NB for Holland's Santiago data with AIC and BIC. However, when we have posterior *simulations*, the AIC and BIC work poorly because we do not have a single point estimate. Instead, we have a *distribution*.
 
+The AIC also works poorly with posterior simulations for two other reasons.
+
+1. Plugging in a point estimate (e.g., the posterior mean) ignores the uncertainty in the posterior, while the LOOIC averages over all the draws.
+2. The AIC's penalty counts parameters, but a prior that pulls the estimates toward zero makes a model less flexible than its count of parameters suggests. With a strong prior or a hierarchical model, $k$ overstates the model's effective number of parameters.
+
 ::: {.key}
 When we have a sample from the posterior, we can instead use the LOOIC.
-:::
-
-::: {.notes}
-From the chapter's aside: The AIC also works poorly with posterior simulations for two other reasons. First, plugging in a point estimate (e.g., the posterior mean) ignores the uncertainty in the posterior, while the LOOIC averages over all the draws. Second, the AIC's penalty counts parameters, but a prior that pulls the estimates toward zero makes a model less flexible than its count of parameters suggests. With a strong prior or a hierarchical model, $k$ overstates the model's effective number of parameters.
 :::
 
 ## Example: Linear or cubic age? {.smaller}
@@ -55,7 +56,7 @@ fit_cubic_brm <- brm(f_cubic, data = turnout, family = bernoulli,
 When we have posterior simulations via Stan, we can use the LOOIC as an alternative to the AIC or BIC.
 :::
 
-## Compute the LOOIC {.smaller}
+## Compute the LOOIC {.evensmaller}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -76,21 +77,16 @@ loo_cubic_brm
 :::
 ::::
 
+- `elpd_loo` (higher is better)
+- `p_loo` (effective number of parameters)
+- `looic` = −2 $\times$ `elpd_loo` (lower is better)
+
 ## Compare the two models {.smaller}
 
 ```{r}
 #| label: s5-loo-compare-turnout
 # compare the two models
 loo_compare(loo_linear_brm, loo_cubic_brm)
-```
-
-```{r}
-#| label: s5-aic-bic-turnout
-# AIC and BIC from glm() fits, for comparison
-fit_linear_glm <- glm(f_linear, family = binomial, data = turnout)
-fit_cubic_glm  <- glm(f_cubic, family = binomial, data = turnout)
-AIC(fit_linear_glm, fit_cubic_glm)
-BIC(fit_linear_glm, fit_cubic_glm)
 ```
 
 ```{r}
@@ -102,445 +98,45 @@ turnout_elpd_diff <- abs(lc_turnout$elpd_diff[2])
 turnout_se_diff <- lc_turnout$se_diff[2]
 ```
 
-::: {.key}
-The cubic model is ahead by `r f1(turnout_elpd_diff)` `elpd` with an `se_diff` of `r f1(turnout_se_diff)`. This is modest evidence for the cubic.
-:::
-
-::: {.caption}
-(The AIC is `r f1(AIC(fit_cubic_glm))` for the cubic and `r f1(AIC(fit_linear_glm))` for the linear, and the BIC is `r f1(BIC(fit_cubic_glm))` and `r f1(BIC(fit_linear_glm))`.)
-:::
-
-::: {.notes}
-We haven't described what the LOOIC is yet, but the cubic model is ahead by `r f1(turnout_elpd_diff)` `elpd` with an `se_diff` of `r f1(turnout_se_diff)`.
-
-[CTK: the printed AIC/BIC tables round to whole numbers (options(digits = 3)); the caption gives one decimal.]
-
-Let's dig into the LOOIC.
-:::
-
-## Recall the AIC
-
-$$
-\text{AIC} = -2 \ell(\hat{\theta}) + 2k
-$$
-
-Here, we have two parts:
-
-- $-2\ell(\hat{\theta})$ measures in-sample fit.
-- We can think of $2k$ as the penalty for using the same data to fit and to evaluate the model.
-
-## The LOOIC idea
-
-LOOIC is based on the logic of *leave-one-out (LOO) cross-validation*.
-
-We could simply leave out observation $i$, fit to the other $N - 1$ observations, and then ask: how much predictive density does the fit put on the held-out $y_i$?
-
-Then we could repeat for every $i$.
-
-## Brute force: 2,000 refits {.smaller}
-
-Refit the linear `turnout` model 2,000 times, dropping one respondent each time.
-
-```{r}
-#| label: s5-brute-force
-N <- nrow(turnout)
-loo_ml <- numeric(N)
-for (i in 1:N) {
-  fit <- glm(f_linear,
-    family = binomial,
-    data = turnout[-i, ])
-  p <- predict(fit,
-    newdata = turnout[i, ],
-    type = "response")
-  loo_ml[i] <- dbinom(
-    turnout$vote[i],
-    size = 1, prob = p,
-    log = TRUE)
-}
-sum(loo_ml)
-```
-
-::: {.key}
-The log-likelihoods of the held-out vote at the refit's $\hat{\theta}$ sum to `r f1(sum(loo_ml))`.
-:::
-
-::: {.notes}
-From the chapter's aside: Let's see brute force leave-one-out cross-validation with ML.
-
-[CTK: this loop takes about a minute; it is the "refit N times" that PSIS avoids.]
-:::
-
-## $\text{elpd}_{\text{loo}}$ and LOOIC {.smaller}
-
-We formalize this intuition with the $\text{elpd}_{\text{loo}}$.
-
-$$
-\text{elpd}_{\text{loo}} = \sum_{i=1}^{N} \log f(y_i \mid y_{-i}), \quad \text{where} \quad f(y_i \mid y_{-i}) = \int f(y_i \mid \theta)\, f(\theta \mid y_{-i})\, d\theta
-$$
-
-- $y_{-i}$ = every observation except $i$
-- elpd = "expected log predictive density" (higher is better)
-- But there's a problem---we have no $\hat{\theta}$ to plug in. So instead, we average $y_i$'s likelihood over the posterior fit *without* $y_i$. This requires computing the posterior without $y_i$, which means refitting the model $N$ times.
-
-Then we can define the LOOIC as follows.
-
-$$
-\text{LOOIC} = -2 \times \text{elpd}_{\text{loo}}
-$$
-
-- The $-2$ only puts LOO on AIC's scale (i.e., lower is better!)
-- No explicit penalty term needed, because of the cross-validation logic.
-
-## In-sample fit and $p_{\text{loo}}$ {.smaller}
-
-- Averaging over draws from the *full-data* posterior gives the log pointwise predictive density (lppd) $= \sum_{i=1}^N \log \left( \frac{1}{S} \sum_{s=1}^S f(y_i \mid \theta^{(s)}) \right)$. This is just the posterior version of $\ell(\hat{\theta})$. Each $y_i$ helped produce the draws, so, like $\ell(\hat{\theta})$, it is in-sample and too optimistic.
-- We can compute $p_{\text{loo}} = \text{lppd} - \text{elpd}_{\text{loo}}$, so $\text{LOOIC} = -2\,\text{lppd} + 2\,p_{\text{loo}}$. Notice that this has the same form as $\text{AIC} = -2\ell(\hat{\theta}) + 2k$. While AIC assumes the penalty, LOO measures it. `loo()` calls $p_{\text{loo}}$ the "effective number of parameters".
-
-```{r}
-#| label: s5-lppd
-#| cache: false
-# S × N matrix of log f(y_i | beta^(s)): 4,000 draws by 2,000 respondents
-ll <- brms::log_lik(fit_linear_brm)  # brms::, since the sawtooth example defined log_lik()
-dim(ll)
-
-# lppd: average the likelihood over the draws, then take the log and sum
-lppd <- sum(log(colMeans(exp(ll))))
-lppd
-
-# p_loo: lppd minus elpd_loo
-lppd - loo_linear_brm$estimates["elpd_loo", "Estimate"]
-```
-
-::: {.key}
-This matches the `p_loo` of `r f1(loo_linear_brm$estimates["p_loo", "Estimate"])` from `loo()` above.
-:::
-
-::: {.notes}
-But exact LOO is computationally expensive. Sampling from *one* posterior is usually time-consuming. Can we avoid sampling from *N* of them? Yes!
-:::
-
-## PSIS: LOO from one fit {.smaller}
-
-Instead of dropping observations one-by-one, `loo()` uses Pareto-smoothed importance sampling (PSIS) on the draws from the *one* full-data fit.
-
-- Here's the intuition of importance sampling: the full-data draws are "close" to draws from $f(\theta \mid y_{-i})$, so we can weight each by $1/f(y_i \mid \theta^{(s)})$. This weighting gives $f(y_i \mid y_{-i}) \approx \left[ \frac{1}{S} \sum_{s=1}^S \frac{1}{f(y_i \mid \theta^{(s)})} \right]^{-1}$ (average the reciprocal of the likelihood, then take the reciprocal).
-
-```{r}
-#| label: s5-elpd-is
-# average 1/f over the draws, take the reciprocal, take the log, and sum
-elpd_is <- sum(-log(colMeans(exp(-ll))))
-elpd_is
-```
-
-::: {.key}
-This matches `loo()`'s `r f1(loo_linear_brm$estimates["elpd_loo", "Estimate"])`... *with no refits*!
-:::
-
-::: {.notes}
-From the chapter's footnote: This is exact, not a Jensen's-inequality approximation. When the observations are independent given $\theta$, $f(\theta \mid y) \propto f(y_i \mid \theta)\, f(\theta \mid y_{-i})$, so the average of $1/f(y_i \mid \theta)$ over the full-data posterior is *exactly* $1/f(y_i \mid y_{-i})$. The $\approx$ comes only from using $S$ draws.
-
-Reference: Vehtari, Gelman, and Gabry (2017).
-:::
-
-## Pareto $\hat{k}$
-
-```{r}
-#| label: s5-turnout-khat
-#| echo: false
-#| cache: false
-turnout_max_k <- max(pareto_k_values(loo_linear_brm), pareto_k_values(loo_cubic_brm))
-```
-
-But this raw version can be unstable. If a few draws give $y_i$ a tiny likelihood, their weights $1/f(y_i \mid \theta^{(s)})$ are huge, and those few draws dominate the average. PSIS replaces the largest weights with smoothed values from a Pareto distribution fit to them.
-
-The estimated shape of that Pareto distribution, $\hat{k}$, is a diagnostic, one per observation.
-
-- If $\hat{k} \le 0.7$, the PSIS estimate for that observation is reliable.
-- If $\hat{k} > 0.7$, it is not.
-
-`r if (turnout_max_k <= 0.7) "For both \x60turnout\x60 models, every $\\hat{k}$ is below 0.7." else ""`
-
-::: {.notes}
-From the chapter's aside: A large $\hat{k}$ usually means the observation is influential: the posterior changes a lot when we leave it out, so the full-data draws are a poor stand-in for draws from $f(\theta \mid y_{-i})$ (Vehtari, Gelman, and Gabry 2017).
-
-(Largest $\hat{k}$ across both `turnout` models: `r f2(turnout_max_k)`.)
-:::
-
-## Example: Poisson vs. negative binomial, again {.smaller}
-
-```{r}
-#| label: s5-santiago
-# load data for santiago
-sant <- crdata::holland2015 |>
-  filter(city == "santiago") |>
-  # create rescaled columns (see below)
-  mutate(across(c(lower, vendors, budget, population), arm::rescale,
-                .names = "rs_{.col}"))
-
-# formula corresponds to model 1 for each city in holland (2015) table 2
-f <- operations ~ rs_lower + rs_vendors + rs_budget + rs_population
-
-# poisson regression
-pois_fit <- glm(f, family = poisson, data = sant)
-
-# nb regression
-nb_fit <- MASS::glm.nb(f, data = sant)
-
-# AIC from wk05; df is k
-AIC(pois_fit, nb_fit)
-```
-
-## Fit the same two models with `brm()` {.smaller}
-
-```{r}
-#| label: s5-santiago-brm
-#| results: hide
-# fit the same two models with brm(), using the default priors
-pois_brm <- brm(f, data = sant, family = poisson,
-                iter = 3000,  # 1,500 draws per chain after warmup
-                backend = "cmdstanr", chains = 4, cores = 4, seed = 1234)
-
-nb_brm <- brm(f, data = sant, family = negbinomial,
-              iter = 3000,
-              backend = "cmdstanr", chains = 4, cores = 4, seed = 1234)
-```
-
-We rescaled the predictors above. On their original scales (`budget` runs up to 1,118), {brms}'s random starting values put $\log \mu$ in the hundreds or thousands, and some chains never recover (R-hat above 3). Rescaling changes the coefficients but not the fit, so the AIC is the same as before.
-
-::: {.key}
-Check convergence before computing LOO.
-:::
-
-## Check convergence {.smaller}
-
-:::: {.columns}
-::: {.column width="50%"}
-```{r}
-#| label: s5-converge-pois
-# Poisson
-pois_brm |>
-  as_draws_df(variable = "^b_", regex = TRUE) |>
-  summarise_draws("rhat", "ess_bulk")
-```
-:::
-::: {.column width="50%"}
-```{r}
-#| label: s5-converge-nb
-# negative binomial
-nb_brm |>
-  as_draws_df(variable = "^b_", regex = TRUE) |>
-  summarise_draws("rhat", "ess_bulk")
-```
-:::
-::::
-
-```{r}
-#| label: s5-converge-numbers
-#| echo: false
-#| cache: false
-conv_all <- bind_rows(summarise_draws(pois_brm, "rhat", "ess_bulk"),
-                      summarise_draws(nb_brm, "rhat", "ess_bulk")) |>
-  filter(!variable %in% c("lp__", "lprior"))  # the parameters summary() reports
-```
-
-::: {.notes}
-Across every parameter `summary()` reports in both fits (not only the b_ rows shown): largest R-hat `r f2(max(conv_all$rhat, na.rm = TRUE))`, smallest bulk ESS `r format(round(min(conv_all$ess_bulk, na.rm = TRUE)), big.mark = ",")`.
-
-[CTK: the chapter also compares ML estimates with posterior means (Poisson close to `glm()`; NB within half a posterior SD of `glm.nb()`).]
-:::
-
-## `loo()` for each model {.smaller}
-
-:::: {.columns}
-::: {.column width="50%"}
-```{r}
-#| label: s5-loo-pois
-loo_pois <- loo(pois_brm)
-loo_pois
-```
-:::
-::: {.column width="50%"}
-```{r}
-#| label: s5-loo-nb
-loo_nb <- loo(nb_brm)
-loo_nb
-```
-:::
-::::
-
-```{r}
-#| label: s5-santiago-khat
-#| echo: false
-#| cache: false
-n_bad_pois <- sum(pareto_k_values(loo_pois) > 0.7)
-n_bad_nb <- sum(pareto_k_values(loo_nb) > 0.7)
-n_sant <- nrow(sant)
-```
-
-::: {.key}
-However, for the Poisson, `r n_bad_pois` of `r n_sant` observations have Pareto $\hat{k}$ above 0.7. And the NB has `r n_bad_nb` of `r n_sant`.
-:::
-
-::: {.notes}
-We understand the following:
-
-- `elpd_loo` (higher is better)
-- `p_loo` (effective number of parameters)
-- `looic` = −2 $\times$ `elpd_loo`
-
-This means that our PSIS approximation might not be working well.
-:::
-
-## Fixing high $\hat{k}$: refit for those observations
-
-```{r}
-#| label: s5-reloo
-#| output: false
-reloo_pois <- loo(pois_brm,
-  reloo = TRUE,
-  reloo_args = list(seed = 1234)
-  )
-
-reloo_nb <- loo(nb_brm,
-  reloo = TRUE,
-  reloo_args = list(seed = 1234)
-  )
-```
-
-- `reloo = TRUE`: for each observation with $\hat{k} > 0.7$, refit the model without that observation and compute exact LOO; use PSIS for the rest.
-- `reloo_args`: pass a seed to the refits, so the numbers reproduce.
-
-::: {.notes}
-It doesn't take much time here (`r n_bad_pois` refits for the Poisson, and `r n_bad_nb` for the NB).
-:::
-
-## After `reloo` {.evensmaller}
-
-:::: {.columns}
-::: {.column width="50%"}
-```{r}
-#| label: s5-reloo-pois-print
-reloo_pois
-```
-:::
-::: {.column width="50%"}
-```{r}
-#| label: s5-reloo-nb-print
-reloo_nb
-```
-:::
-::::
-
-```{r}
-#| label: s5-reloo-numbers
-#| echo: false
-#| cache: false
-looic_diff_psis <- loo_pois$estimates["looic", "Estimate"] - loo_nb$estimates["looic", "Estimate"]
-looic_diff_reloo <- reloo_pois$estimates["looic", "Estimate"] - reloo_nb$estimates["looic", "Estimate"]
-```
-
-::: {.key}
-Before, the difference was `r f1(looic_diff_psis)`, suggesting that the NB is much better. Now it's `r f1(looic_diff_reloo)`, suggesting the same.
-:::
-
-::: {.notes}
-Here, `reloo = TRUE` means that we compute LOO for the flagged observations and PSIS for the rest.
-
-As we can see, the LOOIC has changed a little.
-:::
-
-## `loo_compare()` {.smaller}
-
-```{r}
-#| label: s5-loo-compare-santiago
-# compare models with PSIS-LOO
-loo_compare(loo_pois, loo_nb)
-
-# compare models after refitting the high-k observations
-loo_compare(reloo_pois, reloo_nb)
-```
-
-```{r}
-#| label: s5-compare-numbers
-#| echo: false
-#| cache: false
-lc_psis <- loo_compare(loo_pois, loo_nb)
-lc_reloo <- loo_compare(reloo_pois, reloo_nb)
-elpd_reloo <- lc_reloo$elpd_diff[2]
-se_reloo <- lc_reloo$se_diff[2]
-elpd_psis <- lc_psis$elpd_diff[2]
-se_psis <- lc_psis$se_diff[2]
-```
-
-::: {.notes}
-Observations:
-
-- After using `reloo = TRUE`, NB beats Poisson by `r f1(abs(elpd_reloo))` elpd (se_diff of `r f1(se_reloo)`, so about `r f1(abs(elpd_reloo) / se_reloo)` SEs). With PSIS alone, the difference was `r f1(abs(elpd_psis))` (se_diff of `r f1(se_psis)`, so about `r f1(abs(elpd_psis) / se_psis)` SEs). This is a huge difference on the elpd scale, but the SE is also really wide.
-- `p_worse` is a normal-approximation probability that a model predicts worse than the top model (i.e., `pnorm(0, elpd_diff, se_diff)`). It's 1.00 for the Poisson, which is a bad sign for that model.
-- The `diag_diff` column warns "N < 100." With only 34 observations, `se_diff` is probably too small, so `p_worse` is probably too close to 1. The loo documentation suggests doubling `se_diff` as a rough, conservative fix (see `?loo-glossary`). Doubled, the difference is about `r f1(abs(elpd_reloo))` / `r f1(2 * se_reloo)` ≈ `r f1(abs(elpd_reloo) / (2 * se_reloo))` SEs.
-:::
-
-## Reading `loo_compare()`
-
-::: {.defbox}
-**ELPD or LOOIC?**
-
-`loo_compare()` reports differences on the ELPD scale. ELPD differences are half the size of LOOIC differences and have the opposite sign (higher ELPD is better; lower LOOIC is better). It's fine to use either. But the LOOIC connects nicely to the AIC and BIC, so that's the one I've emphasized here.
-:::
-
 - `loo_compare()` prints the best model in the top row, and `elpd_diff` is relative to that best model.
-- `elpd_diff` is on the elpd scale, so multiply by (−2) for the LOOIC scale (e.g., `r f2(elpd_reloo)` elpd becomes `r f1(-2 * elpd_reloo)` LOOIC).
+- `loo_compare()` reports differences on the ELPD scale. ELPD differences are half the size of LOOIC differences and have the opposite sign (higher ELPD is better; lower LOOIC is better). Multiply by (−2) for the LOOIC scale (e.g., `r f1(-turnout_elpd_diff)` elpd becomes `r f1(2 * turnout_elpd_diff)` LOOIC).
 - `se_diff` is the SE of the *difference*.
-
-::: {.notes}
-From the chapter's aside: Raftery's table in Information Criteria calls a BIC difference larger than 10 "very strong" evidence. The BIC, like the AIC and LOOIC, is on the $-2 \times \log$ scale, so a BIC difference of 10 is the same size as a difference of 5 on the elpd scale.
-:::
-
-## Interpreting `elpd_diff` and `se_diff`
 
 Some rules of thumb:
 
 - For |`elpd_diff`| < 4, the models predict about equally well, regardless of `se_diff`.
 - For |`elpd_diff`| > 4 **AND** large compared to `se_diff`: a meaningful difference (see `?loo-glossary`).
 
-::: {.notes}
-From the chapter's footnote: Compare Raftery's table for BIC differences in Information Criteria, where we established "about 10" as a big difference between the models. Remember that LOOIC differences are twice elpd differences, so 4 elpd is the same as 8 LOOIC.
+::: {.key}
+The cubic model is ahead by `r f1(turnout_elpd_diff)` `elpd` with an `se_diff` of `r f1(turnout_se_diff)`. This is modest evidence for the cubic.
 :::
 
-## LOOIC next to AIC {.smaller}
+::: {.notes}
+From the chapter: It's fine to use either. But the LOOIC connects nicely to the AIC and BIC, so that's the one I've emphasized here.
+
+From the chapter's footnote: Compare Raftery's table for BIC differences in Information Criteria, where we established "about 10" as a big difference between the models. Remember that LOOIC differences are twice elpd differences, so 4 elpd is the same as 8 LOOIC.
+
+From the chapter's aside: Raftery's table in Information Criteria calls a BIC difference larger than 10 "very strong" evidence. The BIC, like the AIC and LOOIC, is on the $-2 \times \log$ scale, so a BIC difference of 10 is the same size as a difference of 5 on the elpd scale.
+:::
+
+## The AIC and BIC, for comparison {.smaller}
 
 ```{r}
-#| label: s5-looic-aic-table
-# AIC and k from the ML fits; LOOIC and p_loo from the brm() fits (after reloo)
-tibble(
-  model = c("Poisson", "Negative binomial"),
-  k     = AIC(pois_fit, nb_fit)$df,
-  p_loo = c(reloo_pois$estimates["p_loo", "Estimate"],
-            reloo_nb$estimates["p_loo", "Estimate"]),
-  AIC   = AIC(pois_fit, nb_fit)$AIC,
-  LOOIC = c(reloo_pois$estimates["looic", "Estimate"],
-            reloo_nb$estimates["looic", "Estimate"])
-) |>
-  mutate(across(p_loo:LOOIC, \(x) round(x, 1))) |>
-  as.data.frame() |>
-  print(digits = 5)
+#| label: s5-aic-bic-turnout
+# AIC and BIC from glm() fits, for comparison
+fit_linear_glm <- glm(f_linear, family = binomial, data = turnout)
+fit_cubic_glm  <- glm(f_cubic, family = binomial, data = turnout)
+AIC(fit_linear_glm, fit_cubic_glm)
+BIC(fit_linear_glm, fit_cubic_glm)
 ```
 
-```{r}
-#| label: s5-table-numbers
-#| echo: false
-#| cache: false
-aic_tab <- AIC(pois_fit, nb_fit)
-aic_diff <- aic_tab$AIC[1] - aic_tab$AIC[2]
-p_loo_pois <- reloo_pois$estimates["p_loo", "Estimate"]
-p_loo_nb <- reloo_nb$estimates["p_loo", "Estimate"]
-ratio_words <- c("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
-ratio_pois <- ratio_words[round(p_loo_pois / aic_tab$df[1])]
-```
+::: {.caption}
+(The AIC is `r f1(AIC(fit_cubic_glm))` for the cubic and `r f1(AIC(fit_linear_glm))` for the linear, and the BIC is `r f1(BIC(fit_cubic_glm))` and `r f1(BIC(fit_linear_glm))`.)
+:::
 
-NB is much better by both criteria. The AIC difference is `r f1(aic_diff)`. The LOOIC difference is `r f1(looic_diff_reloo)`.
-
-Notice that the NB's $p_{\text{loo}}$ (`r f1(p_loo_nb)`) is close to its $k$ (`r aic_tab$df[2]`), but the Poisson's $p_{\text{loo}}$ (`r f1(p_loo_pois)`) is about `r ratio_pois` times its $k$ (`r aic_tab$df[1]`). The AIC assumes the penalty, and LOO measures it.
+::: {.notes}
+[CTK: the printed AIC/BIC tables round to whole numbers (options(digits = 3)); the caption gives one decimal.]
+:::
 
 ## AIC and LOO {.statement}
 

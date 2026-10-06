@@ -6,22 +6,28 @@
 Week 6 assessment, 9:00 to 9:15. Leave this slide up while students work.
 :::
 
-## Today
+## Then and now
 
-| Time  | Min | Section |
-|:------|----:|:--------|
-| 9:15  | 10  | Where we are |
-| 9:25  | 35  | Metropolis |
-| 10:00 | 25  | Stan |
-| 10:25 | 5   | [Break]{.muted} |
-| 10:30 | 15  | {brms} |
-| 10:45 | 15  | LOOIC |
-| 11:00 | 20  | Multinomial logit |
-| 11:20 | 10  | Wrap |
+15 years ago, posterior simulation made "big" or "complex" models tractable, but...
 
-::: {.notes}
-[CTK: one line on the arc of the day: last week we sampled with rejection; today we sample with Metropolis, then Stan, then {brms}.]
-:::
+- human hard (100s or 1000s of lines of code)
+- computer hard (days, sometimes weeks)
+
+now...
+
+- human trivial (1 line!)
+- computer easy-to-moderate (minutes or hours)
+
+## Goals for the day
+
+Bayesian simulation is a **huge** topic. The theory and practice are both much more complicated than ML, but it's much more powerful.
+
+Goals for the day:
+
+1. Understand posterior simulation (via MCMC) versus point estimation (via ML)
+2. Understand the implications of *dependent* MCMC samples.
+3. See Stan in action.
+4. Set up `brm()` as an alternative to `glm()` (and similar)
 
 ## Where we are
 
@@ -296,14 +302,18 @@ The exercise's rejection part, given away: the solution's sentence, with this re
 
 ## The accepted draws
 
-![](img/rej-sampler.gif){width=1280}
+::: {.r-stack}
+<img src="img/rej-sampler-start.png" width="1280">
+
+<img class="fragment" src="img/rej-sampler-start.png" data-gif="img/rej-sampler.gif" data-still="img/rej-sampler-start.png" width="1280">
+:::
 
 ::: {.caption}
-Left: the proposal box, −2 to 2, in two of its five dimensions. Blue: 4,000 draws from the normal approximation to the posterior (`glm()` coefficients and covariance). Red: the `r n_accepted` accepted draws. Gray dots: a sample of the proposals. Right: the counters count every proposal. True speed for the first six seconds, then sped up (the badge says by how much).
+Left: the proposal box, −2 to 2, in two of its five dimensions. Blue: 4,000 draws from the normal approximation to the posterior (`glm()` coefficients and covariance). Red: the `r n_accepted` accepted draws. Gray dots: a sample of the proposals. Right: the counters count every proposal. The speed matches the real computation for the first six seconds, then it speeds up.
 :::
 
 ::: {.notes}
-The run from the previous two slides, as it happened: the hidden chunk after the run replays its random stream to recover when each draw was accepted, checks that the replay matches `rej_wide` exactly, and rebuilds `img/rej-sampler.gif` with `wk07-lecture-material/rej-gif/make-rej-gif.R` from the run's own count and time, so the draws, the rate, and the hours here are the slide's numbers. Added 2026-10-06 for the [CTK] cue after "Two costs of rejection".
+The run from the previous two slides, as it happened: the hidden chunk after the run replays its random stream to recover when each draw was accepted, checks that the replay matches `rej_wide` exactly, and rebuilds `img/rej-sampler.gif` (shown on click; `img/rej-sampler-start.png` is its first frame, extracted with {magick}) with `wk07-lecture-material/rej-gif/make-rej-gif.R` from the run's own count and time, so the draws, the rate, and the hours here are the slide's numbers. Added 2026-10-06 for the [CTK] cue after "Two costs of rejection".
 
 [CTK: the accepted draws sit where the posterior is; the box is enormous by comparison, and in five dimensions the ratio of volumes is far smaller than this two-dimensional picture shows. This is cost 2 from two slides ago, made concrete. Metropolis and Stan get the same posterior in seconds; that is Part 1 and Part 2 of the exercise.]
 :::

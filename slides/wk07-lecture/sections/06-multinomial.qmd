@@ -451,32 +451,59 @@ Checked 2026-10-06 (marginaleffects 1.0.0): the same call on the multinom() fit 
 [CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]
 :::
 
-## Another example: Balancing the federal budget
+## Another example: Balancing the federal budget {.smaller}
 
 ```{r}
-#| label: s6-cces-fit
+#| label: s6-cces-local
 #| echo: false
-# 2012 CCES, from the notes' data folder; "Raise taxes" first, so it is the baseline
-cces <- read_csv("wk07-lecture-material/data/cces2012-budget.csv") |>
+#| cache: false
+# TEMPORARY: read the CSV from the site's local data/ folder until the push makes
+# https://pos5747.github.io/data/cces2012-budget.csv live. After the push,
+# delete this chunk and drop the `eval: false` from the chunk below, then re-render.
+cces <- read_csv("../../data/cces2012-budget.csv") |>
   mutate(budget = factor(budget, levels = c("Raise taxes",
                                             "Cut defense spending",
                                             "Cut domestic spending")))
+```
 
+```{r}
+#| label: s6-cces-data
+#| eval: false
+# 2012 CCES; "Raise taxes" first, so it is the baseline
+cces <- read_csv("https://pos5747.github.io/data/cces2012-budget.csv") |>
+  mutate(budget = factor(budget, levels = c("Raise taxes",
+                                            "Cut defense spending",
+                                            "Cut domestic spending")))
+```
+
+```{r}
+#| label: s6-cces-fit
+# fit multinomial logit; party ID from 1 (strong Democrat) to 7 (strong Republican)
 fit_budget <- multinom(budget ~ party_id + female + income, data = cces, trace = FALSE)
+```
+
+```{r}
+#| label: s6-cces-predictions
+#| cache: false
+# probability of each choice as party ID varies
+p_budget <- predictions(fit_budget, newdata = datagrid(party_id = 1:7), type = "probs")
 ```
 
 ```{r}
 #| label: s6-cces-numbers
 #| echo: false
 #| cache: false
-# probability of each choice as party ID varies
-p_budget <- predictions(fit_budget, newdata = datagrid(party_id = 1:7), type = "probs")
-
 # the numbers quoted in the bullets
 pb <- function(choice, pid) {
   sprintf("%.2f", p_budget$estimate[p_budget$group == choice & p_budget$party_id == pid])
 }
 ```
+
+::: {.notes}
+This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).
+:::
+
+## Another example: Balancing the federal budget
 
 :::: {.columns}
 ::: {.column width="58%"}
@@ -515,46 +542,27 @@ ggplot(p_budget, aes(x = party_id, y = estimate,
 Model: `multinom(budget ~ party_id + female + income, data = cces)`; party ID from 1 (strong Democrat) to 7 (strong Republican). This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).
 :::
 
-## Callback: ordered logit with `brm()` {.smaller}
+## `brm()` fits every model we've seen so far
 
-```{r}
-#| label: s6-approval-fits
-#| results: hide
-# the wk06 Bush approval data and model
-approval <- read_csv("https://pos5747.github.io/data/bush-approval-1992.csv") |>
-  mutate(bush_approval = factor(bush_approval, ordered = TRUE))
+| Model | ML | `brm(family = ...)` |
+| :------ | :--- | :-------------------- |
+| Normal (linear) | `lm()` | `gaussian()` |
+| Logit | `glm(family = binomial)` | `bernoulli()` |
+| Poisson | `glm(family = poisson)` | `poisson()` |
+| Negative binomial | `MASS::glm.nb()` | `negbinomial()` |
+| Zero-inflated NB | `glmmTMB::glmmTMB()` | `zero_inflated_negbinomial()` |
+| Ordered logit | `MASS::polr()` | `cumulative(link = "logit")` |
+| Multinomial logit | `nnet::multinom()` | `categorical()` |
 
-f_approval <- bush_approval ~ military_force + ideology_distance +
-  economy + party_id + education
-
-fit_approval <- MASS::polr(f_approval, data = approval, Hess = TRUE)
-fit_approval_brm <- brm(f_approval,
-                        data = approval,
-                        family = cumulative(link = "logit"),
-                        backend = "cmdstanr",
-                        chains = 4,
-                        cores = 4,
-                        seed = 1234)
-```
-
-::: {.notes}
-[CTK: wk06's `polr()` fit, now with `brm(family = cumulative("logit"))`; same parameterization (cutpoints = `Intercept[j]`)]
+::: {.key}
+We can use `brm()` to fit all the models we've seen so far in the course.
 :::
 
-## Callback: ordered logit with `brm()`
+::: {.notes}
+[CTK: wk06's `polr()` fit works as `brm(family = cumulative("logit"))`, same parameterization (cutpoints = `Intercept[j]`); this slide replaced the two-slide ordered callback 2026-10-06]
 
-```{r}
-#| label: s6-approval-compare
-#| cache: false
-# posterior means next to the ML estimates (polr() calls the cutpoints zeta)
-ml_approval <- c(fit_approval$zeta, coef(fit_approval))
-bayes_approval <- fixef(fit_approval_brm)[, "Estimate"]
-
-tibble(polr_term = names(ml_approval),
-       polr = ml_approval,
-       brm_term = names(bayes_approval),
-       brm = bayes_approval)
-```
+[CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]
+:::
 
 ## Ordered vs. nominal
 

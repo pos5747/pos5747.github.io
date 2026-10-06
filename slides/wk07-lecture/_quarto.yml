@@ -56,6 +56,18 @@ format:
                   var src = img.src; img.src = ''; img.src = src;
                 });
               });
+              // A gif that should start on click: the slide shows its first
+              // frame (a still png) and a fragment img carries the gif in
+              // data-gif. Revealing the fragment swaps the gif in (from frame
+              // 0, same clear-and-set trick); hiding it swaps the still back.
+              Reveal.on('fragmentshown', function (ev) {
+                var f = ev.fragment;
+                if (f.dataset && f.dataset.gif) { f.src = ''; f.src = f.dataset.gif; }
+              });
+              Reveal.on('fragmenthidden', function (ev) {
+                var f = ev.fragment;
+                if (f.dataset && f.dataset.gif) { f.src = f.dataset.still; }
+              });
               Reveal.layout();
             }
             function init() {
