@@ -1,0 +1,520 @@
+/*-- scss:defaults --*/
+// POS 5747 lecture theme (revealjs, 1600 x 900).
+// Design notes and tokens: DESIGN.md. Class names are the contract (CONTRACT.md).
+
+// Web fonts: Source Sans 3 (text) and Source Code Pro (code fallback for
+// non-Mac viewers; Macs use the installed Menlo, which has no ligatures).
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Source+Code+Pro:wght@400;600&display=swap');
+
+// ---- tokens ---------------------------------------------------------------
+$ink:        #1d232b;   // text
+$ink-strong: #11161c;   // headings
+$ink-soft:   #4a5260;   // code output, secondary text
+$muted:      #737b87;   // captions, .muted, slide number
+$rule:       #dfe3e8;   // hairlines
+$surface:    #f6f7f9;   // code background
+$surface-2:  #f1f5fa;   // callout tint
+$navy:       #1b2a41;   // section dividers, algorithm frame
+
+$set1-red:   #e41a1c;
+$set1-blue:  #377eb8;
+$set1-green: #4daf4a;
+
+// code tokens: same hues, deepened a touch for small text on a light surface
+$code-red:   #d01c1f;
+$code-blue:  #2f6fa6;
+$code-green: #3a8f37;
+
+// The family names need their own quotes: Quarto interpolates these into CSS
+// custom properties, which strips one level of quoting, and an unquoted
+// `Source Sans 3` is invalid CSS (the bare 3), so the browser fell back to
+// Times in the first smoke test.
+$font-family-sans-serif: '"Source Sans 3"', -apple-system, "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace: Menlo, '"Source Code Pro"', Consolas, monospace;
+$presentation-heading-font: '"Source Sans 3"', -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+$presentation-font-size-root: 36px;
+$presentation-font-smaller: 0.8;
+$presentation-line-height: 1.35;
+$presentation-heading-font-weight: 600;
+$presentation-heading-color: $ink-strong;
+$presentation-h1-font-size: 2.1em;
+$presentation-h2-font-size: 1.3em;
+$presentation-h3-font-size: 1.05em;
+$presentation-block-margin: 14px;
+
+$body-bg: #ffffff;
+$body-color: $ink;
+$link-color: $set1-blue;
+$code-block-font-size: 0.6em;
+$code-block-bg: $surface;
+$code-block-border-color: $rule;
+$code-color: $ink;
+$code-bg: $surface;
+
+/*-- scss:rules --*/
+
+// ---- type -----------------------------------------------------------------
+.reveal,
+.reveal h1, .reveal h2, .reveal h3, .reveal h4,
+.reveal p, .reveal li, .reveal td, .reveal th {
+  font-family: "Source Sans 3", -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+.reveal { color: $ink; font-kerning: normal; }
+
+.reveal .slides section h2 {
+  color: $ink-strong;
+  font-size: 1.3em;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
+  margin: 0 0 0.75em 0;
+  padding-bottom: 0.32em;
+  position: relative;
+}
+// short blue accent under every slide title
+.reveal .slides section h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.2em;
+  height: 4px;
+  border-radius: 2px;
+  background: $set1-blue;
+}
+// code in a title: same weight as the title, no chip
+// inline math in a title (e.g. a hat or a subscript) must not grow the line box,
+// or the title and its blue bar sit lower than on every other slide
+.reveal .slides section h2 mjx-container[jax="CHTML"] { display: inline-block !important; margin-top: -0.25em !important; }
+.reveal .slides section h2 code, .reveal .slides section h1 code, .reveal .slides section h3 code {
+  font-size: 0.9em;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+.reveal .slides section h3 {
+  font-size: 1.0em;
+  font-weight: 600;
+  color: $ink-strong;
+  margin: 0.6em 0 0.3em 0;
+}
+
+.reveal p { margin: 0 0 0.55em 0; line-height: 1.35; }
+.reveal strong { font-weight: 600; color: $ink-strong; }
+.reveal em { font-style: italic; }
+.reveal a { color: $set1-blue; text-decoration: none; }
+.reveal p a, .reveal li a, .reveal td a { border-bottom: 1px solid rgba($set1-blue, 0.35); }
+
+.reveal ul, .reveal ol { display: block; margin: 0 0 0.55em 1.1em; }
+.reveal li { margin: 0.18em 0; line-height: 1.3; }
+.reveal li > ul, .reveal li > ol { margin-top: 0.12em; margin-bottom: 0.12em; font-size: 0.9em; }
+.reveal ul li::marker { color: $set1-blue; }
+.reveal ol li::marker { color: $set1-blue; font-weight: 600; }
+
+// ---- slide chrome -----------------------------------------------------------
+.reveal .slide-number {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 15px;
+  color: $muted;
+  background: transparent;
+  right: 18px;
+  bottom: 12px;
+}
+.reveal .slide-number a { border: none; }
+.reveal .progress { height: 3px; background: rgba($navy, 0.06); color: rgba($set1-blue, 0.55); }
+
+// ---- title slide --------------------------------------------------------------
+.reveal #title-slide { text-align: left; }
+.reveal #title-slide .title {
+  font-size: 2.2em;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  color: $ink-strong;
+  margin-bottom: 0.25em;
+}
+.reveal #title-slide .title::after { display: none; }
+.reveal #title-slide .subtitle {
+  font-size: 1.05em;
+  font-weight: 400;
+  color: $ink-soft;
+  margin: 0 0 1.4em 0;
+}
+.reveal #title-slide .quarto-title-authors { justify-content: flex-start; display: block; }
+.reveal #title-slide .quarto-title-author { padding: 0 !important; margin: 0; display: block; }
+.reveal #title-slide .quarto-title-author-name { padding: 0 !important; margin: 0 0 0.2em 0 !important; }
+.reveal #title-slide .quarto-title-author-name,
+.reveal #title-slide .date,
+.reveal #title-slide p { font-size: 0.75em; color: $muted; margin: 0; }
+.reveal #title-slide::before {
+  content: "";
+  display: block;
+  width: 3.2em;
+  height: 6px;
+  border-radius: 3px;
+  background: $set1-blue;
+  margin-bottom: 0.8em;
+}
+
+// ---- section dividers (level-1 headings) ------------------------------------
+// The navy full-bleed background comes from reveal itself: the small script in
+// _quarto.yml stamps data-background-color on every level-1 slide, and reveal
+// then marks the slide .has-dark-background.
+.reveal .slides section.level1 { text-align: left; }
+.reveal .slides section.level1 h1 {
+  font-size: 2.1em;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.08;
+  color: $ink-strong;
+  max-width: 80%;
+  padding-top: 0.55em;
+  position: relative;
+}
+.reveal .slides section.level1 h1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.6em;
+  height: 6px;
+  border-radius: 3px;
+  background: $set1-blue;
+}
+.reveal .slides section.level1.has-dark-background h1,
+.reveal .slides section.level1.has-dark-background,
+.reveal .slides section.level1.has-dark-background p { color: #ffffff; }
+.reveal .slides section.level1.has-dark-background h1::before { background: #6fa8dc; }
+.reveal .slides section.level1.has-dark-background p { color: rgba(#fff, 0.72); }
+.reveal .slide-number.has-dark-background,
+.reveal.has-dark-background .slide-number { color: rgba(#fff, 0.55); }
+
+// ---- .statement -------------------------------------------------------------
+// One idea, centered. The title becomes a small kicker; the sentence is large.
+.reveal .slides section.statement { text-align: center; }
+.reveal .slides section.statement:not(.center) { top: 50% !important; transform: translateY(-50%); }
+.reveal .slides section.statement:not(.center) { min-height: 0 !important; height: auto !important; }
+.reveal .slides section.statement h2 {
+  font-size: 0.62em;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: $muted;
+  margin: 0 auto 1.1em auto;
+  padding-bottom: 0.7em;
+  display: inline-block;
+}
+.reveal .slides section.statement h2::after { left: 50%; transform: translateX(-50%); width: 2.4em; height: 3px; }
+.reveal .slides section.statement p {
+  font-size: 1.6em;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.008em;
+  color: $ink-strong;
+  max-width: 24em;
+  margin: 0 auto 0.4em auto;
+  text-wrap: balance;
+}
+.reveal .slides section.statement ul { list-style: none; margin-left: 0; }
+
+// ---- .smaller / .evensmaller -------------------------------------------------
+// .smaller is Quarto's own class ($presentation-font-smaller = 0.8 above).
+.reveal .slides section.evensmaller { font-size: 0.65em; }
+.reveal .slides section.evensmaller h2 { font-size: calc(1.3em / 0.65); }
+.reveal .slides section.smaller h2 { font-size: calc(1.3em / 0.8); }
+// code keeps a floor so it stays readable from the back of the room
+.reveal .slides section.smaller pre { font-size: 0.68em; }
+.reveal .slides section.evensmaller pre { font-size: 0.74em; }
+.reveal div.smaller, .reveal span.smaller { font-size: 0.8em; }
+.reveal div.evensmaller, .reveal span.evensmaller { font-size: 0.65em; }
+
+// ---- color spans ----------------------------------------------------------------
+.reveal .red   { color: $set1-red; }
+.reveal .blue  { color: $set1-blue; }
+.reveal .green { color: $set1-green; }
+.reveal .muted { color: $muted; }
+
+// ---- code ---------------------------------------------------------------------
+.reveal pre, .reveal code, .reveal pre code {
+  font-family: Menlo, "Source Code Pro", Consolas, monospace;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+}
+.reveal pre {
+  font-size: 0.6em;
+  line-height: 1.45;
+  margin: 0.35em 0 0.5em 0;
+  width: 100%;
+  box-shadow: none;
+}
+.reveal div.sourceCode {
+  background: $surface;
+  border: 1px solid $rule;
+  border-radius: 6px;
+  margin: 0.35em 0 0.5em 0;
+  overflow: visible;
+}
+.reveal div.sourceCode pre.sourceCode { margin: 0; background: transparent; border: none; }
+.reveal pre.sourceCode code,
+.reveal div.sourceCode pre code {
+  max-height: none;
+  overflow: visible;
+  padding: 0.55em 0.85em;
+  background: transparent;
+  color: $ink;
+  // a line longer than the panel (about 120 characters at full width) wraps
+  // visibly instead of running off the slide
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.reveal pre code { max-height: none; overflow: visible; }
+.reveal .code-copy-button { display: none; }
+
+// syntax: comments red, keywords blue, strings green; everything else ink
+.reveal div.sourceCode code span { color: $ink; font-style: normal; font-weight: 400; }
+.reveal div.sourceCode code span.co,
+.reveal div.sourceCode code span.cv,
+.reveal div.sourceCode code span.do,
+.reveal div.sourceCode code span.an { color: $code-red; }
+.reveal div.sourceCode code span.kw,
+.reveal div.sourceCode code span.cf,
+.reveal div.sourceCode code span.cn,
+.reveal div.sourceCode code span.bu,
+.reveal div.sourceCode code span.dt { color: $code-blue; }
+.reveal div.sourceCode code span.st,
+.reveal div.sourceCode code span.ss,
+.reveal div.sourceCode code span.ch,
+.reveal div.sourceCode code span.vs { color: $code-green; }
+// .er marks tokens the highlighter cannot parse; the only ones in this deck are
+// the braces of a function split across two columns, so they stay plain ink
+.reveal div.sourceCode code span.er { color: $ink; font-weight: 400; }
+.reveal div.sourceCode code span.al { color: $code-red; font-weight: 600; }
+
+// highlighted lines (code-line-numbers: "2-4"): dim the rest, do not shout
+.reveal div.sourceCode pre code.has-line-highlights > span:not(.highlight-line) { opacity: 0.35; }
+.reveal pre code.has-line-highlights > span.highlight-line { opacity: 1; }
+// line numbers: small, muted, no rules
+.reveal div.sourceCode pre code a,
+.reveal div.sourceCode pre code a::before { border: none !important; text-decoration: none; }
+.reveal pre.numberSource code > span > a:first-child::before {
+  color: $muted;
+  border-right: none;
+  font-size: 0.85em;
+  padding-right: 0.9em;
+}
+
+
+// .tight-output: stacked message/output blocks (one per message()) with no gaps
+.reveal .slides section.tight-output .cell-output pre { margin: 0; }
+.reveal .slides section.tight-output .cell-output pre code { padding-top: 0; padding-bottom: 0; }
+
+// cell output: no box, a faint left rule, softer ink
+.reveal .cell-output pre,
+.reveal pre.cell-output {
+  border: none;
+  border-left: 3px solid $rule;
+  background: transparent;
+  margin: 0.3em 0 0.5em 0;
+  border-radius: 0;
+}
+.reveal .cell-output pre code,
+.reveal pre.cell-output code {
+  max-height: none;
+  overflow: visible;
+  padding: 0.1em 0 0.1em 0.85em;
+  color: $ink-soft;
+  background: transparent;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+// inline code
+.reveal p code, .reveal li code, .reveal td code, .reveal th code,
+.reveal .defbox code, .reveal .key code, .reveal .caption code {
+  font-size: 0.82em;
+  background: $surface;
+  border: 1px solid $rule;
+  border-radius: 4px;
+  padding: 0.04em 0.28em;
+  color: $ink;
+  white-space: nowrap;
+}
+
+// ---- output-location: column (code left, output right) -----------------------
+.reveal .column-output-location { display: flex; align-items: flex-start; gap: 0; }
+.reveal .column-output-location .column:first-of-type div.sourceCode { height: auto; background: $surface; }
+.reveal .column-output-location > .column { box-sizing: border-box; min-width: 0; }
+.reveal .column-output-location > .column:first-child { padding-right: 0.6em; }
+.reveal .column-output-location > .column:last-child { padding-left: 0.6em; }
+// (long lines wrap, as everywhere: about 56 characters fit in a half column)
+.reveal .column-output-location .column > div { margin-left: 0 !important; margin-right: 0 !important; }
+
+// ---- columns ------------------------------------------------------------------
+.reveal .columns { display: flex; align-items: flex-start; }
+.reveal .columns > .column { box-sizing: border-box; min-width: 0; }
+.reveal .columns > .column + .column { padding-left: 0.9em; }
+.reveal .columns > .column > :not(ul, ol) { margin-left: 0; margin-right: 0; }
+
+// ---- figures -----------------------------------------------------------------
+.reveal .cell-output-display { text-align: center; }
+.reveal .slides figure { margin: 0.25em auto 0 auto; }
+// figures: Quarto marks a lone figure .r-stretch and reveal sizes it to the
+// space left on the slide; everything else is capped here.
+.reveal .cell-output-display img:not(.r-stretch),
+.reveal .slides figure img:not(.r-stretch) {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100%;
+  max-height: 700px;
+  margin: 0.2em auto 0 auto;
+  display: block;
+}
+.reveal .column .cell-output-display img:not(.r-stretch),
+.reveal .column figure img:not(.r-stretch) { max-height: 660px; }
+.reveal .slides img.r-stretch { display: block; margin: 0.2em auto 0 auto; }
+.reveal .slides img { border: none; box-shadow: none; }
+
+// ---- tables ------------------------------------------------------------------
+.reveal table {
+  border-collapse: collapse;
+  font-size: 0.8em;
+  font-variant-numeric: tabular-nums lining-nums;
+  margin: 0.3em auto 0.5em auto;
+}
+.reveal table th,
+.reveal table td {
+  padding: 0.28em 0.75em;
+  border: none;
+  border-bottom: 1px solid $rule;
+  line-height: 1.25;
+}
+.reveal table thead th,
+.reveal table tr:first-child th {
+  font-weight: 600;
+  color: $ink-strong;
+  border-top: 2px solid $ink-strong;
+  border-bottom: 1px solid $ink-strong;
+}
+.reveal table tbody tr:last-child td { border-bottom: 2px solid $ink-strong; }
+.reveal table td { color: $ink; }
+
+// .compare: two-model comparison, full width
+.reveal .slides section.compare table { width: 100%; font-size: 0.78em; }
+.reveal .slides section.compare table th:not(:first-child),
+.reveal .slides section.compare table td:not(:first-child) { text-align: right; }
+.reveal .slides section.compare table td:first-child { color: $ink-strong; }
+.reveal .slides section.compare .cell-output-display { text-align: left; }
+// tinytable: draw its rules with ours (it paints its own via ::after and
+// var(--tt-line-color)), and let .compare tables span the slide.
+.reveal .tinytable { --tt-line-color: transparent; --tt-cell-padding: 0.28em 0.75em; }
+.reveal .cell-output-display .container { padding: 0; max-width: none; }
+.reveal .tinytable th { font-weight: 600; }
+.reveal .slides section.compare table.tinytable { width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; }
+// tinytable / modelsummary notes: tinytable sizes them in rem (about 12px on
+// the slide); give them caption size and color instead
+.reveal table.tinytable tfoot td {
+  font-size: 20px !important;
+  line-height: 1.3;
+  color: $muted;
+  text-align: left;
+  border-bottom: none !important;
+  padding-top: 0.45em;
+}
+
+// ---- math ---------------------------------------------------------------------
+.reveal mjx-container[jax="CHTML"] { font-size: 100% !important; }
+.reveal mjx-container[jax="CHTML"][display="true"] { margin: 0.45em 0 0.55em 0 !important; }
+.reveal .slides section .algorithm mjx-container[jax="CHTML"] { font-size: 98% !important; }
+
+// ---- .algorithm ----------------------------------------------------------------
+.reveal .algorithm {
+  font-size: 0.78em;
+  line-height: 1.3;
+  background: #ffffff;
+  border: 1.5px solid $navy;
+  border-radius: 6px;
+  padding: 0.75em 1.1em 0.7em 1.1em;
+  margin: 0.2em 0 0.6em 0;
+  position: relative;
+}
+.reveal .algorithm > p:first-child > strong:first-child {
+  color: $navy;
+}
+.reveal .algorithm p { margin: 0.25em 0 0.2em 0; line-height: 1.3; }
+.reveal .algorithm ul, .reveal .algorithm ol { margin: 0.1em 0 0.3em 1.3em; }
+.reveal .algorithm li { margin: 0.06em 0; line-height: 1.28; }
+.reveal .algorithm li > ul, .reveal .algorithm li > ol { font-size: 1em; margin-top: 0.04em; margin-bottom: 0.06em; }
+.reveal .algorithm ol { list-style-type: decimal; }
+.reveal .algorithm ol ol { list-style-type: lower-alpha; }
+.reveal .algorithm strong { color: $navy; font-weight: 700; }
+// a heading inside the box reads as its title bar
+.reveal .algorithm h3, .reveal .algorithm h4 {
+  font-size: 1em;
+  font-weight: 700;
+  color: $navy;
+  margin: -0.75em -1.1em 0.5em -1.1em;
+  padding: 0.45em 1.1em;
+  background: $surface-2;
+  border-bottom: 1px solid $rule;
+  border-radius: 6px 6px 0 0;
+}
+
+// ---- .defbox ------------------------------------------------------------------
+.reveal .defbox {
+  background: $surface-2;
+  border: none;
+  border-left: 5px solid $set1-blue;
+  border-radius: 0 6px 6px 0;
+  padding: 0.6em 1em;
+  margin: 0.7em 0;
+}
+.reveal .defbox p:last-child, .reveal .defbox ul:last-child { margin-bottom: 0; }
+// a row of defboxes in columns (summary slides): equal heights
+.reveal .columns:has(> .column > .defbox:only-child) { align-items: stretch; }
+.reveal .columns > .column > .defbox:only-child { height: 100%; box-sizing: border-box; margin-top: 0; margin-bottom: 0; }
+.reveal .defbox > p:first-child > strong:first-child { color: $set1-blue; }
+
+// ---- .key: one takeaway line, anchored to the bottom of the slide -------------
+.reveal .slides section .key {
+  font-size: 0.92em;
+  font-weight: 600;
+  color: $ink-strong;
+  border-top: 2px solid $set1-red;
+  padding: 0.45em 0 0 0;
+  margin: 0.9em 0 0 0;
+}
+.reveal .slides section:not(.center):not(.statement):not(:has(.r-stretch)) > .key {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  margin: 0;
+}
+// on a slide whose figure reveal stretches, keep the strip in the flow so the
+// figure is sized around it
+.reveal .slides section:has(.r-stretch) > .key { margin-top: 0.5em; }
+.reveal .slides section .key p { margin: 0; }
+
+// ---- .caption -----------------------------------------------------------------
+.reveal .caption {
+  font-size: 0.6em;
+  line-height: 1.3;
+  color: $muted;
+  text-align: center;
+  margin: 0.35em auto 0.5em auto;
+  max-width: 85%;
+}
+.reveal .caption p { margin: 0; }
+// on .smaller / .evensmaller slides keep captions at about 20px
+.reveal .slides section.smaller .caption { font-size: 0.72em; }
+.reveal .slides section.evensmaller .caption { font-size: 0.88em; }
+
+// ---- fragments ------------------------------------------------------------------
+.reveal .slides section .fragment.blur { filter: blur(15px); opacity: 1; visibility: inherit; }
+.reveal .slides section .fragment.blur.visible { filter: none; }
+
+// ---- .center (reveal) keeps its own vertical centering; left-align text -------
+.reveal .slides section.center { text-align: left; }

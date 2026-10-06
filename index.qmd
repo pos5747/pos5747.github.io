@@ -59,8 +59,13 @@ inference; rejection sampling; a Bayesian invariance property; ordered logit]{.t
 
 ------------------------------------------------------------------------
 
-oct 06 · **mcmc** [Metropolis
-algorithm; HMC + Stan and its R ecosystem]{.topics}
+oct 06 · **mcmc** · \[[slides](slides/wk07-lecture/lecture.html)\]
+\[[multinomial logit slides](slides/wk07-unordered/unordered.html)\]
+\[[materials](files/wk07-r.qmd)\]
+\[[notes](https://pos5747.github.io/notes/wk07/01-metrop.html)\]
+\[[exercises](exercises/wk07-exercises.html)\]
+[Metropolis
+algorithm; HMC + Stan and its R ecosystem; multinomial logit]{.topics}
 
 ------------------------------------------------------------------------
 

@@ -1,0 +1,75 @@
+project:
+  type: default
+
+format:
+  revealjs:
+    theme: [default, styles.scss]
+    width: 1600
+    height: 900
+    margin: 0.06
+    center: false
+    transition: fade
+    background-transition: fade
+    slide-number: c/t
+    progress: true
+    controls: false
+    code-line-numbers: false
+    code-copy: false
+    highlight-style: a11y
+    mathjax: true
+    html-math-method: mathjax
+    menu: false
+    chalkboard: false
+    preview-links: false
+    fig-align: center
+    fig-width: 10
+    fig-asp: 0.5
+    fig-dpi: 192
+    # Section dividers: stamp reveal's own navy background on every level-1
+    # (`# Title`) slide, so dividers are full-bleed without per-slide attributes;
+    # and re-run reveal's layout when lazy images load (see comment inside).
+    include-after-body:
+      - text: |
+          <script>
+          (function () {
+            function stamp() {
+              document.querySelectorAll('.reveal .slides section.level1').forEach(function (s) {
+                if (!s.hasAttribute('data-background-color')) {
+                  s.setAttribute('data-background-color', '#1b2a41');
+                }
+              });
+              Reveal.sync();
+              // Lone figures are .r-stretch: reveal sizes them from the space
+              // left on the slide. Re-measure once a lazy image arrives, or a
+              // slide opened directly can show a zero-height figure.
+              document.querySelectorAll('.reveal .slides img').forEach(function (img) {
+                img.addEventListener('load', function () { Reveal.layout(); });
+              });
+              Reveal.on('slidechanged', function () { Reveal.layout(); });
+              // Animated gifs loop from the moment they load, not from the
+              // moment their slide appears, so a timed gif (the rejection
+              // sampler on "Watch it run") would be mid-loop on arrival.
+              // Restart every gif on the slide just entered: clearing src and
+              // setting it back replays from frame 0 out of the browser cache.
+              Reveal.on('slidechanged', function (ev) {
+                ev.currentSlide.querySelectorAll('img[src$=".gif"]').forEach(function (img) {
+                  var src = img.src; img.src = ''; img.src = src;
+                });
+              });
+              Reveal.layout();
+            }
+            function init() {
+              if (!window.Reveal) return;
+              if (Reveal.isReady()) stamp(); else Reveal.on('ready', stamp);
+            }
+            if (document.readyState === 'complete') init();
+            else window.addEventListener('load', init);
+          })();
+          </script>
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: true
+  freeze: false

@@ -256,7 +256,7 @@ window.Quarto = {
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-10-02T12:00:00-04:00">Complete solutions open <strong>Friday, October 2 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Bayes’ Readings</h2>
 <p><strong>Readings</strong></p>
@@ -267,11 +267,9 @@ window.Quarto = {
 </ul>
 <p><strong>Question</strong></p>
 <p>In this course, we have now studied two general engines: maximum likelihood and Bayesian inference. How should we think about the relationship between the two? Are they best understood as competing, incompatible alternatives? Or simply as interchangeable tools? If they compete, which approach is right, and why? If they are interchangeable, when might one be more useful than the other?</p>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><em>No solution intended. Answers will vary.</em></p>
 </div></details>
-</div>
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Bernoulli</h2>
@@ -294,7 +292,6 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"pi: the proportion who approve"</span>,</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"prior density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part (1)</strong></p>
 <div class="cell">
@@ -376,7 +373,6 @@ window.Quarto = {
 </div>
 <p>At least to me, it’s really surprising how little impact this extremely informative prior has on the inferences. We get basically the same confidence interval, but using an absurdly strong and implausible prior.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Poisson</h2>
@@ -419,7 +415,6 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 3</span></summary><div class="ex-reveal-body">
 <p>For part 2(b), the data are <code>crdata::holland2015</code>, filtered to <code>city == "santiago"</code> (as in Week 3), and <code>qgamma()</code> takes the shape <span class="math inline">\(\alpha\)</span> and then the rate <span class="math inline">\(\beta\)</span>.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part (1)</strong></p>
 <p>The likelihood is the product of the <span class="math inline">\(N\)</span> pmfs:</p>
@@ -519,7 +514,6 @@ f(\lambda \mid y) \propto \lambda^{\left( \alpha^* + \sum_{i = 1}^N y_i \right) 
 <p>The ML estimate is about 2.71, and the 90% CI runs from about 2.24 to 3.17. The posterior mean is a bit larger (2.72 rather than 2.71) because the prior has a mean of 4, which pulls the posterior mean up slightly. But the prior carries very little weight (<span class="math inline">\(\beta^* = 0.5\)</span> acts like half an observation, against 34 real observations), so the two intervals are very similar.</p>
 <p>We interpret frequentist 90% CI by claiming that the parameter falls within the interval (realizing that we’ll be wrong at most 10% of the time in the long run). We interpret the Bayesian 90% CI by saying that there’s a 90% chance that the parameter falls within the interval.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-4" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Rejection</h2>
@@ -602,7 +596,6 @@ f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>For part 1, you can borrow <code>rej()</code> from the <a href="https://pos5747.github.io/notes/wk06/02-rejection-sampling.html#rejection-sampling">Rejection Sampling</a> section of the notes. Then transform each simulation of <span class="math inline">\(\pi\)</span> into the odds of failure before you summarize. For part 2, the <a href="https://pos5747.github.io/notes/wk06/02-rejection-sampling.html#beta4-10-example">beta(4, 10) figure</a> in the notes shows the acceptance probability at four proposals. Think about how the histogram of accepted draws is built from uniform proposals.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <p>First, borrow the rejection algorithm from the notes.</p>
@@ -692,7 +685,7 @@ f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}
 ✅ Accepted samples: 1,000
 ❌ Rejected samples: 23,446
 ﹪ Acceptance rate: 4%
-⏰ Total time: 1.1s</code></pre>
+⏰ Total time: 611ms</code></pre>
 </div>
 </div>
 <p>Finally, transform the posterior samples to obtain simulations of the quantity of interest and then summarize those simulations.</p>
@@ -715,7 +708,6 @@ f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}
 <p><span class="math inline">\(M\)</span> must be at least the maximum of <span class="math inline">\(f\)</span> so that <span class="math inline">\(f(z)/M\)</span> is a probability. If <span class="math inline">\(M\)</span> is too small, then <span class="math inline">\(f(z)/M &gt; 1\)</span> near the mode, and the algorithm accepts <em>every</em> proposal there. It can’t accept more than all of them, so the region around the mode is under-represented relative to the tails, and the samples come from the wrong distribution. This is why <code>rej()</code> stops with an error when it sees <span class="math inline">\(f(z) &gt; M\)</span>.</p>
 <p>If <span class="math inline">\(M\)</span> is ten times larger than it needs to be, the samples are still correct. Every acceptance probability is divided by the same constant, so the <em>relative</em> acceptance rates across values of <span class="math inline">\(\pi\)</span> don’t change, and the accepted draws still take the shape of <span class="math inline">\(f\)</span>. The run changes instead. The acceptance rate falls by a factor of ten, so the algorithm needs about ten times as many proposals (and about ten times as long) to collect the same <span class="math inline">\(S\)</span> samples. This is why we choose <span class="math inline">\(M\)</span> just above the maximum of <span class="math inline">\(f\)</span>.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Posterior mean of the odds</h2>
@@ -728,7 +720,6 @@ f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>See <a href="https://pos5747.github.io/notes/wk06/02-rejection-sampling.html#a-bayesian-invariance-property">A Bayesian Invariance Property</a> in the notes. The odds <span class="math inline">\(\pi/(1 - \pi)\)</span> is a convex function of <span class="math inline">\(\pi\)</span>, so think about Jensen’s inequality.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <p>The uniform prior is beta(1, 1). With <span class="math inline">\(k = 6\)</span> and <span class="math inline">\(N = 20\)</span>, the posterior is beta(<span class="math inline">\(1 + 6\)</span>, <span class="math inline">\(1 + 20 - 6\)</span>) = beta(7, 15).</p>
@@ -777,7 +768,6 @@ f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}
 </div>
 <p>The two intervals are <em>exactly</em> the same (about 0.20 to 0.95)! The odds is an <em>increasing</em> function of <span class="math inline">\(\pi\)</span>, so it doesn’t change the order of the simulations. The simulation of <span class="math inline">\(\pi\)</span> at the 5th percentile becomes the simulation of the odds at the 5th percentile, and so on. This means that we <em>can</em> freely transform the endpoints of a percentile credible interval (and the posterior median) with an increasing function. We cannot freely transform the posterior mean.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-6" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Ordered logit probabilities</h2>
@@ -795,7 +785,6 @@ f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>The event <span class="math inline">\(Y_i \leq j\)</span> happens when <span class="math inline">\(Y_i \leq j - 1\)</span> or when <span class="math inline">\(Y_i = j\)</span>, and these two events can’t both happen. For part 4, notice that the log-odds is the logit of <span class="math inline">\(\Pr(Y_i \leq j)\)</span>, and the logit undoes the inverse logit.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <p>The events <span class="math inline">\(Y_i \leq j - 1\)</span> and <span class="math inline">\(Y_i = j\)</span> can’t both happen, and together they make up the event <span class="math inline">\(Y_i \leq j\)</span>. So the probabilities add:</p>
@@ -847,7 +836,6 @@ f(\pi \mid y) \propto \pi^k (1-\pi)^{n-k} \, \phi\!\left(\tfrac{\pi-\mu}{\sigma}
 <p>The assumption gets us a much smaller model (i.e., more parsimonious). We need only one coefficient per explanatory variable, rather than <span class="math inline">\(J - 1\)</span> of them (i.e., one per cutpoint). Fewer parameters means more precise estimates. It also gives the coefficients a simple interpretation. A positive <span class="math inline">\(\beta_k\)</span> moves probability toward the higher categories, and a negative <span class="math inline">\(\beta_k\)</span> moves it toward the lower categories.</p>
 <p>But the assumption costs us flexibility. An explanatory variable can only move the probabilities in one direction along the scale. The model cannot describe a variable that pushes people toward <em>both</em> ends. For example, political interest might make people more likely to be strong Democrats <em>and</em> more likely to be strong Republicans, while making them less likely to be independents. The ordered logit cannot capture that pattern.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-7" class="level2 ex-heading page-columns page-full">
 <h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Red State, Blue State: Part 1</h2>
@@ -878,7 +866,6 @@ $ rep_share  &lt;dbl&gt; 0.4333, 0.6189, 0.5861, 0.3495, 0.5092, 0.5591, 0.5261,
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p><code>facet_wrap(vars(year))</code> makes one panel per election, and <code>geom_smooth(method = "lm", se = FALSE)</code> adds the fitted line.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -903,7 +890,6 @@ $ rep_share  &lt;dbl&gt; 0.4333, 0.6189, 0.5861, 0.3495, 0.5092, 0.5591, 0.5261,
 <p><strong>Part 2</strong></p>
 <p>In 1976 and 1980, richer states voted a little more Republican. There’s not much relationship from 1982 to 1990. From 1992 onward, richer states voted a little more Democratic. The slope steepens through 2000 and 2004 and then stays about the same through 2024. The conclusion is this: rich states became blue states during the 1980s and 1990s; the pattern has remained for the last twenty years.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-8" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> Red State, Blue State: Part 2(a)</h2>
@@ -968,11 +954,10 @@ $ pid                    &lt;ord&gt; 1. Strong Democrat, 1. Strong Democrat, 1. 
 <div class="sourceCode" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change in Pr(Y &gt;= 5) as income moves from -1 to 1</span></span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># comparisons(fit_ms,</span></span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co">#             variables = ...,  # income from -1 to 1</span></span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co">#             newdata = datagrid(),</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co">#             newdata = datagrid(grid_type = "mean_or_mode"),</span></span>
 <span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co">#             hypothesis = "b5 + b6 + b7 = 0",</span></span>
 <span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="co">#             conf_level = 0.9)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -1061,7 +1046,7 @@ AIC: 1635.07 </code></pre>
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change in Pr(Y &gt;= 5) as income moves from -1 to 1</span></span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_ms,</span>
 <span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">income =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)),</span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(),</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>),</span>
 <span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">hypothesis =</span> <span class="st">"b5 + b6 + b7 = 0"</span>,</span>
 <span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">conf_level =</span> <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1074,7 +1059,6 @@ Type: probs</code></pre>
 </div>
 <p>Moving from the $20–40k bracket to the $80–200k bracket raises <span class="math inline">\(\Pr(Y \geq 5)\)</span> by about 0.17 (90% CI from about 0.10 to 0.23). In Mississippi, richer people are much more likely to identify with or lean toward the Republican Party.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-9" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> Red State, Blue State: Part 2(b)</h2>
@@ -1103,7 +1087,6 @@ $ pid                    &lt;ord&gt; 1. Strong Democrat, 1. Strong Democrat, 1. 
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>Copy your code from parts 1 and 3 of Part 2(a) and change <code>ms</code> to <code>ct</code>.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-02T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 2, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -1147,7 +1130,7 @@ AIC: 1903.04 </code></pre>
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change in Pr(Y &gt;= 5) as income moves from -1 to 1</span></span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_ct,</span>
 <span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">income =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)),</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(),</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>),</span>
 <span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">hypothesis =</span> <span class="st">"b5 + b6 + b7 = 0"</span>,</span>
 <span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">conf_level =</span> <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1163,7 +1146,6 @@ Type: probs</code></pre>
 <p>Income and partisanship are strongly related in Mississippi (a first difference of about 0.17, 90% CI from about 0.10 to 0.23) and barely related in Connecticut (about 0.03, 90% CI from about −0.01 to 0.08). That is, we see a strong relationship the poorest state and a weak relationship in the richest state.</p>
 <p>Might income matter more in poor states?</p>
 </div></details>
-</div>
 </section>
 <section id="ex-10" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> Exam review</h2>

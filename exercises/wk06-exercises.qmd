@@ -773,7 +773,7 @@ For part 3: without `hypothesis`, `comparisons()` returns one first difference f
 # change in Pr(Y >= 5) as income moves from -1 to 1
 # comparisons(fit_ms,
 #             variables = ...,  # income from -1 to 1
-#             newdata = datagrid(),
+#             newdata = datagrid(grid_type = "mean_or_mode"),
 #             hypothesis = "b5 + b6 + b7 = 0",
 #             conf_level = 0.9)
 ```
@@ -832,7 +832,7 @@ The probability of being a "Strong Democrat" decreases from about 0.39 at the lo
 # change in Pr(Y >= 5) as income moves from -1 to 1
 comparisons(fit_ms,
             variables = list(income = c(-1, 1)),
-            newdata = datagrid(),
+            newdata = datagrid(grid_type = "mean_or_mode"),
             hypothesis = "b5 + b6 + b7 = 0",
             conf_level = 0.9)
 ```
@@ -873,7 +873,7 @@ summary(fit_ct)
 # change in Pr(Y >= 5) as income moves from -1 to 1
 comparisons(fit_ct,
             variables = list(income = c(-1, 1)),
-            newdata = datagrid(),
+            newdata = datagrid(grid_type = "mean_or_mode"),
             hypothesis = "b5 + b6 + b7 = 0",
             conf_level = 0.9)
 ```

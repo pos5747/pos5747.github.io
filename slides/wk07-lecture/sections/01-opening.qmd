@@ -1,0 +1,318 @@
+## Weekly assessment {.center}
+
+[15 minutes · closed book]{.muted}
+
+::: {.notes}
+Week 6 assessment, 9:00 to 9:15. Leave this slide up while students work.
+:::
+
+## Today
+
+| Time  | Min | Section |
+|:------|----:|:--------|
+| 9:15  | 10  | Where we are |
+| 9:25  | 35  | Metropolis |
+| 10:00 | 25  | Stan |
+| 10:25 | 5   | [Break]{.muted} |
+| 10:30 | 15  | {brms} |
+| 10:45 | 15  | LOOIC |
+| 11:00 | 20  | Multinomial logit |
+| 11:20 | 10  | Wrap |
+
+::: {.notes}
+[CTK: one line on the arc of the day: last week we sampled with rejection; today we sample with Metropolis, then Stan, then {brms}.]
+:::
+
+## Where we are
+
+::: {.columns}
+::: {.column width="42%"}
+**Bayes' rule**
+
+$$
+\underbrace{f(\theta \mid y)}_{\text{posterior}} \propto \underbrace{f(y \mid \theta)}_{\text{likelihood}} \times \underbrace{f(\theta)}_{\text{prior}}
+$$
+
+**Toothpaste cap**
+
+- prior: $\text{beta}(3, 15)$
+- data: $k = 8$ tops in $N = 150$ tosses
+- posterior: $\text{beta}(3 + 8, 15 + 150 - 8)$ $= \text{beta}(11, 157)$
+
+**Bayes' rule → posterior → *sample***
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: s1-toothpaste-figure
+#| echo: false
+#| fig-width: 8
+#| fig-asp: 0.75
+
+# prior beta(3, 15); likelihood for k = 8, N = 150, normalized as beta(9, 143);
+# posterior beta(3 + 8, 15 + 150 - 8) = beta(11, 157)
+s1_curves <- tibble(pi = seq(0.001, 0.4, length.out = 1000)) |>
+  mutate(
+    `prior: beta(3, 15)` = dbeta(pi, 3, 15),
+    `likelihood (normalized)` = dbeta(pi, 9, 143),
+    `posterior: beta(11, 157)` = dbeta(pi, 11, 157)
+  ) |>
+  pivot_longer(-pi, names_to = "curve", values_to = "density") |>
+  mutate(curve = fct_inorder(curve))
+
+ggplot(s1_curves, aes(x = pi, y = density, color = curve)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_lecture() +
+  labs(x = expression(pi), y = "density", color = NULL) +
+  guides(color = guide_legend(ncol = 1))
+```
+:::
+:::
+
+::: {.notes}
+Recap from the Week 6 notes (`01-bayes`). The likelihood is drawn as a density (beta(9, 143)) so it shares the axis with the prior and posterior.
+[CTK: the point of the arrow: in most applied cases we can only *sample from* the posterior.]
+:::
+
+## Last week: rejection sampling
+
+::: {.algorithm}
+**Algorithm: Rejection Sampling**
+
+*Inputs:*
+
+- The unnormalized posterior $f(\pi \mid y)$ on $[0, 1]$.
+- Desired number of draws $S$.
+- Envelope constant $M$ such that $M > f(\pi)\ \forall \pi$.
+
+*Algorithm:*
+
+1. Initialize: Set $s = 1$.
+2. Repeat while $s \le S$:
+    (a) $z \sim \text{Uniform}(0, 1)$.
+    (b) $u \sim \text{Uniform}(0, 1)$.
+    (c) Accept–reject step: If $u \leq f(z)/M$, accept: set $\pi^{(s)} = z$, $s \leftarrow s + 1$. Otherwise, reject $z$ and return to Step 2a.
+
+*Output:* $\pi^{(1)}, \pi^{(2)}, \ldots, \pi^{(S)} \sim f(\pi \mid y)$.
+:::
+
+::: {.notes}
+Footnote from the Keynote box: To make the rejection algorithm simple, I've written it to apply specifically to the posterior for the Bernoulli model, which has support [0, 1]. The target density doesn't need to be a posterior and can have support other than [0, 1]. The proposal distribution doesn't have to be uniform. The key is that M is larger than the maximum of the target distribution and draws are accepted with probability f(z)/M.
+:::
+
+## Two costs of rejection
+
+The rejection algorithm is simple and intuitive, but requires
+
+1. finding a suitable envelope constant and
+2. rejecting many samples in realistic problems (e.g., logistic regression).
+
+::: {.notes}
+From the opening paragraph of `notes/wk07/01-metrop.qmd`.
+[CTK: why both costs get worse in realistic problems, e.g., five coefficients in a logit.]
+:::
+
+## Rejection sampling for a logit {.smaller}
+
+Let's use the logit model of the `turnout` dataset and consider three approaches to sampling from the posterior: rejection (Week 6), Metropolis, and Stan.
+
+The code below applies the simple rejection algorithm we saw for a 1d problem bounded between 0 and 1 to a multidimensional, unbounded problem (i.e., estimating logit coefficients).
+
+```{r}
+#| label: s1-rej-data
+#| cache: false
+# data and design matrix, with rescaled predictors (as in the notes)
+turnout <- ZeligData::turnout |>
+  mutate(across(age:income, arm::rescale, .names = "rs_{.col}"))
+f <- vote ~ rs_age + rs_educate + rs_income + race
+X <- model.matrix(f, data = turnout)
+y <- turnout$vote
+```
+
+::: {.notes}
+Setup chunk of the exercise "Three samplers, one posterior" (`wk07-exercises.qmd`), verbatim. The posterior is identical for all three samplers: rescaled predictors with a normal(0, 5) prior on each coefficient, the notes' `logit.stan`.
+:::
+
+## The log posterior and $M$ {.smaller}
+
+```{r}
+#| label: s1-rej-logpost
+#| cache: false
+# unnormalized log posterior for many values of beta at once
+# - beta has one row per value of beta; the result has one log posterior per row
+# - normal(0, 5) prior on each coefficient, same as logit.stan
+log_post_many <- function(beta, y, X) {
+  eta <- X %*% t(beta)  # one column per row of beta
+  log_lik <- colSums(y * eta - (pmax(eta, 0) + log1p(exp(-abs(eta)))))  # stable log(1 + exp(eta))
+  log_prior <- rowSums(dnorm(beta, mean = 0, sd = 5, log = TRUE))
+  log_lik + log_prior
+}
+
+# the same log posterior for a single value of beta
+log_post <- function(beta, y, X) {
+  log_post_many(matrix(beta, nrow = 1), y, X)
+}
+
+# log M: the log posterior at its peak
+opt <- optim(rep(0, ncol(X)), log_post, y = y, X = X,
+             method = "BFGS", control = list(fnscale = -1))
+log_M <- opt$value
+```
+
+::: {.notes}
+[CTK: the envelope constant M is the posterior at its mode, found with optim(); last week M was read off a one-dimensional plot.]
+:::
+
+## `rej_box()`: a box from −2 to 2 for every coefficient {.evensmaller}
+
+The code below creates `rej_box()`, which works in batches of **one million proposals** (!!).
+
+```{r}
+#| label: s1-rej-box-fn
+#| code-line-numbers: "10-13"
+rej_box <- function(lower, upper, log_M, y, X, S = 1000, max_batches = 10,
+                    batch_size = 1e6, chunk_size = 1e4) {
+  start_time <- Sys.time()
+  k <- length(lower)
+  samples <- matrix(NA_real_, nrow = 0, ncol = k)
+  for (b in 1:max_batches) {
+    n_accepted_batch <- 0
+    # evaluate the batch in chunks (a million proposals at once uses too much memory)
+    for (chunk in 1:(batch_size / chunk_size)) {
+      # propose: one row per proposal, uniform within the box
+      z <- matrix(runif(chunk_size * k, lower, upper), ncol = k, byrow = TRUE)
+      # accept with probability f(z) / M
+      accept <- log(runif(chunk_size)) <= log_post_many(z, y, X) - log_M
+      samples <- rbind(samples, z[accept, , drop = FALSE])
+      n_accepted_batch <- n_accepted_batch + sum(accept)
+    }
+    message("Batch ", b, " of ", max_batches, ": evaluated ",
+            scales::comma(batch_size), " proposals... ",
+            n_accepted_batch, " accepted (", nrow(samples), " accepted so far; ",
+            "worked for ", prettyunits::pretty_dt(Sys.time() - start_time), " so far)")
+    if (nrow(samples) >= S) break
+  }
+  time_total <- Sys.time() - start_time
+  message("⏰ Total time: ", prettyunits::pretty_dt(time_total))
+  colnames(samples) <- colnames(X)
+  list(samples = head(samples, S), n_proposals = b * batch_size,
+       time_total = as.numeric(time_total, units = "secs"))
+}
+```
+
+::: {.notes}
+Verbatim from the exercise. The highlighted lines are the whole algorithm: propose uniformly inside the box, accept with probability f(z)/M. Everything else is bookkeeping.
+:::
+
+## Ten million proposals {.smaller .tight-output}
+
+```{r}
+#| label: s1-rej-run
+#| message: true
+#| cache: true
+set.seed(1234)
+rej_wide <- rej_box(lower = rep(-2, 5), upper = rep(2, 5),  # the box: -2 to 2 for each of the 5 coefficients
+                    log_M = log_M, y = y, X = X,
+                    S = 1000,          # stop once 1,000 draws are accepted
+                    max_batches = 10,  # ...or after 10 batches, whichever comes first
+                    batch_size = 1e6,  # one million proposals per batch (one progress message per batch)
+                    chunk_size = 1e4)  # evaluate each batch 10,000 proposals at a time (to save memory)
+```
+
+```{r}
+#| label: s1-rej-gif
+#| include: false
+#| cache: true
+#| dependson: s1-rej-run
+#| cache.extra: !expr tools::md5sum("wk07-lecture-material/rej-gif/make-rej-gif.R")
+# Rebuild img/rej-sampler.gif from THIS run. rej_box() returns only the accepted
+# draws, so replay the identical random stream (same seed, same draw order) with
+# a copy of its loop that also records the proposal index of each acceptance,
+# check that the replay reproduces rej_wide exactly, and hand the gif script the
+# run's own numbers (n_proposals, time_total), so the gif agrees with the slides.
+set.seed(1234)
+lower <- rep(-2, 5); upper <- rep(2, 5); k <- 5
+batch_size <- 1e6; chunk_size <- 1e4; max_batches <- 10
+replay <- matrix(NA_real_, nrow = 0, ncol = k)
+proposal_index <- integer()
+n_done <- 0
+for (b in 1:max_batches) {
+  for (chunk in 1:(batch_size / chunk_size)) {
+    z <- matrix(runif(chunk_size * k, lower, upper), ncol = k, byrow = TRUE)
+    accept <- log(runif(chunk_size)) <= log_post_many(z, y, X) - log_M
+    replay <- rbind(replay, z[accept, , drop = FALSE])
+    proposal_index <- c(proposal_index, n_done + which(accept))
+    n_done <- n_done + chunk_size
+  }
+  if (nrow(replay) >= 1000) break
+}
+colnames(replay) <- colnames(X)
+stopifnot(nrow(head(replay, 1000)) == nrow(rej_wide$samples),
+          isTRUE(all.equal(unname(head(replay, 1000)), unname(rej_wide$samples))),
+          n_done == rej_wide$n_proposals)
+
+# the normal approximation to the posterior, for the blue cloud
+glm_fit <- glm(f, family = binomial, data = turnout)
+
+rej_run <- list(
+  accepted    = as_tibble(replay) |> mutate(proposal_index = proposal_index),
+  n_proposals = rej_wide$n_proposals,
+  total_time  = rej_wide$time_total,
+  glm_coef    = coef(glm_fit),
+  glm_vcov    = vcov(glm_fit)
+)
+rds_path <- "wk07-lecture-material/rej-gif/rej-run.rds"
+saveRDS(rej_run, rds_path)
+gif_log <- system2("Rscript", c("wk07-lecture-material/rej-gif/make-rej-gif.R", rds_path),
+                   stdout = TRUE, stderr = TRUE)
+if (!is.null(attr(gif_log, "status"))) stop("make-rej-gif.R failed:\n", paste(gif_log, collapse = "\n"))
+```
+
+::: {.notes}
+Ten batches of one million proposals, as in the exercise. The exercise's hint: the share of proposals accepted estimates the acceptance rate; divide 1,000 by that rate to find the number of proposals you need.
+:::
+
+## The acceptance rate
+
+```{r}
+#| label: s1-rej-rate
+# acceptance rate, and what 1,000 draws would take
+n_accepted <- nrow(rej_wide$samples)
+rate <- n_accepted / rej_wide$n_proposals
+proposals_needed <- 1000 / rate
+hours_needed <- proposals_needed * (rej_wide$time_total / rej_wide$n_proposals) / 3600
+c(accepted = n_accepted, rate = rate,
+  proposals_needed = proposals_needed, hours_needed = hours_needed)
+```
+
+::: {.key}
+We accepted `r n_accepted` of 10 million proposals in `r round(rej_wide$time_total / 60, 1)` minutes. That's an acceptance rate of about `r paste0(formatC(rate * 1e6, digits = 2, format = "g"), " × 10⁻⁶")`. At that rate, 1,000 draws would take about `r signif(proposals_needed / 1e6, 2)` million proposals (about `r round(hours_needed)` hours).
+:::
+
+::: {.notes}
+The exercise's rejection part, given away: the solution's sentence, with this render's numbers.
+[CTK: why so few: the posterior occupies a tiny fraction of the five-dimensional box, and f(z)/M is tiny everywhere else. See the next slide.]
+:::
+
+## The accepted draws
+
+![](img/rej-sampler.gif){width=1280}
+
+::: {.caption}
+Left: the proposal box, −2 to 2, in two of its five dimensions. Blue: 4,000 draws from the normal approximation to the posterior (`glm()` coefficients and covariance). Red: the `r n_accepted` accepted draws. Gray dots: a sample of the proposals. Right: the counters count every proposal. True speed for the first six seconds, then sped up (the badge says by how much).
+:::
+
+::: {.notes}
+The run from the previous two slides, as it happened: the hidden chunk after the run replays its random stream to recover when each draw was accepted, checks that the replay matches `rej_wide` exactly, and rebuilds `img/rej-sampler.gif` with `wk07-lecture-material/rej-gif/make-rej-gif.R` from the run's own count and time, so the draws, the rate, and the hours here are the slide's numbers. Added 2026-10-06 for the [CTK] cue after "Two costs of rejection".
+
+[CTK: the accepted draws sit where the posterior is; the box is enormous by comparison, and in five dimensions the ratio of volumes is far smaller than this two-dimensional picture shows. This is cost 2 from two slides ago, made concrete. Metropolis and Stan get the same posterior in seconds; that is Part 1 and Part 2 of the exercise.]
+:::
+
+
+## Beyond rejection {.statement}
+
+We can improve the rejection algorithm by making proposals that depend on the current value.
+
+::: {.notes}
+Notes continue: Many algorithms, including Stan, do this. The Metropolis algorithm is one example.
+:::

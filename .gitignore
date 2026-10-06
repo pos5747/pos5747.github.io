@@ -55,6 +55,29 @@
 !/slides/*.html
 !/slides/*_files/**
 
+# --- 6b. HTML (revealjs) deck sources (2026-10-06) --------------------------
+#        A deck folder like slides/wk07-lecture/ IS the deck: without these a
+#        clone cannot render it. Re-included: the .qmd(s), project config,
+#        styles, bib, section files, images, and the three material subfolders
+#        the render reads (build/ assembles lecture.qmd, data/ is read by a
+#        chunk, rej-gif/ and walker-clicks/ hold the scripts that build the
+#        gif and the click-through video segments). Still ignored:
+#        *_cache/, *_files/ and the in-place .html (docs/ has the copy),
+#        .quarto/, img/walker/ (frames), and the planning/review markdown.
+!/slides/wk*-*/*.qmd
+!/slides/wk*-*/_quarto.yml
+!/slides/wk*-*/*.scss
+!/slides/wk*-*/*.css
+!/slides/wk*-*/*.bib
+!/slides/wk*-*/sections/**
+!/slides/wk*-*/images/**
+!/slides/wk*-*/img/*.gif
+!/slides/wk*-*/img/*.png
+!/slides/wk*-*/wk*-material/build/**
+!/slides/wk*-*/wk*-material/data/**
+!/slides/wk*-*/wk*-material/rej-gif/*.R
+!/slides/wk*-*/wk*-material/walker-clicks/*.R
+
 # --- 7. directories git should not even walk -------------------------------
 /-old/
 /.quarto/

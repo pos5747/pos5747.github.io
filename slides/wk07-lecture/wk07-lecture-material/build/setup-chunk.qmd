@@ -1,0 +1,82 @@
+```{r}
+#| label: setup
+#| include: false
+#| cache: false
+# ---- shared setup: attach every package here (cached chunks do not re-attach) ----
+options(digits = 3, width = 90, mc.cores = 4, brms.backend = "cmdstanr")
+set.seed(1234)
+
+library(tidyverse)
+library(tinytable)
+library(hrbrthemes)
+library(showtext)
+library(posterior)
+library(cmdstanr)
+library(brms)
+library(bayesplot)
+library(marginaleffects)
+library(nnet)
+library(loo)
+library(patchwork)
+library(foreach)
+library(doParallel)
+library(modelsummary)
+library(broom)
+library(scales)
+
+# fonts (same as the notes)
+font_add_google("Source Sans 3", family = "Source Sans 3")
+showtext_auto()
+showtext_opts(dpi = 192)
+
+# ---- deck theme: the ONLY ggplot styling helpers slides may use ----
+# Source Sans 3 and the course's Set1 accents. The design agent may revise the
+# bodies of these functions; the names and arguments are fixed.
+lecture_colors <- c(red = "#e41a1c", blue = "#377eb8", green = "#4daf4a",
+                    purple = "#984ea3", orange = "#ff7f00", gray = "#737b87")
+
+# Sized for fig-width 10 at dpi 192 on a 1600 x 900 slide: base_size 18 prints
+# near the slide's body text; axis titles quieter than the data.
+theme_lecture <- function(base_size = 18) {
+  ink <- "#1d232b"; soft <- "#4a5260"; grid <- "#e6e9ed"
+  theme_ipsum(base_family = "Source Sans 3", base_size = base_size,
+              plot_title_family = "Source Sans 3",
+              plot_title_size = base_size * 1.2, plot_title_face = "bold",
+              plot_title_margin = base_size * 0.5,
+              subtitle_family = "Source Sans 3",
+              subtitle_size = base_size * 0.95, subtitle_margin = base_size * 0.8,
+              strip_text_family = "Source Sans 3",
+              strip_text_size = base_size, strip_text_face = "bold",
+              caption_family = "Source Sans 3", caption_size = base_size * 0.7,
+              axis_text_size = base_size * 0.85,
+              axis_title_family = "Source Sans 3",
+              axis_title_size = base_size * 0.9, axis_title_face = "plain",
+              axis_title_just = "rt",
+              plot_margin = margin(8, 12, 8, 8),
+              grid_col = grid, grid = "XY", axis_col = grid) +
+    theme(text = element_text(color = ink),
+          plot.title = element_text(color = ink),
+          plot.subtitle = element_text(color = soft),
+          axis.text = element_text(color = soft),
+          axis.title = element_text(color = soft),
+          strip.text = element_text(color = ink, hjust = 0),
+          panel.grid.minor = element_blank(),
+          legend.position = "top",
+          legend.justification = "left",
+          legend.margin = margin(0, 0, 0, 0),
+          legend.box.spacing = unit(base_size * 0.4, "pt"),
+          legend.text = element_text(size = base_size * 0.9, color = ink),
+          legend.title = element_text(size = base_size * 0.9, color = soft),
+          plot.title.position = "plot",
+          plot.caption = element_text(color = soft),
+          plot.background = element_rect(fill = "white", color = NA))
+}
+theme_set(theme_lecture())
+
+scale_color_lecture <- function(...) scale_color_manual(values = unname(lecture_colors), ...)
+scale_fill_lecture  <- function(...) scale_fill_manual(values = unname(lecture_colors), ...)
+
+# bayesplot in the same palette: a ramp of the course blue
+bayesplot::color_scheme_set(c("#9fbfdf", "#7aa8d2", "#5592c6", "#377eb8", "#2b6595", "#1b2a41"))
+bayesplot::bayesplot_theme_set(theme_lecture())
+```

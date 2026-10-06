@@ -1,0 +1,210 @@
+# \{brms\}
+
+## \{brms\}
+
+**High-level interface to Stan**\
+\{brms\} lets you specify Bayesian models using R's familiar formula syntax `y ~ x1 + x2`, then translates them automatically into efficient Stan code for sampling.
+
+**Broad model support**\
+It can fit all kinds of models. Much more general than any particular fitting function we've seen so far.
+
+**Seamless post-processing and visualization**\
+Built-in tools integrate with \{bayesplot\}, \{posterior\}, and \{tidybayes\} to summarize, diagnose, and visualize posterior draws without writing any Stan code directly.
+
+::: {.notes}
+- Build note: Keynote "{brms}" slide (Fall 2025). Its line "This is worth emphasizing: {brms} writes efficient Stan code." is left off the slide (it had an em dash).
+- From the notes: The `brm()` function in {brms} takes `glm()`-like arguments, and writes accurate and fast Stan code.
+- In-class script: <https://pos5747.github.io/files/wk07-brms-logit.R>
+:::
+
+## The `turnout` example
+
+Here's the syntax for our usual logistic regression model.
+
+```{r}
+#| label: s4-fit-brm
+#| results: hide
+# load only the turnout data frame and hard-code rescaled variables
+turnout <- ZeligData::turnout  |>
+  mutate(across(age:income, arm::rescale, .names = "rs_{.col}"))
+
+# formula
+f  <- vote ~ rs_age + rs_educate + rs_income + race
+
+# fit model with glm()
+fit_glm <- glm(f, data = turnout, family = binomial)
+
+# fit model with brm() via cmdstanr
+fit_brm <- brm(f, data = turnout, family = bernoulli,
+           chains = 4, cores = 4,
+           backend = "cmdstanr",
+           seed = 1234)
+```
+
+::: {.notes}
+- [CTK: `brm()`'s default backend is still {rstan}; `options(brms.backend = "cmdstanr")` makes {cmdstanr} the default for the session]
+- Build note: the notes use `chains = 10, cores = 10`; the deck uses 4 chains (and `seed = 1234`) to keep the render short.
+:::
+
+## `glm()` and `brm()` {.compare .smaller}
+
+`glm()` and `brm()` obtain the same estimates.
+
+```{r}
+#| label: s4-compare
+#| code-fold: true
+normalize_terms <- function(x) {
+  x <- sub("^b_", "", x)  # brms to glm names
+  x <- ifelse(x == "(Intercept)", "Intercept", x)  # unify intercept
+  x
+}
+
+modelsummary(
+  list("glm()" = fit_glm, "brm()" = fit_brm),
+  coef_rename = normalize_terms,
+  statistic = "conf.int",
+  notes = "95% confidence intervals for glm(); 95% credible intervals for brm().",
+  gof_map = "nobs"
+)
+```
+
+::: {.notes}
+- Build note: the notes' table uses `gof_map = NULL`, which adds R2, AIC, BIC, Log.Lik., F, ELPD, LOOIC, WAIC, and RMSE rows; the slide keeps only Num.Obs. so the table fits.
+- Footnote in the notes: The two are not mathematically equal, but they are very close here because {brms}'s default prior on the coefficients is flat. With flat or weak priors and this much data, it is rare that a Bayesian estimate or interval differs from the ML estimate or interval, outside of cases where maximum likelihood fails.
+:::
+
+## Diagnostics
+
+\{brms\} warns only when an R-hat is larger than 1.05, so we check R-hat, ESS, and divergent transitions ourselves.
+
+```{r}
+#| label: s4-diagnostics
+# R-hat and ESS for each parameter
+summarise_draws(fit_brm, "rhat", "ess_bulk", "ess_tail")
+
+# number of divergent transitions after warmup
+sum(nuts_params(fit_brm, pars = "divergent__")$Value)
+```
+
+## \{marginaleffects\}
+
+And \{brms\} plays very nicely with \{marginaleffects\}.
+
+```{r}
+#| label: s4-comparisons
+# compute first difference
+comparisons(fit_brm, variables = list(rs_age = c(-0.5, 0.5)),
+            newdata = datagrid(grid_type = "mean_or_mode"))
+```
+
+::: {.notes}
+- For a {brms} fit, comparisons() reports the posterior median and an equal-tailed 95% credible interval, and no SE or SD column. get_draws() returns the posterior draws of the comparison, so any other summary is one line away (used for the table on the next slide).
+:::
+
+## Four routes to the same first difference
+
+```{r}
+#| label: s4-fd-table
+#| echo: false
+# brm() row: summaries of the posterior draws of the comparison
+cmp_brm <- comparisons(fit_brm, variables = list(rs_age = c(-0.5, 0.5)),
+                       newdata = datagrid(grid_type = "mean_or_mode"))
+fd_brm <- get_draws(cmp_brm)$draw
+fd_row_brm <- tibble(Method = "brm() + comparisons(): posterior simulations",
+                     Estimate = mean(fd_brm), SE = sd(fd_brm),
+                     `2.5%` = quantile(fd_brm, 0.025), `97.5%` = quantile(fd_brm, 0.975))
+
+# the glm(), Metropolis, and Stan rows were saved in the earlier sections
+bind_rows(fd_row_glm, fd_row_metrop, fd_row_stan, fd_row_brm) |>
+  tt(notes = "First difference in Pr(vote) for rs_age from -0.5 to 0.5, other predictors at their means and race = white. glm() + comparisons(): ML estimate, delta-method standard error, and Wald 95% confidence interval. The other three rows: posterior mean, posterior SD, and 2.5th and 97.5th percentiles of the simulated first differences (for brm(), computed from get_draws(); comparisons() itself prints the posterior median and the same interval). metrop() uses a flat prior; Stan uses normal(0, 5) priors; brm() uses its defaults (flat on the coefficients).") |>
+  format_tt(j = 2:5, digits = 3, num_fmt = "decimal", num_zero = TRUE) |>
+  style_tt(j = 2:5, align = "r")
+```
+
+::: {.notes}
+Four computations of one quantity. The ML route (last week's tools) and the three posterior routes agree to the second decimal. Metropolis needed 80,000 draws (after burn-in) and a hand-tuned tau; Stan needed 8,000 and no tuning; brm() needed 8,000 and no Stan code. The small differences between the rows are Monte Carlo error plus the priors.
+:::
+
+## Expected values
+
+```{r}
+#| label: s4-predictions
+#| fig-width: 12
+#| fig-asp: 0.36
+# compute and plot expected values (i.e., predicted probabilities)
+p <- predictions(fit_brm, variables = list(rs_age = seq(-1, 1, by = 0.1)),
+            newdata = datagrid(grid_type = "mean_or_mode"))
+ggplot(p, aes(x = rs_age, y = estimate, ymin = conf.low, ymax = conf.high)) +
+  geom_ribbon(fill = "grey") +
+  geom_line(color = lecture_colors[["blue"]])
+```
+
+## Modeling "smooth" relationships
+
+To illustrate the power of MCMC and `brm()`, we can imagine fitting a smooth curve for age.
+
+```{r}
+#| label: s4-fit-smooth
+#| results: hide
+# smooth relationship between age and voting--notice the s()
+f  <- vote ~ s(rs_age) + rs_educate + rs_income + race
+smooth_fit <- brm(f, data = turnout, family = bernoulli,
+           chains = 4, cores = 4,
+           backend = "cmdstanr",
+           control = list(adapt_delta = 0.99),  # avoids divergent transitions
+           seed = 1234)
+```
+
+::: {.notes}
+- From the notes: The details are not important for now, but this isn't an easy task in our usual framework. But it's straightforward with Bayesian MCMC via `brm()`.
+- [CTK: smooths often cause divergent transitions; with the default `adapt_delta = 0.8` these two fits had 60 and 156 (of 10,000; CmdStan 2.40, `seed = 1234`); `adapt_delta = 0.99` gives none with `seed = 1234` (other seeds occasionally leave 1 of 10,000: 2 of 7 seeds checked)]
+- Build note: those counts are from the notes' 10-chain fits; the deck fits 4 chains, and both smooth fits here had 0 divergences.
+:::
+
+## Modeling "smooth" relationships
+
+```{r}
+#| label: s4-predictions-smooth
+#| fig-width: 12
+#| fig-asp: 0.36
+# compute and plot expected values (i.e., predicted probabilities)
+p <- predictions(smooth_fit, variables = list(rs_age = seq(-1, 1, by = 0.1)),
+            newdata = datagrid(grid_type = "mean_or_mode"))
+ggplot(p, aes(x = rs_age, y = estimate, ymin = conf.low, ymax = conf.high)) +
+  geom_ribbon(fill = "grey") +
+  geom_line(color = lecture_colors[["blue"]])
+```
+
+## Awkwardly scaled variables
+
+Also, `brm()` has no trouble with the variables on their original scales. The original scales pose a serious hurdle for our `metrop()` sampler.
+
+```{r}
+#| label: s4-fit-smooth-raw
+#| results: hide
+# smooth relationship between age and voting--notice the s()
+f  <- vote ~ s(age) + educate + income + race
+smooth_fit <- brm(f, data = turnout, family = bernoulli,
+           chains = 4, cores = 4,
+           backend = "cmdstanr",
+           control = list(adapt_delta = 0.99),  # avoids divergent transitions
+           seed = 1234)
+```
+
+## Awkwardly scaled variables
+
+```{r}
+#| label: s4-predictions-smooth-raw
+#| fig-width: 12
+#| fig-asp: 0.36
+# compute and plot expected values (i.e., predicted probabilities)
+p <- predictions(smooth_fit, variables = list(age = seq(18, 90, by = 1)),
+            newdata = datagrid(grid_type = "mean_or_mode"))
+ggplot(p, aes(x = age, y = estimate, ymin = conf.low, ymax = conf.high)) +
+  geom_ribbon(fill = "grey") +
+  geom_line(color = lecture_colors[["blue"]])
+```
+
+## Use `brm()` {.statement}
+
+If `brm()` works for your application, you should much prefer it to writing your own Stan models.

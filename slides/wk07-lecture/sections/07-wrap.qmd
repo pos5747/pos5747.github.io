@@ -1,0 +1,68 @@
+# Wrap
+
+## Why MCMC?
+
+:::: {.columns}
+::: {.column width="33%"}
+
+::: {.defbox}
+**MCMC**
+
+MCMC offers a powerful and general way to sample from an unnormalized (log-)posterior. The Metropolis algorithm is one such method. Hamiltonian Monte Carlo (HMC) via Stan is even better.
+:::
+
+:::
+::: {.column width="33%"}
+
+::: {.defbox}
+**R-hat and burn-in**
+
+The first MCMC samples are highly dependent on the starting values. Because of this, you need to:
+
+1. Discard the samples from a burn-in period.
+2. Run multiple chains and check that R-hat is less than 1.01.
+:::
+
+:::
+::: {.column width="33%"}
+
+::: {.defbox}
+**ESS and large samples**
+
+The MCMC samples are dependent on the previous samples. Because of this, you need to:
+
+1. Generate more samples than you would need if they were independent.
+2. Use ESS to understand your effective sample size.
+:::
+
+:::
+::::
+
+::: {.notes}
+From the Summary of the Metropolis chapter: "There are three important points in this chapter." Read the exit ticket against these three.
+:::
+
+## This week's exercises
+
+1. Three samplers, one posterior
+2. `brm()`
+3. Convergence
+4. `brm()` arguments
+5. Experimenting with difficult posterior
+6. Perot
+7. Red State, Blue State: Part 3
+8. Polynomials in age and the LOOIC
+
+::: {.key}
+Solutions open Fri Oct 9, noon · No weekly assessment next week: midterm Tue Oct 13
+:::
+
+## Midterm {.center}
+
+- Tue Oct 13
+- Weeks 1–7
+- Closed book
+
+## Exit ticket {.statement}
+
+List three important ideas from today's class. For each, briefly connect it to one or more ideas from last week.

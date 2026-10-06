@@ -1,0 +1,588 @@
+# Multinomial logit
+
+## The inverse-logit function
+
+Suppose $y_i \in \{0, 1\}$. Using logistic regression, we model $\Pr(y_i = 1)$ as a function of covariates, so that
+
+$$
+\Pr(Y_i = 1) = \frac{\exp(X_i \beta)}{1 + \exp(X_i \beta)}.
+$$
+
+The function $f(z) = \frac{e^z}{1 + e^z}$ is called the inverse-logit function and maps any real number $X_i \beta$ into a probability between 0 and 1.
+
+Because the two probabilities must sum to one:
+
+$$
+\Pr(Y_i = 0) = 1 - \Pr(Y_i = 1)
+             = \frac{1}{1 + \exp(X_i \beta)}.
+$$
+
+## The softmax function
+
+The softmax generalizes the inverse-logit---it takes $J$ real inputs (i.e., from $\mathbb{R}^J$) and scales them to sum to one.
+
+$$
+\text{softmax}(z_j) = \frac{\exp(z_j)}{\sum_{k=1}^{J} \exp(z_k)}, \qquad j = 1,\ldots,J.
+$$
+
+Because the $J$ outputs must sum to one, it is natural to interpret the outputs as *probabilities*.
+
+## The softmax function: $J = 4$
+
+:::: {.columns}
+::: {.column width="68%"}
+
+```{ojs}
+//| label: s6-softmax-widget
+//| echo: false
+
+// Sliders (left column)
+viewof sm_z1 = Inputs.range([-5, 5], {step: 0.1, value: -1,  label: "z1"});
+viewof sm_z2 = Inputs.range([-5, 5], {step: 0.1, value: 1,   label: "z2"});
+viewof sm_z3 = Inputs.range([-5, 5], {step: 0.1, value: 2,   label: "z3"});
+viewof sm_z4 = Inputs.range([-5, 5], {step: 0.1, value: 0.5, label: "z4"});
+
+// Softmax pieces
+sm_labels = ["Pr(A)","Pr(B)","Pr(C)","Pr(D)"];
+sm_zs = [sm_z1, sm_z2, sm_z3, sm_z4];
+sm_exps = sm_zs.map(Math.exp);
+sm_sumexp = sm_exps.reduce((a, b) => a + b, 0);
+sm_ps = sm_exps.map(e => e / sm_sumexp);
+
+// Data for stacked bar (one row, four segments)
+sm_data = sm_ps.map((p, i) => ({ label: sm_labels[i], value: p, row: "softmax" }));
+
+// === Two-column layout: sliders (left) + live table (right) ===
+{
+const container = html`<div style="
+  display:flex;
+  gap:24px;
+  align-items:flex-start;
+  padding-top:8px;
+"></div>`;
+
+// Left column: sliders
+const left = html`<div style="display:grid; gap:10px; min-width:220px;"></div>`;
+left.append(viewof sm_z1, viewof sm_z2, viewof sm_z3, viewof sm_z4);
+
+// Right column: table
+const rows = sm_labels.map((cls, i) => ({
+Class: cls,
+z: sm_zs[i],
+"exp(z)": sm_exps[i],
+Probability: sm_ps[i]
+}));
+
+const right = html`<div style="
+  min-width:240px;
+  max-width:560px;
+  padding:4px 0;
+  font-size:1.6rem;
+  line-height:1.1;
+"></div>`;
+
+right.append(
+Inputs.table(rows, {
+columns: ["Class", "z", "exp(z)", "Probability"],
+format: {
+z: d => d.toFixed(2),
+"exp(z)": d => d.toFixed(3),
+Probability: d => (d * 100).toFixed(1) + "%"
+}
+})
+);
+
+container.append(left, right);
+return container;
+}
+
+// Stacked bar chart
+Plot.plot({
+width: 940,
+height: 200,
+marginLeft: 20,
+marginRight: 36,
+marginBottom: 46,
+x: {
+domain: [0, 1],
+tickFormat: d => (d * 100).toFixed(0) + "%",
+label: null,
+tickSize: 10,
+tickPadding: 8
+},
+y: { axis: null },
+style: {
+fontSize: "22px",
+fontFamily: "Source Sans 3, sans-serif"
+},
+color: {
+legend: true,
+label: "Class",
+range: ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3"],
+swatchSize: 22,
+style: { fontSize: "22px" }
+},
+marks: [
+Plot.barX(
+sm_data,
+Plot.stackX({ x: "value", y: "row", fill: "label", sort: { fill: null } })
+),
+Plot.ruleX([0, 1])
+]
+})
+```
+
+:::
+::: {.column width="32%"}
+
+**Example inputs**
+
+```{r}
+#| label: s6-softmax-fallback
+#| echo: false
+#| cache: false
+# the chapter's four example inputs and their softmax values
+softmax_ex <- tibble(z = c(-1, 1, 2, 0.5)) |>
+  mutate(p = exp(z) / sum(exp(z)))
+
+softmax_ex |>
+  transmute(`Input z` = as.character(z),
+            `Softmax p` = sprintf("%.4f", p)) |>
+  tt() |>
+  style_tt(j = 1:2, align = "r")
+```
+
+:::
+::::
+
+::: {.notes}
+The OJS widget below allows you to experiment with $J = 4$ inputs and see how the outputted probabilities change. (The widget needs the page served over http; the table on the right is the static fallback.)
+:::
+
+## Adding covariates
+
+Now suppose the outcome takes $J$ possible values:
+
+$$
+y_i \in \{1, 2, \ldots, J\}.
+$$
+
+**Example 1**: We might label *vote choice* in the US as (1) *abstain*, (2) *Republican*, (3) *Democrat*, or (4) *other*.
+
+**Example 2**: We might label *coup attempts* in a given country-year as (0) *none attempted*, (1) *failed attempt*, or (2) *successful attempt*.
+
+## Adding covariates
+
+For each category $j$, define a linear predictor $\eta_{ij} = X_i \beta_j$. Here, each $\beta_j$ is a *vector* of coefficients.
+
+We can use the *softmax* function to convert these linear predictors into probabilities that sum to one.
+
+$$
+\Pr(Y_i = j) = \frac{\exp(\eta_{ij})}{\sum_{k=1}^{J} \exp(\eta_{ik})},
+\qquad j = 1, \ldots, J.
+$$
+
+This is a generalization of the inverse-logit to $J$ categories. If $J = 2$, the softmax reduces to the inverse-logit.
+
+## Identification
+
+However, this model is not identified because adding any constant to each of the $\eta_{ij}$ produces the same probabilities.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+**Example inputs**
+
+```{r}
+#| label: s6-ident-left
+#| echo: false
+#| cache: false
+softmax_ex |>
+  transmute(`Input z` = as.character(z),
+            `Softmax p` = sprintf("%.4f", p)) |>
+  tt() |>
+  style_tt(j = 1:2, align = "r")
+```
+
+:::
+::: {.column width="50%"}
+
+**Adding a constant ($+2$)**
+
+```{r}
+#| label: s6-ident-right
+#| echo: false
+#| cache: false
+# add 2 to every input; the softmax values do not change
+softmax_ex |>
+  transmute(`New input z + 2` = paste0(z, " + 2 = ", z + 2),
+            `Softmax p` = sprintf("%.4f", exp(z + 2) / sum(exp(z + 2)))) |>
+  tt() |>
+  style_tt(j = 1:2, align = "r")
+```
+
+:::
+::::
+
+Adding a constant to all inputs leaves the softmax unchanged. This is why the multinomial logit model requires an identification constraint.
+
+## Identification
+
+To identify the model, we set $\beta_J = 0$, so that $\eta_{iJ} = 0$. Then for $j = 1, \ldots, J-1$, we have
+
+$$
+\Pr(Y_i = j) =
+\frac{\exp(X_i \beta_j)}
+     {1 + \sum_{k=1}^{J-1} \exp(X_i \beta_k)}.
+$$
+
+And for the "baseline" category $J$, we have
+
+$$
+\Pr(Y_i = J) =
+\frac{1}
+     {1 + \sum_{k=1}^{J-1} \exp(X_i \beta_k)}.
+$$
+
+## Example: the 1992 presidential vote
+
+- 1992 ANES; same respondents as the wk06 Bush approval example
+- Outcome: `vote_1992`: Bush, Clinton, or Perot
+- Predictors: `party_id` (−3 to 3), `economy` (1 = much better to 5 = much worse)
+
+```{r}
+#| label: s6-vote-data
+# load data; keep complete cases on the model's variables
+vote <- read_csv("https://pos5747.github.io/data/bush-approval-1992.csv") |>
+  select(vote_1992, party_id, economy) |>
+  drop_na() |>
+  mutate(vote_1992 = factor(vote_1992, levels = c("Bush", "Clinton", "Perot"))) |>
+  glimpse()
+```
+
+::: {.notes}
+[CTK: why Perot makes this nominal, not ordered]
+
+[CTK: 592 voters complete on these variables]
+
+[CTK: provenance: Adolph's Problem Set 4; same file as the ordered example; Perot as the reason a nominal model is needed]
+:::
+
+## `multinom()` {.smaller}
+
+```{r}
+#| label: s6-vote-multinom
+# fit multinomial logit; first level (Bush) is the baseline
+fit_vote <- multinom(vote_1992 ~ party_id + economy, data = vote, trace = FALSE)
+summary(fit_vote)
+```
+
+::: {.notes}
+[CTK: two rows of coefficients, one linear predictor per non-baseline candidate; each relative to Bush]
+
+[CTK: baseline first here (`multinom()`), last in the math above; the probabilities don't change]
+
+[CTK: signs: party_id negative for both rows (Republicans → Bush); economy positive for both (worse economy → away from Bush)]
+:::
+
+## Probabilities with {marginaleffects}
+
+```{r}
+#| label: s6-vote-probs
+#| cache: false
+#| output-location: column
+#| fig-width: 7
+#| fig-asp: 0.85
+# probability of each candidate as party ID varies
+p_vote <- predictions(
+  fit_vote,
+  newdata = datagrid(party_id = -3:3),
+  type = "probs")
+
+# colors follow the factor levels:
+# Bush, Clinton, Perot
+ggplot(p_vote,
+       aes(x = party_id, y = estimate,
+           ymin = conf.low, ymax = conf.high,
+           color = group, fill = group)) +
+  geom_ribbon(alpha = 0.2, color = NA) +
+  geom_line() +
+  scale_color_lecture() +
+  scale_fill_lecture() +
+  labs(x = "Party ID", y = "Probability",
+       color = "Candidate", fill = "Candidate")
+```
+
+::: {.notes}
+[CTK: Pr(Perot) rises then falls (about 0.08 at −3, peak about 0.28 at 0 to 1, 0.18 at 3), though both linear predictors are linear in party ID]
+
+[CTK: why: Perot's party_id coefficient (−0.44) sits between Bush's (0) and Clinton's (−1.10); the softmax shares probability]
+
+[CTK: so the sign of a coefficient doesn't give the direction of that category's probability; compute probabilities]
+:::
+
+## First differences
+
+```{r}
+#| label: s6-vote-fd
+#| cache: false
+# change in each candidate's probability as the economy goes from
+# "better" (2) to "worse" (4), for a typical respondent
+comparisons(fit_vote,
+            variables = list(economy = c(2, 4)),
+            newdata = datagrid(grid_type = "mean_or_mode"),
+            type = "probs") |>
+  as_tibble() |>
+  select(term, contrast, group, estimate, conf.low, conf.high)
+```
+
+::: {.notes}
+[CTK: worse economy: Bush −0.22, Clinton +0.18, Perot +0.04 (CI includes 0)]
+
+[CTK: Perot's economy coefficient is positive (0.34), but Clinton gains most of what Bush loses]
+:::
+
+## `brm()`
+
+```{r}
+#| label: s6-vote-brm
+#| results: hide
+# fit the same model with brm(); categorical() is the multinomial logit,
+# with the first level (Bush) as the baseline
+fit_vote_brm <- brm(vote_1992 ~ party_id + economy,
+                    data = vote,
+                    family = categorical(link = "logit"),
+                    backend = "cmdstanr",
+                    chains = 4,
+                    cores = 4,
+                    seed = 1234)
+```
+
+## `brm()` vs. `multinom()` {.compare}
+
+```{r}
+#| label: s6-vote-compare
+#| cache: false
+#| echo: false
+# put the multinom() and brm() estimates side by side
+compare_mnl <- function(fit_ml, fit_brm) {
+  # multinom(): ML estimates and standard errors
+  ml <- broom::tidy(fit_ml) |>
+    transmute(outcome = y.level,
+              term = if_else(term == "(Intercept)", "Intercept", term),
+              est_ml = estimate,
+              se_ml = std.error)
+
+  # brm(): posterior means and SDs; mu is brms's prefix for each outcome's
+  # linear predictor, so the names look like mu<outcome, no spaces>_<term>
+  bayes <- fixef(fit_brm) |>
+    as_tibble(rownames = "name") |>
+    separate_wider_delim(name, delim = "_", names = c("mu", "term"),
+                         too_many = "merge") |>
+    transmute(mu, term, est_brm = Estimate, se_brm = Est.Error)
+
+  # match brm()'s names to multinom()'s outcome labels
+  ml |>
+    mutate(mu = paste0("mu", str_remove_all(outcome, "[^[:alnum:]]"))) |>
+    left_join(bayes, by = c("mu", "term")) |>
+    select(-mu)
+}
+
+# make a table with one block of rows per outcome
+tt_mnl <- function(comparison) {
+  comparison |>
+    select(-outcome) |>
+    as.data.frame() |>
+    setNames(c("Term", "Estimate", "SE", "Estimate", "SE")) |>
+    tt(notes = "multinom(): ML estimates and standard errors. brm(): posterior means and standard deviations.") |>
+    format_tt(j = 2:5, digits = 3, num_fmt = "decimal") |>
+    style_tt(j = 2:5, align = "r") |>
+    group_tt(i = comparison$outcome,
+             j = list("multinom()" = 2:3, "brm()" = 4:5))
+}
+
+compare_mnl(fit_vote, fit_vote_brm) |>
+  tt_mnl() |>
+  style_tt(i = "groupi", align = "l")  # outcome labels on the left
+```
+
+::: {.caption}
+Table code: `compare_mnl()` and `tt_mnl()` in the notes (Multinomial Logit, With `brm()`)
+:::
+
+::: {.notes}
+[CTK: posterior means within about 0.02 of the ML estimates (e.g., Clinton party_id −1.11 vs −1.10; Perot economy 0.34 vs 0.34); default priors barely matter at N = 592]
+:::
+
+## `brm()` + {marginaleffects}
+
+```{r}
+#| label: s6-vote-brm-probs
+#| cache: false
+#| output-location: column
+#| fig-width: 7
+#| fig-asp: 0.85
+# for brms categorical fits (and only those), predictions()
+# drops the newdata columns and returns rowid + group, so
+# build the grid first and join party_id back by rowid
+grid_vote <- datagrid(model = fit_vote_brm,
+                      party_id = -3:3)
+p_vote_brm <- predictions(fit_vote_brm,
+                          newdata = grid_vote) |>
+  left_join(select(grid_vote, rowid, party_id),
+            by = "rowid")
+ggplot(p_vote_brm,
+       aes(x = party_id, y = estimate,
+           ymin = conf.low, ymax = conf.high,
+           color = group, fill = group)) +
+  geom_ribbon(alpha = 0.2, color = NA) +
+  geom_line() +
+  scale_color_lecture() +
+  scale_fill_lecture() +
+  labs(x = "Party ID", y = "Probability",
+       color = "Candidate", fill = "Candidate")
+```
+
+::: {.notes}
+[CTK: same {marginaleffects} code, no `type = "probs"`; `group` column holds the candidate; the grid columns need joining back by `rowid`]
+
+Checked 2026-10-06 (marginaleffects 1.0.0): the same call on the multinom() fit and on a brms bernoulli fit returns the grid columns; only the brms categorical fit drops them. A marginaleffects quirk, not a brms one; an investigation prompt was written for Carlisle.
+
+[CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]
+:::
+
+## Another example: Balancing the federal budget
+
+```{r}
+#| label: s6-cces-fit
+#| echo: false
+# 2012 CCES, from the notes' data folder; "Raise taxes" first, so it is the baseline
+cces <- read_csv("wk07-lecture-material/data/cces2012-budget.csv") |>
+  mutate(budget = factor(budget, levels = c("Raise taxes",
+                                            "Cut defense spending",
+                                            "Cut domestic spending")))
+
+fit_budget <- multinom(budget ~ party_id + female + income, data = cces, trace = FALSE)
+```
+
+```{r}
+#| label: s6-cces-numbers
+#| echo: false
+#| cache: false
+# probability of each choice as party ID varies
+p_budget <- predictions(fit_budget, newdata = datagrid(party_id = 1:7), type = "probs")
+
+# the numbers quoted in the bullets
+pb <- function(choice, pid) {
+  sprintf("%.2f", p_budget$estimate[p_budget$group == choice & p_budget$party_id == pid])
+}
+```
+
+:::: {.columns}
+::: {.column width="58%"}
+
+```{r}
+#| label: s6-cces-probs
+#| echo: false
+#| cache: false
+#| fig-width: 7.5
+#| fig-asp: 0.75
+# probability of each choice as party ID varies, with 95% CIs
+ggplot(p_budget, aes(x = party_id, y = estimate,
+                     ymin = conf.low, ymax = conf.high,
+                     color = group, fill = group)) +
+  geom_ribbon(alpha = 0.2, color = NA) +
+  geom_line() +
+  scale_color_lecture() +
+  scale_fill_lecture() +
+  guides(color = guide_legend(nrow = 2), fill = guide_legend(nrow = 2)) +
+  labs(x = "Party ID", y = "Probability",
+       color = "Most preferred", fill = "Most preferred")
+```
+
+:::
+::: {.column width="42%"}
+
+- 2012 CCES; `r format(nrow(cces), big.mark = ",")` respondents
+- Three categories: cut defense spending, cut domestic spending, or raise taxes.
+- `female` at its mode (`r unique(p_budget$female)`) and `income` at its rounded mean (`r unique(p_budget$income)`, \$50,000--59,999).
+- Strong Democrats to strong Republicans: Pr(cut domestic spending) `r pb("Cut domestic spending", 1)` to `r pb("Cut domestic spending", 7)`; Pr(cut defense spending) `r pb("Cut defense spending", 1)` to `r pb("Cut defense spending", 7)`; Pr(raise taxes) `r pb("Raise taxes", 1)` to `r pb("Raise taxes", 7)`.
+
+:::
+::::
+
+::: {.notes}
+Model: `multinom(budget ~ party_id + female + income, data = cces)`; party ID from 1 (strong Democrat) to 7 (strong Republican). This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).
+:::
+
+## Callback: ordered logit with `brm()` {.smaller}
+
+```{r}
+#| label: s6-approval-fits
+#| results: hide
+# the wk06 Bush approval data and model
+approval <- read_csv("https://pos5747.github.io/data/bush-approval-1992.csv") |>
+  mutate(bush_approval = factor(bush_approval, ordered = TRUE))
+
+f_approval <- bush_approval ~ military_force + ideology_distance +
+  economy + party_id + education
+
+fit_approval <- MASS::polr(f_approval, data = approval, Hess = TRUE)
+fit_approval_brm <- brm(f_approval,
+                        data = approval,
+                        family = cumulative(link = "logit"),
+                        backend = "cmdstanr",
+                        chains = 4,
+                        cores = 4,
+                        seed = 1234)
+```
+
+::: {.notes}
+[CTK: wk06's `polr()` fit, now with `brm(family = cumulative("logit"))`; same parameterization (cutpoints = `Intercept[j]`)]
+:::
+
+## Callback: ordered logit with `brm()`
+
+```{r}
+#| label: s6-approval-compare
+#| cache: false
+# posterior means next to the ML estimates (polr() calls the cutpoints zeta)
+ml_approval <- c(fit_approval$zeta, coef(fit_approval))
+bayes_approval <- fixef(fit_approval_brm)[, "Estimate"]
+
+tibble(polr_term = names(ml_approval),
+       polr = ml_approval,
+       brm_term = names(bayes_approval),
+       brm = bayes_approval)
+```
+
+## Ordered vs. nominal
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.defbox}
+**Ordered**
+
+`cumulative()`
+
+one set of coefficients
+:::
+
+:::
+::: {.column width="50%"}
+
+::: {.defbox}
+**Nominal**
+
+`categorical()`
+
+$J - 1$ sets
+:::
+
+:::
+::::
+
+::: {.notes}
+[CTK: ordered (`cumulative()`) vs nominal (`categorical()`): one set of coefficients vs J − 1 sets; Red State Part 3 in the exercises (did not vote / Harris / Trump, an unordered outcome)]
+:::

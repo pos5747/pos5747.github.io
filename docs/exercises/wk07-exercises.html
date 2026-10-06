@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 7 Exercises – Modern Statistical Modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7ad6542725e80d1433b1f8ee26c2a1fc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZV1MJ9E632"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="exercises.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Modern Statistical Modeling</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://pos5747.github.io/notes/"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research-project.html"> 
+<span class="menu-text">Research Project</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../workshop.html"> 
+<span class="menu-text">Workshop</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assessments.html"> 
+<span class="menu-text">Assessments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Exercises</h2>
+   
+  <ul class="collapse">
+  <li><a href="#ex-1" id="toc-ex-1" class="nav-link active" data-scroll-target="#ex-1"><span class="ex-num">Exercise 1</span> Three samplers, one posterior</a></li>
+  <li><a href="#ex-2" id="toc-ex-2" class="nav-link" data-scroll-target="#ex-2"><span class="ex-num">Exercise 2</span> <code>brm()</code></a></li>
+  <li><a href="#ex-3" id="toc-ex-3" class="nav-link" data-scroll-target="#ex-3"><span class="ex-num">Exercise 3</span> Convergence</a></li>
+  <li><a href="#ex-4" id="toc-ex-4" class="nav-link" data-scroll-target="#ex-4"><span class="ex-num">Exercise 4</span> <code>brm()</code> arguments</a></li>
+  <li><a href="#ex-5" id="toc-ex-5" class="nav-link" data-scroll-target="#ex-5"><span class="ex-num">Exercise 5</span> Experimenting with difficult posterior</a></li>
+  <li><a href="#ex-6" id="toc-ex-6" class="nav-link" data-scroll-target="#ex-6"><span class="ex-num">Exercise 6</span> Perot</a></li>
+  <li><a href="#ex-7" id="toc-ex-7" class="nav-link" data-scroll-target="#ex-7"><span class="ex-num">Exercise 7</span> Red State, Blue State: Part 3</a></li>
+  <li><a href="#ex-8" id="toc-ex-8" class="nav-link" data-scroll-target="#ex-8"><span class="ex-num">Exercise 8</span> Polynomials in age and the LOOIC</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 7 Exercises</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="ex-notice ex-notice-wait" data-unlock="2026-10-09T12:00:00-04:00">Complete solutions open <strong>Friday, October 9 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Setting up {brms} and Stan
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For this first week using Stan, we need to set up a working Stan toolchain. You must do this before anything else. You only need to do this once. Ask for help if you run into trouble.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the R packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"brms"</span>, <span class="st">"rstan"</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"cmdstanr"</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">"https://stan-dev.r-universe.dev"</span>, <span class="fu">getOption</span>(<span class="st">"repos"</span>)))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># check the C++ toolchain, then install CmdStan</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>(<span class="at">fix =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># test: this should compile, sample, and print a summary</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(mpg <span class="sc">~</span> hp, <span class="at">data =</span> mtcars, <span class="at">backend =</span> <span class="st">"cmdstanr"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="ex-1" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Three samplers, one posterior</h2>
+<p>Let’s use the logit model of the <code>turnout</code> dataset and consider three approaches to sampling from the posterior: rejection (Week 6), Metropolis, and Stan. The posterior is identical for all three: rescaled predictors with a normal(0, 5) prior on each coefficient (i.e., the notes’ <code>logit.stan</code>). We want to get a feel for how well these samplers do for this (relatively easy) problem.</p>
+<p>The exercise requires you to run the code below, make a few changes, and see how well each sampler does.</p>
+<p>Start by running this code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(posterior)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># data and design matrix, with rescaled predictors (as in the notes)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>turnout <span class="ot">&lt;-</span> ZeligData<span class="sc">::</span>turnout <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(age<span class="sc">:</span>income, arm<span class="sc">::</span>rescale, <span class="at">.names =</span> <span class="st">"rs_{.col}"</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> vote <span class="sc">~</span> rs_age <span class="sc">+</span> rs_educate <span class="sc">+</span> rs_income <span class="sc">+</span> race</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(f, <span class="at">data =</span> turnout)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> turnout<span class="sc">$</span>vote</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># unnormalized log posterior for many values of beta at once</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># - beta has one row per value of beta; the result has one log posterior per row</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># - normal(0, 5) prior on each coefficient, same as logit.stan</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>log_post_many <span class="ot">&lt;-</span> <span class="cf">function</span>(beta, y, X) {</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  eta <span class="ot">&lt;-</span> X <span class="sc">%*%</span> <span class="fu">t</span>(beta)  <span class="co"># one column per row of beta</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  log_lik <span class="ot">&lt;-</span> <span class="fu">colSums</span>(y <span class="sc">*</span> eta <span class="sc">-</span> (<span class="fu">pmax</span>(eta, <span class="dv">0</span>) <span class="sc">+</span> <span class="fu">log1p</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(eta)))))  <span class="co"># stable log(1 + exp(eta))</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  log_prior <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">dnorm</span>(beta, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  log_lik <span class="sc">+</span> log_prior</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># the same log posterior for a single value of beta (for metrop())</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>log_post <span class="ot">&lt;-</span> <span class="cf">function</span>(beta, y, X) {</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log_post_many</span>(<span class="fu">matrix</span>(beta, <span class="at">nrow =</span> <span class="dv">1</span>), y, X)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Rejection.</strong></p>
+<p>The code below applies the simple rejection algorithm we saw for a 1d problem bounded between 0 and 1 to a multidimensional, unbounded problem (i.e., estimating logit coefficients).</p>
+<p>The code below creates <code>rej_box()</code>, which works in batches of <strong>one million proposals</strong> (!!).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># log M: the log posterior at its peak</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X)), log_post, <span class="at">y =</span> y, <span class="at">X =</span> X,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"BFGS"</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>log_M <span class="ot">&lt;-</span> opt<span class="sc">$</span>value</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># rejection sampling with uniform proposals within a box, in batches</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># - lower and upper give the box: one interval for each coefficient</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># - stops at S accepted draws or after max_batches batches</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>rej_box <span class="ot">&lt;-</span> <span class="cf">function</span>(lower, upper, log_M, y, X, <span class="at">S =</span> <span class="dv">1000</span>, <span class="at">max_batches =</span> <span class="dv">10</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">batch_size =</span> <span class="fl">1e6</span>, <span class="at">chunk_size =</span> <span class="fl">1e4</span>) {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">length</span>(lower)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  samples <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA_real_</span>, <span class="at">nrow =</span> <span class="dv">0</span>, <span class="at">ncol =</span> k)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (b <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_batches) {</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    n_accepted_batch <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># evaluate the batch in chunks (a million proposals at once uses too much memory)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (chunk <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(batch_size <span class="sc">/</span> chunk_size)) {</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>      <span class="co"># propose: one row per proposal, uniform within the box</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>      z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(chunk_size <span class="sc">*</span> k, lower, upper), <span class="at">ncol =</span> k, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      <span class="co"># accept with probability f(z) / M</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      accept <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="fu">runif</span>(chunk_size)) <span class="sc">&lt;=</span> <span class="fu">log_post_many</span>(z, y, X) <span class="sc">-</span> log_M</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>      samples <span class="ot">&lt;-</span> <span class="fu">rbind</span>(samples, z[accept, , <span class="at">drop =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>      n_accepted_batch <span class="ot">&lt;-</span> n_accepted_batch <span class="sc">+</span> <span class="fu">sum</span>(accept)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Batch "</span>, b, <span class="st">" of "</span>, max_batches, <span class="st">": evaluated "</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>            scales<span class="sc">::</span><span class="fu">comma</span>(batch_size), <span class="st">" proposals... "</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            n_accepted_batch, <span class="st">" accepted ("</span>, <span class="fu">nrow</span>(samples), <span class="st">" accepted so far; "</span>,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">"worked for "</span>, prettyunits<span class="sc">::</span><span class="fu">pretty_dt</span>(<span class="fu">Sys.time</span>() <span class="sc">-</span> start_time), <span class="st">" so far)"</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(samples) <span class="sc">&gt;=</span> S) <span class="cf">break</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  time_total <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start_time</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"⏰ Total time: "</span>, prettyunits<span class="sc">::</span><span class="fu">pretty_dt</span>(time_total))</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(samples) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(X)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">samples =</span> <span class="fu">head</span>(samples, S), <span class="at">n_proposals =</span> b <span class="sc">*</span> batch_size,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">time_total =</span> <span class="fu">as.numeric</span>(time_total, <span class="at">units =</span> <span class="st">"secs"</span>))</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Metropolis.</strong></p>
+<p>The code below is the minimal <code>metrop()</code> from the notes. <code>chains_to_draws()</code> stacks the chains into a draws object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>metrop <span class="ot">&lt;-</span> <span class="cf">function</span>(logf, theta_start, <span class="at">S =</span> <span class="dv">10000</span>, <span class="at">tau =</span> <span class="fl">0.1</span>, ...) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># initialize matrix of samples with starting values</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">length</span>(theta_start)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  samples <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA_real_</span>, <span class="at">nrow =</span> S, <span class="at">ncol =</span> k)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  samples[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> theta_start</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># proceed with algorithm</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (s <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>S) {</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># extract current location</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    current <span class="ot">&lt;-</span> samples[s <span class="sc">-</span> <span class="dv">1</span>, ]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># generate symmetric random-walk proposal</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    proposed_move <span class="ot">&lt;-</span> <span class="fu">runif</span>(k, <span class="sc">-</span>tau, tau)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    proposal <span class="ot">&lt;-</span> current <span class="sc">+</span> proposed_move</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># acceptance step</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    delta <span class="ot">&lt;-</span> <span class="fu">logf</span>(proposal, ...) <span class="sc">-</span> <span class="fu">logf</span>(current, ...)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (delta <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      accept <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      accept <span class="ot">&lt;-</span> (<span class="fu">log</span>(<span class="fu">runif</span>(<span class="dv">1</span>)) <span class="sc">&lt;=</span> delta)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update samples</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (accept) {</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      samples[s, ] <span class="ot">&lt;-</span> proposal</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      samples[s, ] <span class="ot">&lt;-</span> current</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  samples</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co"># stack a list of chains (each S x k) into a draws array; discard the first half of each</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>chains_to_draws <span class="ot">&lt;-</span> <span class="cf">function</span>(chains, coef_names) {</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  S <span class="ot">&lt;-</span> <span class="fu">nrow</span>(chains[[<span class="dv">1</span>]])</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  keep <span class="ot">&lt;-</span> (S <span class="sc">/</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>S</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  draws <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA_real_</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="fu">length</span>(keep), <span class="fu">length</span>(chains), <span class="fu">length</span>(coef_names)),</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="cn">NULL</span>, <span class="cn">NULL</span>, coef_names))</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (c <span class="cf">in</span> <span class="fu">seq_along</span>(chains)) {</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    draws[, c, ] <span class="ot">&lt;-</span> chains[[c]][keep, ]</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_draws_array</span>(draws)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Stan.</strong></p>
+<p>The code below implements <code>logit.stan</code> from the notes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stan_code <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">data {</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">  int&lt;lower=0&gt; N;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">  int&lt;lower=1&gt; K;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">  array[N] int&lt;lower=0, upper=1&gt; y;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">  matrix[N, K] X;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">parameters {</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[K] beta;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">  beta ~ normal(0, 5);               // weakly informative prior</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">  y ~ bernoulli_logit(X * beta);     // logistic regression likelihood</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>stan_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">nrow</span>(X), <span class="at">K =</span> <span class="fu">ncol</span>(X), <span class="at">y =</span> y, <span class="at">X =</span> X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The code below runs each sampler. Observe how quickly each sampler finishes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rejection: a box from -2 to 2 for every coefficient</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>rej_wide <span class="ot">&lt;-</span> <span class="fu">rej_box</span>(<span class="at">lower =</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">5</span>), <span class="at">upper =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">5</span>),  <span class="co"># the box: -2 to 2 for each of the 5 coefficients</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">log_M =</span> log_M, <span class="at">y =</span> y, <span class="at">X =</span> X,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">S =</span> <span class="dv">1000</span>,          <span class="co"># stop once 1,000 draws are accepted</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">max_batches =</span> <span class="dv">10</span>,  <span class="co"># ...or after 10 batches, whichever comes first</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">batch_size =</span> <span class="fl">1e6</span>,  <span class="co"># one million proposals per batch (one progress message per batch)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">chunk_size =</span> <span class="fl">1e4</span>)  <span class="co"># evaluate each batch 10,000 proposals at a time (to save memory)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This code runs 10 batches of one million proposals. How many accepted? Estimate the acceptance rate, roughly. How many proposals would you need and how much time would 1,000 draws take?</p>
+<p>Now run the Metropolis and Stan samplers below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metropolis: 4 chains of 500 from overdispersed starting values</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>met_chains <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>), \(start_value) {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">metrop</span>(log_post, <span class="at">theta_start =</span> <span class="fu">rep</span>(start_value, <span class="dv">5</span>), <span class="at">S =</span> <span class="dv">500</span>, <span class="at">y =</span> y, <span class="at">X =</span> X)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>met_draws <span class="ot">&lt;-</span> <span class="fu">chains_to_draws</span>(met_chains, <span class="fu">colnames</span>(X))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># stan: 4 chains of 500 (250 warmup + 250 sampling)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="fu">write_stan_file</span>(stan_code))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>fit_stan <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> stan_data, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">iter_warmup =</span> <span class="dv">250</span>, <span class="at">iter_sampling =</span> <span class="dv">250</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running MCMC with 4 parallel chains...
+
+Chain 1 Iteration:   1 / 500 [  0%]  (Warmup) 
+Chain 1 Iteration: 100 / 500 [ 20%]  (Warmup) 
+Chain 1 Iteration: 200 / 500 [ 40%]  (Warmup) 
+Chain 1 Iteration: 251 / 500 [ 50%]  (Sampling) 
+Chain 2 Iteration:   1 / 500 [  0%]  (Warmup) 
+Chain 2 Iteration: 100 / 500 [ 20%]  (Warmup) 
+Chain 2 Iteration: 200 / 500 [ 40%]  (Warmup) 
+Chain 2 Iteration: 251 / 500 [ 50%]  (Sampling) 
+Chain 3 Iteration:   1 / 500 [  0%]  (Warmup) 
+Chain 3 Iteration: 100 / 500 [ 20%]  (Warmup) 
+Chain 3 Iteration: 200 / 500 [ 40%]  (Warmup) 
+Chain 3 Iteration: 251 / 500 [ 50%]  (Sampling) 
+Chain 4 Iteration:   1 / 500 [  0%]  (Warmup) 
+Chain 4 Iteration: 100 / 500 [ 20%]  (Warmup) 
+Chain 4 Iteration: 200 / 500 [ 40%]  (Warmup) 
+Chain 4 Iteration: 251 / 500 [ 50%]  (Sampling) 
+Chain 1 Iteration: 350 / 500 [ 70%]  (Sampling) 
+Chain 1 Iteration: 450 / 500 [ 90%]  (Sampling) 
+Chain 1 Iteration: 500 / 500 [100%]  (Sampling) 
+Chain 2 Iteration: 350 / 500 [ 70%]  (Sampling) 
+Chain 2 Iteration: 450 / 500 [ 90%]  (Sampling) 
+Chain 2 Iteration: 500 / 500 [100%]  (Sampling) 
+Chain 3 Iteration: 350 / 500 [ 70%]  (Sampling) 
+Chain 3 Iteration: 450 / 500 [ 90%]  (Sampling) 
+Chain 4 Iteration: 350 / 500 [ 70%]  (Sampling) 
+Chain 4 Iteration: 450 / 500 [ 90%]  (Sampling) 
+Chain 4 Iteration: 500 / 500 [100%]  (Sampling) 
+Chain 1 finished in 0.2 seconds.
+Chain 2 finished in 0.2 seconds.
+Chain 4 finished in 0.2 seconds.
+Chain 3 Iteration: 500 / 500 [100%]  (Sampling) 
+Chain 3 finished in 0.3 seconds.
+
+All 4 chains finished successfully.
+Mean chain execution time: 0.2 seconds.
+Total execution time: 0.4 seconds.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>stan_draws <span class="ot">&lt;-</span> fit_stan<span class="sc">$</span><span class="fu">draws</span>(<span class="st">"beta"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convergence and effective sample size for each coefficient</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_draws</span>(met_draws, <span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>, <span class="st">"ess_tail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  variable     rhat ess_bulk ess_tail
+  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)  1.66     6.60     11.3
+2 rs_age       1.40     9.30     11.2
+3 rs_educate   1.60     6.98     11.3
+4 rs_income    1.68     6.53     11.1
+5 racewhite    1.52     7.51     22.2</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>For Metropolis and Stan (500 iterations per chain), compute R-hat and the bulk and tail ESS for each coefficient with <code>summarize_draws()</code>. Make trace plots with <code>mcmc_trace()</code>. Have the chains converged?</li>
+<li>How long must the Metropolis and Stan chains be for R-hat to fall below 1.01 and the bulk ESS to exceed 1,000 for every coefficient? (At that point, the MCMC draws are about as informative as the 1,000 independent rejection draws.) Keep using the first half of each chain for burn-in (Metropolis) or “warmup” (Stan’s language). Which sampler needs more iterations? Why?</li>
+<li>Run <code>fit_stan$diagnostic_summary()</code>. What does it report? (See the HMC diagnostics below.)</li>
+</ol>
+<p><strong>HMC diagnostics.</strong></p>
+<p>Stan reports three warnings that Metropolis doesn’t have.</p>
+<ul>
+<li><strong>Divergent transitions</strong> means that the sampler reached a region of the posterior it can’t follow (e.g., sharp curvature). Any divergent transitions after warmup mean the draws might be unrepresentative of the posterior. To fix them, raise <code>adapt_delta</code> (e.g., to 0.95 or 0.99), rescale the predictors (usually so helpful you should do it by default), or reparameterize the model.</li>
+<li><strong>Maximum treedepth</strong> means that the sampler cut its trajectories short. This is a problem of efficiency only. To fix it, rescale the predictors or raise <code>max_treedepth</code>.</li>
+<li><strong>E-BFMI below 0.3.</strong> The sampler explores the posterior poorly (e.g., because of heavy tails or a difficult geometry). To fix it, reparameterize the model or use more informative priors.</li>
+</ul>
+<p>To check these, use <code>fit$diagnostic_summary()</code> for a {cmdstanr} fit and <code>rstan::check_hmc_diagnostics(fit$fit)</code> for a {brms} fit. This works with <code>backend = "cmdstanr"</code> too, because {brms} stores the fit as an {rstan} object either way.</p>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>The share of proposals accepted estimates the acceptance rate. Divide 1,000 by that rate to find the number of proposals you need. The output gives the time for each million proposals. The 10 batches take about 10 minutes.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p><strong>Metropolis.</strong> You’ll find that 500 iterations per chain isn’t enough. Try about 5,000 (a few seconds). If that’s not enough, try 100,000 (about 1 to 2 minutes).</p>
+<p><strong>Stan.</strong> You’ll find that 500 iterations per chain isn’t quite enough. Try about 750. If that’s not enough, try 1,500. Each run takes a few seconds (plus up to a minute to compile the model the first time).</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Rejection, the box from −2 to 2</strong></p>
+<div class="cell" data-fit_deps="[&quot;turnout&quot;,&quot;f&quot;,&quot;X&quot;,&quot;y&quot;,&quot;log_post_many&quot;,&quot;log_post&quot;,&quot;log_M&quot;,&quot;rej_box&quot;,&quot;metrop&quot;,&quot;chains_to_draws&quot;,&quot;stan_code&quot;,&quot;stan_data&quot;]">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rejection: a box from -2 to 2 for every coefficient</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>rej_wide <span class="ot">&lt;-</span> <span class="fu">rej_box</span>(<span class="at">lower =</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">5</span>), <span class="at">upper =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">5</span>),  <span class="co"># the box: -2 to 2 for each of the 5 coefficients</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">log_M =</span> log_M, <span class="at">y =</span> y, <span class="at">X =</span> X,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">S =</span> <span class="dv">1000</span>,          <span class="co"># stop once 1,000 draws are accepted</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">max_batches =</span> <span class="dv">10</span>,  <span class="co"># ...or after 10 batches, whichever comes first</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">batch_size =</span> <span class="fl">1e6</span>,  <span class="co"># one million proposals per batch (one progress message per batch)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">chunk_size =</span> <span class="fl">1e4</span>)  <span class="co"># evaluate each batch 10,000 proposals at a time (to save memory)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 1 of 10: evaluated 1,000,000 proposals... 0 accepted (0 accepted so far; worked for 42.4s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 2 of 10: evaluated 1,000,000 proposals... 4 accepted (4 accepted so far; worked for 1m 24.3s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 3 of 10: evaluated 1,000,000 proposals... 0 accepted (4 accepted so far; worked for 2m 6.3s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 4 of 10: evaluated 1,000,000 proposals... 0 accepted (4 accepted so far; worked for 2m 48.4s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 5 of 10: evaluated 1,000,000 proposals... 1 accepted (5 accepted so far; worked for 3m 30.5s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 6 of 10: evaluated 1,000,000 proposals... 2 accepted (7 accepted so far; worked for 4m 12.9s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 7 of 10: evaluated 1,000,000 proposals... 1 accepted (8 accepted so far; worked for 4m 55.3s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 8 of 10: evaluated 1,000,000 proposals... 1 accepted (9 accepted so far; worked for 5m 37.4s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 9 of 10: evaluated 1,000,000 proposals... 1 accepted (10 accepted so far; worked for 6m 19.4s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Batch 10 of 10: evaluated 1,000,000 proposals... 1 accepted (11 accepted so far; worked for 7m 2.2s so far)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>⏰ Total time: 7m 2.2s</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># acceptance rate, and what 1,000 draws would take</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>n_accepted <span class="ot">&lt;-</span> <span class="fu">nrow</span>(rej_wide<span class="sc">$</span>samples)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>rate <span class="ot">&lt;-</span> n_accepted <span class="sc">/</span> rej_wide<span class="sc">$</span>n_proposals</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>proposals_needed <span class="ot">&lt;-</span> <span class="dv">1000</span> <span class="sc">/</span> rate</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>hours_needed <span class="ot">&lt;-</span> proposals_needed <span class="sc">*</span> (rej_wide<span class="sc">$</span>time_total <span class="sc">/</span> rej_wide<span class="sc">$</span>n_proposals) <span class="sc">/</span> <span class="dv">3600</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">accepted =</span> n_accepted, <span class="at">rate =</span> rate,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">proposals_needed =</span> proposals_needed, <span class="at">hours_needed =</span> hours_needed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        accepted             rate proposals_needed     hours_needed 
+    1.100000e+01     1.100000e-06     9.090909e+08     1.066108e+01 </code></pre>
+</div>
+</div>
+<p>We accepted 11 of 10 million proposals in 7 minutes. That’s an acceptance rate of about 1.1 × 10⁻⁶. At that rate, 1,000 draws would take about 900 million proposals (about 11 hours).</p>
+<p><strong>Part 1</strong></p>
+<div class="cell" data-fit_deps="[&quot;turnout&quot;,&quot;f&quot;,&quot;X&quot;,&quot;y&quot;,&quot;log_post_many&quot;,&quot;log_post&quot;,&quot;log_M&quot;,&quot;rej_box&quot;,&quot;metrop&quot;,&quot;chains_to_draws&quot;,&quot;stan_code&quot;,&quot;stan_data&quot;]">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metropolis: 4 chains of 500</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>met_chains_500 <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>), \(start_value) {</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">metrop</span>(log_post, <span class="at">theta_start =</span> <span class="fu">rep</span>(start_value, <span class="dv">5</span>), <span class="at">S =</span> <span class="dv">500</span>, <span class="at">y =</span> y, <span class="at">X =</span> X)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>met_draws_500 <span class="ot">&lt;-</span> <span class="fu">chains_to_draws</span>(met_chains_500, <span class="fu">colnames</span>(X))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-fit_deps="[&quot;turnout&quot;,&quot;f&quot;,&quot;X&quot;,&quot;y&quot;,&quot;log_post_many&quot;,&quot;log_post&quot;,&quot;log_M&quot;,&quot;rej_box&quot;,&quot;metrop&quot;,&quot;chains_to_draws&quot;,&quot;stan_code&quot;,&quot;stan_data&quot;]">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stan: compile, then 4 chains of 500 (250 warmup + 250 sampling)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="fu">write_stan_file</span>(stan_code))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>fit_stan_500 <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> stan_data, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">iter_warmup =</span> <span class="dv">250</span>, <span class="at">iter_sampling =</span> <span class="dv">250</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>stan_draws_500 <span class="ot">&lt;-</span> fit_stan_500<span class="sc">$</span><span class="fu">draws</span>(<span class="st">"beta"</span>)  <span class="co"># load the draws now (the fit's files are temporary)</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>stan_diag_500 <span class="ot">&lt;-</span> fit_stan_500<span class="sc">$</span><span class="fu">diagnostic_summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metropolis</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_draws</span>(met_draws_500, <span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>, <span class="st">"ess_tail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  variable     rhat ess_bulk ess_tail
+  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)  1.66     6.60     11.3
+2 rs_age       1.40     9.30     11.2
+3 rs_educate   1.60     6.98     11.3
+4 rs_income    1.68     6.53     11.1
+5 racewhite    1.52     7.51     22.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stan</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_draws</span>(stan_draws_500, <span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>, <span class="st">"ess_tail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  variable  rhat ess_bulk ess_tail
+  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 beta[1]   1.00     512.     572.
+2 beta[2]   1.00     763.     665.
+3 beta[3]   1.00     826.     565.
+4 beta[4]   1.00     780.     687.
+5 beta[5]   1.00     533.     602.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_trace</span>(met_draws_500)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk07-exercises_files/figure-html/three-samplers-sol-trace-500-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_trace</span>(stan_draws_500)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk07-exercises_files/figure-html/three-samplers-sol-trace-500-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For Metropolis, R-hat ranges from 1.40 to 1.68 and the bulk ESS from 7 to 9. The four chains are still in different places (see the trace plot), so they haven’t converged.</p>
+<p>For Stan, R-hat is 1.00 and the bulk ESS ranges from 512 to 826 (from 1,000 draws). The chains have converged, but the ESS is short of 1,000.</p>
+<p><strong>Part 2</strong></p>
+<div class="cell" data-fit_deps="[&quot;turnout&quot;,&quot;f&quot;,&quot;X&quot;,&quot;y&quot;,&quot;log_post_many&quot;,&quot;log_post&quot;,&quot;log_M&quot;,&quot;rej_box&quot;,&quot;metrop&quot;,&quot;chains_to_draws&quot;,&quot;stan_code&quot;,&quot;stan_data&quot;]">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metropolis: 4 chains of 5,000, then 100,000</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>met_chains_5k <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>), \(start_value) {</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">metrop</span>(log_post, <span class="at">theta_start =</span> <span class="fu">rep</span>(start_value, <span class="dv">5</span>), <span class="at">S =</span> <span class="dv">5000</span>, <span class="at">y =</span> y, <span class="at">X =</span> X)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>met_draws_5k <span class="ot">&lt;-</span> <span class="fu">chains_to_draws</span>(met_chains_5k, <span class="fu">colnames</span>(X))</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>met_chains_100k <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>), \(start_value) {</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">metrop</span>(log_post, <span class="at">theta_start =</span> <span class="fu">rep</span>(start_value, <span class="dv">5</span>), <span class="at">S =</span> <span class="dv">100000</span>, <span class="at">y =</span> y, <span class="at">X =</span> X)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>met_draws_100k <span class="ot">&lt;-</span> <span class="fu">chains_to_draws</span>(met_chains_100k, <span class="fu">colnames</span>(X))</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>time_met <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">difftime</span>(<span class="fu">Sys.time</span>(), start, <span class="at">units =</span> <span class="st">"secs"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-fit_deps="[&quot;turnout&quot;,&quot;f&quot;,&quot;X&quot;,&quot;y&quot;,&quot;log_post_many&quot;,&quot;log_post&quot;,&quot;log_M&quot;,&quot;rej_box&quot;,&quot;metrop&quot;,&quot;chains_to_draws&quot;,&quot;stan_code&quot;,&quot;stan_data&quot;]">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stan: 4 chains of 750, then 1,500 (half warmup); force a fresh compile so the time is honest</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="fu">write_stan_file</span>(stan_code), <span class="at">force_recompile =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>time_compile <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">difftime</span>(<span class="fu">Sys.time</span>(), start, <span class="at">units =</span> <span class="st">"secs"</span>))</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>fit_stan_750 <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> stan_data, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">iter_warmup =</span> <span class="dv">375</span>, <span class="at">iter_sampling =</span> <span class="dv">375</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>stan_draws_750 <span class="ot">&lt;-</span> fit_stan_750<span class="sc">$</span><span class="fu">draws</span>(<span class="st">"beta"</span>)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>fit_stan <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data =</span> stan_data, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>                       <span class="at">iter_warmup =</span> <span class="dv">750</span>, <span class="at">iter_sampling =</span> <span class="dv">750</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>stan_draws <span class="ot">&lt;-</span> fit_stan<span class="sc">$</span><span class="fu">draws</span>(<span class="st">"beta"</span>)</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>stan_diag <span class="ot">&lt;-</span> fit_stan<span class="sc">$</span><span class="fu">diagnostic_summary</span>()</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>time_stan <span class="ot">&lt;-</span> time_compile <span class="sc">+</span> <span class="fu">as.numeric</span>(<span class="fu">difftime</span>(<span class="fu">Sys.time</span>(), start, <span class="at">units =</span> <span class="st">"secs"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metropolis, 5,000 and 100,000 per chain</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_draws</span>(met_draws_5k, <span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>, <span class="st">"ess_tail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  variable     rhat ess_bulk ess_tail
+  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)  1.01     145.     310.
+2 rs_age       1.02     205.     463.
+3 rs_educate   1.02     128.     300.
+4 rs_income    1.01     194.     294.
+5 racewhite    1.01     157.     436.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_draws</span>(met_draws_100k, <span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>, <span class="st">"ess_tail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  variable     rhat ess_bulk ess_tail
+  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)  1.00    2449.    5337.
+2 rs_age       1.00    4386.    8699.
+3 rs_educate   1.00    3396.    7060.
+4 rs_income    1.00    2829.    5857.
+5 racewhite    1.00    2473.    5395.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stan, 750 and 1,500 per chain</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_draws</span>(stan_draws_750, <span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>, <span class="st">"ess_tail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  variable  rhat ess_bulk ess_tail
+  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 beta[1]   1.01     900.     721.
+2 beta[2]   1.00    1082.    1025.
+3 beta[3]   1.00     978.     921.
+4 beta[4]   1.00    1326.     870.
+5 beta[5]   1.01     929.     735.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_draws</span>(stan_draws, <span class="st">"rhat"</span>, <span class="st">"ess_bulk"</span>, <span class="st">"ess_tail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  variable  rhat ess_bulk ess_tail
+  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 beta[1]   1.00    1697.    1636.
+2 beta[2]   1.00    2189.    2016.
+3 beta[3]   1.00    2408.    2037.
+4 beta[4]   1.00    2396.    1669.
+5 beta[5]   1.00    1727.    1559.</code></pre>
+</div>
+</div>
+<p>Metropolis with 5,000 iterations per chain isn’t enough (R-hat from 1.01 to 1.02, bulk ESS from 128 to 205). With 100,000, R-hat is 1.00 and every bulk ESS is at least 2,449.</p>
+<p>Stan with 750 iterations per chain is just short (the bulk ESS ranges from 900 to 1,326, so one coefficient falls below 1,000). With 1,500, every bulk ESS is at least 1,697.</p>
+<p>So Metropolis needs about 70 times as many iterations as Stan (100,000 vs.&nbsp;1,500).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># total time in seconds (for stan, compilation plus sampling)</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">metropolis =</span> time_met, <span class="at">stan =</span> time_stan, <span class="at">stan_compile =</span> time_compile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  metropolis         stan stan_compile 
+   47.414644     5.154759     3.666389 </code></pre>
+</div>
+</div>
+<p>Metropolis took about 55 seconds. Stan took 7 seconds, and 5 of those went to compiling the model.</p>
+<p>Stan uses the gradient of the log posterior to make long moves that are still accepted. Metropolis takes small random steps.</p>
+<p><strong>Part 3</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>stan_diag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$num_divergent
+[1] 0 0 0 0
+
+$num_max_treedepth
+[1] 0 0 0 0
+
+$ebfmi
+[1] 1.1420572 0.9706250 1.0699158 0.9738542</code></pre>
+</div>
+</div>
+<p>There are no divergent transitions, no treedepth hits, and E-BFMI ≈ 1 in every chain. This is an easy posterior for HMC.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-2" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> <code>brm()</code></h2>
+<p>Reproduce the familiar negative binomial regression below with <code>brm()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmmTMB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'glmmTMB'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:brms':
+
+    lognormal</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:marginaleffects':
+
+    refit</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>holland <span class="ot">&lt;-</span> crdata<span class="sc">::</span>holland2015</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># formula corresponds to model 1 for each city in holland (2015) table 2</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> operations <span class="sc">~</span> lower <span class="sc">+</span> vendors <span class="sc">+</span> budget <span class="sc">+</span> population</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fit negative binomial regression model for Santiago</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  f,</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> nbinom2,</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> holland,</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> city <span class="sc">==</span> <span class="st">"santiago"</span></span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="co"># summary</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>See <code>?brms::brmsfamily</code> for the distributions available in <code>brm()</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>Use <code>#| results: hide</code> in your Quarto code chunks to hide the Stan junk output. It’s pesky.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<div class="cell" data-fit_deps="[&quot;holland&quot;,&quot;f&quot;]">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit negative binomial regression model for Santiago</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>fit_brm <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  f,</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> negbinomial,</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">subset</span>(holland, city <span class="sc">==</span> <span class="st">"santiago"</span>),  <span class="co"># brm() doesn't have subset</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_brm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: negbinomial 
+  Links: mu = log 
+Formula: operations ~ lower + vendors + budget + population 
+   Data: subset(holland, city == "santiago") (Number of observations: 34) 
+  Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+         total post-warmup draws = 4000
+
+Regression Coefficients:
+           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept      2.84      2.09    -0.97     7.33 1.00     2516     1708
+lower         -0.05      0.03    -0.12     0.00 1.00     2383     1751
+vendors       -0.23      0.31    -0.83     0.39 1.00     1862     2055
+budget         0.00      0.00    -0.00     0.01 1.00     2925     2218
+population     0.04      0.05    -0.04     0.14 1.00     1788     1696
+
+Further Distributional Parameters:
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+shape     0.31      0.11     0.14     0.58 1.00     1787     2173
+
+Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+</div></details>
+</div>
+</section>
+<section id="ex-3" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Convergence</h2>
+<p>Using the output above, argue that <code>warmup</code> and <code>iter</code> are sufficiently large (or not).</p>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<ul>
+<li><p><strong>Setup recap</strong> <em>4 chains;</em> <code>iter = 2000</code>; <code>warmup = 1000</code>; <em>post-warmup = 1000 per chain</em> → <strong>4000 total draws</strong>.</p></li>
+<li><p><strong><span class="math inline">\(\hat R\)</span> → all parameters near 1.00</strong> <em>Why it matters:</em> <span class="math inline">\(\hat R \approx 1.00\)</span> indicates chains mix to the same target after adaptation. <em>Evidence:</em> Intercept, <code>lower</code>, <code>vendors</code>, <code>budget</code>, <code>population</code>, and <code>shape</code> all show <code>Rhat = 1.00</code>, consistent with well-tuned warmup and sufficient iterations for convergence.</p></li>
+<li><p><strong>Effective sample sizes → large</strong> <em>Why it matters:</em> <code>Bulk_ESS</code> gauges precision of means; <code>Tail_ESS</code> gauges interval tails. Rules of thumb: ESS above 2000 per parameter. <em>Evidence:</em> <code>Bulk_ESS</code> and <code>Tail_ESS</code> are about 1700 to 2900 across parameters (e.g., <code>lower</code>: <code>Bulk_ESS</code> 2383; <code>shape</code>: 1787),</p></li>
+</ul>
+</div></details>
+</div>
+</section>
+<section id="ex-4" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> <code>brm()</code> arguments</h2>
+<p>Explain the following arguments to <code>brm()</code>. Explain what the argument controls and recommend reasonable defaults.</p>
+<ul>
+<li><code>chains</code></li>
+<li><code>iter</code></li>
+<li><code>warmup</code></li>
+<li><code>cores</code></li>
+<li><code>backend</code></li>
+</ul>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<ul>
+<li><p><strong><code>chains</code></strong> <em>What it controls:</em> Number of independent MCMC chains to run. <em>Why it matters:</em> Multiple chains start from different initial values, helping check convergence (e.g., via <span class="math inline">\(\hat R\)</span>). <em>Reasonable default:</em> <code>chains = 4</code>. Fewer if slow, more if diagnostics are uncertain.</p></li>
+<li><p><strong><code>iter</code></strong> <em>What it controls:</em> Total iterations per chain, including warmup. <em>Why it matters:</em> More iterations yield more effective posterior draws and reduce Monte Carlo error. <em>Reasonable default:</em> <code>iter = 2000</code> (with half used for warmup). Use 4000–8000 for complex models.</p></li>
+<li><p><strong><code>warmup</code></strong> <em>What it controls:</em> Number of iterations per chain used for tuning (e.g., step size, mass matrix) and discarded afterward. <em>Why it matters:</em> Proper adaptation improves sampling efficiency and stability. <em>Reasonable default:</em> <code>warmup = 1000</code> (half of <code>iter</code>).</p></li>
+<li><p><strong><code>cores</code></strong> <em>What it controls:</em> Number of CPU cores used to run chains in parallel. <em>Why it matters:</em> Parallel chains shorten total runtime. <em>Reasonable default:</em> <code>cores = chains</code>, often with <code>options(mc.cores = parallel::detectCores())</code>.</p></li>
+<li><p><strong><code>backend</code></strong> <em>What it controls:</em> The Stan interface used for sampling. <em>Options:</em> <code>"cmdstanr"</code> or <code>"rstan"</code>. <em>Why it matters:</em> Determines compilation speed, diagnostics, and toolchain. <em>Reasonable default:</em> <code>"cmdstanr"</code> (if installed); otherwise defaults to <code>"rstan"</code>.</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  y <span class="sc">~</span> x1 <span class="sc">+</span> x2,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">4000</span>,</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></details>
+</div>
+</section>
+<section id="ex-5" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Experimenting with difficult posterior</h2>
+<p>The posterior below is difficult for Stan with the predictors on their original scales.</p>
+<p>Here’s <em>one way</em> to think about efficiency: you want your effective <em>samples per second</em> (of your time) to be relatively large. <code>sps()</code> below computes the average bulk ESS across the parameters, divided by the sampling time. It also reports the number of divergent transitions and the largest R-hat. If a fit has divergent transitions or hasn’t converged, we can’t trust it, so its speed doesn’t matter.</p>
+<div class="cell" data-fit_deps="chunk:04-brm-hard-fit">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>hks <span class="ot">&lt;-</span> crdata<span class="sc">::</span>hks2013</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit negative binomial model</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> osvAll <span class="sc">~</span> troopLag <span class="sc">+</span> policeLag <span class="sc">+</span> militaryobserversLag <span class="sc">+</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  brv_AllLag <span class="sc">+</span> osvAllLagDum <span class="sc">+</span> incomp <span class="sc">+</span> epduration <span class="sc">+</span></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  lntpop</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>fit_mcmc <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  f,</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> hks,</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> negbinomial,</span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effective samples per second, plus the checks that tell us whether to trust the fit</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>sps <span class="ot">&lt;-</span> <span class="cf">function</span>(fit) {</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  times <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">get_elapsed_time</span>(fit<span class="sc">$</span>fit)  <span class="co"># seconds for each chain (warmup + sampling)</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">apply</span>(times, <span class="dv">1</span>, sum))  <span class="co"># the slowest chain</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  ess <span class="ot">&lt;-</span> bayestestR<span class="sc">::</span><span class="fu">effective_sample</span>(fit)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  avg_ess <span class="ot">&lt;-</span> <span class="fu">mean</span>(ess<span class="sc">$</span>ESS_bulk)  <span class="co"># average bulk ess across the parameters</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="st">"sps"</span> <span class="ot">=</span> avg_ess<span class="sc">/</span>t,</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">"divergences"</span> <span class="ot">=</span> rstan<span class="sc">::</span><span class="fu">get_num_divergent</span>(fit<span class="sc">$</span>fit),  <span class="co"># divergent transitions after warmup</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">"max_rhat"</span> <span class="ot">=</span> <span class="fu">max</span>(brms<span class="sc">::</span><span class="fu">rhat</span>(fit), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co"># convergence</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>       <span class="st">"ess"</span> <span class="ot">=</span> ess)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li>Run the code above, then <code>sps(fit_mcmc)</code>. Have the chains converged? Are there divergent transitions? (See the HMC diagnostics in <a href="#ex-1">Exercise 1</a>.)</li>
+<li>Rescale the predictors with <code>arm::rescale()</code> and refit. Compare <code>sps()</code> for the two fits.</li>
+<li>Why does rescaling help so much?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>For part 2, you can rescale inside the formula (e.g., <code>osvAll ~ arm::rescale(troopLag) + ...</code>).</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sps</span>(fit_mcmc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$sps
+[1] 0.3198442
+
+$divergences
+[1] 1908
+
+$max_rhat
+[1] 3.019951
+
+$ess
+               Parameter ESS_bulk ESS_tail
+1            b_Intercept        5       11
+2             b_troopLag        5       41
+3            b_policeLag        5       13
+4 b_militaryobserversLag        5       28
+5           b_brv_AllLag        5       11
+6         b_osvAllLagDum        6       19
+7               b_incomp        5       35
+8           b_epduration        5       11
+9               b_lntpop        5       28</code></pre>
+</div>
+</div>
+<p>On the original scales, Stan fails. R-hat is 3.02, the bulk ESS is 5 or 6 for every coefficient, and 1,908 of the 4,000 transitions (48%) are divergent. The chains haven’t converged, so we can’t trust this fit, and its speed (0.3 effective samples per second) doesn’t matter.</p>
+<p><strong>Part 2</strong></p>
+<div class="cell" data-fit_deps="hks">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>rs <span class="ot">&lt;-</span> \(x) arm<span class="sc">::</span><span class="fu">rescale</span>(x) <span class="co"># alias</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>f_rs <span class="ot">&lt;-</span> osvAll <span class="sc">~</span> <span class="fu">rs</span>(troopLag) <span class="sc">+</span> <span class="fu">rs</span>(policeLag) <span class="sc">+</span> <span class="fu">rs</span>(militaryobserversLag) <span class="sc">+</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rs</span>(brv_AllLag) <span class="sc">+</span> <span class="fu">rs</span>(osvAllLagDum) <span class="sc">+</span> <span class="fu">rs</span>(incomp) <span class="sc">+</span> <span class="fu">rs</span>(epduration) <span class="sc">+</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rs</span>(lntpop)</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>fit_mcmc_rs <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>  f_rs,</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> hks,</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> negbinomial,</span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sps</span>(fit_mcmc_rs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$sps
+[1] 647.4592
+
+$divergences
+[1] 0
+
+$max_rhat
+[1] 1.003294
+
+$ess
+                 Parameter ESS_bulk ESS_tail
+1              b_Intercept     5437     3392
+2             b_rstroopLag     3186     2712
+3            b_rspoliceLag     3959     2600
+4 b_rsmilitaryobserversLag     3372     2593
+5           b_rsbrv_AllLag     4467     2565
+6         b_rsosvAllLagDum     3824     3107
+7               b_rsincomp     3853     3019
+8           b_rsepduration     4721     3241
+9               b_rslntpop     3047     2950</code></pre>
+</div>
+</div>
+<p>With the predictors rescaled, R-hat is 1.00, every bulk ESS is above 3,000, and there are no divergent transitions. Stan produces about 650 effective samples per second, compared with 0.3.</p>
+<p><strong>Part 3</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sd of each predictor on its original scale</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>hks <span class="sc">|&gt;</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(troopLag, policeLag, militaryobserversLag, brv_AllLag,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>         osvAllLagDum, incomp, epduration, lntpop) <span class="sc">|&gt;</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dbl</span>(sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            troopLag            policeLag militaryobserversLag 
+           2.8558605            0.1418510            0.1059394 
+          brv_AllLag         osvAllLagDum               incomp 
+         118.8278892            0.4253317            0.4648971 
+          epduration               lntpop 
+          52.5904099            1.2084279 </code></pre>
+</div>
+</div>
+<div class="cell" data-fit_deps="[&quot;hks&quot;,&quot;f&quot;]">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># original scales, but adapt_delta = 0.99</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>fit_mcmc_99 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  f,</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> hks,</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> negbinomial,</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),  <span class="co"># from default of 0.8</span></span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sps</span>(fit_mcmc_99)[<span class="fu">c</span>(<span class="st">"sps"</span>, <span class="st">"divergences"</span>, <span class="st">"max_rhat"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$sps
+[1] 0.1502428
+
+$divergences
+[1] 1877
+
+$max_rhat
+[1] 3.020168</code></pre>
+</div>
+</div>
+<p>On their original scales, the predictors’ SDs range from 0.1 (<code>militaryobserversLag</code>) to 119 (<code>brv_AllLag</code>), a factor of more than 1,000. So the plausible values of the coefficients differ in scale by about as much. Stan starts every coefficient at a random value between −2 and 2 and tunes its step sizes during warmup. With scales this different, those starting values are absurd for some coefficients (e.g., a coefficient of 2 on <code>brv_AllLag</code>, whose SD is 119, moves the log of the expected count by hundreds), and warmup doesn’t recover. After rescaling, every predictor has SD 0.5, so the coefficients are on similar scales.</p>
+<p>Raising <code>adapt_delta</code> doesn’t help here. With <code>adapt_delta = 0.99</code>, there are still 1,877 divergent transitions and R-hat is 3.02. A higher <code>adapt_delta</code> is the usual fix for divergent transitions, but here the problem is the scales. This is why we rescale by default.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-6" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Perot</h2>
+<p>Let’s return to the 1992 presidential vote (Bush, Clinton, and Perot), but now use Adolph’s specification rather than the notes’ model with party ID and the economy. In this exercise, you’ll use {marginaleffects} to compute and interpret the multinomial logit probabilities.</p>
+<p>The data come from the same ANES file as the notes. We have 466 voters with complete data on these variables (Bush 184, Clinton 191, Perot 91). The variables are:</p>
+<ul>
+<li><code>ideology</code>: self-placement from 1 (very liberal) to 7 (very conservative)</li>
+<li><code>ideology_distance</code>: the distance between the respondent’s own ideology and where they place Bush on the same scale (0 to 6)</li>
+<li><code>economy</code>: the national economy compared with a year ago, from 1 (much better) to 5 (much worse)</li>
+<li><code>gulf_war</code>: 1 if the respondent thinks the Gulf War was worth it, 0 otherwise</li>
+<li><code>nonwhite</code>: 1 if the respondent is nonwhite, 0 otherwise</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data; keep complete cases on the model's variables</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>perot_vote <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/data/bush-approval-1992.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(vote_1992, ideology, ideology_distance, economy, gulf_war, nonwhite) <span class="sc">|&gt;</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vote_1992 =</span> <span class="fu">factor</span>(vote_1992, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Bush"</span>, <span class="st">"Clinton"</span>, <span class="st">"Perot"</span>)))</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fit multinomial logit; the first level (Bush) is the baseline</span></span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>perot_fit <span class="ot">&lt;-</span> nnet<span class="sc">::</span><span class="fu">multinom</span>(vote_1992 <span class="sc">~</span> ideology <span class="sc">+</span> ideology_distance <span class="sc">+</span> economy <span class="sc">+</span> gulf_war <span class="sc">+</span> nonwhite,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> perot_vote, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(perot_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        (Intercept)    ideology ideology_distance   economy   gulf_war
+Clinton   -1.134040 -0.52504754         0.7920291 0.5969867 -0.7615256
+Perot     -2.146247 -0.07646878         0.6818460 0.2918575 -0.3114140
+          nonwhite
+Clinton  0.7537022
+Perot   -0.9945756</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>Compute the softmax of the linear predictors <span class="math inline">\((0, 1, -1)\)</span>. Then add 2 to each linear predictor and compute the softmax again. What do you notice?</li>
+<li>Use <code>predictions(..., type = "probs", newdata = datagrid(...))</code> to compute Pr(Bush), Pr(Clinton), and Pr(Perot) for a moderate (ideology 4) whose ideology is 2 points from where they place Bush, who thinks the economy is somewhat worse (economy 4), who thinks the Gulf War was worth it, and who is white.</li>
+<li>Relevel the outcome so that Clinton is the baseline and refit the model. Which coefficients change? How do the new coefficients relate to the old ones? Are the probabilities from part 2 the same?</li>
+<li>Plot the three probabilities as ideology moves from 1 to 7, holding the other variables at their part 2 values. Use <code>comparisons()</code> to compute the change in each probability from 1 to 7. Compare the direction of Pr(Perot) with the sign of Perot’s ideology coefficient. What do you notice?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>For part 1, <span class="math inline">\(\Pr(Y = j) = \frac{e^{z_j}}{\sum_k e^{z_k}}\)</span>. In R, that’s <code>exp(z) / sum(exp(z))</code>.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>For part 3, use <code>relevel(vote_1992, ref = "Clinton")</code> or <code>factor(..., levels = c("Clinton", "Bush", "Perot"))</code>. The refit’s estimates can differ from the ones you compute by hand in the fourth decimal (because of the optimizer’s tolerance).</p>
+<p>For part 4, adapt the notes’ <code>predictions()</code> and <code>geom_ribbon()</code> code, with <code>datagrid(ideology = 1:7, ...)</code>. Give the other four variables explicitly.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># softmax of (0, 1, -1), then of (2, 3, 1)</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>perot_softmax <span class="ot">&lt;-</span> <span class="cf">function</span>(z) <span class="fu">exp</span>(z) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">exp</span>(z))</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">perot_softmax</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.24472847 0.66524096 0.09003057</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">perot_softmax</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.24472847 0.66524096 0.09003057</code></pre>
+</div>
+</div>
+<p>Both times, the probabilities are 0.245, 0.665, and 0.090. Adding the same constant to every linear predictor doesn’t change the probabilities. The <span class="math inline">\(e^{2}\)</span> cancels.</p>
+<p><span class="math display">\[
+\Pr(Y = j) = \frac{e^{z_j + 2}}{\sum_k e^{z_k + 2}} = \frac{e^{2} e^{z_j}}{e^{2} \sum_k e^{z_k}} = \frac{e^{z_j}}{\sum_k e^{z_k}}.
+\]</span></p>
+<p>This is why we can fix the baseline’s linear predictor at 0.</p>
+<p><strong>Part 2</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilities for the respondent</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>perot_profile <span class="ot">&lt;-</span> <span class="fu">datagrid</span>(<span class="at">model =</span> perot_fit, <span class="at">ideology =</span> <span class="dv">4</span>, <span class="at">ideology_distance =</span> <span class="dv">2</span>,</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">economy =</span> <span class="dv">4</span>, <span class="at">gulf_war =</span> <span class="dv">1</span>, <span class="at">nonwhite =</span> <span class="dv">0</span>)</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predictions</span>(perot_fit, <span class="at">newdata =</span> perot_profile, <span class="at">type =</span> <span class="st">"probs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Group ideology ideology_distance economy gulf_war nonwhite Estimate
+ Bush           4                 2       4        1        0    0.361
+ Clinton        4                 2       4        1        0    0.353
+ Perot          4                 2       4        1        0    0.286
+ Std. Error    z Pr(&gt;|z|)    S 2.5 % 97.5 %
+     0.0431 8.38   &lt;0.001 54.0 0.277  0.446
+     0.0398 8.86   &lt;0.001 60.1 0.275  0.431
+     0.0360 7.96   &lt;0.001 49.0 0.216  0.357
+
+Type: probs</code></pre>
+</div>
+</div>
+<p>The probabilities are 0.361 (Bush), 0.353 (Clinton), and 0.286 (Perot).</p>
+<p>For this moderate, Bush and Clinton nearly tie, and Pr(Perot) is about 0.29.</p>
+<p><strong>Part 3</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clinton as the baseline</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>perot_vote_clinton <span class="ot">&lt;-</span> perot_vote <span class="sc">|&gt;</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vote_1992 =</span> <span class="fu">relevel</span>(vote_1992, <span class="at">ref =</span> <span class="st">"Clinton"</span>))</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>perot_fit_clinton <span class="ot">&lt;-</span> nnet<span class="sc">::</span><span class="fu">multinom</span>(vote_1992 <span class="sc">~</span> ideology <span class="sc">+</span> ideology_distance <span class="sc">+</span> economy <span class="sc">+</span> gulf_war <span class="sc">+</span> nonwhite,</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">data =</span> perot_vote_clinton, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(perot_fit_clinton)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      (Intercept)  ideology ideology_distance    economy  gulf_war   nonwhite
+Bush     1.133744 0.5250520        -0.7920126 -0.5969593 0.7616524 -0.7537098
+Perot   -1.012627 0.4485993        -0.1101432 -0.3050862 0.4501643 -1.7484834</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the same thing from the Bush-baseline fit: differences of the old rows</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">Bush  =</span> <span class="dv">0</span> <span class="sc">-</span> <span class="fu">coef</span>(perot_fit)[<span class="st">"Clinton"</span>, ],</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">Perot =</span> <span class="fu">coef</span>(perot_fit)[<span class="st">"Perot"</span>, ] <span class="sc">-</span> <span class="fu">coef</span>(perot_fit)[<span class="st">"Clinton"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      (Intercept)  ideology ideology_distance    economy  gulf_war   nonwhite
+Bush     1.134040 0.5250475        -0.7920291 -0.5969867 0.7615256 -0.7537022
+Perot   -1.012207 0.4485788        -0.1101831 -0.3051292 0.4501116 -1.7482778</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\beta_{\text{Bush} \mid \text{Clinton}} = -\beta_{\text{Clinton} \mid \text{Bush}},
+\qquad
+\beta_{\text{Perot} \mid \text{Clinton}} = \beta_{\text{Perot} \mid \text{Bush}} - \beta_{\text{Clinton} \mid \text{Bush}}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># probabilities for the part 2 respondent, both fits</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>perot_p_bush <span class="ot">&lt;-</span> <span class="fu">predictions</span>(perot_fit, <span class="at">newdata =</span> perot_profile, <span class="at">type =</span> <span class="st">"probs"</span>)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>perot_p_clinton <span class="ot">&lt;-</span> <span class="fu">predictions</span>(perot_fit_clinton, <span class="at">newdata =</span> perot_profile, <span class="at">type =</span> <span class="st">"probs"</span>)</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>perot_p_bush <span class="sc">|&gt;</span> <span class="fu">select</span>(group, estimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Group Estimate
+ Bush       0.361
+ Clinton    0.353
+ Perot      0.286</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>perot_p_clinton <span class="sc">|&gt;</span> <span class="fu">select</span>(group, estimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Group Estimate
+ Clinton    0.353
+ Bush       0.361
+ Perot      0.286</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># same log-likelihood</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(perot_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'log Lik.' -353.5879 (df=12)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(perot_fit_clinton)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'log Lik.' -353.5879 (df=12)</code></pre>
+</div>
+</div>
+<p>Every coefficient changes. The new Bush row is minus the old Clinton row (e.g., ideology 0.525, nonwhite −0.754). The new Perot row is the old Perot row minus the old Clinton row (e.g., ideology −0.076 − (−0.525) = 0.449; nonwhite −0.995 − 0.754 ≈ −1.75).</p>
+<p>These differences match the refit to the third or fourth decimal (e.g., <code>gulf_war</code> 0.7617 vs.&nbsp;0.7615). The gap comes from the optimizer’s tolerance.</p>
+<p>The probabilities are identical to three decimals (0.361, 0.353, 0.286), and the log-likelihood is −353.59 for both fits. This is the same model with a different parameterization (i.e., the identification point from the notes).</p>
+<p>Notice that relative to Clinton, Perot’s ideology coefficient is +0.45 (SE 0.10). We’ll need this in part 4.</p>
+<p><strong>Part 4</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of each candidate as ideology varies, other variables at the part 2 values</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>perot_p_ideology <span class="ot">&lt;-</span> <span class="fu">predictions</span>(perot_fit,</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">ideology =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>, <span class="at">ideology_distance =</span> <span class="dv">2</span>,</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>                                                   <span class="at">economy =</span> <span class="dv">4</span>, <span class="at">gulf_war =</span> <span class="dv">1</span>, <span class="at">nonwhite =</span> <span class="dv">0</span>),</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">type =</span> <span class="st">"probs"</span>)</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(perot_p_ideology, <span class="fu">aes</span>(<span class="at">x =</span> ideology, <span class="at">y =</span> estimate, <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high,</span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color =</span> group, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Ideology (1 = very liberal, 7 = very conservative)"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>,</span>
+<span id="cb88-14"><a href="#cb88-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Candidate"</span>, <span class="at">fill =</span> <span class="st">"Candidate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk07-exercises_files/figure-html/perot-ideology-plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change in each candidate's probability from very liberal (1) to very conservative (7)</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(perot_fit,</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">ideology =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>)),</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">ideology_distance =</span> <span class="dv">2</span>, <span class="at">economy =</span> <span class="dv">4</span>, <span class="at">gulf_war =</span> <span class="dv">1</span>, <span class="at">nonwhite =</span> <span class="dv">0</span>),</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"probs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Group ideology_distance economy gulf_war nonwhite Estimate Std. Error     z
+ Bush                    2       4        1        0    0.397     0.1033  3.84
+ Clinton                 2       4        1        0   -0.592     0.0875 -6.77
+ Perot                   2       4        1        0    0.195     0.0930  2.10
+ Pr(&gt;|z|)    S   2.5 % 97.5 %
+   &lt;0.001 13.0  0.1944  0.599
+   &lt;0.001 36.1 -0.7639 -0.421
+   0.0356  4.8  0.0131  0.378
+
+Term: ideology
+Type: probs
+Comparison: 7 - 1</code></pre>
+</div>
+</div>
+<p>Perot’s ideology coefficient is negative (−0.08, relative to Bush), but Pr(Perot) rises steadily, from 0.15 at 1 to 0.29 at 4 and 0.34 at 7. The change is 0.19 (95% CI from 0.01 to 0.38).</p>
+<p>Why? Perot’s coefficient (−0.08) sits between Bush’s (0) and Clinton’s (−0.53). As ideology moves from 1 to 7, Pr(Clinton) falls by 0.59, and Perot gets part of that. Relative to Clinton, Perot’s coefficient is +0.45 (part 3).</p>
+<p>The sign of Perot’s coefficient is itself uncertain (the SE of 0.11 is larger than the estimate of 0.08). Either way, the lesson is the same. Compute the probabilities.</p>
+<p><code>gulf_war</code> shows the same thing. Perot’s coefficient is −0.31, but Pr(Perot) rises from 0.26 to 0.29 (the CI includes 0). And <code>economy</code> gives a non-monotone Pr(Perot), which peaks at 4 (0.29) and dips at 5 (0.28), even though the coefficient is positive (0.29).</p>
+<p>One caveat: holding distance at 2 while ideology moves from 1 to 7 extrapolates. No respondent with ideology 1 has distance 2, and only 3 respondents with ideology 7 do.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-7" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Red State, Blue State: Part 3</h2>
+<p>In Parts 2(a) and 2(b), we modeled party ID. Now let’s model the vote itself in the 2024 election, in the same two states. Recall Figure 4 in Gelman et al.&nbsp;(2007, p.&nbsp;356). In 2000–2004, richer Mississippians voted Republican, but income barely mattered in Connecticut.</p>
+<p>The data come from the 2024 CES. <code>vote</code> is “Did not vote” (i.e., no validated record of voting), “Harris”, or “Trump” (i.e., the vote reported in the post-election survey). <code>income</code> is the same five-point scale as in Part 2 (from −2 to 2).</p>
+<p>Income might matter for whether people vote, not only for whom they vote. We have three outcomes with no order (did not vote, Harris, and Trump), so we need a multinomial logit.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data; Mississippi and Connecticut</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>ms_vote <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/files/red-state-part3-mississippi.csv"</span>)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>ct_vote <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://pos5747.github.io/files/red-state-part3-connecticut.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li>Fit <code>brm(vote ~ income, family = categorical())</code> in each state, with Harris as the baseline. What does each set of coefficients compare?</li>
+<li>Use <code>predictions()</code> to compute the probability of each outcome at each income category. Make a stacked plot with one panel per state. What changes with income? Turnout? Vote choice? Both?</li>
+<li>Use <code>comparisons()</code> to compute the change in the probability of each outcome as income moves from −1 to 1, in each state, with 90% CIs. Does income still matter more for the Trump vote in Mississippi?</li>
+<li>Fit the Mississippi model without income (<code>vote ~ 1</code>) and with income as a factor (<code>vote ~ income_factor</code>, where <code>income_factor = factor(income)</code>). Compare these two models with the income model using <code>loo()</code> and <code>loo_compare()</code>. Does income improve the prediction? Does treating income as a factor improve it further?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 1</span></summary><div class="ex-reveal-body">
+<p>For part 1, <code>factor(vote, levels = c("Harris", "Trump", "Did not vote"))</code> makes Harris the baseline (i.e., the first level).</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
+<p>For parts 2 and 3, <code>predictions()</code> and <code>comparisons()</code> work on a <code>brm()</code> fit just as on a <code>multinom()</code> fit. The <code>group</code> column holds the outcome. The intervals are posterior intervals.</p>
+</div></details>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 3</span></summary><div class="ex-reveal-body">
+<p>For part 4, see “<a href="https://pos5747.github.io/notes/wk07/05-loo.html#interpreting-elpd_diff-and-se_diff">Interpreting <code>elpd_diff</code> and <code>se_diff</code></a>” in the LOOIC chapter. If <code>loo()</code> flags observations with a high Pareto <span class="math inline">\(\hat{k}\)</span>, see the chapter’s “Fixing high <span class="math inline">\(\hat{k}\)</span>” section.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<div class="cell" data-fit_deps="[&quot;ms_vote&quot;,&quot;ct_vote&quot;]">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># harris as the baseline</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>ms_vote <span class="ot">&lt;-</span> ms_vote <span class="sc">|&gt;</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vote =</span> <span class="fu">factor</span>(vote, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Harris"</span>, <span class="st">"Trump"</span>, <span class="st">"Did not vote"</span>)))</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>ct_vote <span class="ot">&lt;-</span> ct_vote <span class="sc">|&gt;</span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vote =</span> <span class="fu">factor</span>(vote, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Harris"</span>, <span class="st">"Trump"</span>, <span class="st">"Did not vote"</span>)))</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="co"># multinomial logit in each state</span></span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>fit_ms_vote <span class="ot">&lt;-</span> <span class="fu">brm</span>(vote <span class="sc">~</span> income, <span class="at">data =</span> ms_vote,</span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="fu">categorical</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>fit_ct_vote <span class="ot">&lt;-</span> <span class="fu">brm</span>(vote <span class="sc">~</span> income, <span class="at">data =</span> ct_vote,</span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="fu">categorical</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fixef</span>(fit_ms_vote)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                         Estimate Est.Error        Q2.5      Q97.5
+muTrump_Intercept       0.3288210 0.1485683  0.03176500  0.6317121
+muDidnotvote_Intercept  0.9136666 0.1405976  0.63879890  1.1903143
+muTrump_income          0.2043992 0.1518013 -0.09262864  0.5080977
+muDidnotvote_income    -0.5673395 0.1322043 -0.82865767 -0.3036846</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fixef</span>(fit_ct_vote)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          Estimate  Est.Error       Q2.5      Q97.5
+muTrump_Intercept      -0.72719080 0.13819687 -0.9964379 -0.4573522
+muDidnotvote_Intercept  0.31134849 0.10340930  0.1149826  0.5170650
+muTrump_income         -0.00188958 0.12692385 -0.2512843  0.2474895
+muDidnotvote_income    -0.46287657 0.09461065 -0.6445496 -0.2746005</code></pre>
+</div>
+</div>
+<p>Each set of coefficients gives the log odds of that outcome vs.&nbsp;Harris (e.g., <code>muTrump_income</code> compares Trump with Harris). For “Did not vote”, the income coefficient is −0.57 in Mississippi and −0.46 in Connecticut. Richer people are less likely to stay home (relative to voting for Harris). For Trump, the income coefficient is 0.20 in Mississippi and 0.00 in Connecticut.</p>
+<p><strong>Part 2</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>p_vote <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Mississippi =</span> <span class="fu">predictions</span>(fit_ms_vote, <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">income =</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span>)),</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Connecticut =</span> <span class="fu">predictions</span>(fit_ct_vote, <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">income =</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span>)),</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"state"</span></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_vote, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> estimate, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(state)) <span class="sc">+</span></span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Income category"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk07-exercises_files/figure-html/red-state-3-sol-probs-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Pr(did not vote) falls from 0.80 to 0.20 in Mississippi and from 0.70 to 0.27 in Connecticut.</p>
+<p>In Mississippi, Pr(Trump) rises from 0.10 to 0.53, and Pr(Harris) rises too, from 0.10 to 0.26. In Connecticut, Pr(Harris) rises from 0.20 to 0.49 and Pr(Trump) from 0.10 to 0.24.</p>
+<p>So income changes both, but mostly turnout. Notice that richer Mississippians are more likely to vote for Harris than poorer Mississippians are, because poorer Mississippians mostly don’t vote.</p>
+<p><strong>Part 3</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_ms_vote, <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">income =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)), <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>), <span class="at">conf_level =</span> <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+        Group Estimate   5.0 % 95.0 %
+ Harris         0.0888  0.0224  0.157
+ Trump          0.2382  0.1584  0.319
+ Did not vote  -0.3293 -0.4026 -0.251
+
+Term: income
+Type: response
+Comparison: 1 - -1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comparisons</span>(fit_ct_vote, <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">income =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)), <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">grid_type =</span> <span class="st">"mean_or_mode"</span>), <span class="at">conf_level =</span> <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+        Group Estimate   5.0 % 95.0 %
+ Harris         0.1527  0.0897  0.217
+ Trump          0.0728  0.0217  0.123
+ Did not vote  -0.2261 -0.2901 -0.158
+
+Term: income
+Type: response
+Comparison: 1 - -1</code></pre>
+</div>
+</div>
+<p>In Mississippi, Pr(did not vote) changes by −0.33 (90% interval from −0.40 to −0.25), Pr(Harris) by 0.09 (0.02 to 0.16), and Pr(Trump) by 0.24 (0.16 to 0.32).</p>
+<p>In Connecticut, Pr(did not vote) changes by −0.23 (−0.29 to −0.16), Pr(Harris) by 0.15 (0.09 to 0.22), and Pr(Trump) by 0.07 (0.02 to 0.12).</p>
+<p>Income matters much more for turnout than for vote choice. But income still matters more for the Trump vote in Mississippi (0.24 vs.&nbsp;0.07). Notice that these are changes in Pr(Trump) among all respondents, not only among voters.</p>
+<p><strong>Part 4</strong></p>
+<div class="cell" data-fit_deps="ms_vote">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mississippi model without income</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>fit_ms_null <span class="ot">&lt;-</span> <span class="fu">brm</span>(vote <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> ms_vote,</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="fu">categorical</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-fit_deps="ms_vote">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mississippi model with income as a factor (a separate effect for each category);</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create the factor as a column (factor() inside the formula breaks reloo)</span></span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>ms_vote <span class="ot">&lt;-</span> ms_vote <span class="sc">|&gt;</span></span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">income_factor =</span> <span class="fu">factor</span>(income))</span>
+<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>fit_ms_factor <span class="ot">&lt;-</span> <span class="fu">brm</span>(vote <span class="sc">~</span> income_factor, <span class="at">data =</span> ms_vote,</span>
+<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">family =</span> <span class="fu">categorical</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>loo_ms_null <span class="ot">&lt;-</span> <span class="fu">loo</span>(fit_ms_null)</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>loo_ms_vote <span class="ot">&lt;-</span> <span class="fu">loo</span>(fit_ms_vote)</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>loo_ms_factor <span class="ot">&lt;-</span> <span class="fu">loo</span>(fit_ms_factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Found 2 observations with a pareto_k &gt; 0.7 in model 'fit_ms_factor'.
+We recommend to set 'moment_match = TRUE' in order to perform moment matching
+for problematic observations.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_ms_null, loo_ms_vote, loo_ms_factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         model elpd_diff se_diff p_worse diag_diff      diag_elpd
+   fit_ms_vote       0.0     0.0      NA                         
+ fit_ms_factor      -8.8     2.7    1.00           2 k_psis &gt; 0.7
+   fit_ms_null     -23.2     6.9    1.00                         </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Diagnostic flags present.
+See ?`loo-glossary` (sections `diag_diff` and `diag_elpd`)
+or https://mc-stan.org/loo/reference/loo-glossary.html.</code></pre>
+</div>
+</div>
+<p>The model with income (one slope for each outcome) is best. The intercept-only model is worse by 23.2 elpd, with <code>se_diff</code> 6.9 (i.e., a LOOIC difference of 46.4). That’s well over 4 and about 3.4 SEs, so by the rules of thumb it’s a meaningful difference. Income improves the prediction, mostly through turnout (part 3).</p>
+<p>The factor model is worse than the income model by 8.8 elpd (<code>se_diff</code> 2.7). But <code>diag_elpd</code> flags 2 observations with Pareto <span class="math inline">\(\hat{k} &gt; 0.7\)</span>, so its PSIS estimate isn’t reliable. Both are in the top income category, which has only 4 Mississippians, so the factor model’s estimates for that category lean heavily on each of them. Let’s refit for those two observations.</p>
+<div class="cell" data-fit_deps="[&quot;ms_vote&quot;,&quot;chunk:red-state-3-sol-factor&quot;]">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exact loo for the flagged observations in the factor model</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>reloo_ms_factor <span class="ot">&lt;-</span> <span class="fu">loo</span>(fit_ms_factor, <span class="at">reloo =</span> <span class="cn">TRUE</span>, <span class="at">reloo_args =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loo_ms_null, loo_ms_vote, reloo_ms_factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         model elpd_diff se_diff p_worse diag_diff diag_elpd
+   fit_ms_vote       0.0     0.0      NA                    
+ fit_ms_factor     -16.7     8.2    0.98                    
+   fit_ms_null     -23.2     6.9    1.00                    </code></pre>
+</div>
+</div>
+<p>With exact LOO for those two observations, the factor model is worse by 16.7 elpd (<code>se_diff</code> 8.2, about 2 SEs). PSIS was too optimistic about the factor model.</p>
+<p>So treating income as a factor doesn’t improve the prediction. It makes it worse. The factor model has 10 coefficients (an intercept and four income effects for each of the two non-baseline outcomes), compared with 4 for the income model, and the extra ones are estimated from very few respondents.</p>
+</div></details>
+</div>
+</section>
+<section id="ex-8" class="level2 ex-heading">
+<h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> Polynomials in age and the LOOIC</h2>
+<p>In the LOOIC chapter, we compared models with linear and cubic age for the <code>turnout</code> data. Now let’s consider every polynomial in age from degree 1 (linear) to degree 9.</p>
+<p>The code below fits the nine models with <code>brm()</code>, computes LOO for each, plots the LOOIC against the degree, and compares the models with <code>loo_compare()</code>. You don’t need to run it. Use the output to answer the questions below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load only the turnout data frame and create rescaled columns</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>turnout <span class="ot">&lt;-</span> ZeligData<span class="sc">::</span>turnout <span class="sc">|&gt;</span></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(age<span class="sc">:</span>income, arm<span class="sc">::</span>rescale, <span class="at">.names =</span> <span class="st">"rs_{.col}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-fit_deps="turnout">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the model with a polynomial in age of each degree from 1 to 9</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (poly() uses orthogonal polynomials, so the high powers don't blow up)</span></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>fits_poly <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, \(degree) {</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(<span class="st">"vote ~ poly(age, "</span>, degree, <span class="st">") + rs_educate + rs_income + race"</span>))</span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(f, <span class="at">data =</span> turnout, <span class="at">family =</span> bernoulli,</span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(fits_poly) <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"degree"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)</span>
+<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a><span class="co"># loo for each model</span></span>
+<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a>loos_poly <span class="ot">&lt;-</span> <span class="fu">map</span>(fits_poly, loo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># looic, its se, and p_loo for each model</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>looic_poly <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">degree =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,</span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">looic =</span> <span class="fu">map_dbl</span>(loos_poly, \(l) l<span class="sc">$</span>estimates[<span class="st">"looic"</span>, <span class="st">"Estimate"</span>]),</span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">se =</span> <span class="fu">map_dbl</span>(loos_poly, \(l) l<span class="sc">$</span>estimates[<span class="st">"looic"</span>, <span class="st">"SE"</span>]),</span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_loo =</span> <span class="fu">map_dbl</span>(loos_poly, \(l) l<span class="sc">$</span>estimates[<span class="st">"p_loo"</span>, <span class="st">"Estimate"</span>])</span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>looic_poly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 4
+  degree looic    se p_loo
+   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1      1 2034.  46.0  5.10
+2      2 2022.  46.5  6.20
+3      3 2023.  46.6  7.34
+4      4 2025.  46.6  8.42
+5      5 2026.  46.7  9.29
+6      6 2024.  46.8 10.0 
+7      7 2021.  47.0 11.3 
+8      8 2023.  47.2 12.9 
+9      9 2024.  47.2 13.5 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(looic_poly, <span class="fu">aes</span>(<span class="at">x =</span> degree, <span class="at">y =</span> looic)) <span class="sc">+</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Degree of the polynomial in age"</span>, <span class="at">y =</span> <span class="st">"LOOIC"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wk07-exercises_files/figure-html/loo-polynomials-plot-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the nine models</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(loos_poly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    model elpd_diff se_diff p_worse       diag_diff      diag_elpd
+ degree 7       0.0     0.0      NA                 1 k_psis &gt; 0.7
+ degree 2      -0.2     3.3    0.52 |elpd_diff| &lt; 4               
+ degree 3      -0.7     3.2    0.59 |elpd_diff| &lt; 4               
+ degree 8      -0.8     1.5    0.70 |elpd_diff| &lt; 4 1 k_psis &gt; 0.7
+ degree 6      -1.2     2.3    0.70 |elpd_diff| &lt; 4               
+ degree 9      -1.3     1.7    0.77 |elpd_diff| &lt; 4 1 k_psis &gt; 0.7
+ degree 4      -1.8     3.2    0.72 |elpd_diff| &lt; 4               
+ degree 5      -2.4     3.1    0.78 |elpd_diff| &lt; 4               
+ degree 1      -6.2     5.1    0.89                               </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Diagnostic flags present.
+See ?`loo-glossary` (sections `diag_diff` and `diag_elpd`)
+or https://mc-stan.org/loo/reference/loo-glossary.html.</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>Which model has the lowest LOOIC?</li>
+<li>Compare the best and second-best models using <code>elpd_diff</code> and <code>se_diff</code>. How strong is the evidence for the best model over the second best?</li>
+<li>Compare the best model with the linear model (degree 1) the same way. How strong is the evidence now?</li>
+<li>If you had to choose one model, which would you choose? Why?</li>
+</ol>
+<details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
+<p>See “<a href="https://pos5747.github.io/notes/wk07/05-loo.html#interpreting-elpd_diff-and-se_diff">Interpreting <code>elpd_diff</code> and <code>se_diff</code></a>” in the LOOIC chapter. Remember that the LOOIC difference is −2 × <code>elpd_diff</code>.</p>
+</div></details>
+<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
+<details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
+<p><strong>Part 1</strong></p>
+<p>Degree 7 has the lowest LOOIC (2021.4), so it’s at the top of the table.</p>
+<p>The LOOIC drops from 2034 (linear) to 2022 (quadratic). For degrees 2 through 9, it moves between 2021 and 2026, with no clear trend.</p>
+<p>Each LOOIC has an SE of about 46, which is much larger than the differences. But I left those SEs off the plot. We compare the models on the same respondents, so the SE that matters is <code>se_diff</code> (i.e., the SE of the difference).</p>
+<p><code>p_loo</code> grows from 5.1 (degree 1) to 13.5 (degree 9), about one per added term. This is close to <span class="math inline">\(k\)</span> = degree + 4, as we expect for a model that fits well.</p>
+<p><strong>Part 2</strong></p>
+<p>The second-best model is degree 2, with <code>elpd_diff</code> = −0.2 and <code>se_diff</code> = 3.3. Because |<code>elpd_diff</code>| &lt; 4, the two models predict about equally well.</p>
+<p>So we have no evidence for the best model over the second best. A difference this small is within the MCMC noise. In fact, every model from degree 2 to 9 is within 2.4 elpd of the best.</p>
+<p><strong>Part 3</strong></p>
+<p>For the linear model, <code>elpd_diff</code> = −6.2 and <code>se_diff</code> = 5.1 (i.e., a LOOIC difference of 12.4).</p>
+<p>This difference is larger than 4, but it’s only about 1.2 SEs. This is modest evidence that age needs a curve. It’s close to the chapter’s comparison of the linear and cubic models (5.8, with <code>se_diff</code> 4.1).</p>
+<p><strong>Part 4</strong></p>
+<p>By the rules of thumb, no difference here is clearly meaningful. Degrees 2 through 9 are all within 4 elpd of the best, and the linear model is more than 4 behind but only about 1.2 SEs.</p>
+<p>If I had to choose, I’d choose the quadratic. It predicts about as well as the best model, it’s the simplest model with a curve in age, and the curve has some (modest) support over the line. Other choices are reasonable if you defend them with <code>elpd_diff</code> and <code>se_diff</code> (e.g., the linear model for simplicity, given the modest evidence against it).</p>
+</div></details>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Injected at the end of every exercise page (see _metadata.yml).
+     Two jobs: keep the countdown in the release notice current, and, when
+     `solution-gate: browser` is in force, open the solution panels the moment
+     the release time arrives. Under the default `render` gate there is
+     nothing on the page to open, so the reveal half simply finds nothing. -->
+<script>
+(function () {
+  var notice = document.querySelector(".ex-notice-wait");
+  var pending = Array.prototype.slice.call(
+    document.querySelectorAll(".ex-slot.ex-pending")
+  );
+  if (!notice && !pending.length) return;
+
+  var iso = (notice || pending[0]).getAttribute("data-unlock");
+  var unlock = new Date(iso);
+  if (isNaN(unlock)) return;
+
+  var readout = notice ? notice.querySelector(".ex-countdown") : null;
+
+  function remaining(ms) {
+    var mins = Math.floor(ms / 60000);
+    var days = Math.floor(mins / 1440);
+    var hours = Math.floor((mins % 1440) / 60);
+    if (days >= 1) {
+      return days + (days === 1 ? " day, " : " days, ") +
+             hours + (hours === 1 ? " hour" : " hours");
+    }
+    if (hours >= 1) {
+      var m = mins % 60;
+      return hours + (hours === 1 ? " hour, " : " hours, ") +
+             m + (m === 1 ? " minute" : " minutes");
+    }
+    return mins + (mins === 1 ? " minute" : " minutes");
+  }
+
+  function release() {
+    pending.forEach(function (slot) {
+      slot.classList.remove("ex-pending");
+    });
+    if (notice) {
+      notice.classList.remove("ex-notice-wait");
+      notice.classList.add("ex-notice-open");
+      notice.textContent = pending.length
+        ? "Complete solutions are available. Work each exercise before you open one."
+        : "Complete solutions are due to be posted — reload in a little while.";
+    }
+  }
+
+  function tick() {
+    var left = unlock - new Date();
+    if (left <= 0) { release(); return; }
+    if (readout) readout.textContent = remaining(left);
+    setTimeout(tick, left < 3600000 ? 30000 : 600000);
+  }
+
+  tick();
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/pos5747\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

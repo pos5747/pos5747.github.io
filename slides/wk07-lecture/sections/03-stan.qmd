@@ -1,0 +1,385 @@
+# Stan
+
+## Stan
+
+- Stan offers an extremely efficient alternative to Metropolis and other MCMC algorithms.
+- It uses a hyper-optimized version of Hamiltonian Monte Carlo.
+- Stan and its universe of supporting software is extremely well-documented and widely used.
+
+::: {.notes}
+- Build note: Keynote "Stan" slide (Fall 2025), two typos fixed.
+- From the notes' aside: Before Stan, Bayesian modeling in R was typically done using BUGS or JAGS, which relied on Gibbs sampling and Metropolis-within-Gibbs updates. Stan uses gradients of the log-posterior to navigate the parameter space more efficiently.
+- In-class script: <https://pos5747.github.io/files/wk07-logit-stan.R>
+:::
+
+## Logistic regression model
+
+$$
+y_i \sim \text{Bernoulli}(\pi_i), \quad \pi_i = \operatorname{logit}^{-1} \left( X_i \beta \right).
+$$
+
+We'll assume weakly informative priors (i.e., variance = 25).
+
+$$
+\beta \sim \mathcal{N}(0, 5^2 I).
+$$
+
+Because the scale of the variables affects the interpretation of the priors, it's common to rescale variables to have a common scale (e.g., SD of 0.5, SD of 1, or range of 1).
+
+::: {.notes}
+- [CTK: the income example from the notes: a prior with an SD of 5 is more or less informative depending on whether income is dollars or thousands of dollars.]
+:::
+
+## Three blocks
+
+Each Stan model has three main blocks.
+
+1. `data { ... }` Known inputs provided from R.
+1. `parameters { ... }` Unknowns to infer (e.g., `vector[K] beta;`, `real<lower=0> sigma;`). Put **constraints** that reflect the parameter's support.
+1. `model { ... }` Priors and likelihood live here. Use distribution statements (`theta ~ normal(0,1);`)
+
+There are other blocks you can use as well.
+
+::: {.notes}
+- From the notes' footnote: Stan is a *declarative* modeling language: you describe the data you have, the parameters you don't know, and the probabilistic relationships (priors and likelihood) that connect them.
+- Documentation: user's guide, reference manual, tutorials, case studies at <https://mc-stan.org>.
+:::
+
+## `logit.stan`
+
+The Stan model mirrors the math closely.
+
+```{.stan code-line-numbers="1-7|9-12|14-18"}
+// data block
+data {
+  int<lower=0> N;  // rows in design matrix
+  int<lower=1> K;  // columns in design matrix
+  array[N] int<lower=0, upper=1> y;  // binary outcome
+  matrix[N, K] X;  // design matrix
+}
+
+// parameters block
+parameters {
+  vector[K] beta;  // logit coefficients
+}
+
+// model block
+model {
+  beta ~ normal(0, 5);               // n(0, 5) prior for each beta
+  y ~ bernoulli_logit(X * beta);     // logistic regression likelihood
+}
+```
+
+::: {.notes}
+- Build note: the code highlight steps through the three blocks: data, parameters, model.
+- We should save this text file as `logit.stan` in our project directory.
+:::
+
+## Data for Stan
+
+```{r}
+#| label: s3-turnout
+# load only the turnout data frame
+turnout <- ZeligData::turnout  |>
+  # create rescaled columns (rescaling inside the formula breaks predictions on new data)
+  mutate(across(age:income, arm::rescale, .names = "rs_{.col}")) |>
+  glimpse()
+```
+
+## Data for Stan
+
+```{r}
+#| label: s3-stan-data
+# build model frame
+f <- vote ~ rs_age + rs_educate + rs_income + race
+mf <- model.frame(f, data = turnout)
+X  <- model.matrix(f, data = mf)
+y  <- model.response(mf)
+
+# bundle data for Stan
+stan_data <- list(
+  N = nrow(X),
+  K = ncol(X),
+  y = as.integer(y),
+  X = X
+)
+```
+
+## Writing `logit.stan` from R
+
+```{r}
+#| label: s3-write-stan
+#| cache: false
+stan_code <- "
+data {
+  int<lower=0> N;
+  int<lower=1> K;
+  array[N] int<lower=0, upper=1> y;
+  matrix[N, K] X;
+}
+parameters {
+  vector[K] beta;
+}
+model {
+  beta ~ normal(0, 5);               // weakly informative prior
+  y ~ bernoulli_logit(X * beta);     // logistic regression likelihood
+}
+"
+# Write the Stan program so the document runs without external files.
+writeLines(stan_code, con = 'logit.stan')
+```
+
+## Install {cmdstanr} and CmdStan
+
+{cmdstanr} is not on CRAN, so we install it from the Stan r-universe and then use it to install CmdStan.
+
+```{r}
+#| label: s3-install
+#| eval: false
+install.packages("cmdstanr",
+                 repos = c("https://stan-dev.r-universe.dev", getOption("repos")))
+cmdstanr::check_cmdstan_toolchain(fix = TRUE)
+cmdstanr::install_cmdstan()
+```
+
+::: {.notes}
+- From the notes' aside: {cmdstanr} is faster and will experience fewer crashes than {rstan}; on Carlisle's laptop the turnout example takes about 7 seconds in {cmdstanr} and about 24 seconds in {rstan}, almost all of it compile time.
+:::
+
+## {cmdstanr}
+
+First, we compile the model with `cmdstan_model()`. Then we draw samples with the `$sample()` method.
+
+```{r}
+#| label: s3-sample
+#| cache: true
+#| results: hide
+mod <- cmdstan_model("logit.stan")
+
+fit_cmd <- mod$sample(
+  data = stan_data,
+  chains = 4,
+  parallel_chains = 4,  # run the chains in parallel
+  iter_warmup = 1000,
+  iter_sampling = 2000,  # excluding warmup
+  seed = 123
+)
+```
+
+```{r}
+#| label: s3-sample-load
+#| include: false
+#| cache: true
+#| dependson: s3-sample
+# A CmdStanMCMC object reads its draws lazily from CSV files in a temp directory,
+# which are gone by the next render, so the cached copy from the chunk above is
+# unusable on a warm render. Read the draws and sampler diagnostics into the
+# object here and re-assign it, so knitr stores the loaded object in this
+# chunk's cache (it is loaded after the chunk above's, and wins).
+invisible(fit_cmd$draws())
+invisible(fit_cmd$sampler_diagnostics())
+fit_cmd <- fit_cmd
+```
+
+## `$summary()`
+
+The `$summary()` method reports posterior summaries along with R-hat, bulk ESS, and tail ESS for each parameter.
+
+```{r}
+#| label: s3-summary
+#| cache: false
+fit_cmd$summary(variables = "beta")
+```
+
+## Diagnostics
+
+- $\hat{R}$: an R-hat larger than 1.01 shows that the chains have not converged.
+- Effective Sample Size (ESS): how much independent information is in the draws.
+
+```{r}
+#| label: s3-rhat-ess
+#| cache: false
+draws_beta <- fit_cmd$draws(variables = "beta")  # draws array
+summarise_draws(draws_beta, "rhat", "ess_bulk", "ess_tail")
+```
+
+As a rule of thumb, check $\hat{R} < 1.01$ and ESS > 2,000.
+
+::: {.notes}
+- After sampling, we check two sets of diagnostics. The first set (R-hat, ESS) is the same as for the Metropolis algorithm; the second set is specific to HMC (next slide).
+- R-hat can flag non-convergence but not prove convergence (Vehtari et al. 2021).
+:::
+
+## HMC diagnostics {.smaller}
+
+HMC has three diagnostics of its own, reported for each chain. They signal two different kinds of trouble: a [**bad sample**]{.red} (the draws may be biased; do not use them) or an [**inefficient sampler**]{.blue} (the draws are fine; you just got fewer than you paid for).
+
+```{r}
+#| label: s3-hmc-diag
+#| cache: false
+#| message: true
+fit_cmd$diagnostic_summary()
+```
+
+::: {.notes}
+This model: 0 divergences, 0 treedepth hits, E-BFMI between 0.97 and 1.11 across the four chains. The rules of thumb are on the next slide.
+:::
+
+## HMC diagnostics: rules of thumb {.smaller}
+
+| Diagnostic | Signals | No problem | Problem | What to do |
+|:--|:--|:--|:--|:--|
+| Divergent transitions | [bad sample]{.red} | 0 after warmup | **any**: the sampler could not follow the posterior's curvature, so it misses part of the posterior | raise `adapt_delta` (default 0.8; try 0.95 or 0.99); if they persist, rescale or reparameterize |
+| E-BFMI | [bad sample]{.red} (the tails) | above 0.3 in every chain (about 1 is typical) | **below 0.3**: the sampler does not move well between energy levels, so the tails are explored poorly; longer chains do not fix it | reparameterize; look for heavy tails or funnel-shaped posteriors |
+| Maximum treedepth | [inefficient sampler]{.blue} | 0 hits | many hits: trajectories are cut short, so the chain explores slowly; the draws are still valid | raise `max_treedepth` (default 10) or rescale the predictors |
+
+::: {.notes}
+- Bad sample vs. inefficient sampler: divergences and low E-BFMI mean the sampler is missing part of the posterior (divergences: regions of high curvature; E-BFMI: the tails), so more draws would be more of the same biased sample. Treedepth hits mean each iteration moved less far than it could, so the draws are valid but more correlated: ESS per draw falls, nothing else. Divergences: Stan warns at even one after warmup; treat them as a stop sign, not a nuisance. Raising `adapt_delta` makes the step size smaller (slower, more careful). Treedepth hits: Stan warns at any, but they cost time rather than validity; the default limit is 10, i.e., up to 2^10 = 1,024 leapfrog steps per iteration. E-BFMI: {cmdstanr} 0.9.0 warns below 0.3 (`check_ebfmi(threshold = 0.3)`); older Stan documentation used 0.2.
+- Reference: the Stan warnings page, https://mc-stan.org/misc/warnings.
+:::
+
+## {bayesplot}: densities by chain
+
+```{r}
+#| label: s3-dens-overlay
+#| cache: false
+#| fig-width: 14
+#| fig-asp: 0.42
+# densities of parameters by chain
+mcmc_dens_overlay(draws_beta)
+```
+
+::: {.notes}
+- The {bayesplot} package offers many useful functions for visualizing the simulations. Documentation: <https://mc-stan.org/bayesplot/>.
+:::
+
+## {bayesplot}: ridges
+
+```{r}
+#| label: s3-areas-ridges
+#| cache: false
+#| fig-width: 14
+#| fig-asp: 0.42
+# ridges plot of densities of parameters
+mcmc_areas_ridges(draws_beta)
+```
+
+## {bayesplot}: trace plots
+
+```{r}
+#| label: s3-trace
+#| cache: false
+#| fig-width: 14
+#| fig-asp: 0.42
+# trace plots of parameters by chain
+mcmc_trace(draws_beta)
+```
+
+## ShinyStan
+
+The **ShinyStan** app provides an interactive dashboard for convergence diagnostics, traceplots, divergences, and posterior summaries.
+
+```{r}
+#| label: s3-shinystan
+#| eval: false
+library(shinystan)
+
+# launch the app for the {cmdstanr} fit
+launch_shinystan(fit_cmd)
+```
+
+You can inspect trace plots, divergences, and other visual diagnostics interactively without additional coding.
+
+## Quantities of interest
+
+```{r}
+#| label: s3-beta-tilde
+#| cache: false
+# put the simulations of the coefficients into a matrix
+beta_tilde <- fit_cmd$draws(variables = "beta", format = "draws_matrix")
+head(beta_tilde)
+```
+
+Each row is one draw of $\beta$, and each column is one coefficient.
+
+## First difference
+
+To compute a first difference, transform draws using the invariance principle.
+
+```{r}
+#| label: s3-x-lo-hi
+#| cache: false
+# make X_lo
+X_lo <- cbind(
+  "constant" = 1, # intercept
+  "rs_age" = -0.5, # 1 SD below avg -- see ?arm::rescale
+  "rs_educate" = 0,
+  "rs_income" = 0,
+  "white" = 1 # white indicator = 1
+)
+
+# make X_hi by modifying the relevant value of X_lo
+X_hi <- X_lo
+X_hi[, "rs_age"] <- 0.5  # 1 SD above avg
+```
+
+## First difference
+
+```{r}
+#| label: s3-fd
+#| cache: false
+# function to compute first difference
+fd_fn <- function(beta, hi, lo) {
+  beta <- as.vector(beta)  # to prevent column/row confusion
+  plogis(hi%*%beta) - plogis(lo%*%beta)
+}
+
+# transform simulations of coefficients into simulations of first-difference
+fd_tilde <- numeric(nrow(beta_tilde))  # container
+for (i in 1:nrow(beta_tilde)) {
+  fd_tilde[i] <- fd_fn(beta_tilde[i, ], hi = X_hi, lo = X_lo)
+}
+
+# summarize: posterior mean, posterior SD, and 95% credible interval
+mean(fd_tilde)
+sd(fd_tilde)
+quantile(fd_tilde, probs = c(0.025, 0.975))
+```
+
+::: {.notes}
+- The notes' comments on the loop: for clarity, just do this one simulation at a time; i indexes the simulations.
+:::
+
+```{r}
+#| label: s3-fd-row
+#| include: false
+# the Stan row of the first-difference comparison table (shown in the {brms} section)
+fd_row_stan <- tibble(Method = "Stan: posterior simulations",
+                      Estimate = mean(fd_tilde), SE = sd(fd_tilde),
+                      `2.5%` = quantile(fd_tilde, 0.025), `97.5%` = quantile(fd_tilde, 0.975))
+```
+
+```{r}
+#| label: s3-tidy-compiled-model
+#| include: false
+#| cache: false
+# cmdstan_model() leaves the compiled binary beside logit.stan; both would be
+# copied into the published site by `make site`, so remove them after sampling
+# (the writeLines chunk above recreates logit.stan on every render)
+unlink(c("logit", "logit.stan"))
+```
+
+## Summary
+
+**Stan as modern MCMC**\
+Stan automates MCMC using a hyper-optimized version of HMC. It efficiently samples from posteriors that are otherwise difficult to explore.
+
+**Interfaces**\
+We run Stan from R with {cmdstanr}. The older {rstan} package runs the same Stan programs, but its summaries use older versions of R-hat and ESS.
+
+**Diagnostics and Visualization**\
+Check $\hat{R}$, ESS, and the HMC diagnostics (divergent transitions, maximum treedepth, E-BFMI). An R-hat larger than 1.01 or any divergent transitions after warmup mean that we cannot yet trust the draws. The `$summary()` and `$diagnostic_summary()` methods report these, and {bayesplot} and ShinyStan make it easy to explore them visually.
+
+## Stan and Metropolis {.statement}
+
+Stan generalizes what we learned with the Metropolis algorithm: the logic is the same, but the computation is vastly more efficient.
