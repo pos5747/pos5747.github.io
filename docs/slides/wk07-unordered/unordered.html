@@ -530,10 +530,10 @@ y_i \in \{1, 2, \ldots, J\}.
 <section id="data" class="slide level2">
 <h2>Data</h2>
 <ul>
-<li>1992 ANES <span class="citation" data-cites="anes1992">(<a href="#/references" role="doc-biblioref" onclick="">Miller et al. 2016</a>)</span>; same respondents as the wk06 Bush approval example</li>
+<li>1992 ANES <span class="citation" data-cites="anes1992">(<a href="#/references" role="doc-biblioref" onclick="">Miller et al. 2016</a>)</span>; same data file as the wk06 Bush approval example</li>
 <li>Outcome: <code>vote_1992</code>: Bush, Clinton, or Perot</li>
 <li>Predictors: <code>party_id</code> (−3 to 3), <code>economy</code> (1 = much better to 5 = much worse)</li>
-<li>[CTK: why Perot makes this nominal, not ordered]</li>
+<li>Perot’s candidacy is what makes a nominal model necessary: Bush, Clinton, and Perot have no order.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># load data; keep complete cases on the model's variables</span></span>
@@ -579,7 +579,7 @@ AIC: 881.9068 </code></pre>
 </div>
 </div>
 <ul>
-<li>[CTK: one row of coefficients per non-baseline candidate, each relative to Bush]</li>
+<li>One row of coefficients per non-baseline candidate each relative to Bush.</li>
 </ul>
 </section>
 <section id="probabilities-with-marginaleffects" class="slide level2">
@@ -616,7 +616,7 @@ AIC: 881.9068 </code></pre>
 
 </div>
 <img data-src="unordered_files/figure-revealjs/unnamed-chunk-7-1.png" width="768" class="r-stretch"><ul>
-<li>[CTK: Pr(Perot) rises then falls, though both linear predictors are linear in party ID]</li>
+<li>Pr(Perot) rises and then falls, even though both linear predictors are linear in party ID. The sign of a coefficient does not give the direction of that category’s probability.</li>
 </ul>
 </section>
 <section id="first-differences" class="slide level2">
@@ -640,7 +640,7 @@ Comparison: 4 - 2</code></pre>
 </div>
 </div>
 <ul>
-<li>[CTK: Perot’s economy coefficient is positive, but Clinton gains most of what Bush loses]</li>
+<li>Perot’s economy coefficient is positive, but Clinton gains most of what Bush loses.</li>
 </ul>
 </section>
 <section id="brm" class="slide level2 smaller">
@@ -704,7 +704,7 @@ Perot     -1.518696 -0.4389651 0.3361671</code></pre>
 <section id="bush-approval-with-cumulative" class="slide level2 smaller">
 <h2>Bush approval with <code>cumulative()</code></h2>
 <ul>
-<li>[CTK: wk06’s <code>polr()</code> fit, now with <code>brm(family = cumulative("logit"))</code>; same parameterization (cutpoints = <code>Intercept[j]</code>)]</li>
+<li>Last week’s <code>polr()</code> fit, refit with <code>brm(family = cumulative("logit"))</code>. Same parameterization: the cutpoints are <code>Intercept[j]</code>.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="co"># the wk06 Bush approval data and model</span></span>
@@ -756,7 +756,7 @@ education         -0.07216894 -0.1477985  0.0007555626</code></pre>
 <section id="ordered-vs.-nominal" class="slide level2">
 <h2>Ordered vs.&nbsp;nominal</h2>
 <ul>
-<li>[CTK: ordered (<code>cumulative()</code>) vs nominal (<code>categorical()</code>): one set of coefficients vs J − 1 sets; Red State Part 3 in the exercises (did not vote / Harris / Trump, an unordered outcome)]</li>
+<li>Ordered (<code>cumulative()</code>) uses one set of coefficients; nominal (<code>categorical()</code>) uses J − 1 sets. Red State Part 3 in the exercises is a nominal case: did not vote, Harris, or Trump.</li>
 </ul>
 </section>
 <section id="references" class="slide level2 smaller scrollable">

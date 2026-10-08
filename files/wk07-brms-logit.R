@@ -20,23 +20,24 @@ turnout <- ZeligData::turnout  |>
 f  <- vote ~ rs_age + rs_educate + rs_income + race
 
 # fit model with brms via cmdstanr
-fit <- brm(f, data = turnout, family = bernoulli,
+fit_brm <- brm(f, data = turnout, family = bernoulli,
            chains = 4, cores = 4,
-           backend = "cmdstanr")
+           backend = "cmdstanr",
+           seed = 1234)
 
 # print estimates
-fit
+fit_brm
 
 # ---- diagnostics ----
 
 # r-hat and ess for each parameter ({brms} warns only when an r-hat exceeds 1.05)
-summarise_draws(fit, "rhat", "ess_bulk", "ess_tail")
+summarise_draws(fit_brm, "rhat", "ess_bulk", "ess_tail")
 
 # number of divergent transitions after warmup
-sum(nuts_params(fit, pars = "divergent__")$Value)
+sum(nuts_params(fit_brm, pars = "divergent__")$Value)
 
 # ---- quantities of interest ----
 
 # compute qi
-comparisons(fit, variables = list(rs_age = c(-0.5, 0.5)),
+comparisons(fit_brm, variables = list(rs_age = c(-0.5, 0.5)),
             newdata = datagrid(grid_type = "mean_or_mode"))

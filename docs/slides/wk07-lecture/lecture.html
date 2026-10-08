@@ -208,19 +208,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <section id="weekly-assessment" class="slide level2 center">
 <h2>Weekly assessment</h2>
 <p><span class="muted">15 minutes · closed book</span></p>
-<aside class="notes">
-<p>Week 6 assessment, 9:00 to 9:15. Leave this slide up while students work.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="then-and-now" class="slide level2">
 <h2>Then and now</h2>
@@ -272,19 +259,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>Recap from the Week 6 notes (<code>01-bayes</code>). The likelihood is drawn as a density (beta(9, 143)) so it shares the axis with the prior and posterior. [CTK: the point of the arrow: in most applied cases we can only <em>sample from</em> the posterior.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="last-week-rejection-sampling" class="slide level2">
 <h2>Last week: rejection sampling</h2>
@@ -308,19 +282,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 </ol>
 <p><em>Output:</em> <span class="math inline">\(\pi^{(1)}, \pi^{(2)}, \ldots, \pi^{(S)} \sim f(\pi \mid y)\)</span>.</p>
 </div>
-<aside class="notes">
-<p>Footnote from the Keynote box: To make the rejection algorithm simple, I’ve written it to apply specifically to the posterior for the Bernoulli model, which has support [0, 1]. The target density doesn’t need to be a posterior and can have support other than [0, 1]. The proposal distribution doesn’t have to be uniform. The key is that M is larger than the maximum of the target distribution and draws are accepted with probability f(z)/M.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="two-costs-of-rejection" class="slide level2">
 <h2>Two costs of rejection</h2>
@@ -329,19 +290,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <li>finding a suitable envelope constant and</li>
 <li>rejecting many samples in realistic problems (e.g., logistic regression).</li>
 </ol>
-<aside class="notes">
-<p>From the opening paragraph of <code>notes/wk07/01-metrop.qmd</code>. [CTK: why both costs get worse in realistic problems, e.g., five coefficients in a logit.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="rejection-sampling-for-a-logit" class="slide level2 smaller">
 <h2>Rejection sampling for a logit</h2>
@@ -355,19 +303,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(f, <span class="at">data =</span> turnout)</span>
 <span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> turnout<span class="sc">$</span>vote</span></code></pre></div>
 </div>
-<aside class="notes">
-<p>Setup chunk of the exercise “Three samplers, one posterior” (<code>wk07-exercises.qmd</code>), verbatim. The posterior is identical for all three samplers: rescaled predictors with a normal(0, 5) prior on each coefficient, the notes’ <code>logit.stan</code>.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="the-log-posterior-and-m" class="slide level2 smaller">
 <h2>The log posterior and <span class="math inline">\(M\)</span></h2>
@@ -392,19 +327,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <span id="cb2-18"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">"BFGS"</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">fnscale =</span> <span class="sc">-</span><span class="dv">1</span>))</span>
 <span id="cb2-19"><a href="" aria-hidden="true" tabindex="-1"></a>log_M <span class="ot">&lt;-</span> opt<span class="sc">$</span>value</span></code></pre></div>
 </div>
-<aside class="notes">
-<p>[CTK: the envelope constant M is the posterior at its mode, found with optim(); last week M was read off a one-dimensional plot.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="rej_box-a-box-from-2-to-2-for-every-coefficient" class="slide level2 evensmaller">
 <h2><code>rej_box()</code>: a box from −2 to 2 for every coefficient</h2>
@@ -439,19 +361,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <span id="cb3-27"><a href=""></a>       <span class="at">time_total =</span> <span class="fu">as.numeric</span>(time_total, <span class="at">units =</span> <span class="st">"secs"</span>))</span>
 <span id="cb3-28"><a href=""></a>}</span></code></pre></div>
 </div>
-<aside class="notes">
-<p>Verbatim from the exercise. The highlighted lines are the whole algorithm: propose uniformly inside the box, accept with probability f(z)/M. Everything else is bookkeeping.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="ten-million-proposals" class="slide level2 smaller tight-output">
 <h2>Ten million proposals</h2>
@@ -497,19 +406,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <pre><code>⏰ Total time: 7m 0.2s</code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>Ten batches of one million proposals, as in the exercise. The exercise’s hint: the share of proposals accepted estimates the acceptance rate; divide 1,000 by that rate to find the number of proposals you need.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="the-acceptance-rate" class="slide level2">
 <h2>The acceptance rate</h2>
@@ -529,19 +425,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <div class="key">
 <p>We accepted 11 of 10 million proposals in 7 minutes. That’s an acceptance rate of about 1.1 × 10⁻⁶. At that rate, 1,000 draws would take about 910 million proposals (about 11 hours).</p>
 </div>
-<aside class="notes">
-<p>The exercise’s rejection part, given away: the solution’s sentence, with this render’s numbers. [CTK: why so few: the posterior occupies a tiny fraction of the five-dimensional box, and f(z)/M is tiny everywhere else. See the next slide.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="the-accepted-draws" class="slide level2">
 <h2>The accepted draws</h2>
@@ -552,37 +435,10 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <div class="caption">
 <p>Left: the proposal box, −2 to 2, in two of its five dimensions. Blue: 4,000 draws from the normal approximation to the posterior (<code>glm()</code> coefficients and covariance). Red: the 11 accepted draws. Gray dots: a sample of the proposals. Right: the counters count every proposal. The speed matches the real computation for the first six seconds, then it speeds up.</p>
 </div>
-<aside class="notes">
-<p>The run from the previous two slides, as it happened: the hidden chunk after the run replays its random stream to recover when each draw was accepted, checks that the replay matches <code>rej_wide</code> exactly, and rebuilds <code>img/rej-sampler.gif</code> (shown on click; <code>img/rej-sampler-start.png</code> is its first frame, extracted with {magick}) with <code>wk07-lecture-material/rej-gif/make-rej-gif.R</code> from the run’s own count and time, so the draws, the rate, and the hours here are the slide’s numbers. Added 2026-10-06 for the [CTK] cue after “Two costs of rejection”.</p>
-<p>[CTK: the accepted draws sit where the posterior is; the box is enormous by comparison, and in five dimensions the ratio of volumes is far smaller than this two-dimensional picture shows. This is cost 2 from two slides ago, made concrete. Metropolis and Stan get the same posterior in seconds; that is Part 1 and Part 2 of the exercise.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="beyond-rejection" class="slide level2 statement">
 <h2>Beyond rejection</h2>
 <p>We can improve the rejection algorithm by making proposals that depend on the current value.</p>
-<aside class="notes">
-<p>Notes continue: Many algorithms, including Stan, do this. The Metropolis algorithm is one example.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section>
 <section id="metropolis" class="title-slide slide level1 center">
@@ -628,19 +484,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <div class="defbox">
 <p>This step is similar to the rejection algorithm, except we keep the current value in place of the rejected proposal in Metropolis.</p>
 </div>
-<aside class="notes">
-<p>Both sentences are the footnote to the accept/reject step in the notes. [CTK: contrast with last week: rejection throws the proposal away and tries again; Metropolis writes down the current value again.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 <!-- walker-clicks: begin (generated by wk07-lecture-material/walker-clicks/make-walker-segments.R; do not edit by hand) -->
 </section>
 <section id="the-algorithm-one-iteration-at-a-time" class="slide level2">
@@ -717,66 +560,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 })();
 </script>
 </div>
-<aside class="notes">
-<p>The walker animation (<code>wk07-slides-material/figs/fig-metropolis-walker.gif</code>) cut into 43 segments that advance on click: the first plays on arrival, each click plays the next and holds its last frame. 42 clicks in all. Segment ends (iteration-step) and lengths:</p>
-<ol type="1">
-<li>1-intro (1.0 s)</li>
-<li>2-propose (0.8 s)</li>
-<li>2-compute (0.8 s)</li>
-<li>2-draw_u (0.5 s)</li>
-<li>2-decide (0.8 s)</li>
-<li>2-record (0.6 s)</li>
-<li>3-propose (0.8 s)</li>
-<li>3-compute (0.8 s)</li>
-<li>3-draw_u (0.5 s)</li>
-<li>3-decide (0.8 s)</li>
-<li>3-record (0.6 s)</li>
-<li>4-propose (0.5 s)</li>
-<li>4-compute (0.5 s)</li>
-<li>4-draw_u (0.5 s)</li>
-<li>4-decide (0.5 s)</li>
-<li>4-record (0.5 s)</li>
-<li>5-propose (0.5 s)</li>
-<li>5-compute (0.5 s)</li>
-<li>5-draw_u (0.5 s)</li>
-<li>5-decide (0.5 s)</li>
-<li>5-record (0.5 s)</li>
-<li>18-zoom (13.8 s)</li>
-<li>19-propose (0.8 s)</li>
-<li>19-compute (0.8 s)</li>
-<li>19-draw_u (0.8 s)</li>
-<li>19-decide (0.8 s)</li>
-<li>19-record (0.6 s)</li>
-<li>20-propose (0.8 s)</li>
-<li>20-compute (0.8 s)</li>
-<li>20-draw_u (0.8 s)</li>
-<li>20-decide (0.8 s)</li>
-<li>20-record (0.6 s)</li>
-<li>21-propose (0.8 s)</li>
-<li>21-compute (0.8 s)</li>
-<li>21-draw_u (0.8 s)</li>
-<li>21-decide (0.8 s)</li>
-<li>21-record (0.6 s)</li>
-<li>22-propose (0.6 s)</li>
-<li>22-compute (0.6 s)</li>
-<li>22-draw_u (0.8 s)</li>
-<li>22-decide (0.8 s)</li>
-<li>22-record (0.6 s)</li>
-<li>36-hold (16.0 s)</li>
-</ol>
-<p>A clicker’s next button sends Right or Page Down, which reveal maps to the next fragment, so nothing needs configuring. Clicking while a segment is still playing skips to the next one; Left steps back to the previous segment’s last frame.</p>
-<p>[CTK: the pause points are the <code>stops</code> table at the top of make-walker-segments.R; edit it and re-run the script to reshape the clicks.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 <!-- walker-clicks: end -->
 </section>
 <section id="metrop" class="slide level2 smaller">
@@ -814,23 +597,9 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <span id="cb19-14"><a href="" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb19-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span></span>
 <span id="cb19-16"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return a list, so the samples are m$samples</span></span>
-<span id="cb19-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">samples =</span> samples)</span>
-<span id="cb19-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+<span id="cb19-17"><a href="" aria-hidden="true" tabindex="-1"></a>  samples</span>
+<span id="cb19-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
 </div></div>
-<aside class="notes">
-<p>This is the minimal version from the notes, except that it returns <code>list(samples = samples)</code> rather than the bare matrix, so <code>m$samples</code> works on every later slide. The in-class scripts (<code>wk07-toothpaste-metropolis.R</code>, <code>wk07-logit-metropolis.R</code>) use the “some features added” version: same algorithm, plus a progress bar, the acceptance rate, and a reminder message. It returns a list, so the code from here on uses <code>m$samples</code>. The deck runs that version too (hidden chunk).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="toothpaste-cap" class="slide level2">
 <h2>Toothpaste cap</h2>
@@ -875,7 +644,7 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <h2>Two things worth noting</h2>
 <ol type="1">
 <li>The samples are <strong>not independent</strong>. Many consecutive draws are identical (rejections) or move only a little; the chain <strong>explores the target slowly</strong>.</li>
-<li>It takes a few iterations for the chain to reach the high-probability region (burn-in). Starting at <span class="math inline">\(\pi=0.5\)</span> is far from the posterior mass; it takes roughly a few dozen iterations to reach <span class="math inline">\(\approx 0.1\)</span>.</li>
+<li>It takes a few iterations for the chain to reach the high-probability region (burn-in). Starting at <span class="math inline">\(\pi=0.5\)</span> is far from the posterior mass; it takes ten or fifteen iterations to reach <span class="math inline">\(\approx 0.1\)</span>.</li>
 </ol>
 </section>
 <section id="burn-in" class="slide level2">
@@ -888,19 +657,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <pre><code>[1] 0.0652</code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>Aside from the notes: Stan and {brms} call this period the “warmup” rather than the burn-in. During warmup, Stan’s sampler also tunes itself (e.g., its step size), so the warmup samples are not draws from a fixed algorithm. Our Metropolis sampler keeps tau fixed, so “burn-in” fits here.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="r-hat" class="slide level2">
 <h2>R-hat</h2>
@@ -909,19 +665,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <p>No diagnostic can show that the chains have converged, but R-hat can show that they have <em>not</em>. We check that R-hat is less than 1.01 (Vehtari et al.&nbsp;2021).</p>
 </div>
 <p>To compute R-hat, run several chains from overdispersed starting values. It is important that these be high and low relative to the target distribution. If chains have converged, within- and between-chain variation align and <span class="math inline">\(\hat{R}\approx 1\)</span>.</p>
-<aside class="notes">
-<p>Notes continue: If R-hat is larger than 1.01, the chains have not converged and we need more iterations. If R-hat is less than 1.01, we have found no sign of a problem. Aside from the notes: {brms} warns only when some R-hat is larger than 1.05. We use the stricter threshold of 1.01 from Vehtari et al.&nbsp;(2021), so check R-hat yourself even when {brms} prints no warning.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="r-hat-25-iterations" class="slide level2">
 <h2>R-hat: 25 iterations</h2>
@@ -998,19 +741,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>If we increase S to a larger value and discard the initial samples, then R-hat falls below 1.01.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="parallel-chains" class="slide level2 smaller">
 <h2>Parallel chains</h2>
@@ -1051,19 +781,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>Notes: Multiple chains are naturally parallelizable. In fact, these are called “embarrassingly parallel,” because the chains are run entirely independently. Nothing from the first chain is needed for the second, and so on. The figure shows the 25 samples from each of the 10 chains. Notice the strong dependence on starting values! In practice, we’d need to generate many more samples, discard the first samples, and check that R-hat is less than 1.01. The in-class script uses S = 250 here; the notes and this slide use S = 25.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="ess" class="slide level2">
 <h2>ESS</h2>
@@ -1093,19 +810,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <pre><code>[1] 12715</code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>Notes: The Effective Sample Size (ESS) summarizes the amount of information in our dependent samples. The literature and practices on ESS are evolving rapidly; see <code>?posterior::ess_bulk</code> for the latest references.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="tuning-tau" class="slide level2">
 <h2>Tuning <span class="math inline">\(\tau\)</span></h2>
@@ -1124,19 +828,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <div class="smaller">
 <p>“Something like” means within an order of magnitude. For the toothpaste cap problem, about 5 SDs (<code>tau = 0.1</code>) is about right.</p>
 </div>
-<aside class="notes">
-<p>Notes: The tuning parameter matters a lot. I’ve chosen a smart default for many problems, but the value of <code>tau</code> should be something like the SD of the posterior. Measured 2026-10-06 (grid of tau, 20,000 draws, ESS per draw): the posterior SD of beta(11, 157) is 0.019; efficiency peaks near tau = 4 SD (acceptance about 40%), and tau = 0.1 (5.3 SD) is within about 10% of the peak; tau = SD gives one fifth the effective sample; tau = 3 is wider than the whole support. Theory (Roberts, Gelman &amp; Gilks 1997): optimal proposal SD is about 2.4 posterior SDs in 1-d, shrinking as 1/sqrt(d); a uniform on +/- tau has SD tau/sqrt(3), so the optimal half-width is about 4 SD in 1-d and about 1.8 SD for the 5-parameter logit (measured optimum 1.5-2 SD, acceptance about 20%).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="why-the-metropolis-algorithm-works" class="slide level2">
 <h2>Why the Metropolis algorithm works</h2>
@@ -1162,7 +853,7 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <li><strong>From lower-density <span class="math inline">\(B\)</span> to higher-density <span class="math inline">\(A\)</span>:</strong> the chain is at <span class="math inline">\(B\)</span> less often (proposals toward <span class="math inline">\(B\)</span> are often rejected), but whenever it is at <span class="math inline">\(B\)</span> and proposes <span class="math inline">\(A\)</span>, it always moves.</li>
 <li>Many visits times a fraction of exits equals few visits times certain exits: <span class="math inline">\(f(A) \cdot \frac{f(B)}{f(A)} = f(B) \cdot 1\)</span>. The two flows match.</li>
 </ul></li>
-<li>This condition guarantees that the samples are stationary.</li>
+<li>This condition guarantees that the target is the stationary distribution of the chain.</li>
 </ul>
 <p><strong>Long-run behavior reflects probability mass.</strong></p>
 <ul>
@@ -1181,10 +872,10 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 <span id="cb40-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(p <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">|</span> p <span class="sc">&gt;=</span> <span class="dv">1</span>, <span class="sc">-</span><span class="cn">Inf</span>, <span class="fu">log</span>((n_teeth <span class="sc">*</span> p) <span class="sc">%%</span> <span class="dv">1</span>))</span>
 <span id="cb40-5"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb40-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood for 10 tosses w/ one success</span></span>
+<span id="cb40-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihood for 14 tosses w/ four successes</span></span>
 <span id="cb40-8"><a href="" aria-hidden="true" tabindex="-1"></a>log_lik <span class="ot">&lt;-</span> <span class="cf">function</span>(p) {</span>
 <span id="cb40-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(p <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">|</span> p <span class="sc">&gt;=</span> <span class="dv">1</span>, <span class="sc">-</span><span class="cn">Inf</span>,</span>
-<span id="cb40-10"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="fu">dbinom</span>(<span class="dv">1</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> p, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb40-10"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="fu">dbinom</span>(<span class="dv">4</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">prob =</span> p, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb40-11"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb40-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># log-posterior</span></span>
@@ -1205,19 +896,6 @@ Lecture 07 · POS 5747 · Tuesday, October 6, 2026
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>Notes: We can use the Metropolis algorithm for our “weird” sawtooth posterior. We’ll use the log-posterior in this case.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="logistic-regression-data" class="slide level2 smaller">
 <h2>Logistic regression: data</h2>
@@ -1253,19 +931,6 @@ racewhite   0.2508   0.1465
   residual deviance = 2024.0, null deviance = 2266.7 (difference = 242.8)</code></pre>
 </div>
 </div></div>
-<aside class="notes">
-<p>Notes: Recall the logit model from a previous chapter. This time, let’s rescale the numeric variables to have mean of zero and SD of 0.5. This keeps coefficients on a similar scale, which helps us with the computation. For more on this rescaling strategy and its advantages, see Gelman (2008). Code comment in the notes: rescaling inside the formula (e.g., rs(age)) breaks predictions on new data, because rescale() would then use the new data’s mean and SD.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="log-posterior-unstable" class="slide level2 smaller">
 <h2>Log-posterior: <span class="red">unstable</span></h2>
@@ -1287,7 +952,7 @@ racewhite   0.2508   0.1465
 </section>
 <section id="log-posterior-stable" class="slide level2 smaller">
 <h2>Log-posterior: <span class="green">stable</span></h2>
-<p><strong>Why the previous version is unstable.</strong> <code>plogis(linpred)</code> rounds to exactly 1 when <code>linpred</code> &gt; 37 and to exactly 0 when <code>linpred</code> &lt; −745. For an observation on the wrong side, <code>dbinom(..., log = TRUE)</code> returns <code>log(0)</code> = −Inf, so the whole sum is −Inf. A −Inf <em>proposal</em> is harmless (rejected), but if the <em>current</em> value is also −Inf (a wild start), <code>delta</code> = −Inf − (−Inf) = NaN and <code>if (delta &gt; 0)</code> errors.</p>
+<p><strong>Why the previous version is unstable.</strong> <code>plogis(linpred)</code> rounds to exactly 1 when <code>linpred</code> &gt; 37 and to exactly 0 when <code>linpred</code> &lt; −710. For an observation on the wrong side, <code>dbinom(..., log = TRUE)</code> returns <code>log(0)</code> = −Inf, so the whole sum is −Inf. A −Inf <em>proposal</em> is harmless (rejected), but if the <em>current</em> value is also −Inf (a wild start), <code>delta</code> = −Inf − (−Inf) = NaN and <code>if (delta &gt; 0)</code> errors.</p>
 <p><strong>The fix: never compute the probability.</strong> Since <span class="math inline">\(\log \pi = \eta - \log(1 + e^\eta)\)</span> and <span class="math inline">\(\log(1 - \pi) = -\log(1 + e^\eta)\)</span>, the log-likelihood is <span class="math inline">\(\sum_i [y_i \eta_i - \log(1 + e^{\eta_i})]\)</span>. Compute <span class="math inline">\(\log(1 + e^\eta)\)</span> so that <code>exp()</code> never overflows and <code>log1p()</code> keeps precision when its argument is tiny.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ same unnormalized log posterior, but computed on the log scale to avoid rounding</span></span>
@@ -1300,26 +965,13 @@ racewhite   0.2508   0.1465
 <span id="cb44-8"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <p>At <span class="math inline">\(\beta = (40, 0, 0, 0, 0)\)</span>, the unstable version returns −Inf; this one returns −20,320.</p>
-<aside class="notes">
-<p>Checked 2026-10-06: from the deck’s four starting values (−2, −1, 1, 2) the unstable version never hits the rounding, so both versions give identical chains here; from a start of 40 the unstable chain errors on its first step (“missing value where TRUE/FALSE needed”) and the stable one runs. The two versions agree to 2e-5 at eta = 20. The notes chapter’s comment on the unstable version says “0*Inf”; the mechanism is log(0) = -Inf (dbinom with prob exactly 0 or 1), then -Inf - (-Inf) = NaN in the acceptance step.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="running-the-algorithm" class="slide level2">
 <h2>Running the algorithm</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># sample with metropolis</span></span>
 <span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb45-3"><a href="" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
+<span id="cb45-3"><a href="" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="dv">100000</span></span>
 <span id="cb45-4"><a href="" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">metrop</span>(log_posterior, <span class="at">S =</span> S, <span class="at">tau =</span> <span class="fl">0.1</span>,</span>
 <span id="cb45-5"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">theta_start =</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="fu">ncol</span>(X)), <span class="at">y =</span> y, <span class="at">X =</span> X)</span>
 <span id="cb45-6"><a href="" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">metrop</span>(log_posterior, <span class="at">S =</span> S, <span class="at">tau =</span> <span class="fl">0.1</span>,</span>
@@ -1329,19 +981,6 @@ racewhite   0.2508   0.1465
 <span id="cb45-10"><a href="" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">metrop</span>(log_posterior, <span class="at">S =</span> S, <span class="at">tau =</span> <span class="fl">0.1</span>,</span>
 <span id="cb45-11"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">theta_start =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="fu">ncol</span>(X)), <span class="at">y =</span> y, <span class="at">X =</span> X)</span></code></pre></div>
 </div>
-<aside class="notes">
-<p>Same seed, S, tau, and starting values as <code>wk07-logit-metropolis.R</code>, so the numbers on the next slides match what students get (the script adds <code>progress_bar = TRUE</code>, which does not change the draws).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="r-hat-and-ess-intercept" class="slide level2 smaller">
 <h2>R-hat and ESS: intercept</h2>
@@ -1369,27 +1008,14 @@ racewhite   0.2508   0.1465
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># compute ess (for intercept)</span></span>
 <span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a>posterior<span class="sc">::</span><span class="fu">ess_bulk</span>(matrix_of_chains)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 833</code></pre>
+<pre><code>[1] 3188</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a>posterior<span class="sc">::</span><span class="fu">ess_tail</span>(matrix_of_chains)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1643</code></pre>
+<pre><code>[1] 7472</code></pre>
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>Notes: R-hat less than about 1.01; ESS more than about 2,000. [CTK: at S = 20,000 the bulk ESS for the intercept is below the notes’ 2,000 heuristic (see the output); say whether that is enough here or whether students should run longer, as the notes’ 100,000-iteration version does.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="intercept-four-chains" class="slide level2">
 <h2>Intercept: four chains</h2>
@@ -1404,19 +1030,19 @@ racewhite   0.2508   0.1465
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_tpa6xcvp71wv2que5pq5 = TinyTable.createTableFunctions("tinytable_tpa6xcvp71wv2que5pq5");
+      const tableFns_xuhfcrkdkqk7j1vozslb = TinyTable.createTableFunctions("tinytable_xuhfcrkdkqk7j1vozslb");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '5', j: 1 }, { i: '5', j: 2 }, { i: '5', j: 3 }, { i: '5', j: 4 }, { i: '5', j: 5 } ], css_id: 'tinytable_css_ebrnq3xt9eoyq1eyqac4',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_iebrbc80c5f9meoit9i5',}, 
+          { positions: [ { i: '5', j: 1 }, { i: '5', j: 2 }, { i: '5', j: 3 }, { i: '5', j: 4 }, { i: '5', j: 5 } ], css_id: 'tinytable_css_doo3i24wcnltima4k4ub',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_5flsj9tk4j4cn3bim8n7',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_tpa6xcvp71wv2que5pq5.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_xuhfcrkdkqk7j1vozslb.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1425,11 +1051,11 @@ racewhite   0.2508   0.1465
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_tpa6xcvp71wv2que5pq5 td.tinytable_css_ebrnq3xt9eoyq1eyqac4, #tinytable_tpa6xcvp71wv2que5pq5 th.tinytable_css_ebrnq3xt9eoyq1eyqac4 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_tpa6xcvp71wv2que5pq5 td.tinytable_css_iebrbc80c5f9meoit9i5, #tinytable_tpa6xcvp71wv2que5pq5 th.tinytable_css_iebrbc80c5f9meoit9i5 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_xuhfcrkdkqk7j1vozslb td.tinytable_css_doo3i24wcnltima4k4ub, #tinytable_xuhfcrkdkqk7j1vozslb th.tinytable_css_doo3i24wcnltima4k4ub {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_xuhfcrkdkqk7j1vozslb td.tinytable_css_5flsj9tk4j4cn3bim8n7, #tinytable_xuhfcrkdkqk7j1vozslb th.tinytable_css_5flsj9tk4j4cn3bim8n7 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_tpa6xcvp71wv2que5pq5" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_xuhfcrkdkqk7j1vozslb" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1444,38 +1070,38 @@ racewhite   0.2508   0.1465
         <tbody>
                 <tr>
                   <td data-row="1" data-col="1">(Intercept)</td>
-                  <td data-row="1" data-col="2">1.002</td>
+                  <td data-row="1" data-col="2">1.000</td>
                   <td data-row="1" data-col="3">✅</td>
-                  <td data-row="1" data-col="4">833</td>
-                  <td data-row="1" data-col="5">1,643</td>
+                  <td data-row="1" data-col="4">3,188</td>
+                  <td data-row="1" data-col="5">7,472</td>
                 </tr>
                 <tr>
                   <td data-row="2" data-col="1">rs_age</td>
-                  <td data-row="2" data-col="2">1.003</td>
+                  <td data-row="2" data-col="2">1.000</td>
                   <td data-row="2" data-col="3">✅</td>
-                  <td data-row="2" data-col="4">1,176</td>
-                  <td data-row="2" data-col="5">2,649</td>
+                  <td data-row="2" data-col="4">6,803</td>
+                  <td data-row="2" data-col="5">14,584</td>
                 </tr>
                 <tr>
                   <td data-row="3" data-col="1">rs_educate</td>
-                  <td data-row="3" data-col="2">1.003</td>
+                  <td data-row="3" data-col="2">1.001</td>
                   <td data-row="3" data-col="3">✅</td>
-                  <td data-row="3" data-col="4">1,092</td>
-                  <td data-row="3" data-col="5">2,435</td>
+                  <td data-row="3" data-col="4">4,889</td>
+                  <td data-row="3" data-col="5">10,768</td>
                 </tr>
                 <tr>
                   <td data-row="4" data-col="1">rs_income</td>
-                  <td data-row="4" data-col="2">1.005</td>
+                  <td data-row="4" data-col="2">1.000</td>
                   <td data-row="4" data-col="3">✅</td>
-                  <td data-row="4" data-col="4">914</td>
-                  <td data-row="4" data-col="5">1,921</td>
+                  <td data-row="4" data-col="4">4,445</td>
+                  <td data-row="4" data-col="5">9,648</td>
                 </tr>
                 <tr>
                   <td data-row="5" data-col="1">racewhite</td>
-                  <td data-row="5" data-col="2">1.001</td>
+                  <td data-row="5" data-col="2">1.000</td>
                   <td data-row="5" data-col="3">✅</td>
-                  <td data-row="5" data-col="4">864</td>
-                  <td data-row="5" data-col="5">1,570</td>
+                  <td data-row="5" data-col="4">3,157</td>
+                  <td data-row="5" data-col="5">7,773</td>
                 </tr>
         </tbody>
       </table>
@@ -1483,37 +1109,11 @@ racewhite   0.2508   0.1465
 <!-- hack to avoid NA insertion in last line -->
 </div>
 </div>
-<aside class="notes">
-<p>Notes: The code above computes the R-hat and ESS for only the first parameter (intercept); we should check the rest as well. Notes: The table below shows that R-hat is less than 1.01 for every parameter, so we have found no sign that the chains have failed to converge. (True at S = 20,000 too; check the rendered column.)</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="glm-vs.-metrop-point-estimates-and-95-cis" class="slide level2">
 <h2><code>glm()</code> vs.&nbsp;<code>metrop()</code>: point estimates and 95% CIs</h2>
 
-<img data-src="lecture_files/figure-revealjs/s2-logit-compare-1.png" width="2304" class="r-stretch"><aside class="notes">
-<p>Notes: Finally, we can compare the posterior mean and 95% credible intervals to the ML estimate and 95% Wald confidence intervals. They are almost identical. (The notes’ plotting code uses the posterior median for the point; so does this figure.)</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
+<img data-src="lecture_files/figure-revealjs/s2-logit-compare-1.png" width="2304" class="r-stretch"></section>
 <section id="quantities-of-interest" class="slide level2">
 <h2>Quantities of interest</h2>
 <p>To compute a quantity of interest, we need to use our Bayesian invariance property. We need to transform, then summarize, the simulations.</p>
@@ -1557,16 +1157,16 @@ racewhite   0.2508   0.1465
 <span id="cb53-15"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize: posterior mean, posterior SD, and 95% credible interval</span></span>
 <span id="cb53-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(fd_tilde)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.166</code></pre>
+<pre><code>[1] 0.167</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(fd_tilde)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0197</code></pre>
+<pre><code>[1] 0.02</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(fd_tilde, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> 2.5% 97.5% 
-0.129 0.205 </code></pre>
+0.128 0.206 </code></pre>
 </div>
 </div>
 </section>
@@ -1586,19 +1186,6 @@ racewhite   0.2508   0.1465
 1 rs_age 0.5 - -0.5    0.166      0.02    0.127     0.205</code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>[CTK: the two estimates agree; {marginaleffects} gives the ML point estimate with a delta-method interval, metrop() gives the posterior mean of the first difference.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="metrop-vs.-comparisons-the-first-difference" class="slide level2">
 <h2><code>metrop()</code> vs.&nbsp;<code>comparisons()</code>: the first difference</h2>
@@ -1609,22 +1196,22 @@ racewhite   0.2508   0.1465
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_pl21dj4988gc73bxn8e3 = TinyTable.createTableFunctions("tinytable_pl21dj4988gc73bxn8e3");
+      const tableFns_g5r9sw30w27phpc73ne1 = TinyTable.createTableFunctions("tinytable_g5r9sw30w27phpc73ne1");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '2', j: 2 }, { i: '2', j: 3 }, { i: '2', j: 4 }, { i: '2', j: 5 } ], css_id: 'tinytable_css_r5amy9uql3t5rjen1bnn',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '1', j: 3 }, { i: '1', j: 4 }, { i: '1', j: 5 } ], css_id: 'tinytable_css_1jdjqpw065posq9iobp6',}, 
-          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_az4rtwek00wqab3auqx1',}, 
-          { positions: [ { i: '2', j: 1 } ], css_id: 'tinytable_css_igsksqpzwblucsxx18yw',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_z7nnhmigrmyqkq1j8gpm',}, 
+          { positions: [ { i: '2', j: 2 }, { i: '2', j: 3 }, { i: '2', j: 4 }, { i: '2', j: 5 } ], css_id: 'tinytable_css_70wcncjutaencto099nw',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '1', j: 3 }, { i: '1', j: 4 }, { i: '1', j: 5 } ], css_id: 'tinytable_css_6o1p6dj1ex3ugk3nv112',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_nio9cscnqr8eyy6z8rp2',}, 
+          { positions: [ { i: '2', j: 1 } ], css_id: 'tinytable_css_7hzbrno4tlytwpikcvc8',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_ccj3dauq47p0x9rsa2d3',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_pl21dj4988gc73bxn8e3.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_g5r9sw30w27phpc73ne1.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1633,14 +1220,14 @@ racewhite   0.2508   0.1465
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_pl21dj4988gc73bxn8e3 td.tinytable_css_r5amy9uql3t5rjen1bnn, #tinytable_pl21dj4988gc73bxn8e3 th.tinytable_css_r5amy9uql3t5rjen1bnn {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_pl21dj4988gc73bxn8e3 td.tinytable_css_1jdjqpw065posq9iobp6, #tinytable_pl21dj4988gc73bxn8e3 th.tinytable_css_1jdjqpw065posq9iobp6 { text-align: right }
-    #tinytable_pl21dj4988gc73bxn8e3 td.tinytable_css_az4rtwek00wqab3auqx1, #tinytable_pl21dj4988gc73bxn8e3 th.tinytable_css_az4rtwek00wqab3auqx1 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_pl21dj4988gc73bxn8e3 td.tinytable_css_igsksqpzwblucsxx18yw, #tinytable_pl21dj4988gc73bxn8e3 th.tinytable_css_igsksqpzwblucsxx18yw {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_pl21dj4988gc73bxn8e3 td.tinytable_css_z7nnhmigrmyqkq1j8gpm, #tinytable_pl21dj4988gc73bxn8e3 th.tinytable_css_z7nnhmigrmyqkq1j8gpm {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_g5r9sw30w27phpc73ne1 td.tinytable_css_70wcncjutaencto099nw, #tinytable_g5r9sw30w27phpc73ne1 th.tinytable_css_70wcncjutaencto099nw {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_g5r9sw30w27phpc73ne1 td.tinytable_css_6o1p6dj1ex3ugk3nv112, #tinytable_g5r9sw30w27phpc73ne1 th.tinytable_css_6o1p6dj1ex3ugk3nv112 { text-align: right }
+    #tinytable_g5r9sw30w27phpc73ne1 td.tinytable_css_nio9cscnqr8eyy6z8rp2, #tinytable_g5r9sw30w27phpc73ne1 th.tinytable_css_nio9cscnqr8eyy6z8rp2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_g5r9sw30w27phpc73ne1 td.tinytable_css_7hzbrno4tlytwpikcvc8, #tinytable_g5r9sw30w27phpc73ne1 th.tinytable_css_7hzbrno4tlytwpikcvc8 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_g5r9sw30w27phpc73ne1 td.tinytable_css_ccj3dauq47p0x9rsa2d3, #tinytable_g5r9sw30w27phpc73ne1 th.tinytable_css_ccj3dauq47p0x9rsa2d3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_pl21dj4988gc73bxn8e3" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_g5r9sw30w27phpc73ne1" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1655,10 +1242,10 @@ racewhite   0.2508   0.1465
         <tbody>
                 <tr>
                   <td data-row="1" data-col="1">metrop(): posterior simulations</td>
-                  <td data-row="1" data-col="2">0.166</td>
+                  <td data-row="1" data-col="2">0.167</td>
                   <td data-row="1" data-col="3">0.020</td>
-                  <td data-row="1" data-col="4">0.129</td>
-                  <td data-row="1" data-col="5">0.205</td>
+                  <td data-row="1" data-col="4">0.128</td>
+                  <td data-row="1" data-col="5">0.206</td>
                 </tr>
                 <tr>
                   <td data-row="2" data-col="1">glm() + comparisons(): ML + delta method</td>
@@ -1673,19 +1260,6 @@ racewhite   0.2508   0.1465
 <!-- hack to avoid NA insertion in last line -->
 </div>
 </div>
-<aside class="notes">
-<p>The first difference in Pr(vote) for a 1 SD shift in age (rs_age from -0.5 to 0.5), with education and income at their means and race = white. Same quantity, two routes: the posterior mean and credible interval from the four Metropolis chains stacked, and the ML point estimate with a delta-method interval from comparisons(). They agree to the second decimal.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
@@ -1727,23 +1301,6 @@ racewhite   0.2508   0.1465
 <li>It uses a hyper-optimized version of Hamiltonian Monte Carlo.</li>
 <li>Stan and its universe of supporting software is extremely well-documented and widely used.</li>
 </ul>
-<aside class="notes">
-<ul>
-<li>Build note: Keynote “Stan” slide (Fall 2025), two typos fixed.</li>
-<li>From the notes’ aside: Before Stan, Bayesian modeling in R was typically done using BUGS or JAGS, which relied on Gibbs sampling and Metropolis-within-Gibbs updates. Stan uses gradients of the log-posterior to navigate the parameter space more efficiently.</li>
-<li>In-class script: <a href="https://pos5747.github.io/files/wk07-logit-stan.R" class="uri">https://pos5747.github.io/files/wk07-logit-stan.R</a></li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="logistic-regression-model" class="slide level2">
 <h2>Logistic regression model</h2>
@@ -1755,21 +1312,6 @@ y_i \sim \text{Bernoulli}(\pi_i), \quad \pi_i = \operatorname{logit}^{-1} \left(
 \beta \sim \mathcal{N}(0, 5^2 I).
 \]</span></p>
 <p>Because the scale of the variables affects the interpretation of the priors, it’s common to rescale variables to have a common scale (e.g., SD of 0.5, SD of 1, or range of 1).</p>
-<aside class="notes">
-<ul>
-<li>[CTK: the income example from the notes: a prior with an SD of 5 is more or less informative depending on whether income is dollars or thousands of dollars.]</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="three-blocks" class="slide level2">
 <h2>Three blocks</h2>
@@ -1780,22 +1322,6 @@ y_i \sim \text{Bernoulli}(\pi_i), \quad \pi_i = \operatorname{logit}^{-1} \left(
 <li><code>model { ... }</code> Priors and likelihood live here. Use distribution statements (<code>theta ~ normal(0,1);</code>)</li>
 </ol>
 <p>There are other blocks you can use as well.</p>
-<aside class="notes">
-<ul>
-<li>From the notes’ footnote: Stan is a <em>declarative</em> modeling language: you describe the data you have, the parameters you don’t know, and the probabilistic relationships (priors and likelihood) that connect them.</li>
-<li>Documentation: user’s guide, reference manual, tutorials, case studies at <a href="https://mc-stan.org" class="uri">https://mc-stan.org</a>.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="logit.stan" class="slide level2">
 <h2><code>logit.stan</code></h2>
@@ -1818,22 +1344,6 @@ y_i \sim \text{Bernoulli}(\pi_i), \quad \pi_i = \operatorname{logit}^{-1} \left(
 <span id="cb61-16"><a href=""></a>  beta ~ normal(<span class="dv">0</span>, <span class="dv">5</span>);               <span class="co">// n(0, 5) prior for each beta</span></span>
 <span id="cb61-17"><a href=""></a>  y ~ bernoulli_logit(X * beta);     <span class="co">// logistic regression likelihood</span></span>
 <span id="cb61-18"><a href=""></a>}</span></code></pre></div>
-<aside class="notes">
-<ul>
-<li>Build note: the code highlight steps through the three blocks: data, parameters, model.</li>
-<li>We should save this text file as <code>logit.stan</code> in our project directory.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="data-for-stan" class="slide level2">
 <h2>Data for Stan</h2>
@@ -1906,21 +1416,6 @@ $ rs_income  &lt;dbl&gt; -0.09566, -0.35915, -0.57595, -0.08284, -0.19482, -0.26
 <span id="cb66-3"><a href="" aria-hidden="true" tabindex="-1"></a>cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>(<span class="at">fix =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb66-4"><a href="" aria-hidden="true" tabindex="-1"></a>cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>()</span></code></pre></div>
 </div>
-<aside class="notes">
-<ul>
-<li>From the notes’ aside: {cmdstanr} is faster and will experience fewer crashes than {rstan}; on Carlisle’s laptop the turnout example takes about 7 seconds in {cmdstanr} and about 24 seconds in {rstan}, almost all of it compile time.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="cmdstanr" class="slide level2">
 <h2>{cmdstanr}</h2>
@@ -1976,22 +1471,6 @@ $ rs_income  &lt;dbl&gt; -0.09566, -0.35915, -0.57595, -0.08284, -0.19482, -0.26
 </div>
 </div>
 <p>As a rule of thumb, check <span class="math inline">\(\hat{R} &lt; 1.01\)</span> and ESS &gt; 2,000.</p>
-<aside class="notes">
-<ul>
-<li>After sampling, we check two sets of diagnostics. The first set (R-hat, ESS) is the same as for the Metropolis algorithm; the second set is specific to HMC (next slide).</li>
-<li>R-hat can flag non-convergence but not prove convergence (Vehtari et al.&nbsp;2021).</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="hmc-diagnostics" class="slide level2 smaller">
 <h2>HMC diagnostics</h2>
@@ -2009,19 +1488,6 @@ $ebfmi
 [1] 1.003 1.025 0.974 1.110</code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>This model: 0 divergences, 0 treedepth hits, E-BFMI between 0.97 and 1.11 across the four chains. The rules of thumb are on the next slide.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="hmc-diagnostics-rules-of-thumb" class="slide level2 smaller">
 <h2>HMC diagnostics: rules of thumb</h2>
@@ -2066,22 +1532,6 @@ $ebfmi
 </tr>
 </tbody>
 </table>
-<aside class="notes">
-<ul>
-<li>Bad sample vs.&nbsp;inefficient sampler: divergences and low E-BFMI mean the sampler is missing part of the posterior (divergences: regions of high curvature; E-BFMI: the tails), so more draws would be more of the same biased sample. Treedepth hits mean each iteration moved less far than it could, so the draws are valid but more correlated: ESS per draw falls, nothing else. Divergences: Stan warns at even one after warmup; treat them as a stop sign, not a nuisance. Raising <code>adapt_delta</code> makes the step size smaller (slower, more careful). Treedepth hits: Stan warns at any, but they cost time rather than validity; the default limit is 10, i.e., up to 2^10 = 1,024 leapfrog steps per iteration. E-BFMI: {cmdstanr} 0.9.0 warns below 0.3 (<code>check_ebfmi(threshold = 0.3)</code>); older Stan documentation used 0.2.</li>
-<li>Reference: the Stan warnings page, https://mc-stan.org/misc/warnings.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="bayesplot-densities-by-chain" class="slide level2">
 <h2>{bayesplot}: densities by chain</h2>
@@ -2090,22 +1540,7 @@ $ebfmi
 <span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_dens_overlay</span>(draws_beta)</span></code></pre></div>
 
 </div>
-<img data-src="lecture_files/figure-revealjs/s3-dens-overlay-1.png" width="2688" class="r-stretch"><aside class="notes">
-<ul>
-<li>The {bayesplot} package offers many useful functions for visualizing the simulations. Documentation: <a href="https://mc-stan.org/bayesplot/" class="uri">https://mc-stan.org/bayesplot/</a>.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
+<img data-src="lecture_files/figure-revealjs/s3-dens-overlay-1.png" width="2688" class="r-stretch"></section>
 <section id="bayesplot-ridges" class="slide level2">
 <h2>{bayesplot}: ridges</h2>
 <div class="cell">
@@ -2201,21 +1636,6 @@ draw beta[1] beta[2] beta[3] beta[4] beta[5]
 0.127 0.206 </code></pre>
 </div>
 </div>
-<aside class="notes">
-<ul>
-<li>The notes’ comments on the loop: for clarity, just do this one simulation at a time; i indexes the simulations.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="summary-2" class="slide level2">
 <h2>Summary</h2>
@@ -2243,23 +1663,6 @@ Check <span class="math inline">\(\hat{R}\)</span>, ESS, and the HMC diagnostics
 It can fit all kinds of models. Much more general than any particular fitting function we’ve seen so far.</p>
 <p><strong>Seamless post-processing and visualization</strong><br>
 Built-in tools integrate with {bayesplot}, {posterior}, and {tidybayes} to summarize, diagnose, and visualize posterior draws without writing any Stan code directly.</p>
-<aside class="notes">
-<ul>
-<li>Build note: Keynote “{brms}” slide (Fall 2025). Its line “This is worth emphasizing: {brms} writes efficient Stan code.” is left off the slide (it had an em dash).</li>
-<li>From the notes: The <code>brm()</code> function in {brms} takes <code>glm()</code>-like arguments, and writes accurate and fast Stan code.</li>
-<li>In-class script: <a href="https://pos5747.github.io/files/wk07-brms-logit.R" class="uri">https://pos5747.github.io/files/wk07-brms-logit.R</a></li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="the-turnout-example" class="slide level2">
 <h2>The <code>turnout</code> example</h2>
@@ -2281,22 +1684,6 @@ Built-in tools integrate with {bayesplot}, {posterior}, and {tidybayes} to summa
 <span id="cb87-14"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
 <span id="cb87-15"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed =</span> <span class="dv">1234</span>)</span></code></pre></div>
 </div>
-<aside class="notes">
-<ul>
-<li>[CTK: <code>brm()</code>’s default backend is still {rstan}; <code>options(brms.backend = "cmdstanr")</code> makes {cmdstanr} the default for the session]</li>
-<li>Build note: the notes use <code>chains = 10, cores = 10</code>; the deck uses 4 chains (and <code>seed = 1234</code>) to keep the render short.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="glm-and-brm" class="slide level2 compare smaller">
 <h2><code>glm()</code> and <code>brm()</code></h2>
@@ -2433,22 +1820,6 @@ Built-in tools integrate with {bayesplot}, {posterior}, and {tidybayes} to summa
 <!-- hack to avoid NA insertion in last line -->
 </div>
 </div>
-<aside class="notes">
-<ul>
-<li>Build note: the notes’ table uses <code>gof_map = NULL</code>, which adds R2, AIC, BIC, Log.Lik., F, ELPD, LOOIC, WAIC, and RMSE rows; the slide keeps only Num.Obs. so the table fits.</li>
-<li>Footnote in the notes: The two are not mathematically equal, but they are very close here because {brms}’s default prior on the coefficients is flat. With flat or weak priors and this much data, it is rare that a Bayesian estimate or interval differs from the ML estimate or interval, outside of cases where maximum likelihood fails.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="diagnostics-1" class="slide level2">
 <h2>Diagnostics</h2>
@@ -2493,21 +1864,6 @@ Type: response
 Comparison: 0.5 - -0.5</code></pre>
 </div>
 </div>
-<aside class="notes">
-<ul>
-<li>For a {brms} fit, comparisons() reports the posterior median and an equal-tailed 95% credible interval, and no SE or SD column. get_draws() returns the posterior draws of the comparison, so any other summary is one line away (used for the table on the next slide).</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="four-routes-to-the-same-first-difference" class="slide level2">
 <h2>Four routes to the same first difference</h2>
@@ -2518,22 +1874,22 @@ Comparison: 0.5 - -0.5</code></pre>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_oi4gf90y9r3uvq413cc6 = TinyTable.createTableFunctions("tinytable_oi4gf90y9r3uvq413cc6");
+      const tableFns_zt5l1gikgun7xsnr7dz7 = TinyTable.createTableFunctions("tinytable_zt5l1gikgun7xsnr7dz7");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '4', j: 2 }, { i: '4', j: 3 }, { i: '4', j: 4 }, { i: '4', j: 5 } ], css_id: 'tinytable_css_xjjbr8gq50a6ha9gepd8',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '1', j: 4 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '1', j: 5 }, { i: '2', j: 5 }, { i: '3', j: 5 } ], css_id: 'tinytable_css_2av7glxe60hz2la1jwko',}, 
-          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_qy500hmir0y6jcfa5f61',}, 
-          { positions: [ { i: '4', j: 1 } ], css_id: 'tinytable_css_r7jjn13ox74ar9g23yti',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_ihow56khtdidxql7j8ah',}, 
+          { positions: [ { i: '4', j: 2 }, { i: '4', j: 3 }, { i: '4', j: 4 }, { i: '4', j: 5 } ], css_id: 'tinytable_css_vntuh6qz48xn0ddqiaar',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '1', j: 4 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '1', j: 5 }, { i: '2', j: 5 }, { i: '3', j: 5 } ], css_id: 'tinytable_css_3mdt55zj09z26tpczuet',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_qk1c5wgtdhgm79p7b5j0',}, 
+          { positions: [ { i: '4', j: 1 } ], css_id: 'tinytable_css_w2rqr1iqqie7nkc4nvu4',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_9k3qefec0qk303vd6r4s',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_oi4gf90y9r3uvq413cc6.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_zt5l1gikgun7xsnr7dz7.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -2542,14 +1898,14 @@ Comparison: 0.5 - -0.5</code></pre>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_oi4gf90y9r3uvq413cc6 td.tinytable_css_xjjbr8gq50a6ha9gepd8, #tinytable_oi4gf90y9r3uvq413cc6 th.tinytable_css_xjjbr8gq50a6ha9gepd8 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_oi4gf90y9r3uvq413cc6 td.tinytable_css_2av7glxe60hz2la1jwko, #tinytable_oi4gf90y9r3uvq413cc6 th.tinytable_css_2av7glxe60hz2la1jwko { text-align: right }
-    #tinytable_oi4gf90y9r3uvq413cc6 td.tinytable_css_qy500hmir0y6jcfa5f61, #tinytable_oi4gf90y9r3uvq413cc6 th.tinytable_css_qy500hmir0y6jcfa5f61 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_oi4gf90y9r3uvq413cc6 td.tinytable_css_r7jjn13ox74ar9g23yti, #tinytable_oi4gf90y9r3uvq413cc6 th.tinytable_css_r7jjn13ox74ar9g23yti {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_oi4gf90y9r3uvq413cc6 td.tinytable_css_ihow56khtdidxql7j8ah, #tinytable_oi4gf90y9r3uvq413cc6 th.tinytable_css_ihow56khtdidxql7j8ah {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_zt5l1gikgun7xsnr7dz7 td.tinytable_css_vntuh6qz48xn0ddqiaar, #tinytable_zt5l1gikgun7xsnr7dz7 th.tinytable_css_vntuh6qz48xn0ddqiaar {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_zt5l1gikgun7xsnr7dz7 td.tinytable_css_3mdt55zj09z26tpczuet, #tinytable_zt5l1gikgun7xsnr7dz7 th.tinytable_css_3mdt55zj09z26tpczuet { text-align: right }
+    #tinytable_zt5l1gikgun7xsnr7dz7 td.tinytable_css_qk1c5wgtdhgm79p7b5j0, #tinytable_zt5l1gikgun7xsnr7dz7 th.tinytable_css_qk1c5wgtdhgm79p7b5j0 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_zt5l1gikgun7xsnr7dz7 td.tinytable_css_w2rqr1iqqie7nkc4nvu4, #tinytable_zt5l1gikgun7xsnr7dz7 th.tinytable_css_w2rqr1iqqie7nkc4nvu4 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_zt5l1gikgun7xsnr7dz7 td.tinytable_css_9k3qefec0qk303vd6r4s, #tinytable_zt5l1gikgun7xsnr7dz7 th.tinytable_css_9k3qefec0qk303vd6r4s {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_oi4gf90y9r3uvq413cc6" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_zt5l1gikgun7xsnr7dz7" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -2571,10 +1927,10 @@ Comparison: 0.5 - -0.5</code></pre>
                 </tr>
                 <tr>
                   <td data-row="2" data-col="1">metrop(): posterior simulations</td>
-                  <td data-row="2" data-col="2">0.166</td>
+                  <td data-row="2" data-col="2">0.167</td>
                   <td data-row="2" data-col="3">0.020</td>
-                  <td data-row="2" data-col="4">0.129</td>
-                  <td data-row="2" data-col="5">0.205</td>
+                  <td data-row="2" data-col="4">0.128</td>
+                  <td data-row="2" data-col="5">0.206</td>
                 </tr>
                 <tr>
                   <td data-row="3" data-col="1">Stan: posterior simulations</td>
@@ -2596,19 +1952,6 @@ Comparison: 0.5 - -0.5</code></pre>
 <!-- hack to avoid NA insertion in last line -->
 </div>
 </div>
-<aside class="notes">
-<p>Four computations of one quantity. The ML route (last week’s tools) and the three posterior routes agree to the second decimal. Metropolis needed 80,000 draws (after burn-in) and a hand-tuned tau; Stan needed 8,000 and no tuning; brm() needed 8,000 and no Stan code. The small differences between the rows are Monte Carlo error plus the priors.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="expected-values" class="slide level2">
 <h2>Expected values</h2>
@@ -2634,23 +1977,6 @@ Comparison: 0.5 - -0.5</code></pre>
 <span id="cb96-6"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),  <span class="co"># avoids divergent transitions</span></span>
 <span id="cb96-7"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed =</span> <span class="dv">1234</span>)</span></code></pre></div>
 </div>
-<aside class="notes">
-<ul>
-<li>From the notes: The details are not important for now, but this isn’t an easy task in our usual framework. But it’s straightforward with Bayesian MCMC via <code>brm()</code>.</li>
-<li>[CTK: smooths often cause divergent transitions; with the default <code>adapt_delta = 0.8</code> these two fits had 60 and 156 (of 10,000; CmdStan 2.40, <code>seed = 1234</code>); <code>adapt_delta = 0.99</code> gives none with <code>seed = 1234</code> (other seeds occasionally leave 1 of 10,000: 2 of 7 seeds checked)]</li>
-<li>Build note: those counts are from the notes’ 10-chain fits; the deck fits 4 chains, and both smooth fits here had 0 divergences.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="modeling-smooth-relationships-1" class="slide level2">
 <h2>Modeling “smooth” relationships</h2>
@@ -2733,19 +2059,6 @@ Comparison: 0.5 - -0.5</code></pre>
 <span id="cb101-4"><a href="" aria-hidden="true" tabindex="-1"></a>fit_cubic_brm <span class="ot">&lt;-</span> <span class="fu">brm</span>(f_cubic, <span class="at">data =</span> turnout, <span class="at">family =</span> bernoulli,</span>
 <span id="cb101-5"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span></code></pre></div>
 </div>
-<aside class="notes">
-<p>When we have posterior simulations via Stan, we can use the LOOIC as an alternative to the AIC or BIC.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="compute-the-looic" class="slide level2 evensmaller">
 <h2>Compute the LOOIC</h2>
@@ -2823,21 +2136,6 @@ See help('pareto-k-diagnostic') for details.</code></pre>
 <div class="key">
 <p>The cubic model is ahead by 5.8 <code>elpd</code> with an <code>se_diff</code> of 4.1. This is modest evidence for the cubic.</p>
 </div>
-<aside class="notes">
-<p>From the chapter: It’s fine to use either. But the LOOIC connects nicely to the AIC and BIC, so that’s the one I’ve emphasized here.</p>
-<p>From the chapter’s footnote: Compare Raftery’s table for BIC differences in Information Criteria, where we established “about 10” as a big difference between the models. Remember that LOOIC differences are twice elpd differences, so 4 elpd is the same as 8 LOOIC.</p>
-<p>From the chapter’s aside: Raftery’s table in Information Criteria calls a BIC difference larger than 10 “very strong” evidence. The BIC, like the AIC and LOOIC, is on the <span class="math inline">\(-2 \times \log\)</span> scale, so a BIC difference of 10 is the same size as a difference of 5 on the elpd scale.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="the-aic-and-bic-for-comparison" class="slide level2 smaller">
 <h2>The AIC and BIC, for comparison</h2>
@@ -2861,19 +2159,6 @@ fit_cubic_glm   7 2062</code></pre>
 <div class="caption">
 <p>(The AIC is 2022.4 for the cubic and 2034.0 for the linear, and the BIC is 2061.6 and 2062.0.)</p>
 </div>
-<aside class="notes">
-<p>[CTK: the printed AIC/BIC tables round to whole numbers (options(digits = 3)); the caption gives one decimal.]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="aic-and-loo" class="slide level2 statement">
 <h2>AIC and LOO</h2>
@@ -3095,20 +2380,20 @@ fit_cubic_glm   7 2062</code></pre>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_54wvysuqorstpytnv7ue = TinyTable.createTableFunctions("tinytable_54wvysuqorstpytnv7ue");
+      const tableFns_abcclpbt437967jddcyg = TinyTable.createTableFunctions("tinytable_abcclpbt437967jddcyg");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_tp01dut16vlzdevs02rf',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_4su77rxkphll60t77u5a',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_qgcaguo98srmgh5h2s4u',}, 
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_ratf64ahgt8qm4peegzi',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_4n9we8q59ts9fx0rt9q1',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_zwory8kkyv0v9mf4elgh',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_54wvysuqorstpytnv7ue.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_abcclpbt437967jddcyg.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3117,12 +2402,12 @@ fit_cubic_glm   7 2062</code></pre>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_54wvysuqorstpytnv7ue td.tinytable_css_tp01dut16vlzdevs02rf, #tinytable_54wvysuqorstpytnv7ue th.tinytable_css_tp01dut16vlzdevs02rf {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_54wvysuqorstpytnv7ue td.tinytable_css_4su77rxkphll60t77u5a, #tinytable_54wvysuqorstpytnv7ue th.tinytable_css_4su77rxkphll60t77u5a { text-align: right }
-    #tinytable_54wvysuqorstpytnv7ue td.tinytable_css_qgcaguo98srmgh5h2s4u, #tinytable_54wvysuqorstpytnv7ue th.tinytable_css_qgcaguo98srmgh5h2s4u {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_abcclpbt437967jddcyg td.tinytable_css_ratf64ahgt8qm4peegzi, #tinytable_abcclpbt437967jddcyg th.tinytable_css_ratf64ahgt8qm4peegzi {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_abcclpbt437967jddcyg td.tinytable_css_4n9we8q59ts9fx0rt9q1, #tinytable_abcclpbt437967jddcyg th.tinytable_css_4n9we8q59ts9fx0rt9q1 { text-align: right }
+    #tinytable_abcclpbt437967jddcyg td.tinytable_css_zwory8kkyv0v9mf4elgh, #tinytable_abcclpbt437967jddcyg th.tinytable_css_zwory8kkyv0v9mf4elgh {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_54wvysuqorstpytnv7ue" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_abcclpbt437967jddcyg" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -3155,19 +2440,6 @@ fit_cubic_glm   7 2062</code></pre>
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>The OJS widget below allows you to experiment with <span class="math inline">\(J = 4\)</span> inputs and see how the outputted probabilities change. (The widget needs the page served over http; the table on the right is the static fallback.)</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="adding-covariates" class="slide level2">
 <h2>Adding covariates</h2>
@@ -3201,20 +2473,20 @@ y_i \in \{1, 2, \ldots, J\}.
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_2xjehlmb0w0kw2z9e181 = TinyTable.createTableFunctions("tinytable_2xjehlmb0w0kw2z9e181");
+      const tableFns_e4xvk8oilvkqja0e3ae6 = TinyTable.createTableFunctions("tinytable_e4xvk8oilvkqja0e3ae6");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_s6f95d8dafvco4oo4u8t',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_3o29kph2u4bm3hfposgj',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_t4w109aqa1alhrr9itq3',}, 
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_3fpv82n0qskjxju0jv1z',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_tkfaad18ux2fkkcvy5uw',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_6530yedqw0suui9oo7sc',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_2xjehlmb0w0kw2z9e181.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_e4xvk8oilvkqja0e3ae6.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3223,12 +2495,12 @@ y_i \in \{1, 2, \ldots, J\}.
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_2xjehlmb0w0kw2z9e181 td.tinytable_css_s6f95d8dafvco4oo4u8t, #tinytable_2xjehlmb0w0kw2z9e181 th.tinytable_css_s6f95d8dafvco4oo4u8t {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_2xjehlmb0w0kw2z9e181 td.tinytable_css_3o29kph2u4bm3hfposgj, #tinytable_2xjehlmb0w0kw2z9e181 th.tinytable_css_3o29kph2u4bm3hfposgj { text-align: right }
-    #tinytable_2xjehlmb0w0kw2z9e181 td.tinytable_css_t4w109aqa1alhrr9itq3, #tinytable_2xjehlmb0w0kw2z9e181 th.tinytable_css_t4w109aqa1alhrr9itq3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_e4xvk8oilvkqja0e3ae6 td.tinytable_css_3fpv82n0qskjxju0jv1z, #tinytable_e4xvk8oilvkqja0e3ae6 th.tinytable_css_3fpv82n0qskjxju0jv1z {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_e4xvk8oilvkqja0e3ae6 td.tinytable_css_tkfaad18ux2fkkcvy5uw, #tinytable_e4xvk8oilvkqja0e3ae6 th.tinytable_css_tkfaad18ux2fkkcvy5uw { text-align: right }
+    #tinytable_e4xvk8oilvkqja0e3ae6 td.tinytable_css_6530yedqw0suui9oo7sc, #tinytable_e4xvk8oilvkqja0e3ae6 th.tinytable_css_6530yedqw0suui9oo7sc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_2xjehlmb0w0kw2z9e181" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_e4xvk8oilvkqja0e3ae6" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -3269,20 +2541,20 @@ y_i \in \{1, 2, \ldots, J\}.
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_u96jan4tc3i9mizgno2m = TinyTable.createTableFunctions("tinytable_u96jan4tc3i9mizgno2m");
+      const tableFns_zb50pq2mds9o8kq0v1sd = TinyTable.createTableFunctions("tinytable_zb50pq2mds9o8kq0v1sd");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_03v4crbrz2zd8o3ng2j6',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_384rhmvrdys3azkvcit8',}, 
-          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_jw9cov4rvpp0v9la3fcx',}, 
+          { positions: [ { i: '4', j: 1 }, { i: '4', j: 2 } ], css_id: 'tinytable_css_nd54plwymp5ddpmtggs6',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_8fx4314zk8udbtq7wjcb',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '0', j: 2 } ], css_id: 'tinytable_css_2y7cybu0plvkfia1lunw',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_u96jan4tc3i9mizgno2m.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_zb50pq2mds9o8kq0v1sd.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3291,12 +2563,12 @@ y_i \in \{1, 2, \ldots, J\}.
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_u96jan4tc3i9mizgno2m td.tinytable_css_03v4crbrz2zd8o3ng2j6, #tinytable_u96jan4tc3i9mizgno2m th.tinytable_css_03v4crbrz2zd8o3ng2j6 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_u96jan4tc3i9mizgno2m td.tinytable_css_384rhmvrdys3azkvcit8, #tinytable_u96jan4tc3i9mizgno2m th.tinytable_css_384rhmvrdys3azkvcit8 { text-align: right }
-    #tinytable_u96jan4tc3i9mizgno2m td.tinytable_css_jw9cov4rvpp0v9la3fcx, #tinytable_u96jan4tc3i9mizgno2m th.tinytable_css_jw9cov4rvpp0v9la3fcx {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_zb50pq2mds9o8kq0v1sd td.tinytable_css_nd54plwymp5ddpmtggs6, #tinytable_zb50pq2mds9o8kq0v1sd th.tinytable_css_nd54plwymp5ddpmtggs6 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_zb50pq2mds9o8kq0v1sd td.tinytable_css_8fx4314zk8udbtq7wjcb, #tinytable_zb50pq2mds9o8kq0v1sd th.tinytable_css_8fx4314zk8udbtq7wjcb { text-align: right }
+    #tinytable_zb50pq2mds9o8kq0v1sd td.tinytable_css_2y7cybu0plvkfia1lunw, #tinytable_zb50pq2mds9o8kq0v1sd th.tinytable_css_2y7cybu0plvkfia1lunw {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_u96jan4tc3i9mizgno2m" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_zb50pq2mds9o8kq0v1sd" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -3349,7 +2621,7 @@ y_i \in \{1, 2, \ldots, J\}.
 <section id="example-the-1992-presidential-vote" class="slide level2">
 <h2>Example: the 1992 presidential vote</h2>
 <ul>
-<li>1992 ANES; same respondents as the wk06 Bush approval example</li>
+<li>1992 ANES; same data file as the wk06 Bush approval example</li>
 <li>Outcome: <code>vote_1992</code>: Bush, Clinton, or Perot</li>
 <li>Predictors: <code>party_id</code> (−3 to 3), <code>economy</code> (1 = much better to 5 = much worse)</li>
 </ul>
@@ -3368,21 +2640,6 @@ $ party_id  &lt;dbl&gt; 2, 3, 3, 3, -2, -3, 2, 3, 2, 1, -3, -2, 3, 1, -1, -3, -1
 $ economy   &lt;dbl&gt; 4, 4, 3, 3, 5, 5, 4, 2, 4, 3, 5, 4, 4, 4, 5, 5, 4, 5, 4, 5, 4, 4, 5, 5…</code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>[CTK: why Perot makes this nominal, not ordered]</p>
-<p>[CTK: 592 voters complete on these variables]</p>
-<p>[CTK: provenance: Adolph’s Problem Set 4; same file as the ordered example; Perot as the reason a nominal model is needed]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="multinom" class="slide level2 smaller">
 <h2><code>multinom()</code></h2>
@@ -3409,21 +2666,6 @@ Residual Deviance: 870
 AIC: 882 </code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>[CTK: two rows of coefficients, one linear predictor per non-baseline candidate; each relative to Bush]</p>
-<p>[CTK: baseline first here (<code>multinom()</code>), last in the math above; the probabilities don’t change]</p>
-<p>[CTK: signs: party_id negative for both rows (Republicans → Bush); economy positive for both (worse economy → away from Bush)]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="probabilities-with-marginaleffects" class="slide level2">
 <h2>Probabilities with {marginaleffects}</h2>
@@ -3456,21 +2698,6 @@ AIC: 882 </code></pre>
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>[CTK: Pr(Perot) rises then falls (about 0.08 at −3, peak about 0.28 at 0 to 1, 0.18 at 3), though both linear predictors are linear in party ID]</p>
-<p>[CTK: why: Perot’s party_id coefficient (−0.44) sits between Bush’s (0) and Clinton’s (−1.10); the softmax shares probability]</p>
-<p>[CTK: so the sign of a coefficient doesn’t give the direction of that category’s probability; compute probabilities]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="first-differences" class="slide level2">
 <h2>First differences</h2>
@@ -3492,20 +2719,6 @@ AIC: 882 </code></pre>
 3 economy 4 - 2    Perot     0.0389  -0.0508    0.129 </code></pre>
 </div>
 </div>
-<aside class="notes">
-<p>[CTK: worse economy: Bush −0.22, Clinton +0.18, Perot +0.04 (CI includes 0)]</p>
-<p>[CTK: Perot’s economy coefficient is positive (0.34), but Clinton gains most of what Bush loses]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="brm" class="slide level2">
 <h2><code>brm()</code></h2>
@@ -3530,29 +2743,29 @@ AIC: 882 </code></pre>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_964fftjblmxfamtrf8kl = TinyTable.createTableFunctions("tinytable_964fftjblmxfamtrf8kl");
+      const tableFns_x1g0pvrlwq3zoaxl61kw = TinyTable.createTableFunctions("tinytable_x1g0pvrlwq3zoaxl61kw");
       // tinytable span after
-      window.addEventListener('load', function () { tableFns_964fftjblmxfamtrf8kl.spanCell(5, 1, 1, 5) })
-      window.addEventListener('load', function () { tableFns_964fftjblmxfamtrf8kl.spanCell(1, 1, 1, 5) })
+      window.addEventListener('load', function () { tableFns_x1g0pvrlwq3zoaxl61kw.spanCell(5, 1, 1, 5) })
+      window.addEventListener('load', function () { tableFns_x1g0pvrlwq3zoaxl61kw.spanCell(1, 1, 1, 5) })
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '-1', j: 5 } ], css_id: 'tinytable_css_3kdwk0yod29qujwcmul3',}, 
-          { positions: [ { i: '-1', j: 3 } ], css_id: 'tinytable_css_rtqfhww31mo7ylqf63i3',}, 
-          { positions: [ { i: '8', j: 2 }, { i: '8', j: 3 }, { i: '8', j: 4 }, { i: '8', j: 5 } ], css_id: 'tinytable_css_l588qkvupvhfntzgryn9',}, 
-          { positions: [ { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '6', j: 4 }, { i: '7', j: 4 }, { i: '2', j: 5 }, { i: '3', j: 5 }, { i: '4', j: 5 }, { i: '6', j: 5 }, { i: '7', j: 5 } ], css_id: 'tinytable_css_jg8jq60vi08f1ji0jilt',}, 
-          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_yt1oxskakp41coqa8koa',}, 
-          { positions: [ { i: '-1', j: 2 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_jhqf4fjulcw3v0r8a0wc',}, 
-          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_mmyuu710gkkx8vrqhtdv',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '5', j: 1 }, { i: '1', j: 2 }, { i: '5', j: 2 }, { i: '1', j: 3 }, { i: '5', j: 3 }, { i: '1', j: 4 }, { i: '5', j: 4 }, { i: '1', j: 5 }, { i: '5', j: 5 } ], css_id: 'tinytable_css_37lrph62kixjpt2rpjpg',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_jqsqsique2ejn0qigvd2',}, 
-          { positions: [ { i: '-1', j: 1 } ], css_id: 'tinytable_css_4uyfd2vpuduj9ybygebt',}, 
+          { positions: [ { i: '-1', j: 5 } ], css_id: 'tinytable_css_4gmaof28pyb7mvd0w0i3',}, 
+          { positions: [ { i: '-1', j: 3 } ], css_id: 'tinytable_css_0xeichi9potazf2evg47',}, 
+          { positions: [ { i: '8', j: 2 }, { i: '8', j: 3 }, { i: '8', j: 4 }, { i: '8', j: 5 } ], css_id: 'tinytable_css_yygule66ydtbh4tmcbnr',}, 
+          { positions: [ { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '6', j: 4 }, { i: '7', j: 4 }, { i: '2', j: 5 }, { i: '3', j: 5 }, { i: '4', j: 5 }, { i: '6', j: 5 }, { i: '7', j: 5 } ], css_id: 'tinytable_css_pjdz9i88ghdv5to6b3oe',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 } ], css_id: 'tinytable_css_00mmmcbq34uslo2j3kpm',}, 
+          { positions: [ { i: '-1', j: 2 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_kwb9wlcpdy0suas4faf6',}, 
+          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_jgcwlx5ruaurvpt6pnia',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '5', j: 1 }, { i: '1', j: 2 }, { i: '5', j: 2 }, { i: '1', j: 3 }, { i: '5', j: 3 }, { i: '1', j: 4 }, { i: '5', j: 4 }, { i: '1', j: 5 }, { i: '5', j: 5 } ], css_id: 'tinytable_css_wmy72e2ydb43advouavw',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_4pvvq68ozyvxfdoqz2vv',}, 
+          { positions: [ { i: '-1', j: 1 } ], css_id: 'tinytable_css_lepi95i2nfk2pes2ad62',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_964fftjblmxfamtrf8kl.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_x1g0pvrlwq3zoaxl61kw.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3561,19 +2774,19 @@ AIC: 882 </code></pre>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_3kdwk0yod29qujwcmul3, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_3kdwk0yod29qujwcmul3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_rtqfhww31mo7ylqf63i3, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_rtqfhww31mo7ylqf63i3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_l588qkvupvhfntzgryn9, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_l588qkvupvhfntzgryn9 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_jg8jq60vi08f1ji0jilt, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_jg8jq60vi08f1ji0jilt { text-align: right }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_yt1oxskakp41coqa8koa, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_yt1oxskakp41coqa8koa {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_jhqf4fjulcw3v0r8a0wc, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_jhqf4fjulcw3v0r8a0wc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_mmyuu710gkkx8vrqhtdv, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_mmyuu710gkkx8vrqhtdv {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_37lrph62kixjpt2rpjpg, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_37lrph62kixjpt2rpjpg { text-align: left }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_jqsqsique2ejn0qigvd2, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_jqsqsique2ejn0qigvd2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
-    #tinytable_964fftjblmxfamtrf8kl td.tinytable_css_4uyfd2vpuduj9ybygebt, #tinytable_964fftjblmxfamtrf8kl th.tinytable_css_4uyfd2vpuduj9ybygebt {  position: relative; --border-bottom: 0; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_4gmaof28pyb7mvd0w0i3, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_4gmaof28pyb7mvd0w0i3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_0xeichi9potazf2evg47, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_0xeichi9potazf2evg47 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_yygule66ydtbh4tmcbnr, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_yygule66ydtbh4tmcbnr {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_pjdz9i88ghdv5to6b3oe, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_pjdz9i88ghdv5to6b3oe { text-align: right }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_00mmmcbq34uslo2j3kpm, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_00mmmcbq34uslo2j3kpm {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_kwb9wlcpdy0suas4faf6, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_kwb9wlcpdy0suas4faf6 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_jgcwlx5ruaurvpt6pnia, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_jgcwlx5ruaurvpt6pnia {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_wmy72e2ydb43advouavw, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_wmy72e2ydb43advouavw { text-align: left }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_4pvvq68ozyvxfdoqz2vv, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_4pvvq68ozyvxfdoqz2vv {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%;  }
+    #tinytable_x1g0pvrlwq3zoaxl61kw td.tinytable_css_lepi95i2nfk2pes2ad62, #tinytable_x1g0pvrlwq3zoaxl61kw th.tinytable_css_lepi95i2nfk2pes2ad62 {  position: relative; --border-bottom: 0; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --line-type-bottom: solid; --line-type-left: solid; --line-type-right: solid; --line-type-top: solid; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_964fftjblmxfamtrf8kl" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_x1g0pvrlwq3zoaxl61kw" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
 <tr>
@@ -3656,43 +2869,29 @@ AIC: 882 </code></pre>
 <div class="caption">
 <p>Table code: <code>compare_mnl()</code> and <code>tt_mnl()</code> in the notes (Multinomial Logit, With <code>brm()</code>)</p>
 </div>
-<aside class="notes">
-<p>[CTK: posterior means within about 0.02 of the ML estimates (e.g., Clinton party_id −1.11 vs −1.10; Perot economy 0.34 vs 0.34); default priors barely matter at N = 592]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="brm-marginaleffects" class="slide level2">
 <h2><code>brm()</code> + {marginaleffects}</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># for brms categorical fits (and only those), predictions()</span></span>
-<span id="cb122-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># drops the newdata columns and returns rowid + group, so</span></span>
-<span id="cb122-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># build the grid first and join party_id back by rowid</span></span>
-<span id="cb122-4"><a href="" aria-hidden="true" tabindex="-1"></a>grid_vote <span class="ot">&lt;-</span> <span class="fu">datagrid</span>(<span class="at">model =</span> fit_vote_brm,</span>
-<span id="cb122-5"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">party_id =</span> <span class="sc">-</span><span class="dv">3</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb122-6"><a href="" aria-hidden="true" tabindex="-1"></a>p_vote_brm <span class="ot">&lt;-</span> <span class="fu">predictions</span>(fit_vote_brm,</span>
-<span id="cb122-7"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> grid_vote) <span class="sc">|&gt;</span></span>
-<span id="cb122-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(grid_vote, rowid, party_id),</span>
-<span id="cb122-9"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"rowid"</span>)</span>
-<span id="cb122-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_vote_brm,</span>
-<span id="cb122-11"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> party_id, <span class="at">y =</span> estimate,</span>
-<span id="cb122-12"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high,</span>
-<span id="cb122-13"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> group, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb122-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb122-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb122-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_lecture</span>() <span class="sc">+</span></span>
-<span id="cb122-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_lecture</span>() <span class="sc">+</span></span>
-<span id="cb122-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Party ID"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>,</span>
-<span id="cb122-19"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Candidate"</span>, <span class="at">fill =</span> <span class="st">"Candidate"</span>)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># for this fit, predictions() returns rowid but not</span></span>
+<span id="cb122-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the grid columns, so join them back</span></span>
+<span id="cb122-3"><a href="" aria-hidden="true" tabindex="-1"></a>grid_vote <span class="ot">&lt;-</span> <span class="fu">datagrid</span>(<span class="at">model =</span> fit_vote_brm,</span>
+<span id="cb122-4"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">party_id =</span> <span class="sc">-</span><span class="dv">3</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb122-5"><a href="" aria-hidden="true" tabindex="-1"></a>p_vote_brm <span class="ot">&lt;-</span> <span class="fu">predictions</span>(fit_vote_brm,</span>
+<span id="cb122-6"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> grid_vote) <span class="sc">|&gt;</span></span>
+<span id="cb122-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(grid_vote, rowid, party_id),</span>
+<span id="cb122-8"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"rowid"</span>)</span>
+<span id="cb122-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_vote_brm,</span>
+<span id="cb122-10"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> party_id, <span class="at">y =</span> estimate,</span>
+<span id="cb122-11"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high,</span>
+<span id="cb122-12"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> group, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb122-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb122-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb122-15"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_lecture</span>() <span class="sc">+</span></span>
+<span id="cb122-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_lecture</span>() <span class="sc">+</span></span>
+<span id="cb122-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Party ID"</span>, <span class="at">y =</span> <span class="st">"Probability"</span>,</span>
+<span id="cb122-18"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Candidate"</span>, <span class="at">fill =</span> <span class="st">"Candidate"</span>)</span></code></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
@@ -3702,21 +2901,6 @@ AIC: 882 </code></pre>
 </div>
 </div>
 </div></div>
-<aside class="notes">
-<p>[CTK: same {marginaleffects} code, no <code>type = "probs"</code>; <code>group</code> column holds the candidate; the grid columns need joining back by <code>rowid</code>]</p>
-<p>Checked 2026-10-06 (marginaleffects 1.0.0): the same call on the multinom() fit and on a brms bernoulli fit returns the grid columns; only the brms categorical fit drops them. A marginaleffects quirk, not a brms one; an investigation prompt was written for Carlisle.</p>
-<p>[CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="another-example-balancing-the-federal-budget" class="slide level2 smaller">
 <h2>Another example: Balancing the federal budget</h2>
@@ -3735,19 +2919,6 @@ AIC: 882 </code></pre>
 <div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of each choice as party ID varies</span></span>
 <span id="cb125-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_budget <span class="ot">&lt;-</span> <span class="fu">predictions</span>(fit_budget, <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">party_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>), <span class="at">type =</span> <span class="st">"probs"</span>)</span></code></pre></div>
 </div>
-<aside class="notes">
-<p>This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="another-example-balancing-the-federal-budget-1" class="slide level2">
 <h2>Another example: Balancing the federal budget</h2>
@@ -3770,19 +2941,6 @@ AIC: 882 </code></pre>
 <li>Strong Democrats to strong Republicans: Pr(cut domestic spending) 0.08 to 0.75; Pr(cut defense spending) 0.63 to 0.16; Pr(raise taxes) 0.29 to 0.09.</li>
 </ul>
 </div></div>
-<aside class="notes">
-<p>Model: <code>multinom(budget ~ party_id + female + income, data = cces)</code>; party ID from 1 (strong Democrat) to 7 (strong Republican). This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="brm-fits-every-model-weve-seen-so-far" class="slide level2">
 <h2><code>brm()</code> fits every model we’ve seen so far</h2>
@@ -3840,20 +2998,6 @@ AIC: 882 </code></pre>
 <div class="key">
 <p>We can use <code>brm()</code> to fit all the models we’ve seen so far in the course.</p>
 </div>
-<aside class="notes">
-<p>[CTK: wk06’s <code>polr()</code> fit works as <code>brm(family = cumulative("logit"))</code>, same parameterization (cutpoints = <code>Intercept[j]</code>); this slide replaced the two-slide ordered callback 2026-10-06]</p>
-<p>[CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="ordered-vs.-nominal" class="slide level2">
 <h2>Ordered vs.&nbsp;nominal</h2>
@@ -3871,19 +3015,6 @@ AIC: 882 </code></pre>
 <p><span class="math inline">\(J - 1\)</span> sets</p>
 </div>
 </div></div>
-<aside class="notes">
-<p>[CTK: ordered (<code>cumulative()</code>) vs nominal (<code>categorical()</code>): one set of coefficients vs J − 1 sets; Red State Part 3 in the exercises (did not vote / Harris / Trump, an unordered outcome)]</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section></section>
 <section>
 <section id="wrap" class="title-slide slide level1 center">
@@ -3917,19 +3048,6 @@ AIC: 882 </code></pre>
 </ol>
 </div>
 </div></div>
-<aside class="notes">
-<p>From the Summary of the Metropolis chapter: “There are three important points in this chapter.” Read the exit ticket against these three.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="this-weeks-exercises" class="slide level2">
 <h2>This week’s exercises</h2>

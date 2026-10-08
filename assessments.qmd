@@ -4,7 +4,7 @@ title: "Assessments"
 
 Two of the four components of the course grade are closed-book assessments of what you've learned from the notes and exercises:
 
-- **Weekly assessments** (10%): short (about 10 minutes), closed-book assessments at the beginning of class, based on the weekly exercises. These mimic exam questions, but tend to be easier and shorter than what you see on the exam. I will drop the two lowest and average the remaining assessments.
+- **Weekly assessments** (10%): short (about 15 minutes), closed-book assessments at the beginning of class, based on the weekly exercises. These mimic exam questions, but tend to be easier and shorter than what you see on the exam. I will drop the two lowest and average the remaining assessments.
 - **Exams** (40%): a midterm exam (15%) and a final exam (25%), based primarily on the weekly exercises.
 
 (The other two components are the [research project](research-project.qmd) and the [workshop](workshop.qmd). The official grading statement is in the [Simple Syllabus](https://fsu.simplesyllabus.com/en-US/doc/vq5vl3ibt/2026-Fall-POS-5747-0001-Advanced-Quantitative-Analysis-in-Political-Science?mode=view).)

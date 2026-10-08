@@ -52,10 +52,6 @@ fit_cubic_brm <- brm(f_cubic, data = turnout, family = bernoulli,
                      backend = "cmdstanr", chains = 4, cores = 4, seed = 1234)
 ```
 
-::: {.notes}
-When we have posterior simulations via Stan, we can use the LOOIC as an alternative to the AIC or BIC.
-:::
-
 ## Compute the LOOIC {.evensmaller}
 
 :::: {.columns}
@@ -111,14 +107,6 @@ Some rules of thumb:
 The cubic model is ahead by `r f1(turnout_elpd_diff)` `elpd` with an `se_diff` of `r f1(turnout_se_diff)`. This is modest evidence for the cubic.
 :::
 
-::: {.notes}
-From the chapter: It's fine to use either. But the LOOIC connects nicely to the AIC and BIC, so that's the one I've emphasized here.
-
-From the chapter's footnote: Compare Raftery's table for BIC differences in Information Criteria, where we established "about 10" as a big difference between the models. Remember that LOOIC differences are twice elpd differences, so 4 elpd is the same as 8 LOOIC.
-
-From the chapter's aside: Raftery's table in Information Criteria calls a BIC difference larger than 10 "very strong" evidence. The BIC, like the AIC and LOOIC, is on the $-2 \times \log$ scale, so a BIC difference of 10 is the same size as a difference of 5 on the elpd scale.
-:::
-
 ## The AIC and BIC, for comparison {.smaller}
 
 ```{r}
@@ -132,10 +120,6 @@ BIC(fit_linear_glm, fit_cubic_glm)
 
 ::: {.caption}
 (The AIC is `r f1(AIC(fit_cubic_glm))` for the cubic and `r f1(AIC(fit_linear_glm))` for the linear, and the BIC is `r f1(BIC(fit_cubic_glm))` and `r f1(BIC(fit_linear_glm))`.)
-:::
-
-::: {.notes}
-[CTK: the printed AIC/BIC tables round to whole numbers (options(digits = 3)); the caption gives one decimal.]
 :::
 
 ## AIC and LOO {.statement}

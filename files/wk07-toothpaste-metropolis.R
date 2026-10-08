@@ -114,7 +114,7 @@ par(mfrow = c(2, 2))
 hist(m$samples, main = "All 10,000 samples", xlab = "p")
 plot(m$samples, type = "l", main = "All 10,000 samples", ylab = "p", xlab = "Iteration")
 plot(m$samples[1:100], type = "l", main = "First 100 samples", ylab = "p", xlab = "Iteration")
-plot(m$samples[1001:1100], type = "l", main = "Samples 1,001–1,100", ylab = "p", xlab = "Iteration")
+plot(m$samples[1001:1100], type = "l", main = "Samples 1,001 through 1,100", ylab = "p", xlab = "Iteration")
 
 # ---- burn-in ----
 
@@ -124,6 +124,7 @@ mean(m$samples[5001:10000, 1])
 # ---- rhat; short run ----
 
 # 25 iterations
+set.seed(1234)
 m1 <- metrop(logf, theta_start = 0.01, S = 25)
 m2 <- metrop(logf, theta_start = 0.25, S = 25)
 m3 <- metrop(logf, theta_start = 0.75, S = 25)
@@ -159,6 +160,7 @@ ggplot(gg_df, aes(x = Iteration, y = Sample, group = Chain, color = Chain)) +
 # ---- rhat; long run ----
 
 # 25k iterations
+set.seed(1234)
 m1 <- metrop(logf, theta_start = 0.01, S = 25000)
 m2 <- metrop(logf, theta_start = 0.25, S = 25000)
 m3 <- metrop(logf, theta_start = 0.75, S = 25000)
@@ -198,6 +200,7 @@ parallel::detectCores(logical = FALSE)
 # set up one core per chain, but no more than the machine has
 n_cores <- min(10, parallel::detectCores(logical = FALSE))
 cl <- makeCluster(n_cores)
+clusterSetRNGStream(cl, iseed = 1234)  # reproducible draws on the workers
 registerDoParallel(cl)
 
 # run 10 chains in parallel
@@ -231,6 +234,7 @@ posterior::ess_bulk(long_chains)
 posterior::ess_tail(long_chains)
 
 # ---- developing our tuning intuition ----
+set.seed(1234)
 m1 <- metrop(logf, theta_start = 0.99, S = 1000, tau = 0.1)
 m2 <- metrop(logf, theta_start = 0.99, S = 1000, tau = 0.01)
 m3 <- metrop(logf, theta_start = 0.99, S = 1000, tau = 0.001)

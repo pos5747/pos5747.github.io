@@ -11,12 +11,6 @@ It can fit all kinds of models. Much more general than any particular fitting fu
 **Seamless post-processing and visualization**\
 Built-in tools integrate with \{bayesplot\}, \{posterior\}, and \{tidybayes\} to summarize, diagnose, and visualize posterior draws without writing any Stan code directly.
 
-::: {.notes}
-- Build note: Keynote "{brms}" slide (Fall 2025). Its line "This is worth emphasizing: {brms} writes efficient Stan code." is left off the slide (it had an em dash).
-- From the notes: The `brm()` function in {brms} takes `glm()`-like arguments, and writes accurate and fast Stan code.
-- In-class script: <https://pos5747.github.io/files/wk07-brms-logit.R>
-:::
-
 ## The `turnout` example
 
 Here's the syntax for our usual logistic regression model.
@@ -41,11 +35,6 @@ fit_brm <- brm(f, data = turnout, family = bernoulli,
            seed = 1234)
 ```
 
-::: {.notes}
-- [CTK: `brm()`'s default backend is still {rstan}; `options(brms.backend = "cmdstanr")` makes {cmdstanr} the default for the session]
-- Build note: the notes use `chains = 10, cores = 10`; the deck uses 4 chains (and `seed = 1234`) to keep the render short.
-:::
-
 ## `glm()` and `brm()` {.compare .smaller}
 
 `glm()` and `brm()` obtain the same estimates.
@@ -67,11 +56,6 @@ modelsummary(
   gof_map = "nobs"
 )
 ```
-
-::: {.notes}
-- Build note: the notes' table uses `gof_map = NULL`, which adds R2, AIC, BIC, Log.Lik., F, ELPD, LOOIC, WAIC, and RMSE rows; the slide keeps only Num.Obs. so the table fits.
-- Footnote in the notes: The two are not mathematically equal, but they are very close here because {brms}'s default prior on the coefficients is flat. With flat or weak priors and this much data, it is rare that a Bayesian estimate or interval differs from the ML estimate or interval, outside of cases where maximum likelihood fails.
-:::
 
 ## Diagnostics
 
@@ -97,10 +81,6 @@ comparisons(fit_brm, variables = list(rs_age = c(-0.5, 0.5)),
             newdata = datagrid(grid_type = "mean_or_mode"))
 ```
 
-::: {.notes}
-- For a {brms} fit, comparisons() reports the posterior median and an equal-tailed 95% credible interval, and no SE or SD column. get_draws() returns the posterior draws of the comparison, so any other summary is one line away (used for the table on the next slide).
-:::
-
 ## Four routes to the same first difference
 
 ```{r}
@@ -120,10 +100,6 @@ bind_rows(fd_row_glm, fd_row_metrop, fd_row_stan, fd_row_brm) |>
   format_tt(j = 2:5, digits = 3, num_fmt = "decimal", num_zero = TRUE) |>
   style_tt(j = 2:5, align = "r")
 ```
-
-::: {.notes}
-Four computations of one quantity. The ML route (last week's tools) and the three posterior routes agree to the second decimal. Metropolis needed 80,000 draws (after burn-in) and a hand-tuned tau; Stan needed 8,000 and no tuning; brm() needed 8,000 and no Stan code. The small differences between the rows are Monte Carlo error plus the priors.
-:::
 
 ## Expected values
 
@@ -154,12 +130,6 @@ smooth_fit <- brm(f, data = turnout, family = bernoulli,
            control = list(adapt_delta = 0.99),  # avoids divergent transitions
            seed = 1234)
 ```
-
-::: {.notes}
-- From the notes: The details are not important for now, but this isn't an easy task in our usual framework. But it's straightforward with Bayesian MCMC via `brm()`.
-- [CTK: smooths often cause divergent transitions; with the default `adapt_delta = 0.8` these two fits had 60 and 156 (of 10,000; CmdStan 2.40, `seed = 1234`); `adapt_delta = 0.99` gives none with `seed = 1234` (other seeds occasionally leave 1 of 10,000: 2 of 7 seeds checked)]
-- Build note: those counts are from the notes' 10-chain fits; the deck fits 4 chains, and both smooth fits here had 0 divergences.
-:::
 
 ## Modeling "smooth" relationships
 

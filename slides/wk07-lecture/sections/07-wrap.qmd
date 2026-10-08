@@ -38,10 +38,6 @@ The MCMC samples are dependent on the previous samples. Because of this, you nee
 :::
 ::::
 
-::: {.notes}
-From the Summary of the Metropolis chapter: "There are three important points in this chapter." Read the exit ticket against these three.
-:::
-
 ## This week's exercises
 
 1. Three samplers, one posterior

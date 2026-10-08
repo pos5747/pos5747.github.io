@@ -65,7 +65,7 @@ oct 06 · **mcmc** · \[[slides](slides/wk07-lecture/lecture.html)\]
 \[[notes](https://pos5747.github.io/notes/wk07/01-metrop.html)\]
 \[[exercises](exercises/wk07-exercises.html)\]
 [Metropolis
-algorithm; HMC + Stan and its R ecosystem; multinomial logit]{.topics}
+algorithm; HMC + Stan and its R ecosystem; LOO and the LOOIC; multinomial logit]{.topics}
 
 ------------------------------------------------------------------------
 

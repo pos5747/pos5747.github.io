@@ -2,10 +2,6 @@
 
 [15 minutes · closed book]{.muted}
 
-::: {.notes}
-Week 6 assessment, 9:00 to 9:15. Leave this slide up while students work.
-:::
-
 ## Then and now
 
 15 years ago, posterior simulation made "big" or "complex" models tractable, but...
@@ -75,11 +71,6 @@ ggplot(s1_curves, aes(x = pi, y = density, color = curve)) +
 :::
 :::
 
-::: {.notes}
-Recap from the Week 6 notes (`01-bayes`). The likelihood is drawn as a density (beta(9, 143)) so it shares the axis with the prior and posterior.
-[CTK: the point of the arrow: in most applied cases we can only *sample from* the posterior.]
-:::
-
 ## Last week: rejection sampling
 
 ::: {.algorithm}
@@ -102,21 +93,12 @@ Recap from the Week 6 notes (`01-bayes`). The likelihood is drawn as a density (
 *Output:* $\pi^{(1)}, \pi^{(2)}, \ldots, \pi^{(S)} \sim f(\pi \mid y)$.
 :::
 
-::: {.notes}
-Footnote from the Keynote box: To make the rejection algorithm simple, I've written it to apply specifically to the posterior for the Bernoulli model, which has support [0, 1]. The target density doesn't need to be a posterior and can have support other than [0, 1]. The proposal distribution doesn't have to be uniform. The key is that M is larger than the maximum of the target distribution and draws are accepted with probability f(z)/M.
-:::
-
 ## Two costs of rejection
 
 The rejection algorithm is simple and intuitive, but requires
 
 1. finding a suitable envelope constant and
 2. rejecting many samples in realistic problems (e.g., logistic regression).
-
-::: {.notes}
-From the opening paragraph of `notes/wk07/01-metrop.qmd`.
-[CTK: why both costs get worse in realistic problems, e.g., five coefficients in a logit.]
-:::
 
 ## Rejection sampling for a logit {.smaller}
 
@@ -134,10 +116,6 @@ f <- vote ~ rs_age + rs_educate + rs_income + race
 X <- model.matrix(f, data = turnout)
 y <- turnout$vote
 ```
-
-::: {.notes}
-Setup chunk of the exercise "Three samplers, one posterior" (`wk07-exercises.qmd`), verbatim. The posterior is identical for all three samplers: rescaled predictors with a normal(0, 5) prior on each coefficient, the notes' `logit.stan`.
-:::
 
 ## The log posterior and $M$ {.smaller}
 
@@ -164,10 +142,6 @@ opt <- optim(rep(0, ncol(X)), log_post, y = y, X = X,
              method = "BFGS", control = list(fnscale = -1))
 log_M <- opt$value
 ```
-
-::: {.notes}
-[CTK: the envelope constant M is the posterior at its mode, found with optim(); last week M was read off a one-dimensional plot.]
-:::
 
 ## `rej_box()`: a box from −2 to 2 for every coefficient {.evensmaller}
 
@@ -205,10 +179,6 @@ rej_box <- function(lower, upper, log_M, y, X, S = 1000, max_batches = 10,
        time_total = as.numeric(time_total, units = "secs"))
 }
 ```
-
-::: {.notes}
-Verbatim from the exercise. The highlighted lines are the whole algorithm: propose uniformly inside the box, accept with probability f(z)/M. Everything else is bookkeeping.
-:::
 
 ## Ten million proposals {.smaller .tight-output}
 
@@ -274,10 +244,6 @@ gif_log <- system2("Rscript", c("wk07-lecture-material/rej-gif/make-rej-gif.R", 
 if (!is.null(attr(gif_log, "status"))) stop("make-rej-gif.R failed:\n", paste(gif_log, collapse = "\n"))
 ```
 
-::: {.notes}
-Ten batches of one million proposals, as in the exercise. The exercise's hint: the share of proposals accepted estimates the acceptance rate; divide 1,000 by that rate to find the number of proposals you need.
-:::
-
 ## The acceptance rate
 
 ```{r}
@@ -295,11 +261,6 @@ c(accepted = n_accepted, rate = rate,
 We accepted `r n_accepted` of 10 million proposals in `r round(rej_wide$time_total / 60, 1)` minutes. That's an acceptance rate of about `r paste0(formatC(rate * 1e6, digits = 2, format = "g"), " × 10⁻⁶")`. At that rate, 1,000 draws would take about `r signif(proposals_needed / 1e6, 2)` million proposals (about `r round(hours_needed)` hours).
 :::
 
-::: {.notes}
-The exercise's rejection part, given away: the solution's sentence, with this render's numbers.
-[CTK: why so few: the posterior occupies a tiny fraction of the five-dimensional box, and f(z)/M is tiny everywhere else. See the next slide.]
-:::
-
 ## The accepted draws
 
 ::: {.r-stack}
@@ -312,17 +273,7 @@ The exercise's rejection part, given away: the solution's sentence, with this re
 Left: the proposal box, −2 to 2, in two of its five dimensions. Blue: 4,000 draws from the normal approximation to the posterior (`glm()` coefficients and covariance). Red: the `r n_accepted` accepted draws. Gray dots: a sample of the proposals. Right: the counters count every proposal. The speed matches the real computation for the first six seconds, then it speeds up.
 :::
 
-::: {.notes}
-The run from the previous two slides, as it happened: the hidden chunk after the run replays its random stream to recover when each draw was accepted, checks that the replay matches `rej_wide` exactly, and rebuilds `img/rej-sampler.gif` (shown on click; `img/rej-sampler-start.png` is its first frame, extracted with {magick}) with `wk07-lecture-material/rej-gif/make-rej-gif.R` from the run's own count and time, so the draws, the rate, and the hours here are the slide's numbers. Added 2026-10-06 for the [CTK] cue after "Two costs of rejection".
-
-[CTK: the accepted draws sit where the posterior is; the box is enormous by comparison, and in five dimensions the ratio of volumes is far smaller than this two-dimensional picture shows. This is cost 2 from two slides ago, made concrete. Metropolis and Stan get the same posterior in seconds; that is Part 1 and Part 2 of the exercise.]
-:::
-
 
 ## Beyond rejection {.statement}
 
 We can improve the rejection algorithm by making proposals that depend on the current value.
-
-::: {.notes}
-Notes continue: Many algorithms, including Stan, do this. The Metropolis algorithm is one example.
-:::

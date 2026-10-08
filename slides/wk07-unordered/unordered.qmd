@@ -238,10 +238,10 @@ $$
 
 ## Data
 
-- 1992 ANES [@anes1992]; same respondents as the wk06 Bush approval example
+- 1992 ANES [@anes1992]; same data file as the wk06 Bush approval example
 - Outcome: `vote_1992`: Bush, Clinton, or Perot
 - Predictors: `party_id` (−3 to 3), `economy` (1 = much better to 5 = much worse)
-- [CTK: why Perot makes this nominal, not ordered]
+- Perot’s candidacy is what makes a nominal model necessary: Bush, Clinton, and Perot have no order.
 
 ```{r}
 #| message: false
@@ -263,7 +263,7 @@ fit_vote <- multinom(vote_1992 ~ party_id + economy, data = vote, trace = FALSE)
 summary(fit_vote)
 ```
 
-- [CTK: one row of coefficients per non-baseline candidate, each relative to Bush]
+- One row of coefficients per non-baseline candidate each relative to Bush.
 
 ## Probabilities with {marginaleffects}
 
@@ -294,7 +294,7 @@ ggplot(p, aes(x = party_id, y = estimate, ymin = conf.low, ymax = conf.high,
   labs(x = "Party ID", y = "Probability", color = "Candidate", fill = "Candidate")
 ```
 
-- [CTK: Pr(Perot) rises then falls, though both linear predictors are linear in party ID]
+- Pr(Perot) rises and then falls, even though both linear predictors are linear in party ID. The sign of a coefficient does not give the direction of that category’s probability.
 
 ## First differences
 
@@ -306,7 +306,7 @@ comparisons(fit_vote,
             type = "probs")
 ```
 
-- [CTK: Perot's economy coefficient is positive, but Clinton gains most of what Bush loses]
+- Perot’s economy coefficient is positive, but Clinton gains most of what Bush loses.
 
 ## `brm()` {.smaller}
 
@@ -355,7 +355,7 @@ ggplot(p_brm, aes(x = party_id, y = estimate, ymin = conf.low, ymax = conf.high,
 
 ## Bush approval with `cumulative()` {.smaller}
 
-- [CTK: wk06's `polr()` fit, now with `brm(family = cumulative("logit"))`; same parameterization (cutpoints = `Intercept[j]`)]
+- Last week’s `polr()` fit, refit with `brm(family = cumulative("logit"))`. Same parameterization: the cutpoints are `Intercept[j]`.
 
 ```{r}
 #| message: false
@@ -389,6 +389,6 @@ c(fit_approval$zeta, coef(fit_approval))
 
 ## Ordered vs. nominal
 
-- [CTK: ordered (`cumulative()`) vs nominal (`categorical()`): one set of coefficients vs J − 1 sets; Red State Part 3 in the exercises (did not vote / Harris / Trump, an unordered outcome)]
+- Ordered (`cumulative()`) uses one set of coefficients; nominal (`categorical()`) uses J − 1 sets. Red State Part 3 in the exercises is a nominal case: did not vote, Harris, or Trump.
 
 ## References

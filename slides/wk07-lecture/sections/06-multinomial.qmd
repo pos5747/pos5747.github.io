@@ -155,10 +155,6 @@ softmax_ex |>
 :::
 ::::
 
-::: {.notes}
-The OJS widget below allows you to experiment with $J = 4$ inputs and see how the outputted probabilities change. (The widget needs the page served over http; the table on the right is the static fallback.)
-:::
-
 ## Adding covariates
 
 Now suppose the outcome takes $J$ possible values:
@@ -246,7 +242,7 @@ $$
 
 ## Example: the 1992 presidential vote
 
-- 1992 ANES; same respondents as the wk06 Bush approval example
+- 1992 ANES; same data file as the wk06 Bush approval example
 - Outcome: `vote_1992`: Bush, Clinton, or Perot
 - Predictors: `party_id` (−3 to 3), `economy` (1 = much better to 5 = much worse)
 
@@ -260,14 +256,6 @@ vote <- read_csv("https://pos5747.github.io/data/bush-approval-1992.csv") |>
   glimpse()
 ```
 
-::: {.notes}
-[CTK: why Perot makes this nominal, not ordered]
-
-[CTK: 592 voters complete on these variables]
-
-[CTK: provenance: Adolph's Problem Set 4; same file as the ordered example; Perot as the reason a nominal model is needed]
-:::
-
 ## `multinom()` {.smaller}
 
 ```{r}
@@ -276,14 +264,6 @@ vote <- read_csv("https://pos5747.github.io/data/bush-approval-1992.csv") |>
 fit_vote <- multinom(vote_1992 ~ party_id + economy, data = vote, trace = FALSE)
 summary(fit_vote)
 ```
-
-::: {.notes}
-[CTK: two rows of coefficients, one linear predictor per non-baseline candidate; each relative to Bush]
-
-[CTK: baseline first here (`multinom()`), last in the math above; the probabilities don't change]
-
-[CTK: signs: party_id negative for both rows (Republicans → Bush); economy positive for both (worse economy → away from Bush)]
-:::
 
 ## Probabilities with {marginaleffects}
 
@@ -313,14 +293,6 @@ ggplot(p_vote,
        color = "Candidate", fill = "Candidate")
 ```
 
-::: {.notes}
-[CTK: Pr(Perot) rises then falls (about 0.08 at −3, peak about 0.28 at 0 to 1, 0.18 at 3), though both linear predictors are linear in party ID]
-
-[CTK: why: Perot's party_id coefficient (−0.44) sits between Bush's (0) and Clinton's (−1.10); the softmax shares probability]
-
-[CTK: so the sign of a coefficient doesn't give the direction of that category's probability; compute probabilities]
-:::
-
 ## First differences
 
 ```{r}
@@ -335,12 +307,6 @@ comparisons(fit_vote,
   as_tibble() |>
   select(term, contrast, group, estimate, conf.low, conf.high)
 ```
-
-::: {.notes}
-[CTK: worse economy: Bush −0.22, Clinton +0.18, Perot +0.04 (CI includes 0)]
-
-[CTK: Perot's economy coefficient is positive (0.34), but Clinton gains most of what Bush loses]
-:::
 
 ## `brm()`
 
@@ -410,10 +376,6 @@ compare_mnl(fit_vote, fit_vote_brm) |>
 Table code: `compare_mnl()` and `tt_mnl()` in the notes (Multinomial Logit, With `brm()`)
 :::
 
-::: {.notes}
-[CTK: posterior means within about 0.02 of the ML estimates (e.g., Clinton party_id −1.11 vs −1.10; Perot economy 0.34 vs 0.34); default priors barely matter at N = 592]
-:::
-
 ## `brm()` + {marginaleffects}
 
 ```{r}
@@ -422,9 +384,8 @@ Table code: `compare_mnl()` and `tt_mnl()` in the notes (Multinomial Logit, With
 #| output-location: column
 #| fig-width: 7
 #| fig-asp: 0.85
-# for brms categorical fits (and only those), predictions()
-# drops the newdata columns and returns rowid + group, so
-# build the grid first and join party_id back by rowid
+# for this fit, predictions() returns rowid but not
+# the grid columns, so join them back
 grid_vote <- datagrid(model = fit_vote_brm,
                       party_id = -3:3)
 p_vote_brm <- predictions(fit_vote_brm,
@@ -443,32 +404,10 @@ ggplot(p_vote_brm,
        color = "Candidate", fill = "Candidate")
 ```
 
-::: {.notes}
-[CTK: same {marginaleffects} code, no `type = "probs"`; `group` column holds the candidate; the grid columns need joining back by `rowid`]
-
-Checked 2026-10-06 (marginaleffects 1.0.0): the same call on the multinom() fit and on a brms bernoulli fit returns the grid columns; only the brms categorical fit drops them. A marginaleffects quirk, not a brms one; an investigation prompt was written for Carlisle.
-
-[CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]
-:::
-
 ## Another example: Balancing the federal budget {.smaller}
 
 ```{r}
-#| label: s6-cces-local
-#| echo: false
-#| cache: false
-# TEMPORARY: read the CSV from the site's local data/ folder until the push makes
-# https://pos5747.github.io/data/cces2012-budget.csv live. After the push,
-# delete this chunk and drop the `eval: false` from the chunk below, then re-render.
-cces <- read_csv("../../data/cces2012-budget.csv") |>
-  mutate(budget = factor(budget, levels = c("Raise taxes",
-                                            "Cut defense spending",
-                                            "Cut domestic spending")))
-```
-
-```{r}
 #| label: s6-cces-data
-#| eval: false
 # 2012 CCES; "Raise taxes" first, so it is the baseline
 cces <- read_csv("https://pos5747.github.io/data/cces2012-budget.csv") |>
   mutate(budget = factor(budget, levels = c("Raise taxes",
@@ -498,10 +437,6 @@ pb <- function(choice, pid) {
   sprintf("%.2f", p_budget$estimate[p_budget$group == choice & p_budget$party_id == pid])
 }
 ```
-
-::: {.notes}
-This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).
-:::
 
 ## Another example: Balancing the federal budget
 
@@ -538,10 +473,6 @@ ggplot(p_budget, aes(x = party_id, y = estimate,
 :::
 ::::
 
-::: {.notes}
-Model: `multinom(budget ~ party_id + female + income, data = cces)`; party ID from 1 (strong Democrat) to 7 (strong Republican). This example is inspired by a SAGE Research Methods Datasets guide (Reid 2020).
-:::
-
 ## `brm()` fits every model we've seen so far
 
 | Model | ML | `brm(family = ...)` |
@@ -556,12 +487,6 @@ Model: `multinom(budget ~ party_id + female + income, data = cces)`; party ID fr
 
 ::: {.key}
 We can use `brm()` to fit all the models we've seen so far in the course.
-:::
-
-::: {.notes}
-[CTK: wk06's `polr()` fit works as `brm(family = cumulative("logit"))`, same parameterization (cutpoints = `Intercept[j]`); this slide replaced the two-slide ordered callback 2026-10-06]
-
-[CTK: why bother with brm(): priors, hierarchical extensions (weeks 10–11)]
 :::
 
 ## Ordered vs. nominal
@@ -590,7 +515,3 @@ $J - 1$ sets
 
 :::
 ::::
-
-::: {.notes}
-[CTK: ordered (`cumulative()`) vs nominal (`categorical()`): one set of coefficients vs J − 1 sets; Red State Part 3 in the exercises (did not vote / Harris / Trump, an unordered outcome)]
-:::

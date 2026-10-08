@@ -130,7 +130,7 @@ log_posterior <- function(beta, y, X) {
 # ---- running the algorithm ----
 
 # sample with metropolis
-S <- 20000
+S <- 100000
 m1 <- metrop(log_posterior, S = S, tau = 0.1, theta_start = rep(-2, ncol(X)), y = y, X = X, progress_bar = TRUE)
 m2 <- metrop(log_posterior, S = S, tau = 0.1, theta_start = rep(-1, ncol(X)), y = y, X = X, progress_bar = TRUE)
 m3 <- metrop(log_posterior, S = S, tau = 0.1, theta_start = rep(1, ncol(X)), y = y, X = X, progress_bar = TRUE)

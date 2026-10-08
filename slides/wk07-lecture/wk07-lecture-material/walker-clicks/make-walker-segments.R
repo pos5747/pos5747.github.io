@@ -148,16 +148,6 @@ block <- c(
   "```",
   ":::",
   "",
-  "::: {.notes}",
-  sprintf("The walker animation (`wk07-slides-material/figs/fig-metropolis-walker.gif`) cut into %d segments that advance on click: the first plays on arrival, each click plays the next and holds its last frame. %d clicks in all. Segment ends (iteration-step) and lengths:",
-          nrow(segments), nrow(segments) - 1),
-  "",
-  click_map,
-  "",
-  "A clicker's next button sends Right or Page Down, which reveal maps to the next fragment, so nothing needs configuring. Clicking while a segment is still playing skips to the next one; Left steps back to the previous segment's last frame.",
-  "",
-  "[CTK: the pause points are the `stops` table at the top of make-walker-segments.R; edit it and re-run the script to reshape the clicks.]",
-  ":::",
   "<!-- walker-clicks: end -->"
 )
 

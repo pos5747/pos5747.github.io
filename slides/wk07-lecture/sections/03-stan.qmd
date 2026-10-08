@@ -6,12 +6,6 @@
 - It uses a hyper-optimized version of Hamiltonian Monte Carlo.
 - Stan and its universe of supporting software is extremely well-documented and widely used.
 
-::: {.notes}
-- Build note: Keynote "Stan" slide (Fall 2025), two typos fixed.
-- From the notes' aside: Before Stan, Bayesian modeling in R was typically done using BUGS or JAGS, which relied on Gibbs sampling and Metropolis-within-Gibbs updates. Stan uses gradients of the log-posterior to navigate the parameter space more efficiently.
-- In-class script: <https://pos5747.github.io/files/wk07-logit-stan.R>
-:::
-
 ## Logistic regression model
 
 $$
@@ -26,10 +20,6 @@ $$
 
 Because the scale of the variables affects the interpretation of the priors, it's common to rescale variables to have a common scale (e.g., SD of 0.5, SD of 1, or range of 1).
 
-::: {.notes}
-- [CTK: the income example from the notes: a prior with an SD of 5 is more or less informative depending on whether income is dollars or thousands of dollars.]
-:::
-
 ## Three blocks
 
 Each Stan model has three main blocks.
@@ -39,11 +29,6 @@ Each Stan model has three main blocks.
 1. `model { ... }` Priors and likelihood live here. Use distribution statements (`theta ~ normal(0,1);`)
 
 There are other blocks you can use as well.
-
-::: {.notes}
-- From the notes' footnote: Stan is a *declarative* modeling language: you describe the data you have, the parameters you don't know, and the probabilistic relationships (priors and likelihood) that connect them.
-- Documentation: user's guide, reference manual, tutorials, case studies at <https://mc-stan.org>.
-:::
 
 ## `logit.stan`
 
@@ -69,11 +54,6 @@ model {
   y ~ bernoulli_logit(X * beta);     // logistic regression likelihood
 }
 ```
-
-::: {.notes}
-- Build note: the code highlight steps through the three blocks: data, parameters, model.
-- We should save this text file as `logit.stan` in our project directory.
-:::
 
 ## Data for Stan
 
@@ -142,10 +122,6 @@ cmdstanr::check_cmdstan_toolchain(fix = TRUE)
 cmdstanr::install_cmdstan()
 ```
 
-::: {.notes}
-- From the notes' aside: {cmdstanr} is faster and will experience fewer crashes than {rstan}; on Carlisle's laptop the turnout example takes about 7 seconds in {cmdstanr} and about 24 seconds in {rstan}, almost all of it compile time.
-:::
-
 ## {cmdstanr}
 
 First, we compile the model with `cmdstan_model()`. Then we draw samples with the `$sample()` method.
@@ -205,11 +181,6 @@ summarise_draws(draws_beta, "rhat", "ess_bulk", "ess_tail")
 
 As a rule of thumb, check $\hat{R} < 1.01$ and ESS > 2,000.
 
-::: {.notes}
-- After sampling, we check two sets of diagnostics. The first set (R-hat, ESS) is the same as for the Metropolis algorithm; the second set is specific to HMC (next slide).
-- R-hat can flag non-convergence but not prove convergence (Vehtari et al. 2021).
-:::
-
 ## HMC diagnostics {.smaller}
 
 HMC has three diagnostics of its own, reported for each chain. They signal two different kinds of trouble: a [**bad sample**]{.red} (the draws may be biased; do not use them) or an [**inefficient sampler**]{.blue} (the draws are fine; you just got fewer than you paid for).
@@ -221,10 +192,6 @@ HMC has three diagnostics of its own, reported for each chain. They signal two d
 fit_cmd$diagnostic_summary()
 ```
 
-::: {.notes}
-This model: 0 divergences, 0 treedepth hits, E-BFMI between 0.97 and 1.11 across the four chains. The rules of thumb are on the next slide.
-:::
-
 ## HMC diagnostics: rules of thumb {.smaller}
 
 | Diagnostic | Signals | No problem | Problem | What to do |
@@ -232,11 +199,6 @@ This model: 0 divergences, 0 treedepth hits, E-BFMI between 0.97 and 1.11 across
 | Divergent transitions | [bad sample]{.red} | 0 after warmup | **any**: the sampler could not follow the posterior's curvature, so it misses part of the posterior | raise `adapt_delta` (default 0.8; try 0.95 or 0.99); if they persist, rescale or reparameterize |
 | E-BFMI | [bad sample]{.red} (the tails) | above 0.3 in every chain (about 1 is typical) | **below 0.3**: the sampler does not move well between energy levels, so the tails are explored poorly; longer chains do not fix it | reparameterize; look for heavy tails or funnel-shaped posteriors |
 | Maximum treedepth | [inefficient sampler]{.blue} | 0 hits | many hits: trajectories are cut short, so the chain explores slowly; the draws are still valid | raise `max_treedepth` (default 10) or rescale the predictors |
-
-::: {.notes}
-- Bad sample vs. inefficient sampler: divergences and low E-BFMI mean the sampler is missing part of the posterior (divergences: regions of high curvature; E-BFMI: the tails), so more draws would be more of the same biased sample. Treedepth hits mean each iteration moved less far than it could, so the draws are valid but more correlated: ESS per draw falls, nothing else. Divergences: Stan warns at even one after warmup; treat them as a stop sign, not a nuisance. Raising `adapt_delta` makes the step size smaller (slower, more careful). Treedepth hits: Stan warns at any, but they cost time rather than validity; the default limit is 10, i.e., up to 2^10 = 1,024 leapfrog steps per iteration. E-BFMI: {cmdstanr} 0.9.0 warns below 0.3 (`check_ebfmi(threshold = 0.3)`); older Stan documentation used 0.2.
-- Reference: the Stan warnings page, https://mc-stan.org/misc/warnings.
-:::
 
 ## {bayesplot}: densities by chain
 
@@ -248,10 +210,6 @@ This model: 0 divergences, 0 treedepth hits, E-BFMI between 0.97 and 1.11 across
 # densities of parameters by chain
 mcmc_dens_overlay(draws_beta)
 ```
-
-::: {.notes}
-- The {bayesplot} package offers many useful functions for visualizing the simulations. Documentation: <https://mc-stan.org/bayesplot/>.
-:::
 
 ## {bayesplot}: ridges
 
@@ -345,10 +303,6 @@ mean(fd_tilde)
 sd(fd_tilde)
 quantile(fd_tilde, probs = c(0.025, 0.975))
 ```
-
-::: {.notes}
-- The notes' comments on the loop: for clarity, just do this one simulation at a time; i indexes the simulations.
-:::
 
 ```{r}
 #| label: s3-fd-row

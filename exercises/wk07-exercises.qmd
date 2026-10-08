@@ -24,7 +24,7 @@ library(brms)  # attach here too: cached chunks below do not re-attach it
 fit_key <- function(deps) {
   deps <- as.character(unlist(deps))
   standardize <- function(x) {
-    if (is.data.frame(x)) as.list(x)  # columns only (drops readr's attributes)
+    if (is.data.frame(x)) as.list(as.data.frame(x))  # columns only (drops readr's spec/problems attributes, which differ between sessions)
     else if (is.function(x) || inherits(x, "formula")) deparse(x)  # code, not environments
     else x
   }
@@ -243,6 +243,8 @@ This code runs 10 batches of one million proposals. How many accepted? Estimate 
 Now run the Metropolis and Stan samplers below.
 
 ```{r three-samplers-start-met}
+#| message: false
+#| results: "hide"
 # metropolis: 4 chains of 500 from overdispersed starting values
 set.seed(1234)
 met_chains <- map(c(-2, -1, 1, 2), \(start_value) {
@@ -253,7 +255,8 @@ met_draws <- chains_to_draws(met_chains, colnames(X))
 # stan: 4 chains of 500 (250 warmup + 250 sampling)
 mod <- cmdstan_model(write_stan_file(stan_code))
 fit_stan <- mod$sample(data = stan_data, chains = 4, parallel_chains = 4,
-                       iter_warmup = 250, iter_sampling = 250, seed = 1234)
+                       iter_warmup = 250, iter_sampling = 250, seed = 1234,
+                       refresh = 0)  # no progress messages
 stan_draws <- fit_stan$draws("beta")
 
 # convergence and effective sample size for each coefficient
@@ -353,7 +356,7 @@ mcmc_trace(stan_draws_500)
 
 For Metropolis, R-hat ranges from 1.40 to 1.68 and the bulk ESS from 7 to 9. The four chains are still in different places (see the trace plot), so they haven't converged.
 
-For Stan, R-hat is 1.00 and the bulk ESS ranges from 512 to 826 (from 1,000 draws). The chains have converged, but the ESS is short of 1,000.
+For Stan, R-hat is 1.00 and the bulk ESS ranges from 512 to 826 (from 1,000 draws). R-hat shows no sign of a problem, but the ESS is short of 1,000.
 
 **Part 2**
 
@@ -408,7 +411,7 @@ summarize_draws(stan_draws, "rhat", "ess_bulk", "ess_tail")
 
 Metropolis with 5,000 iterations per chain isn't enough (R-hat from 1.01 to 1.02, bulk ESS from 128 to 205). With 100,000, R-hat is 1.00 and every bulk ESS is at least 2,449.
 
-Stan with 750 iterations per chain is just short (the bulk ESS ranges from 900 to 1,326, so one coefficient falls below 1,000). With 1,500, every bulk ESS is at least 1,697.
+Stan with 750 iterations per chain is just short (the bulk ESS ranges from 900 to 1,326, so three coefficients fall below 1,000). With 1,500, every bulk ESS is at least 1,697.
 
 So Metropolis needs about 70 times as many iterations as Stan (100,000 vs. 1,500).
 
@@ -417,7 +420,7 @@ So Metropolis needs about 70 times as many iterations as Stan (100,000 vs. 1,500
 c(metropolis = time_met, stan = time_stan, stan_compile = time_compile)
 ```
 
-Metropolis took about 55 seconds. Stan took 7 seconds, and 5 of those went to compiling the model.
+Metropolis took about `r round(time_met)` seconds. Stan took `r round(time_stan)` seconds, and `r round(time_compile)` of those went to compiling the model.
 
 Stan uses the gradient of the log posterior to make long moves that are still accepted. Metropolis takes small random steps.
 
@@ -437,6 +440,7 @@ Reproduce the familiar negative binomial regression below with `brm()`.
 
 ```{r 01-glmmtmb-fit}
 #| results: hide
+#| message: false
 
 # load packages
 library(glmmTMB)
@@ -502,16 +506,19 @@ Using the output above, argue that `warmup` and `iter` are sufficiently large (o
 
 ::: sol
 
-- **Setup recap**
+- **Setup recap**\
   *4 chains;* `iter = 2000`; `warmup = 1000`; *post-warmup = 1000 per chain* → **4000 total draws**.
 
-- **$\hat R$ → all parameters near 1.00**
-  *Why it matters:* $\hat R \approx 1.00$ indicates chains mix to the same target after adaptation.
-  *Evidence:* Intercept, `lower`, `vendors`, `budget`, `population`, and `shape` all show `Rhat = 1.00`, consistent with well-tuned warmup and sufficient iterations for convergence.
+- **$\hat R$ → all parameters near 1.00**\
+  *Why it matters:* $\hat R \approx 1.00$ indicates chains mix to the same target after adaptation.\
+  *Evidence:* Intercept, `lower`, `vendors`, `budget`, `population`, and `shape` all show `Rhat = 1.00`, so R-hat shows no sign of a problem.
 
-- **Effective sample sizes → large**
-  *Why it matters:* `Bulk_ESS` gauges precision of means; `Tail_ESS` gauges interval tails. Rules of thumb: ESS above 2000 per parameter.
-  *Evidence:* `Bulk_ESS` and `Tail_ESS` are about 1700 to 2900 across parameters (e.g., `lower`: `Bulk_ESS` 2383; `shape`: 1787),
+- **Effective sample sizes → large**\
+  *Why it matters:* `Bulk_ESS` gauges precision of means; `Tail_ESS` gauges interval tails. Rules of thumb: ESS above 2000 per parameter.\
+  *Evidence:* `Bulk_ESS` and `Tail_ESS` are about 1700 to 2900 across parameters (e.g., `lower`: `Bulk_ESS` 2383; `shape`: 1787).
+
+- **Verdict**\
+  `iter = 2000` is borderline. R-hat doesn't suggest a problem, but six of the twelve ESS values fall below the 2,000 rule of thumb (the lowest is `population`’s tail ESS, 1696). The estimates are fine for a first look. For anything you report, run `iter = 4000` to push every ESS past 2,000. It costs a few seconds.
 
 
 :::
@@ -528,31 +535,31 @@ Explain the following arguments to `brm()`. Explain what the argument controls a
 
 ::: sol
 
-- **`chains`**
-  *What it controls:* Number of independent MCMC chains to run.
-  *Why it matters:* Multiple chains start from different initial values, helping check convergence (e.g., via $\hat R$).
+- **`chains`**\
+  *What it controls:* Number of independent MCMC chains to run.\
+  *Why it matters:* Multiple chains start from different initial values, helping check convergence (e.g., via $\hat R$).\
   *Reasonable default:* `chains = 4`. Fewer if slow, more if diagnostics are uncertain.
 
-- **`iter`**
-  *What it controls:* Total iterations per chain, including warmup.
-  *Why it matters:* More iterations yield more effective posterior draws and reduce Monte Carlo error.
+- **`iter`**\
+  *What it controls:* Total iterations per chain, including warmup.\
+  *Why it matters:* More iterations yield more effective posterior draws and reduce Monte Carlo error.\
   *Reasonable default:* `iter = 2000` (with half used for warmup). Use 4000–8000 for complex models.
 
-- **`warmup`**
-  *What it controls:* Number of iterations per chain used for tuning (e.g., step size, mass matrix) and discarded afterward.
-  *Why it matters:* Proper adaptation improves sampling efficiency and stability.
+- **`warmup`**\
+  *What it controls:* Number of iterations per chain used for tuning (e.g., step size, mass matrix) and discarded afterward.\
+  *Why it matters:* Proper adaptation improves sampling efficiency and stability.\
   *Reasonable default:* `warmup = 1000` (half of `iter`).
 
-- **`cores`**
-  *What it controls:* Number of CPU cores used to run chains in parallel.
-  *Why it matters:* Parallel chains shorten total runtime.
+- **`cores`**\
+  *What it controls:* Number of CPU cores used to run chains in parallel.\
+  *Why it matters:* Parallel chains shorten total runtime.\
   *Reasonable default:* `cores = chains`, often with `options(mc.cores = parallel::detectCores())`.
 
-- **`backend`**
-  *What it controls:* The Stan interface used for sampling.
-  *Options:* `"cmdstanr"` or `"rstan"`.
-  *Why it matters:* Determines compilation speed, diagnostics, and toolchain.
-  *Reasonable default:* `"cmdstanr"` (if installed); otherwise defaults to `"rstan"`.
+- **`backend`**\
+  *What it controls:* The Stan interface used for sampling.\
+  *Options:* `"cmdstanr"` or `"rstan"`.\
+  *Why it matters:* Determines compilation speed, diagnostics, and toolchain.\
+  *Reasonable default:* `"cmdstanr"`; otherwise `brm()` defaults to `"rstan"`.
 
 **Example**
 
@@ -618,7 +625,7 @@ sps <- function(fit) {
 1. Why does rescaling help so much?
 
 ::: hint
-For part 2, you can rescale inside the formula (e.g., `osvAll ~ arm::rescale(troopLag) + ...`).
+For part 2, you can create rescaled columns before you fit, as in the notes (e.g., `mutate(across(troopLag:lntpop, arm::rescale, .names = "rs_{.col}"))`), then use them in the formula (e.g., `osvAll ~ rs_troopLag + ...`).
 :::
 
 ::: sol
@@ -638,15 +645,17 @@ On the original scales, Stan fails. R-hat is 3.02, the bulk ESS is 5 or 6 for ev
 #| warning: false
 #| results: hide
 #| fit_deps: ["hks"]
-rs <- \(x) arm::rescale(x) # alias
+# create rescaled columns (rescaling inside the formula breaks predictions on new data)
+hks_rs <- hks |>
+  mutate(across(troopLag:lntpop, arm::rescale, .names = "rs_{.col}"))
 
-f_rs <- osvAll ~ rs(troopLag) + rs(policeLag) + rs(militaryobserversLag) +
-  rs(brv_AllLag) + rs(osvAllLagDum) + rs(incomp) + rs(epduration) +
-  rs(lntpop)
+f_rs <- osvAll ~ rs_troopLag + rs_policeLag + rs_militaryobserversLag +
+  rs_brv_AllLag + rs_osvAllLagDum + rs_incomp + rs_epduration +
+  rs_lntpop
 
 fit_mcmc_rs <- brm(
   f_rs,
-  data = hks,
+  data = hks_rs,
   family = negbinomial,
   chains = 4,
   cores = 4,
@@ -658,7 +667,7 @@ fit_mcmc_rs <- brm(
 sps(fit_mcmc_rs)
 ```
 
-With the predictors rescaled, R-hat is 1.00, every bulk ESS is above 3,000, and there are no divergent transitions. Stan produces about 650 effective samples per second, compared with 0.3.
+With the predictors rescaled, R-hat is 1.00, every bulk ESS is above 3,000, and there are no divergent transitions. Stan produces about `r round(sps(fit_mcmc_rs)$sps, -1)` effective samples per second, compared with 0.3.
 
 **Part 3**
 
@@ -691,7 +700,7 @@ fit_mcmc_99 <- brm(
 sps(fit_mcmc_99)[c("sps", "divergences", "max_rhat")]
 ```
 
-On their original scales, the predictors' SDs range from 0.1 (`militaryobserversLag`) to 119 (`brv_AllLag`), a factor of more than 1,000. So the plausible values of the coefficients differ in scale by about as much. Stan starts every coefficient at a random value between −2 and 2 and tunes its step sizes during warmup. With scales this different, those starting values are absurd for some coefficients (e.g., a coefficient of 2 on `brv_AllLag`, whose SD is 119, moves the log of the expected count by hundreds), and warmup doesn't recover. After rescaling, every predictor has SD 0.5, so the coefficients are on similar scales.
+On their original scales, the predictors' SDs range from 0.1 (`militaryobserversLag`) to 119 (`brv_AllLag`), a factor of more than 1,000. So the plausible values of the coefficients differ in scale by about as much. Stan starts every coefficient at a random value between −2 and 2 and tunes its step sizes during warmup. With scales this different, those starting values are absurd for some coefficients (e.g., a coefficient of 2 on `brv_AllLag`, whose SD is 119, moves the log of the expected count by hundreds), and warmup doesn't recover. After rescaling, every predictor has SD of about 0.5 (`arm::rescale()` only centers the two binary predictors), so the coefficients are on similar scales.
 
 Raising `adapt_delta` doesn't help here. With `adapt_delta = 0.99`, there are still 1,877 divergent transitions and R-hat is 3.02. A higher `adapt_delta` is the usual fix for divergent transitions, but here the problem is the scales. This is why we rescale by default.
 
@@ -838,7 +847,7 @@ comparisons(perot_fit,
             type = "probs")
 ```
 
-Perot's ideology coefficient is negative (−0.08, relative to Bush), but Pr(Perot) rises steadily, from 0.15 at 1 to 0.29 at 4 and 0.34 at 7. The change is 0.19 (95% CI from 0.01 to 0.38).
+Perot's ideology coefficient is negative (−0.08, relative to Bush), but Pr(Perot) rises steadily, from 0.15 at 1 to 0.29 at 4 and 0.34 at 7. The change is 0.20 (95% CI from 0.01 to 0.38).
 
 Why? Perot's coefficient (−0.08) sits between Bush's (0) and Clinton's (−0.53). As ideology moves from 1 to 7, Pr(Clinton) falls by 0.59, and Perot gets part of that. Relative to Clinton, Perot's coefficient is +0.45 (part 3).
 
@@ -859,19 +868,10 @@ The data come from the 2024 CES. `vote` is "Did not vote" (i.e., no validated re
 Income might matter for whether people vote, not only for whom they vote. We have three outcomes with no order (did not vote, Harris, and Trump), so we need a multinomial logit.
 
 ```{r red-state-3-data}
-#| eval: false
 #| message: false
 # load data; Mississippi and Connecticut
 ms_vote <- read_csv("https://pos5747.github.io/files/red-state-part3-mississippi.csv")
 ct_vote <- read_csv("https://pos5747.github.io/files/red-state-part3-connecticut.csv")
-```
-
-```{r red-state-3-data-local}
-#| include: false
-# TEMPORARY: read the local copies until the files are pushed to the site;
-# then delete this chunk and drop `eval: false` from the chunk above
-ms_vote <- read_csv("../files/red-state-part3-mississippi.csv", show_col_types = FALSE)
-ct_vote <- read_csv("../files/red-state-part3-connecticut.csv", show_col_types = FALSE)
 ```
 
 1. Fit `brm(vote ~ income, family = categorical())` in each state, with Harris as the baseline. What does each set of coefficients compare?
@@ -884,11 +884,11 @@ For part 1, `factor(vote, levels = c("Harris", "Trump", "Did not vote"))` makes 
 :::
 
 ::: hint
-For parts 2 and 3, `predictions()` and `comparisons()` work on a `brm()` fit just as on a `multinom()` fit. The `group` column holds the outcome. The intervals are posterior intervals.
+For parts 2 and 3, `predictions()` and `comparisons()` work on a `brm()` fit just as on a `multinom()` fit, except that you leave out `type = "probs"`. The `group` column holds the outcome. The intervals are posterior intervals.
 :::
 
 ::: hint
-For part 4, see "[Interpreting `elpd_diff` and `se_diff`](https://pos5747.github.io/notes/wk07/05-loo.html#interpreting-elpd_diff-and-se_diff)" in the LOOIC chapter. If `loo()` flags observations with a high Pareto $\hat{k}$, see the chapter's "Fixing high $\hat{k}$" section.
+For part 4, see "[Interpreting `elpd_diff` and `se_diff`](https://pos5747.github.io/notes/wk07/05-loo.html#interpreting-elpd_diff-and-se_diff)" in the LOOIC chapter. If `loo()` flags observations with a high Pareto $\hat{k}$, see the chapter's "[Fixing high $\hat{k}$](https://pos5747.github.io/notes/wk07/05-loo.html#fixing-high-hatk-refit-for-those-observations)" section.
 :::
 
 ::: sol
@@ -1038,8 +1038,9 @@ fits_poly <- map(1:9, \(degree) {
 })
 names(fits_poly) <- paste("degree", 1:9)
 
-# loo for each model
-loos_poly <- map(fits_poly, loo)
+# loo for each model; reloo = TRUE refits the model without each observation
+# that has a high Pareto k (> 0.7) and computes exact LOO for it (see the notes)
+loos_poly <- map(fits_poly, \(fit) loo(fit, reloo = TRUE, reloo_args = list(seed = 1234)))
 ```
 
 ```{r loo-polynomials-plot}
@@ -1062,6 +1063,7 @@ ggplot(looic_poly, aes(x = degree, y = looic)) +
 ```
 
 ```{r loo-polynomials-compare}
+#| message: false
 # compare the nine models
 loo_compare(loos_poly)
 ```
@@ -1091,7 +1093,7 @@ Each LOOIC has an SE of about 46, which is much larger than the differences. But
 
 The second-best model is degree 2, with `elpd_diff` = −0.2 and `se_diff` = 3.3. Because |`elpd_diff`| < 4, the two models predict about equally well.
 
-So we have no evidence for the best model over the second best. A difference this small is within the MCMC noise. In fact, every model from degree 2 to 9 is within 2.4 elpd of the best.
+So we have no evidence for the best model over the second best. In fact, every model from degree 2 to 9 is within 2.4 elpd of the best.
 
 **Part 3**
 
