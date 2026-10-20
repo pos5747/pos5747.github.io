@@ -234,7 +234,7 @@ window.Quarto = {
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-10-09T12:00:00-04:00">Complete solutions open <strong>Friday, October 9 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -454,7 +454,6 @@ Setting up {brms} and Stan
 <p><strong>Metropolis.</strong> You’ll find that 500 iterations per chain isn’t enough. Try about 5,000 (a few seconds). If that’s not enough, try 100,000 (about 1 to 2 minutes).</p>
 <p><strong>Stan.</strong> You’ll find that 500 iterations per chain isn’t quite enough. Try about 750. If that’s not enough, try 1,500. Each run takes a few seconds (plus up to a minute to compile the model the first time).</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Rejection, the box from −2 to 2</strong></p>
 <div class="cell" data-fit_deps="[&quot;turnout&quot;,&quot;f&quot;,&quot;X&quot;,&quot;y&quot;,&quot;log_post_many&quot;,&quot;log_post&quot;,&quot;log_M&quot;,&quot;rej_box&quot;,&quot;metrop&quot;,&quot;chains_to_draws&quot;,&quot;stan_code&quot;,&quot;stan_data&quot;]">
@@ -688,7 +687,6 @@ $ebfmi
 </div>
 <p>There are no divergent transitions, no treedepth hits, and E-BFMI ≈ 1 in every chain. This is an easy posterior for HMC.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> <code>brm()</code></h2>
@@ -720,7 +718,6 @@ $ebfmi
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>Use <code>#| results: hide</code> in your Quarto code chunks to hide the Stan junk output. It’s pesky.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <div class="cell" data-fit_deps="[&quot;holland&quot;,&quot;f&quot;]">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
@@ -764,12 +761,10 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div>
 </div>
 </div></details>
-</div>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Convergence</h2>
 <p>Using the output above, argue that <code>warmup</code> and <code>iter</code> are sufficiently large (or not).</p>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <ul>
 <li><p><strong>Setup recap</strong><br>
@@ -784,7 +779,6 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <code>iter = 2000</code> is borderline. R-hat doesn’t suggest a problem, but six of the twelve ESS values fall below the 2,000 rule of thumb (the lowest is <code>population</code>’s tail ESS, 1696). The estimates are fine for a first look. For anything you report, run <code>iter = 4000</code> to push every ESS past 2,000. It costs a few seconds.</p></li>
 </ul>
 </div></details>
-</div>
 </section>
 <section id="ex-4" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> <code>brm()</code> arguments</h2>
@@ -796,7 +790,6 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <li><code>cores</code></li>
 <li><code>backend</code></li>
 </ul>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <ul>
 <li><p><strong><code>chains</code></strong><br>
@@ -833,7 +826,6 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span></span>
 <span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></details>
-</div>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Experimenting with difficult posterior</h2>
@@ -877,7 +869,6 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>For part 2, you can create rescaled columns before you fit, as in the notes (e.g., <code>mutate(across(troopLag:lntpop, arm::rescale, .names = "rs_{.col}"))</code>), then use them in the formula (e.g., <code>osvAll ~ rs_troopLag + ...</code>).</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -995,7 +986,6 @@ $max_rhat
 <p>On their original scales, the predictors’ SDs range from 0.1 (<code>militaryobserversLag</code>) to 119 (<code>brv_AllLag</code>), a factor of more than 1,000. So the plausible values of the coefficients differ in scale by about as much. Stan starts every coefficient at a random value between −2 and 2 and tunes its step sizes during warmup. With scales this different, those starting values are absurd for some coefficients (e.g., a coefficient of 2 on <code>brv_AllLag</code>, whose SD is 119, moves the log of the expected count by hundreds), and warmup doesn’t recover. After rescaling, every predictor has SD of about 0.5 (<code>arm::rescale()</code> only centers the two binary predictors), so the coefficients are on similar scales.</p>
 <p>Raising <code>adapt_delta</code> doesn’t help here. With <code>adapt_delta = 0.99</code>, there are still 1,877 divergent transitions and R-hat is 3.02. A higher <code>adapt_delta</code> is the usual fix for divergent transitions, but here the problem is the scales. This is why we rescale by default.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-6" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-6"><span class="ex-num">Exercise 6</span> Perot</h2>
@@ -1041,7 +1031,6 @@ Perot   -0.9945756</code></pre>
 <p>For part 3, use <code>relevel(vote_1992, ref = "Clinton")</code> or <code>factor(..., levels = c("Clinton", "Bush", "Perot"))</code>. The refit’s estimates can differ from the ones you compute by hand in the fourth decimal (because of the optimizer’s tolerance).</p>
 <p>For part 4, adapt the notes’ <code>predictions()</code> and <code>geom_ribbon()</code> code, with <code>datagrid(ideology = 1:7, ...)</code>. Give the other four variables explicitly.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -1196,7 +1185,6 @@ Comparison: 7 - 1</code></pre>
 <p><code>gulf_war</code> shows the same thing. Perot’s coefficient is −0.31, but Pr(Perot) rises from 0.26 to 0.29 (the CI includes 0). And <code>economy</code> gives a non-monotone Pr(Perot), which peaks at 4 (0.29) and dips at 5 (0.28), even though the coefficient is positive (0.29).</p>
 <p>One caveat: holding distance at 2 while ideology moves from 1 to 7 extrapolates. No respondent with ideology 1 has distance 2, and only 3 respondents with ideology 7 do.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-7" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-7"><span class="ex-num">Exercise 7</span> Red State, Blue State: Part 3</h2>
@@ -1223,7 +1211,6 @@ Comparison: 7 - 1</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 3</span></summary><div class="ex-reveal-body">
 <p>For part 4, see “<a href="https://pos5747.github.io/notes/wk07/05-loo.html#interpreting-elpd_diff-and-se_diff">Interpreting <code>elpd_diff</code> and <code>se_diff</code></a>” in the LOOIC chapter. If <code>loo()</code> flags observations with a high Pareto <span class="math inline">\(\hat{k}\)</span>, see the chapter’s “<a href="https://pos5747.github.io/notes/wk07/05-loo.html#fixing-high-hatk-refit-for-those-observations">Fixing high <span class="math inline">\(\hat{k}\)</span></a>” section.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell" data-fit_deps="[&quot;ms_vote&quot;,&quot;ct_vote&quot;]">
@@ -1370,7 +1357,6 @@ or https://mc-stan.org/loo/reference/loo-glossary.html.</code></pre>
 <p>With exact LOO for those two observations, the factor model is worse by 16.7 elpd (<code>se_diff</code> 8.2, about 2 SEs). PSIS was too optimistic about the factor model.</p>
 <p>So treating income as a factor doesn’t improve the prediction. It makes it worse. The factor model has 10 coefficients (an intercept and four income effects for each of the two non-baseline outcomes), compared with 4 for the income model, and the extra ones are estimated from very few respondents.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-8" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-8"><span class="ex-num">Exercise 8</span> Polynomials in age and the LOOIC</h2>
@@ -1456,7 +1442,6 @@ or https://mc-stan.org/loo/reference/loo-glossary.html.</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>See “<a href="https://pos5747.github.io/notes/wk07/05-loo.html#interpreting-elpd_diff-and-se_diff">Interpreting <code>elpd_diff</code> and <code>se_diff</code></a>” in the LOOIC chapter. Remember that the LOOIC difference is −2 × <code>elpd_diff</code>.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-09T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 9, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <p>Degree 7 has the lowest LOOIC (2021.4), so it’s at the top of the table.</p>
@@ -1473,7 +1458,6 @@ or https://mc-stan.org/loo/reference/loo-glossary.html.</code></pre>
 <p>By the rules of thumb, no difference here is clearly meaningful. Degrees 2 through 9 are all within 4 elpd of the best, and the linear model is more than 4 behind but only about 1.2 SEs.</p>
 <p>If I had to choose, I’d choose the quadratic. It predicts about as well as the best model, it’s the simplest model with a curve in age, and the curve has some (modest) support over the line. Other choices are reasonable if you defend them with <code>elpd_diff</code> and <code>se_diff</code> (e.g., the linear model for simplicity, given the modest evidence against it).</p>
 </div></details>
-</div>
 
 
 </section>

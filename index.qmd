@@ -73,7 +73,8 @@ oct 13 · [**midterm exam**]{.text-warning}
 
 ------------------------------------------------------------------------
 
-oct 20 · **ai**
+oct 20 · **ai** · \[[materials](https://pos5747.github.io/agentic-ai/)\]
+\[[exercises](exercises/wk09-exercises.html)\]
 [Due: (1) first draft of research paper due and (2) initial outline of
 take-home workshop handout.]{.remarks}
 
