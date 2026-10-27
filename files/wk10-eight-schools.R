@@ -19,7 +19,11 @@ data {
 parameters {
   real mu;              // typical or average treatment effect across the 8 schools
   real<lower=0> sigma;  // standard deviation of school treatment effect around mu
-  vector[J] theta;      // *actual* treatment effect in each school
+  vector[J] z;          // standardized treatment effect in each school
+}
+
+transformed parameters {
+  vector[J] theta = mu + sigma * z;  // *actual* treatment effect in each school
 }
 
 model {
@@ -28,7 +32,7 @@ model {
   sigma ~ cauchy(0, 20);    // half-cauchy prior on sigma; sd(est) is about 10
 
   // --- hierarchical bit ---
-  theta ~ normal(mu, sigma);  // actual effect ~ N(mu, sigma)
+  z ~ normal(0, 1);  // implies actual effect theta ~ N(mu, sigma); the non-centered version
 
   // --- likelihood ---
   est ~ normal(theta, se_est);  // observed est_j ~ N(theta_j, est_se_j)
@@ -48,7 +52,8 @@ fit <- model$sample(
   chains = 4,
   parallel_chains = 4,
   iter_warmup = 2000,
-  iter_sampling = 2000
+  iter_sampling = 2000,
+  adapt_delta = 0.99  # from default of 0.8; avoids a few divergent transitions
 )
 
 # quick look; check rhat, ess, and the hmc diagnostics

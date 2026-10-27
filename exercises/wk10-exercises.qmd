@@ -6,7 +6,7 @@ show-hints: true
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)  # no package/read_csv() chatter on the page
 library(tidyverse)
 library(marginaleffects)
 library(brms)  # attach here too: cached chunks below do not re-attach it
@@ -46,17 +46,36 @@ knitr::opts_hooks$set(fit_deps = function(options) {
 
 ## Simulate and Recover; Ordered Logit {ref="sim-recover-ordered"}
 
-One important way to test and develop your understandings of statistical models and quantities of interest is to *simulate* a fake data set with known true quantity of interest (e.g., coefficients or first difference) and then *recover* that quantity of interest through your estimation procedure.
+One important way to test and develop your understanding of statistical models and quantities of interest is to *simulate* a fake data set with known true quantity of interest (e.g., coefficients or first difference) and then *recover* that quantity of interest through your estimation procedure.
 
-- Week 9 did this for logit: [Simulate and Recover; Logit](wk09-exercises.html#ex-8).
+In Week 9, we did this for logit. See [Simulate and Recover; Logit](wk09-exercises.html#ex-8).
 
 Do this for the ordered logit model in the [notes](https://pos5747.github.io/notes/wk06/03-ordered-logit.html). As your quantity of interest, use $\Pr(y \geq 3)$ when `income` equals 1.5 and `x2` equals `"Label 1"`.
 
-1. First, simulate a fake data set with known cutpoints, coefficients, and quantity of interest. The code below handles this. Notice that the linear predictor `eta` has no intercept. The cutpoints `alpha` take its place.
+1. First, simulate a fake data set with known cutpoints, coefficients, and quantity of interest. Write this code yourself; adapt your Week 9 code. Notice that the linear predictor `eta` has no intercept. The cutpoints `alpha` take its place. In the solution, I use the values below, but you can choose different values if you like (keep 1.5 among the values of `income`).
+    - `n` = 10,000.
+    - `income`: −2.5, −1.5, −0.5, 0.5, 1.5, or 2.5, equally likely.
+    - `x2`: `"Label 1"` (about 75%) or `"Label 2"` (about 25%).
+    - Cutpoints `alpha`: −1, 0.5, and 2 (so four categories).
+    - Coefficients: 0.4 for `income`; 1 for `x2` = `"Label 2"`.
+    - `y` an ordered factor, in a data frame named `data`.
+    - Compute the true $\Pr(y \geq 3)$ from the true values.
 1. Second, use `MASS::polr()` to fit an ordered logit model to the fake data. Are the true cutpoints and coefficients inside their 95% confidence intervals? (`polr()` calls the cutpoints "Intercepts" and labels them `1|2`, `2|3`, and `3|4`.)
 1. Third, use `predictions()` to recover the true quantity of interest. Is the true value inside the 95% CI?
 1. Fourth, adapt the code to compute the true first difference in $\Pr(y \geq 3)$ as `income` moves from −1.5 to 1.5 (with `x2` equal to `"Label 1"`). Then recover it with `comparisons()`.
 1. Fifth, refit the model with `brm(family = cumulative("logit"))`. Recover the cutpoints, the coefficients, and the first difference. Compare with `polr()` and the truth.
+
+::: hint
+$\Pr(y \geq 3)$ is the sum of the probabilities of categories 3 and 4.
+
+- Week 6 added up category probabilities with `hypothesis`: [Red State, Blue State: Part 2(a)](wk06-exercises.html#ex-8), part 3.
+:::
+
+::: sol
+
+**Part 1**
+
+Your code will differ. Here is one version.
 
 ```{r sim-recover-ordered-data}
 # --- simulate a fake data set ---
@@ -106,22 +125,6 @@ eta_c <- b1*1.5  # x2 = "Label 1", so the b2 term is zero
 1 - plogis(alpha[2] - eta_c)
 ```
 
-::: hint
-$\Pr(y \geq 3)$ is the sum of the probabilities of categories 3 and 4.
-
-- Week 6 added up category probabilities with `hypothesis`: [Red State, Blue State: Part 2(a)](wk06-exercises.html#ex-8), part 3.
-:::
-
-::: hint
-- `family = cumulative("logit")`.
-- `fixef()` labels the cutpoints `Intercept[1]`, `Intercept[2]`, and `Intercept[3]`.
-- The same `predictions()` and `comparisons()` calls work on the `brm()` fit.
-:::
-
-::: sol
-
-**Part 1**
-
 The true value of $\Pr(y \geq 3)$ is about 0.525. Notice that $\Pr(y \geq 3) = 1 - \Pr(y \leq 2) = 1 - \operatorname{logit}^{-1}(\alpha_2 - \eta)$, so we only need the second cutpoint.
 
 **Part 2**
@@ -136,7 +139,8 @@ se <- sqrt(diag(vcov(fit)))
 cbind(truth = c(b1, b2, alpha),
       estimate = est,
       lower = est - 1.96*se,
-      upper = est + 1.96*se)
+      upper = est + 1.96*se) |>
+  round(3)
 ```
 
 All five true values are inside their 95% confidence intervals. The true value of `b2` (i.e., 1) is only barely inside its interval (about 0.84 to 1.01); across many simulated data sets, we'd expect the interval to miss the true value about 5% of the time.
@@ -193,7 +197,8 @@ fit_brm_ordered <- brm(y ~ income + x2,
 # posterior means and 95% credible intervals, next to the truth and polr()
 cbind(truth = c(alpha, b1, b2),
       polr = c(fit$zeta, coef(fit)),
-      fixef(fit_brm_ordered)[, c("Estimate", "Q2.5", "Q97.5")])
+      fixef(fit_brm_ordered)[, c("Estimate", "Q2.5", "Q97.5")]) |>
+  round(3)
 
 # recover the fd with the brm() fit
 comparisons(fit_brm_ordered,
@@ -202,210 +207,9 @@ comparisons(fit_brm_ordered,
             hypothesis = "b3 + b4 = 0")
 ```
 
-- Posterior means match `polr()` to about 0.001. All five true values are inside the 95% credible intervals.
-- First difference: 0.28 (95% CI from 0.266 to 0.295). Truth (0.275) is inside.
-- Same {marginaleffects} code for both fits.
+The posterior means are very close to the `polr()` estimates. All five true values are inside the 95% credible intervals.
 
-:::
-
-## Eight Schools {ref="eight-schools"}
-
-In my slides, I motivated hierarchical models with the "309 problem." There's a similar motivational problem called the "eight schools" problem. This example is worth studying carefully.
-
-1. Read this blog post (by Phil Price) on Andrew Gelman's blog: "[Everything I need to know about Bayesian statistics, I learned in eight schools](https://statmodeling.stat.columbia.edu/2014/01/21/everything-need-know-bayesian-statistics-learned-eight-schools/)."
-1. Read the pp. 119-124 of [*BDA3*](https://sites.stat.columbia.edu/gelman/book/BDA3.pdf) on the eight schools problem.
-1. Run the R code [here](https://pos5747.github.io/files/wk10-eight-schools.R). Note that the notation in my Stan model differs from BDA3.
-1. In the model, $\sigma$ captures the *similarity* of the treatment effects across school districts. I give this parameter a [half-Cauchy prior](https://sites.stat.columbia.edu/gelman/research/published/taumain.pdf) with a scale of 20. (See the note below.) How does changing the scale of the half-Cauchy prior in the Stan model affect the estimates of $\sigma$?
-      a. Try setting the scale of the half-Cauchy to 5 instead of 20.
-      a. Try setting it to 100. Hint: you can use `sigma_draws <- spread_draws(fit, sigma)` to get a convenient data frame of posterior simulations of $\sigma$.
-
-*Make sure you understand the basic eight schools example and can discuss it in parallel to the 309 example in the slides.*
-
-**So what's a half-Cauchy?**
-
-A Cauchy distribution is a location-scale *t* distribution with one degree of freedom. The *half-Cauchy* is centered at zero and *folded over*, so that it is just the rightward half. It has only a scale parameter that corresponds to something like the "expected" value of $\sigma$.^[The scale parameters of the Cauchy is also denoted as $\sigma$, so I just call it the "scale" here.] The expected value of the half-Cauchy does not exist, but the median equals the scale parameter. This is a useful *weakly informative* prior for variance parameters that capture similarity in hierarchical models.
-
-In this case, the student-level SAT scores range from 200 to 800, and the treatment effects are somewhere around a 10-point improvement. In the Stan model, $\sigma$ is the SD around that 10-point effect across schools. $\sigma = 20$ would be huge variation; $\sigma = 3$ or $\sigma = 5$ seem "about right." So I think of a half-Cauchy with a scale of 20 as a "weakly informative" prior that only rules out absurdly large values of $\sigma$ and gently encourages smaller rather than larger values.
-
-```{r}
-#| echo: false
-library(ggplot2)
-library(dplyr)
-
-# Function for half-Cauchy pdf
-dhalfcauchy <- function(x, scale) {
-  ifelse(x >= 0, (2 / pi) * (scale / (scale^2 + x^2)), 0)
-}
-
-# Create data
-x <- seq(0, 50, length.out = 1000)
-scales <- c(5, 10, 20)
-
-df <- expand.grid(x = x, scale = scales) %>%
-  mutate(density = dhalfcauchy(x, scale),
-         scale = factor(scale))
-
-# Plot
-ggplot(df, aes(x = x, y = density, color = scale)) +
-  geom_line(linewidth = 1) +
-  scale_color_brewer(palette = "Dark2", name = "Scale") +
-  labs(
-    title = "Half-Cauchy Distributions",
-    x = "x",
-    y = "Density"
-  ) +
-  theme_minimal()
-
-```
-
-::: sol
-
-**Part 3**
-
-```{r}
-#| message: false
-# load packages
-library(cmdstanr)
-library(tidybayes)
-
-# eight-schools data; from my 2nd ed. of BDA on p. 140
-est <- c(28, 8, -3, 7, -1, 1, 18, 12)
-se_est <- c(15, 10, 16, 11, 9, 11, 10, 18)
-J <- length(est)
-
-# the stan model from the script (centered), with the prior scale as data
-stan_code_centered <- "
-data {
-  int<lower=1> J;
-  vector[J] est;
-  vector<lower=0>[J] se_est;
-  real<lower=0> scale;  // scale of the half-cauchy prior on sigma
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-  vector[J] theta;
-}
-model {
-  mu ~ normal(0, 1000);
-  sigma ~ cauchy(0, scale);
-  theta ~ normal(mu, sigma);
-  est ~ normal(theta, se_est);
-}
-"
-```
-
-```{r eight-schools-centered}
-#| fit_deps: ["est", "se_est", "stan_code_centered"]
-#| message: false
-#| warning: false
-#| results: hide
-model_centered <- cmdstan_model(write_stan_file(stan_code_centered))
-fit_centered <- model_centered$sample(
-  data = list(J = J, est = est, se_est = se_est, scale = 20),
-  seed = 123,
-  chains = 4,
-  parallel_chains = 4,
-  iter_warmup = 2000,
-  iter_sampling = 2000
-)
-
-# pull the draws and diagnostics into memory (cmdstanr keeps them in temp files)
-centered_summary <- fit_centered$summary(variables = c("mu", "sigma"))
-centered_diagnostics <- fit_centered$diagnostic_summary()
-```
-
-```{r}
-centered_summary
-centered_diagnostics
-```
-
-- Divergent transitions in every chain and low E-BFMI. The ESS for `sigma` is small.
-- A known problem with this model: when `sigma` is small, the `theta`s must sit close to `mu`, and the sampler can't move through that region.
-- The fix is the *non-centered* parameterization: sample standardized effects `z` and set `theta = mu + sigma * z`. Same model, easier posterior.
-
-**Part 4**
-
-```{r}
-# non-centered version: same model, theta = mu + sigma * z
-stan_code_noncentered <- "
-data {
-  int<lower=1> J;
-  vector[J] est;
-  vector<lower=0>[J] se_est;
-  real<lower=0> scale;  // scale of the half-cauchy prior on sigma
-}
-parameters {
-  real mu;
-  real<lower=0> sigma;
-  vector[J] z;  // standardized school effects
-}
-transformed parameters {
-  vector[J] theta = mu + sigma * z;
-}
-model {
-  mu ~ normal(0, 1000);
-  sigma ~ cauchy(0, scale);
-  z ~ std_normal();  // implies theta ~ normal(mu, sigma)
-  est ~ normal(theta, se_est);
-}
-"
-```
-
-```{r eight-schools-scales}
-#| fit_deps: ["est", "se_est", "stan_code_noncentered"]
-#| message: false
-#| warning: false
-#| results: hide
-model_noncentered <- cmdstan_model(write_stan_file(stan_code_noncentered))
-
-# fit the model for one prior scale; return the draws of sigma and the divergences
-fit_scale <- function(scale) {
-  fit <- model_noncentered$sample(
-    data = list(J = J, est = est, se_est = se_est, scale = scale),
-    seed = 123,
-    chains = 4,
-    parallel_chains = 4,
-    iter_warmup = 2000,
-    iter_sampling = 2000,
-    adapt_delta = 0.95
-  )
-  tibble(sigma_draws = list(spread_draws(fit, sigma)),
-         divergent = sum(fit$diagnostic_summary()$num_divergent))
-}
-
-# one row per prior scale
-scale_fits <- tibble(scale = c(5, 20, 100)) |>
-  mutate(fit = map(scale, fit_scale)) |>
-  unnest(fit)
-```
-
-```{r}
-# posterior of sigma for each prior scale
-scale_fits |>
-  unnest(sigma_draws) |>
-  summarize(divergent = first(divergent),
-            median = median(sigma),
-            q05 = quantile(sigma, 0.05),
-            q95 = quantile(sigma, 0.95),
-            .by = scale)
-```
-
-```{r}
-#| fig-asp: 0.5
-#| fig-width: 8
-# posterior densities of sigma
-scale_fits |>
-  unnest(sigma_draws) |>
-  ggplot(aes(x = sigma, color = factor(scale))) +
-  geom_density() +
-  coord_cartesian(xlim = c(0, 30)) +
-  labs(x = "sigma", y = "Posterior density", color = "Scale of the\nhalf-Cauchy prior")
-```
-
-- Larger scale, larger `sigma`: the posterior median and 95th percentile both rise as the scale goes from 5 to 100.
-- Eight schools say little about `sigma`, so the prior matters.
-- Scale 5 pulls `sigma` toward zero and the school effects toward `mu`. Scale 100 lets them spread out.
+The first difference is 0.28 (95% credible interval is [0.266, 0.295]). Truth (0.275) is inside the interval.
 
 :::
 
@@ -415,7 +219,7 @@ The dataset [here](https://pos5747.github.io/files/anes-ft-groups.csv) from the 
 
 ```{r trump-data}
 #| eval: false
-anes <- read_csv("https://pos5747.github.io/files/anes-ft-groups.csv") |>
+anes_ft <- read_csv("https://pos5747.github.io/files/anes-ft-groups.csv") |>
   glimpse()
 ```
 
@@ -423,7 +227,7 @@ anes <- read_csv("https://pos5747.github.io/files/anes-ft-groups.csv") |>
 #| include: false
 # TEMPORARY local read until anes-ft-groups.csv is pushed; delete this chunk
 # and the `eval: false` above after the push.
-anes <- read_csv("../files/anes-ft-groups.csv", show_col_types = FALSE)
+anes_ft <- read_csv("../files/anes-ft-groups.csv", show_col_types = FALSE)
 ```
 
 I'm interested in the feelings of each group toward Donald Trump. You can see that the sample averages and sample sizes vary a lot across the groups.^[Three of the *possible* groups have zero observations.]
@@ -432,7 +236,7 @@ I'm interested in the feelings of each group toward Donald Trump. You can see th
 #| message: false
 #| warning: false
 library(tinytable)
-anes |> group_by(social_group) |>
+anes_ft |> group_by(social_group) |>
   summarize(`Number of Respondents` = n(),
             `Sample Average` = mean(ft_donald_trump)) |>
   rename(`Social Group` = social_group) |>
@@ -445,63 +249,65 @@ Use a hierarchical model to estimate the average for each group.
 ::: sol
 
 ```{r trump-fit}
-#| fit_deps: ["anes"]
+#| fit_deps: ["anes_ft"]
 #| message: false
 #| warning: false
 #| results: hide
 f <- ft_donald_trump ~ (1 | social_group)
-fit <- brm(f, data = anes, chains = 4, cores = 4, backend = "cmdstanr")
+fit_trump <- brm(f, data = anes_ft, chains = 4, cores = 4, backend = "cmdstanr", seed = 1234)
 ```
 
 ```{r}
-p <- predictions(fit, newdata = datagrid(social_group = unique))
-p |>
+# sample size and sample average for each group
+group_summaries <- anes_ft |>
+  summarize(n = n(), sample_average = mean(ft_donald_trump), .by = social_group)
+
+# hierarchical estimate for each group, next to the sample average
+p_trump <- predictions(fit_trump, newdata = datagrid(social_group = unique)) |>
+  as_tibble() |>
   select(social_group, estimate, conf.low, conf.high) |>
-  arrange(estimate)
+  left_join(group_summaries, by = "social_group") |>
+  arrange(n)
+p_trump
 ```
+
+- Small groups are pulled toward the overall average. "White; Other; College Degree" (n = 2) has a sample average of 8 but an estimate of 26.
+- Large groups barely move. "White; Female; No College Degree" (n = 784): 52.6 and 52.3.
 
 :::
 
 ## Red State, Blue State: Part 6 {ref="red-state-part-6"}
 
-- [Part 4](wk09-exercises.html#ex-10) fit a separate logit in each state.
-- Now fit one hierarchical model to all 50 states. Each state gets its own intercept, and the 50 intercepts come from a normal distribution.
-- This is the varying-intercept model behind Figure 3 of Gelman et al. (2007, p. 355) [[pdf](https://pos5747.github.io/notes/readings/Gelman2007.pdf)].
-- `income` varies across voters within a state. `rs_state_median_income` varies only across states: state median household income, rescaled to mean 0 and SD 0.5 across the 50 states.
-- Same CES data as Part 4. The code below adds `rs_state_median_income`.
+In [Part 4](wk09-exercises.html#ex-10), we fit a separate logit in each state using CES data. Now, we'll fit one hierarchical model to all 50 states. Each state will have its own intercept, and we'll model the 50 intercepts using a normal distribution.
+
+::: aside
+This is the varying-intercept model behind Figure 3 of Gelman et al. (2007, p. 355) [[pdf](https://pos5747.github.io/notes/readings/Gelman2007.pdf)].
+:::
+
+`rs_state_median_income` is a state-level measure of income that varies only across states. This is state median household income, rescaled to mean 0 and SD 0.5 across the 50 states.
 
 ```{r red-state-6-data}
+#| results: hide
 # load data; 50 states
 ces <- read_csv("https://pos5747.github.io/files/red-state-part4.csv")
 
-# one row per state; rescale state income to mean 0 and sd 0.5 across the 50 states
+# make a state-level data set
 states <- ces |>
-  distinct(state_name, state_abbr, state_median_income) |>
-  mutate(rs_state_median_income = (state_median_income - mean(state_median_income)) /
-           (2 * sd(state_median_income)))
+  distinct(state_name, state_abbr, state_median_income) |> 
+  mutate(rs_state_median_income = arm::rescale(state_median_income)) |> 
+  glimpse()
 
 # add rescaled state income to the voters
 ces <- ces |>
-  left_join(select(states, state_name, rs_state_median_income), by = "state_name")
+  left_join(select(states, state_name, rs_state_median_income), by = "state_name") |> 
+  glimpse()
 ```
 
-1. Use `brm()` to fit the logit `vote_rep ~ income + rs_state_median_income + (1 | state_name)`. Use `family = bernoulli`, `backend = "cmdstanr"`, `iter = 10000`, and `warmup = 2000`. Check R-hat and the ESS.
-1. Use `predictions()` to compute Pr(Trump), with a 90% CI, for a voter in the middle income category (`income = 0`) in each state. Plot these 50 estimates and their CIs against `state_median_income`, labeled with the state abbreviations.
+1. Use `brm()` to fit the logit `vote_rep ~ rs_state_median_income + (1 | state_name)`. Use `family = bernoulli`, `backend = "cmdstanr"`, `iter = 10000`, and `warmup = 2000`. Check R-hat and the ESS.
+1. Use `predictions()` to compute Pr(Trump), with a 90% CI, for a voter in each state. Plot these 50 estimates and their CIs against `state_median_income`, labeled with the state abbreviations.
 1. Add a line for a typical state (i.e., a state whose intercept is exactly what state income predicts). Use `predictions()` with `re_formula = NA` over a range of state incomes.
-1. Interpret the coefficients on `income` and `rs_state_median_income`. Where does each show up in your plot? What is the vertical distance between a state's point and the line?
-1. In Part 4, the effect of income differed across states (e.g., about 0.15 in Mississippi and about −0.08 in Oregon). Does the effect of income differ across states in this model? Why or why not?
-1. Gelman et al. (2007) describe a paradox: richer voters lean Republican, but richer states lean Democratic. Does this model show the same paradox in 2024?
-
-::: hint
-- Each state needs its own `rs_state_median_income` in the grid.
-- `grid <- mutate(states, income = 0)` gives one row per state.
-- `predictions(fit, newdata = grid, conf_level = 0.9)`.
-:::
-
-::: hint
-- For the line: a grid of state incomes from the poorest state to the richest, rescaled the same way as `rs_state_median_income`, with `income = 0`.
-- `re_formula = NA` sets every state's deviation to zero.
-:::
+1. Interpret the coefficient for `rs_state_median_income`. What is the vertical distance between a state's point and the line?
+1. Gelman et al. (2007) say that richer states lean Democratic. Does this model show this for 2024?
 
 ::: sol
 
@@ -512,7 +318,7 @@ ces <- ces |>
 #| message: false
 #| warning: false
 #| results: hide
-fit_ces <- brm(vote_rep ~ income + rs_state_median_income + (1 | state_name),
+fit_ces <- brm(vote_rep ~ rs_state_median_income + (1 | state_name),
                data = ces,
                family = bernoulli,
                backend = "cmdstanr",
@@ -527,31 +333,37 @@ fit_ces <- brm(vote_rep ~ income + rs_state_median_income + (1 | state_name),
 summary(fit_ces)
 ```
 
-- R-hat 1.00 everywhere. Smallest bulk ESS above 2,000. Passes the notes' rule of thumb.
+R-hat is 1.00; smallest bulk ESS above 2,000. 
 
 **Part 2**
 
 ```{r}
-# one row per state; a voter in the middle income category
-grid <- mutate(states, income = 0)
-
-# pr(trump) with a 90% ci in each state
-p_ces <- predictions(fit_ces, newdata = grid, conf_level = 0.9) |>
+# pr(trump) with a 90% ci in each state; one row per state
+p_ces <- predictions(fit_ces, newdata = states, conf_level = 0.9) |>
   as_tibble()
 ```
 
-- Plot under Part 3, with the line.
+```{r}
+#| fig-asp: 0.7
+#| fig-width: 9
+gg_ces <- ggplot(p_ces, aes(x = state_median_income, y = estimate)) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, color = "grey70") +
+  geom_text(aes(label = state_abbr), size = 3) +
+  labs(x = "State median household income ($1,000s)",
+       y = "Pr(Trump)\n(90% CI)")
+gg_ces
+```
 
 **Part 3**
 
 ```{r}
 # state incomes from the poorest state to the richest, rescaled like rs_state_median_income
+# (by hand: arm::rescale() would use the grid's own mean and sd, not the states')
 line_grid <- tibble(state_median_income = seq(min(states$state_median_income),
                                               max(states$state_median_income),
                                               length.out = 50)) |>
   mutate(rs_state_median_income = (state_median_income - mean(states$state_median_income)) /
-           (2 * sd(states$state_median_income)),
-         income = 0)
+           (2 * sd(states$state_median_income)))
 
 # a typical state: every state's deviation set to zero
 line_ces <- predictions(fit_ces, newdata = line_grid, re_formula = NA, conf_level = 0.9) |>
@@ -561,79 +373,26 @@ line_ces <- predictions(fit_ces, newdata = line_grid, re_formula = NA, conf_leve
 ```{r}
 #| fig-asp: 0.7
 #| fig-width: 9
-ggplot(p_ces, aes(x = state_median_income, y = estimate)) +
+# add the line for a typical state to the plot from part 2
+gg_ces +
   geom_ribbon(data = line_ces, aes(ymin = conf.low, ymax = conf.high), alpha = 0.2) +
-  geom_line(data = line_ces) +
-  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0, color = "grey70") +
-  geom_text(aes(label = state_abbr), size = 3) +
-  labs(x = "State median household income ($1,000s)",
-       y = "Pr(Trump) for a voter with income = 0\n(90% CI)")
+  geom_line(data = line_ces)
 ```
 
 **Part 4**
 
-```{r}
-# the two coefficients, with 90% intervals
-posterior_summary(fit_ces,
-                  variable = c("b_income", "b_rs_state_median_income"),
-                  probs = c(0.05, 0.95)) |>
-  round(3)
-
-# one unit of rs_state_median_income is 2 sds of state median income ($1,000s)
-2 * sd(states$state_median_income)
-
-# the line at the poorest and richest states
-line_ces |>
-  slice(1, n()) |>
-  select(state_median_income, estimate)
-
-# each state's distance from the line: its estimate minus a typical state's at the same state income
-typical_ces <- predictions(fit_ces, newdata = grid, re_formula = NA) |>
-  as_tibble() |>
-  select(state_abbr, line = estimate)
-distance_ces <- p_ces |>
-  select(state_abbr, estimate) |>
-  left_join(typical_ces, by = "state_abbr") |>
-  mutate(distance = estimate - line) |>
-  arrange(desc(distance))
-head(distance_ces, 3)
-tail(distance_ces, 3)
-```
-
-- `income`: 0.011 (90% interval from −0.003 to 0.025). Voters in the same state. By the divide-by-4 rule, at most about 0.003 per income category. Not in the plot (every point holds `income` at 0).
-- `rs_state_median_income`: −0.446 (from −0.575 to −0.316). States. The slope of the line. One unit is two SDs of state median income (about $24,800). The line falls from 0.534 (Mississippi, $59,100) to 0.335 (Massachusetts, $104,800).
-- Distance from the line: the state's deviation from the varying-intercept model (on the probability scale), i.e., what state income doesn't explain. Furthest above: Idaho (0.17), Wyoming (0.15), Utah (0.09). Furthest below: New Mexico (−0.09), Michigan (−0.09), Vermont (−0.08).
+- The slope coefficient for `rs_state_median_income` is −0.44. Richer states have lower Pr(Trump). This is the slope of the line (but on the logit scale; the plot is on the probability scale.)
+- Distance from the line: the part of the state's intercept that state income doesn't explain (again, on the probability scale, however). These distances are the "varying" part of the varying intercept.
 
 **Part 5**
 
-```{r}
-# change in pr(trump) as income moves from -1 to 1 in each state
-comparisons(fit_ces,
-            variables = list(income = c(-1, 1)),
-            newdata = grid,
-            conf_level = 0.9) |>
-  as_tibble() |>
-  summarize(smallest = min(estimate), largest = max(estimate))
-```
-
-- No. About 0.005 in every state (0.0048 to 0.0057).
-- Every state has the same coefficient on `income`. Only the intercepts vary.
-- The small differences come from the different baseline probabilities.
-- To let the effect differ across states: a varying slope, `(1 + income | state_name)`.
-
-**Part 6**
-
-- No. The paradox needs both halves.
-- Between states: still there. Richer states lean Democratic (−0.446).
-- Within states: gone. Richer voters are no more likely to vote for Trump (0.011; the 90% interval includes zero).
-- But Part 4 found larger effects in poorer states. A varying slope can check whether the average of about zero hides positive slopes in poor states.
+- Yes. The coefficient is negative, and its 95% CI (−0.60 to −0.29) excludes zero.
 
 :::
 
 ## Red State, Blue State: Part 7 {ref="red-state-part-7"}
 
-- [Part 5](wk09-exercises.html#ex-11) fit the separate logits to the ANES: wide CIs, extreme estimates from tiny states, and no estimates at all for Wyoming (1 respondent) or Vermont (2).
-- Now fit the hierarchical model from [red-state-part-6]{.ex-ref} to the ANES.
+Fit the same hierarchical model from [red-state-part-6]{.ex-ref} using the much smaller ANES data set. Create the plot showing the state-level estimates as state income varies. Compare the results to the larger CES dataset.
 
 ```{r red-state-7-data}
 # load data; add rescaled state income from part 6
@@ -641,26 +400,14 @@ anes <- read_csv("https://pos5747.github.io/files/red-state-part5.csv") |>
   left_join(select(states, state_name, rs_state_median_income), by = "state_name")
 ```
 
-1. Repeat parts 1–3 of [red-state-part-6]{.ex-ref} with the ANES data.
-1. Plot the ANES estimates next to the CES estimates from [red-state-part-6]{.ex-ref} (i.e., two panels with the same axes, one for each survey).
-1. Where do the ANES estimates differ from the CES estimates? Compare the coefficients on `income` and `rs_state_median_income`. Compare the widths of the CIs.
-1. Find Wyoming and Vermont. Where do their estimates come from? How do they compare with the CES?
-
-::: hint
-- `bind_rows(list(CES = p_ces, ANES = p_anes), .id = "survey")` stacks the two sets of predictions and adds a `survey` column.
-- Same for the two lines. Then `facet_wrap(vars(survey))`.
-:::
-
 ::: sol
-
-**Part 1**
 
 ```{r red-state-7-fit}
 #| fit_deps: ["anes"]
 #| message: false
 #| warning: false
 #| results: hide
-fit_anes <- brm(vote_rep ~ income + rs_state_median_income + (1 | state_name),
+fit_anes <- brm(vote_rep ~ rs_state_median_income + (1 | state_name),
                 data = anes,
                 family = bernoulli,
                 backend = "cmdstanr",
@@ -675,13 +422,11 @@ fit_anes <- brm(vote_rep ~ income + rs_state_median_income + (1 | state_name),
 summary(fit_anes)
 
 # pr(trump) with a 90% ci in each state, and the line; same grids as part 6
-p_anes <- predictions(fit_anes, newdata = grid, conf_level = 0.9) |>
+p_anes <- predictions(fit_anes, newdata = states, conf_level = 0.9) |>
   as_tibble()
 line_anes <- predictions(fit_anes, newdata = line_grid, re_formula = NA, conf_level = 0.9) |>
   as_tibble()
 ```
-
-**Part 2**
 
 ```{r}
 #| fig-asp: 0.5
@@ -699,14 +444,12 @@ ggplot(p_both, aes(x = state_median_income, y = estimate)) +
   geom_text(aes(label = state_abbr), size = 2.5) +
   facet_wrap(vars(survey)) +
   labs(x = "State median household income ($1,000s)",
-       y = "Pr(Trump) for a voter with income = 0\n(90% CI)")
+       y = "Pr(Trump)\n(90% CI)")
 ```
 
-**Part 3**
-
 ```{r}
-# the two coefficients in each survey, with 90% intervals
-coefs <- c("b_income", "b_rs_state_median_income")
+# the coefficient in each survey, with 90% intervals
+coefs <- "b_rs_state_median_income"
 posterior_summary(fit_ces, variable = coefs, probs = c(0.05, 0.95)) |> round(3)
 posterior_summary(fit_anes, variable = coefs, probs = c(0.05, 0.95)) |> round(3)
 
@@ -714,216 +457,10 @@ posterior_summary(fit_anes, variable = coefs, probs = c(0.05, 0.95)) |> round(3)
 tibble(survey = c("CES", "ANES"),
        median_width = c(median(p_ces$conf.high - p_ces$conf.low),
                         median(p_anes$conf.high - p_anes$conf.low)))
-
-# states where the anes and ces differ the most
-left_join(
-  select(p_anes, state_abbr, anes = estimate, conf.low, conf.high),
-  select(p_ces, state_abbr, ces = estimate),
-  by = "state_abbr"
-) |>
-  mutate(difference = anes - ces) |>
-  arrange(desc(abs(difference))) |>
-  head(6)
 ```
 
-- Within states, the surveys disagree. ANES `income`: −0.101 (from −0.160 to −0.042), so richer voters were *less* likely to vote for Trump. CES: 0.011. The intervals don't overlap.
-- Between states, they agree. `rs_state_median_income`: −0.585 (ANES) and −0.446 (CES). Overlapping intervals.
-- ANES CIs about 2.5 times as wide (median 0.148 vs. 0.059).
-- ANES points sit close to the line. About 50 respondents per state, so each state's intercept is pulled most of the way to what state income predicts. CES (about 1,000 per state): the points scatter.
-- Biggest differences in states the CES puts far from its line: Idaho and Wyoming (ANES about 0.13 and 0.12 lower), New Mexico and Vermont (about 0.10 higher).
-
-**Part 4**
-
-```{r}
-# respondents and trump supporters in each anes state
-anes_counts <- anes |>
-  summarize(n = n(), n_trump = sum(vote_rep), .by = state_abbr)
-
-# wyoming and vermont
-filter(p_anes, state_abbr %in% c("WY", "VT")) |>
-  select(state_abbr, estimate, conf.low, conf.high) |>
-  left_join(anes_counts, by = "state_abbr") |>
-  left_join(select(p_ces, state_abbr, ces = estimate), by = "state_abbr")
-
-# their distance from the anes line
-typical_anes <- predictions(fit_anes, newdata = grid, re_formula = NA) |>
-  as_tibble() |>
-  select(state_abbr, line = estimate)
-p_anes |>
-  filter(state_abbr %in% c("WY", "VT")) |>
-  select(state_abbr, estimate) |>
-  left_join(typical_anes, by = "state_abbr") |>
-  mutate(distance = estimate - line)
-```
-
-- Wyoming: 1 respondent (Trump). Vermont: 2 (one each). No estimates in Part 5.
-- Now: Wyoming 0.490 (90% CI from 0.395 to 0.588), Vermont 0.443 (from 0.353 to 0.539).
-- Almost entirely from the line (state income and the other 49 states): 0.006 and 0.001 above it.
-- But state income doesn't explain everything. CES: Wyoming 0.612, Vermont 0.347. Both just outside the ANES CIs.
-
-:::
-
-## Ordered or Not? Gelpi and Paolino {ref="gelpi-paolino"}
-
-- March 2008 survey experiment on the war in Iraq (Gelpi; N = 1,000).
-- Each respondent read a short news story: successful military events in Iraq, unsuccessful events, or neither. Separately, a confident statement from President Bush ("no doubt ... we will succeed"), a cautious statement, or neither.
-- Then: what do you think of a timetable for withdrawing all American troops from Iraq?
-- Paolino (2017): the answers are ordered. Ordered logit; the effects of the stories change linearly with approval of Bush.
-- Gelpi (2017): unordered. Multinomial logit, separately for each level of Bush approval.
-
-Paolino, Philip. 2017. "Surprising Events and Surprising Opinions: The Importance of Attitude Strength and Source Credibility." *Journal of Conflict Resolution* 61(8): 1795--1815.
-
-Gelpi, Christopher. 2017. "The Surprising Robustness of Surprising Events." *Journal of Conflict Resolution* 61(8): 1816--1834.
-
-```{r gelpi-data}
-#| eval: false
-# load data
-gelpi <- read_csv("https://pos5747.github.io/files/gelpi-iraq.csv")
-```
-
-```{r gelpi-data-local}
-#| include: false
-# TEMPORARY local read until gelpi-iraq.csv is pushed; delete this chunk
-# and the `eval: false` above after the push.
-gelpi <- read_csv("../files/gelpi-iraq.csv", show_col_types = FALSE)
-```
-
-- `timetable`: "What do you think about the policy of setting a timetable with a specific date for withdrawing all American troops from Iraq?" Strongly approve, somewhat approve, somewhat disapprove, or strongly disapprove.
-- `bush_approval`: approval of President Bush, from 0 (strongly disapprove) to 3 (strongly approve).
-- `pos_events`, `neg_events`: 1 if the story reported successful (or unsuccessful) military events. No one read both.
-- `pos_bush`, `neg_bush`: 1 if the story included the confident (or cautious) statement from Bush. No one read both.
-
-The code below orders the answers from most anti-war ("strongly approve" of a timetable) to most pro-war ("strongly disapprove"), and makes an unordered copy with "somewhat approve" as the baseline (as in Gelpi 2017).
-
-```{r gelpi-prep}
-gelpi_tt <- gelpi |>
-  mutate(timetable = factor(timetable, levels = c("Strongly approve",
-                                                  "Somewhat approve",
-                                                  "Somewhat disapprove",
-                                                  "Strongly disapprove")),
-         timetable_nominal = relevel(factor(timetable, ordered = FALSE),
-                                     ref = "Somewhat approve")) |>
-  drop_na(timetable, bush_approval)
-```
-
-1. Fit Paolino's ordered logit with `MASS::polr()`: `timetable ~ (pos_events + neg_events + pos_bush + neg_bush) * bush_approval`. (A simplified version of the model in Paolino's appendix Table A26, without the party dummies.)
-1. Fit Gelpi's multinomial logit with `nnet::multinom()`: `timetable_nominal ~ (pos_events + neg_events + pos_bush + neg_bush) * factor(bush_approval)`. (The same as Gelpi's four separate models, one for each level of Bush approval.) How many parameters does each model have?
-1. For each model, use `comparisons()` to compute the effect of positive events (`pos_events` from 0 to 1) on the probability of each of the four answers, at each level of Bush approval. Set the other three treatments to 0. Plot the effects with their 95% CIs, with one panel for each level of Bush approval and both models in each panel.
-1. Among strong Bush disapprovers (`bush_approval` = 0), how do positive events change the four probabilities in the multinomial logit? Could the ordered logit produce this pattern? How strong is the evidence for it?
-1. Compare the two models with AIC and BIC. Which does each prefer?
-1. Which model would you report? Why?
-
-::: hint
-- `datagrid(model = fit, pos_events = 0, neg_events = 0, pos_bush = 0, neg_bush = 0, bush_approval = 0:3)` as `newdata`.
-- For the multinomial logit, add `type = "probs"`.
-- The `group` column holds the answer.
-:::
-
-::: hint
-For part 4: under the ordered logit, $\Pr(Y_i = 1) = \operatorname{logit}^{-1}(\alpha_1 - \eta_i)$ and $\Pr(Y_i = 4) = 1 - \operatorname{logit}^{-1}(\alpha_3 - \eta_i)$. What happens to each as $\eta_i$ increases? As $\eta_i$ decreases?
-:::
-
-::: sol
-
-**Part 1**
-
-```{r}
-# paolino: ordered logit, each treatment interacted with bush approval
-fit_ordered <- MASS::polr(timetable ~ (pos_events + neg_events + pos_bush + neg_bush) * bush_approval,
-                          data = gelpi_tt, Hess = TRUE)
-summary(fit_ordered)
-```
-
-**Part 2**
-
-```{r}
-# gelpi: multinomial logit, a separate set of effects for each level of bush approval
-fit_multinomial <- nnet::multinom(timetable_nominal ~ (pos_events + neg_events + pos_bush + neg_bush) * factor(bush_approval),
-                                  data = gelpi_tt, trace = FALSE)
-
-# number of parameters
-attr(logLik(fit_ordered), "df")
-attr(logLik(fit_multinomial), "df")
-```
-
-- Ordered logit: 12 (nine coefficients and three cutpoints).
-- Multinomial logit: 60 (3 equations × 5 coefficients × 4 levels of Bush approval).
-
-**Part 3**
-
-```{r}
-# no other story, each level of bush approval
-grid_ordered <- datagrid(model = fit_ordered, pos_events = 0, neg_events = 0,
-                         pos_bush = 0, neg_bush = 0, bush_approval = 0:3)
-grid_multinomial <- datagrid(model = fit_multinomial, pos_events = 0, neg_events = 0,
-                             pos_bush = 0, neg_bush = 0, bush_approval = 0:3)
-
-# effect of positive events on each probability
-# (the multinomial logit returns bush_approval as a factor, so make both numeric)
-c_ordered <- comparisons(fit_ordered, variables = "pos_events", newdata = grid_ordered) |>
-  as_tibble() |>
-  mutate(bush_approval = as.numeric(as.character(bush_approval)))
-c_multinomial <- comparisons(fit_multinomial, variables = "pos_events",
-                             newdata = grid_multinomial, type = "probs") |>
-  as_tibble() |>
-  mutate(bush_approval = as.numeric(as.character(bush_approval)))
-
-# both models
-c_both <- bind_rows(list(`Ordered logit` = c_ordered,
-                         `Multinomial logit` = c_multinomial), .id = "model")
-```
-
-```{r}
-#| fig-width: 10
-#| fig-asp: 0.45
-ggplot(c_both, aes(x = estimate, xmin = conf.low, xmax = conf.high, y = group,
-                   color = model)) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
-  facet_wrap(vars(bush_approval), nrow = 1, labeller = label_both) +
-  scale_y_discrete(limits = rev(levels(gelpi_tt$timetable))) +  # scale order, top to bottom
-  scale_x_continuous(breaks = c(-0.2, 0, 0.2)) +
-  labs(x = "Effect of positive events on the probability (95% CI)",
-       y = NULL,
-       color = NULL) +
-  theme(legend.position = "top")
-```
-
-**Part 4**
-
-```{r}
-# the strong disapprovers
-c_both |>
-  filter(bush_approval == 0) |>
-  select(model, group, estimate, conf.low, conf.high)
-```
-
-- Multinomial logit: Pr(somewhat approve) falls by 0.12 (95% CI from −0.23 to −0.005). Pr(strongly disapprove) rises by 0.07 (from 0.001 to 0.13). Pr(strongly approve) rises by 0.06 (from −0.05 to 0.17). Out of the middle, toward *both* ends.
-- The ordered logit can't do this.
-    - As $\eta_i$ increases, $\alpha_1 - \eta_i$ and $\alpha_3 - \eta_i$ both decrease. $\operatorname{logit}^{-1}$ is increasing, so $\Pr(Y_i = 1)$ falls and $\Pr(Y_i = 4)$ rises.
-    - As $\eta_i$ decreases, both reverse.
-    - A treatment shifts $\eta_i$ by the same amount for everyone at a level of Bush approval, so its effects on the two end categories have opposite signs (or are both zero).
-    - Ordered logit here: −0.02 on "strongly approve" and 0.01 on "strongly disapprove."
-- Weak evidence. The pattern depends on the rise in "strongly approve," and that interval includes zero.
-
-**Part 5**
-
-```{r}
-tibble(model = c("Ordered logit", "Multinomial logit"),
-       parameters = c(attr(logLik(fit_ordered), "df"), attr(logLik(fit_multinomial), "df")),
-       log_lik = c(logLik(fit_ordered), logLik(fit_multinomial)),
-       aic = c(AIC(fit_ordered), AIC(fit_multinomial)),
-       bic = c(BIC(fit_ordered), BIC(fit_multinomial)))
-```
-
-- Multinomial logit: 34 more in log-likelihood for 48 more parameters.
-- AIC (2,385 vs. 2,413) and BIC (2,444 vs. 2,707) both prefer the ordered logit.
-
-**Part 6**
-
-- No single right answer. Ours: the ordered logit, with the multinomial logit as a check.
-- AIC and BIC prefer it.
-- The one pattern it can't produce rests on an interval that includes zero.
-- 118 to 450 respondents per level of Bush approval: the multinomial logit's 60 parameters are imprecise. Notice its wider intervals in the plot.
+- The surveys agree on the overall pattern. Richer states, lower Pr(Trump). Slope: −0.61 (ANES) and −0.44 (CES), with overlapping 90% intervals.
+- ANES CIs are about 2.5 times as wide (median 0.150 vs. 0.059).
+- ANES points sit close to the line. About 50 respondents per state on average, so each state's intercept is pulled most of the way to what state income predicts. For the CES, which has about 1,000 per state on average, the points are more scattered.
 
 :::
