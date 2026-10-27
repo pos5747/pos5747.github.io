@@ -208,7 +208,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-10-23T12:00:00-04:00">Complete solutions open <strong>Friday, October 23 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Provide Feedback</h2>
 <p>Your peer review is due before class on Tuesday, October 27. I sent the pairs and instructions by email.</p>
@@ -238,7 +238,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <li>Then have it review an entire project.</li>
 </ul>
 <p>Experiment with more and less detailed prompts.</p>
-<p>Write a paragraph or two on what the agent did well and what it did poorly. In what ways might help you write better papers? What are the risks of a <em>worse</em> paper?</p>
+<p>Write a paragraph or two on what the agent did well and what it did poorly. In what ways might it help you write better papers? What are the risks of a <em>worse</em> paper?</p>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Summarize and Criticize a Paper</h2>
@@ -278,7 +278,6 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>Your agent chooses the labels for <code>x2</code>. In <code>datagrid()</code>, use the more common one (e.g., <code>datagrid(x2 = "common")</code>).</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-23T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 23, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Solution: (1)</strong></p>
 <p>Your script will differ. Here is one version.</p>
@@ -316,7 +315,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>pr_lo <span class="ot">&lt;-</span> <span class="fu">plogis</span>(b0 <span class="sc">+</span> b1<span class="sc">*</span><span class="fu">min</span>(x1) <span class="sc">+</span> b2)</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>pr_hi <span class="sc">-</span> pr_lo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3014619</code></pre>
+<pre><code>[1] 0.3032397</code></pre>
 </div>
 </div>
 <p><strong>Solution: (2)</strong></p>
@@ -332,7 +331,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <div class="cell-output cell-output-stdout">
 <pre><code>
       x2 Estimate Std. Error    z Pr(&gt;|z|)     S 2.5 % 97.5 %
- Label 1    0.301    0.00983 30.6   &lt;0.001 682.5 0.282  0.321
+ Label 1     0.31     0.0101 30.8   &lt;0.001 690.7  0.29   0.33
 
 Term: x1
 Type: response
@@ -346,14 +345,14 @@ Comparison: Max - Min</code></pre>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>pr_lo <span class="ot">&lt;-</span> <span class="fu">plogis</span>(b0 <span class="sc">+</span> b1<span class="sc">*</span><span class="fu">min</span>(x1) <span class="sc">+</span> b2<span class="sc">*</span>(x2 <span class="sc">==</span> <span class="st">"Label 1"</span>))</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pr_hi <span class="sc">-</span> pr_lo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4217266</code></pre>
+<pre><code>[1] 0.4250334</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># recover this second quantity of interest</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">avg_comparisons</span>(fit, <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">x1 =</span> <span class="st">"minmax"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Estimate Std. Error    z Pr(&gt;|z|)   S 2.5 % 97.5 %
-    0.421    0.00945 44.6   &lt;0.001 Inf 0.402   0.44
+    0.433     0.0095 45.6   &lt;0.001 Inf 0.414  0.452
 
 Term: x1
 Type: response
@@ -376,7 +375,6 @@ Comparison: Max - Min</code></pre>
 </div>
 <p>The quantity of interest in (3) <em>averages</em> across the effects of <code>x1</code> for the <em>observed</em> values of <code>x2</code>. This means that about 25% of the times, you’re getting the big Label 2 effect. And about 75% of the time, you’re getting the small Label 1 effect. Averaging these less common big effects and more common small effects gives a larger quantity than looking <em>only</em> at the more common small effect.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-9" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-9"><span class="ex-num">Exercise 9</span> Replicate Jefferson (2024)</h2>
@@ -401,7 +399,6 @@ Comparison: Max - Min</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 3</span></summary><div class="ex-reveal-body">
 <p>You don’t need the supplement’s telephone and web robustness section, the Cronbach’s alphas, or the 2012 percentages in footnote 4 (the deposit has no code for them). You don’t need to match the figures’ styling, rewrite the author’s code, or install an old version of R.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-23T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 23, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p>Your report will differ from ours. Here’s what a careful replication finds, checked against the ANES file that’s available now (the February 5, 2026 release).</p>
 <p><strong>Getting the code to run</strong></p>
@@ -429,7 +426,6 @@ Comparison: Max - Min</code></pre>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Check that the agent didn’t take the “expected” value from the output it’s testing, or loosen a tolerance until a test passed. Either makes a test that can’t fail. A test that runs on the current file without the year filter fails on the N’s, which is what we want it to do.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-10" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-10"><span class="ex-num">Exercise 10</span> Red State, Blue State: Part 4</h2>
@@ -474,7 +470,6 @@ Comparison: Max - Min</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p><code>comparisons(fit, variables = list(income = c(-1, 1)), newdata = datagrid(), conf_level = 0.9)</code> returns one row (i.e., the effect of income for a typical respondent). (Income is the only variable in the model, so every respondent has the same effect.) For the sorted plot, <code>reorder(state_abbr, estimate)</code> orders the states by their effects.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-23T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 23, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <p>I wrote two small functions. One fits the logit to one state’s data. The other computes the effect of income from one fit.</p>
@@ -612,7 +607,6 @@ Comparison: Max - Min</code></pre>
 </div>
 <p>Yes, on average. The line slopes down, and the correlation between state income and the effect is about −0.33. Income matters most in poor Southern states (Mississippi and Louisiana) and least in rich states like Connecticut. But several states sit far from the line. Kentucky and Montana are poorer than the median state but have negative effects. Oregon, near the middle in income, has the most negative effect.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-11" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-11"><span class="ex-num">Exercise 11</span> Red State, Blue State: Part 5</h2>
@@ -631,7 +625,6 @@ Comparison: Max - Min</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>In a state where the logit can’t be estimated, <code>comparisons()</code> may return an error instead of a row. <code>possibly(income_effect, otherwise = NULL)</code> returns <code>NULL</code> instead of stopping, and <code>unnest(effect, keep_empty = TRUE)</code> keeps that state as a row of <code>NA</code>s.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-10-23T12:00:00-04:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Oct 23, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -760,7 +753,6 @@ Comparison: Max - Min</code></pre>
 </ul>
 <p>Fitting each state separately works when each state has many respondents, as in the CES. In the ANES, most states have too few respondents to say much on their own. A hierarchical model lets those states borrow information from the other states.</p>
 </div></details>
-</div>
 
 
 </section>

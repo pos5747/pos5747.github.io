@@ -240,7 +240,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <li>Then have it review an entire project.</li>
 </ul>
 <p>Experiment with more and less detailed prompts.</p>
-<p>Write a paragraph or two on what the agent did well and what it did poorly. In what ways might help you write better papers? What are the risks of a <em>worse</em> paper?</p>
+<p>Write a paragraph or two on what the agent did well and what it did poorly. In what ways might it help you write better papers? What are the risks of a <em>worse</em> paper?</p>
 </section>
 <section id="ex-5" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-5"><span class="ex-num">Exercise 5</span> Summarize and Criticize a Paper</h2>
@@ -317,7 +317,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>pr_lo <span class="ot">&lt;-</span> <span class="fu">plogis</span>(b0 <span class="sc">+</span> b1<span class="sc">*</span><span class="fu">min</span>(x1) <span class="sc">+</span> b2)</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>pr_hi <span class="sc">-</span> pr_lo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3121753</code></pre>
+<pre><code>[1] 0.2926942</code></pre>
 </div>
 </div>
 <p><strong>Solution: (2)</strong></p>
@@ -333,7 +333,7 @@ gtag('config', 'G-ZV1MJ9E632', { 'anonymize_ip': true});
 <div class="cell-output cell-output-stdout">
 <pre><code>
       x2 Estimate Std. Error    z Pr(&gt;|z|)     S 2.5 % 97.5 %
- Label 1    0.307     0.0102 30.1   &lt;0.001 658.7 0.287  0.327
+ Label 1    0.306    0.00965 31.8   &lt;0.001 732.6 0.287  0.325
 
 Term: x1
 Type: response
@@ -347,14 +347,14 @@ Comparison: Max - Min</code></pre>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>pr_lo <span class="ot">&lt;-</span> <span class="fu">plogis</span>(b0 <span class="sc">+</span> b1<span class="sc">*</span><span class="fu">min</span>(x1) <span class="sc">+</span> b2<span class="sc">*</span>(x2 <span class="sc">==</span> <span class="st">"Label 1"</span>))</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pr_hi <span class="sc">-</span> pr_lo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4310864</code></pre>
+<pre><code>[1] 0.417322</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># recover this second quantity of interest</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">avg_comparisons</span>(fit, <span class="at">variables =</span> <span class="fu">list</span>(<span class="at">x1 =</span> <span class="st">"minmax"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Estimate Std. Error    z Pr(&gt;|z|)   S 2.5 % 97.5 %
-    0.426    0.00971 43.9   &lt;0.001 Inf 0.407  0.445
+     0.43    0.00917 46.9   &lt;0.001 Inf 0.412  0.448
 
 Term: x1
 Type: response
