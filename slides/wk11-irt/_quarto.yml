@@ -1,0 +1,18 @@
+project:
+  type: default
+
+format:
+  revealjs:
+    width: 1600
+    height: 900
+    transition: fade
+    slide-number: true
+    css: styles.css
+    mathjax: true
+
+execute:
+  echo: true
+
+fig-align: center
+fig-width: 8
+fig-asp: 0.5
