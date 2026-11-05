@@ -1,0 +1,412 @@
+---
+title: "Week 11 Exercises"
+distributed: 2026-11-03
+show-hints: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)  # no package/read_csv() chatter on the page
+library(tidyverse)
+library(marginaleffects)
+library(brms)  # attach here too: cached chunks below do not re-attach it
+
+# caching the long fits ----------------------------------------------------
+# Each long-running chunk declares `fit_deps`: the names of the objects it
+# depends on (data, functions, model code). "chunk:<label>" stands for another
+# chunk's code. The hook below turns a fingerprint of those objects, plus the
+# Stan/brms versions, into the chunk's cache folder, so
+#   - a chunk refits whenever its own code or anything in fit_deps changes;
+#   - this page and the -sol copy share one cache (cache = 1 ignores fig.path,
+#     the only option that differs between them), so each fit runs once.
+# Old fingerprints leave orphaned folders in wk11-exercises_cache/fits/; safe to delete.
+fit_key <- function(deps) {
+  deps <- as.character(unlist(deps))
+  standardize <- function(x) {
+    if (is.data.frame(x)) as.list(as.data.frame(x))  # columns only (drops readr's spec/problems attributes, which differ between sessions)
+    else if (is.function(x) || inherits(x, "formula")) deparse(x)  # code, not environments
+    else x
+  }
+  objects <- lapply(deps, function(d) {
+    if (startsWith(d, "chunk:")) knitr::knit_code$get(sub("^chunk:", "", d))
+    else standardize(get(d, envir = knitr::knit_global()))
+  })
+  versions <- list(as.character(packageVersion("brms")),
+                   as.character(packageVersion("rstan")),
+                   tryCatch(cmdstanr::cmdstan_version(), error = function(e) NA))
+  rlang::hash(list(objects, versions))
+}
+knitr::opts_hooks$set(fit_deps = function(options) {
+  options$cache <- 1
+  options$cache.path <- paste0("wk11-exercises_cache/fits/", options$label, "-",
+                               fit_key(options$fit_deps), "/")
+  options
+})
+```
+
+## Simulate and Recover; Negative Binomial {ref="sim-recover-negbin"}
+
+One important way to test and develop your understanding of statistical models and quantities of interest is to *simulate* a fake data set with known true quantity of interest (e.g., coefficients or first difference) and then *recover* that quantity of interest through your estimation procedure.
+
+We did this for logit in [Week 9](wk09-exercises.html#ex-8) and for ordered logit in [Week 10](wk10-exercises.html#ex-1). Do this for a negative binomial regression.
+
+**Quantities of Interest**
+
+As your quantity of interest, use the percent increase in the expected count as the focal variable moves from a low value to a high value. That's $\frac{E(y \mid x_{hi})}{E(y \mid x_{lo})} - 1$.
+
+1.  Compute this percent increase setting the non-focal variables at their means (or modes, if qualitative).
+2.  Compute the "average percent increase" setting the non-focal variables at all observed values and then averaging the estimates.
+
+**Simulate**
+
+Simulate a fake data set with a known quantity of interest.
+
+1.  Choose a number of observations.
+2.  Create several predictors. (Don't include an interaction.)
+3.  Choose values for all the parameters (each $\beta$ and the single $\theta$).
+4.  Simulate an outcome variable.
+
+The notes write the negative binomial as $y_i \sim \text{NegBin}(\mu_i, \theta)$, where $\log \mu_i = X_i\beta$ and $\operatorname{Var}(y_i) = \mu_i + \mu_i^2/\theta$. To simulate from this distribution, compute the linear predictor `eta` from the predictors and the $\beta$s, then compute `mu <- exp(eta)`, then draw `y <- rnbinom(n, mu = mu, size = theta)`. R calls $\theta$ `size`. Notice that `mu` is a vector (i.e., each observation has its own $\mu_i$) and `size` is a single number (i.e., every observation shares one $\theta$). (`rnbinom()` also has a `prob` argument, for a different parameterization. Use `mu`, not `prob`.) `MASS::glm.nb()` estimates $\theta$ and reports it as `Theta`.
+
+**Recover**
+
+1.  Fit the negative binomial model with `MASS::glm.nb()` and check that you have recovered the model parameters (each $\beta$ and the single $\theta$). Are the true values inside their 90% confidence intervals?
+2.  Use {marginaleffects} to recover the two quantities of interest described above.
+    a.  The percent increase for a typical case.
+    b.  The average percent increase across the observed values.
+3.  The two estimates are the same. In Week 9, the two first differences for logit were different. Why are they the same here?
+
+::: hint
+`comparisons()` has a `comparison` argument. `comparison = function(hi, lo) hi/lo - 1` returns the percent increase (with its CI) in place of the difference `hi - lo`. This is mathematically equivalent to `(hi - lo)/lo`.
+:::
+
+::: sol
+**Simulate**
+
+Your code will differ. Here is one version.
+
+```{r sim-recover-negbin-data}
+# --- simulate a fake data set ---
+
+# set seed for reproducibility
+set.seed(1234)
+
+# set sample size
+n <- 10000  # needs to be large enough so that CI isn't super wide
+
+# create explanatory variables
+## numeric variable
+x1 <- rnorm(n, mean = 0, sd = 0.5)
+## qualitative variable
+x2 <- sample(c("Label 1", "Label 2"),
+             size = n,
+             replace = TRUE,
+             prob = c(0.75, 0.25))  # about 75% will be "Label 1"
+
+# choose the parameters: three coefficients and one theta
+b0 <- 1
+b1 <- 0.5
+b2 <- -0.7
+theta <- 2
+
+# linear predictor and expected count; one mu per observation
+eta <- b0 + b1*x1 + b2*(x2 == "Label 2")
+mu <- exp(eta)
+
+# simulate the outcome; every observation shares one theta (called size)
+y <- rnbinom(n, mu = mu, size = theta)
+
+# combine into data frame
+data <- data.frame(y, x1, x2)
+
+# truth: percent increase in E(y) as x1 moves from -0.5 to 0.5 (one sd below
+# the mean to one sd above), with x2 = "Label 1"
+mu_lo <- exp(b0 + b1*(-0.5))  # x2 = "Label 1", so the b2 term is zero
+mu_hi <- exp(b0 + b1*0.5)
+mu_hi/mu_lo - 1
+
+# truth: average percent increase across the observed values of x2
+mu_lo_all <- exp(b0 + b1*(-0.5) + b2*(x2 == "Label 2"))
+mu_hi_all <- exp(b0 + b1*0.5 + b2*(x2 == "Label 2"))
+mean(mu_hi_all/mu_lo_all - 1)
+```
+
+The true percent increase is $e^{0.5} - 1 \approx 0.649$. The expected count is about 65% higher when `x1` = 0.5 than when `x1` = −0.5. Notice that the average percent increase is exactly the same number. (Part 3 below explains why.)
+
+**Recover: Part 1**
+
+```{r}
+# fit negative binomial model
+fit <- MASS::glm.nb(y ~ x1 + x2, data = data)
+
+# estimates and 90% cis for the coefficients
+est <- coef(fit)
+se <- sqrt(diag(vcov(fit)))
+cbind(truth = c(b0, b1, b2),
+      estimate = est,
+      lower = est - 1.645*se,
+      upper = est + 1.645*se) |>
+  round(3)
+
+# estimate and 90% ci for theta
+c(truth = theta,
+  estimate = fit$theta,
+  lower = fit$theta - 1.645*fit$SE.theta,
+  upper = fit$theta + 1.645*fit$SE.theta) |>
+  round(3)
+```
+
+All four true values are inside their 90% confidence intervals.
+
+**Recover: Part 2**
+
+```{r}
+# (a) percent increase for a typical case: x2 at its mode
+comparisons(fit,
+            variables = list(x1 = c(-0.5, 0.5)),
+            newdata = datagrid(x2 = "Label 1"),
+            comparison = function(hi, lo) hi/lo - 1,
+            conf_level = 0.9)
+
+# (b) average percent increase across the observed values of x2
+avg_comparisons(fit,
+                variables = list(x1 = c(-0.5, 0.5)),
+                comparison = function(hi, lo) hi/lo - 1,
+                conf_level = 0.9)
+```
+
+Both estimates are about 0.64, with a 90% CI from about 0.59 to 0.69. The true value (about 0.65) is inside the interval.
+
+**Recover: Part 3**
+
+With a log link and no interaction, the ratio of expected counts doesn't depend on `x2`.
+
+$$
+\frac{E(y \mid x_1 = 0.5, x_2)}{E(y \mid x_1 = -0.5, x_2)} = \frac{e^{\beta_0 + 0.5\beta_1 + \beta_2 x_2}}{e^{\beta_0 - 0.5\beta_1 + \beta_2 x_2}} = e^{\beta_1}
+$$
+
+Notice that the $\beta_2 x_2$ terms cancel. So the percent increase is $e^{\beta_1} - 1$ for *every* observation, and averaging across the observed values of `x2` changes nothing. For logit, the first difference $\operatorname{logit}^{-1}(\beta_0 + 0.5\beta_1 + \beta_2 x_2) - \operatorname{logit}^{-1}(\beta_0 - 0.5\beta_1 + \beta_2 x_2)$ does depend on $x_2$, so the two quantities were different in Week 9. (The first difference in expected counts, $E(y \mid x_{hi}) - E(y \mid x_{lo}) = \mu_{lo}(e^{\beta_1} - 1)$, depends on `x2` through $\mu_{lo}$. We'll see this in [holland-negbin-qi]{.ex-ref}.)
+:::
+
+## Red State, Blue State: Part 8 {ref="red-state-part-8"}
+
+In [Part 6](wk10-exercises.html#ex-3), each state had its own intercept, and we modeled the 50 intercepts as a function of state income. Now each state gets its own intercept *and* its own income slope, and we model both as a function of state income.
+
+$$
+\begin{aligned}
+\Pr(\text{vote\_rep}_i = 1) &= \operatorname{logit}^{-1}(\alpha_{s[i]} + \beta_{s[i]} \, \text{income}_i) \\
+\alpha_s &= \gamma_0 + \gamma_1 z_s + \eta^{\alpha}_s \\
+\beta_s &= \delta_0 + \delta_1 z_s + \eta^{\beta}_s
+\end{aligned}
+$$
+
+Here, $s[i]$ is the state of voter $i$ and $z_s$ is `rs_state_median_income`. The state deviations $(\eta^{\alpha}_s, \eta^{\beta}_s)$ are bivariate normal with mean zero, SDs $\sigma_{\alpha}$ and $\sigma_{\beta}$, and correlation $\rho$. In `brm()`, the formula is `vote_rep ~ rs_state_median_income * income + (1 + income | state_name)`.
+
+Since `income` = 0 is the middle category, $\alpha_s$ is the log-odds of voting for Trump for a middle-income voter in state $s$, and $\beta_s$ is the change in the log-odds for a one-category increase in income.
+
+::: aside
+This is a simpler version of Model 1 in Gelman et al. (2007, p. 355) \[[pdf](https://pos5747.github.io/notes/readings/Gelman2007.pdf)\] (the model behind their Figures 4 and 5). Their version also includes region indicators.
+:::
+
+```{r red-state-8-data}
+#| results: hide
+# load data; 50 states
+ces <- read_csv("https://pos5747.github.io/files/red-state-part4.csv")
+
+# make a state-level data set
+states <- ces |>
+  distinct(state_name, state_abbr, state_median_income) |>
+  mutate(rs_state_median_income = arm::rescale(state_median_income)) |>
+  glimpse()
+
+# add rescaled state income to the voters
+ces <- ces |>
+  left_join(select(states, state_name, rs_state_median_income), by = "state_name") |>
+  glimpse()
+```
+
+Use {marginaleffects} to compute quantities of interest on the probability scale.
+
+1.  Fit the model with `brm()`. Use `family = bernoulli`, `backend = "cmdstanr"`, `chains = 4`, `cores = 4`, `iter = 6000`, and `warmup = 1000`. (The fit takes about 15 minutes on a fast desktop.) Check R-hat and the ESS.
+
+2.  For a middle-income voter (`income` = 0) in each state, compute (a) the chance of voting for Trump with `predictions()` and (b) the change in that chance as `income` moves from its minimum to its maximum with `comparisons()`. Then make two plots, both with `state_median_income` on the x-axis and each state's two-letter abbreviation as its point (`geom_text()`): one with the chance on the y-axis and one with the change on the y-axis.
+
+3.  Interpret the plots. Where are the rich states? Where are the poor states? How do differences across individual income levels change across rich and poor state?
+
+4.  Figure 5 of Gelman et al. (2007, p. 357), below, plots each state's estimated income slope against state income for 2000 and 2004. They write: "Figure 5 shows the estimated slopes for all 50 states and reveals a clear pattern, with high coefficients — steep slopes — in poor states and low coefficients in rich states. Income matters more in red America than in blue America. Or, to put it another way, being in a red or blue state matters more for rich voters than for poor voters" (pp. 356–357). Compare your plot of the changes with their Figure 5. What's the same? What's different?
+
+    ![Figure 5 of Gelman et al. (2007, p. 357).](images/gelman2007-fig5.png)
+
+::: hint
+For `newdata` in part 2, use the state-level data set with `income` added: `states |> mutate(income = 0)`. (Don't use `datagrid(state_name = unique)`. It would set `rs_state_median_income` to its mean in every state, and each state needs its own value.) For the change, use `variables = list(income = "minmax")`.
+:::
+
+::: sol
+**Part 1**
+
+```{r red-state-8-fit}
+#| fit_deps: ["ces"]
+#| message: false
+#| warning: false
+#| results: hide
+fit_rs <- brm(vote_rep ~ rs_state_median_income * income + (1 + income | state_name),
+              data = ces,
+              family = bernoulli,
+              backend = "cmdstanr",
+              iter = 6000,
+              warmup = 1000,
+              chains = 4,
+              cores = 4,
+              seed = 1234)
+```
+
+```{r}
+summary(fit_rs, prob = 0.9)
+```
+
+R-hat is 1.00 for every parameter, and the smallest bulk ESS is about 2,450 (the intercept). No divergent transitions.
+
+You may notice that `rs_state_median_income:income` ($\delta_1$) is negative with a 90% interval that excludes zero---this means that the slope for individual income is more positive in poorer states.
+
+**Part 2**
+
+```{r}
+# a middle-income voter in each state (each state keeps its own rs_state_median_income)
+typical <- states |>
+  mutate(income = 0)
+
+# the chance of voting for Trump
+pr <- predictions(fit_rs, newdata = typical, conf_level = 0.9)
+
+# the change in the chance of voting for Trump as income moves from its minimum (-2) to its maximum (2)
+cmp <- comparisons(fit_rs, variables = list(income = "minmax"), newdata = typical, conf_level = 0.9)
+
+# combine into one data frame, one row per state
+qi <- typical |>
+  mutate(pr_trump = pr$estimate,
+         change = cmp$estimate,
+         change_lo = cmp$conf.low,
+         change_hi = cmp$conf.high)
+
+# the 5 largest and smallest changes
+qi |>
+  select(state_abbr, state_median_income, pr_trump, change, change_lo, change_hi) |>
+  arrange(desc(change)) |>
+  slice(c(1:5, 46:50))
+```
+
+```{r}
+#| fig-asp: 0.6
+#| fig-width: 7
+# the chance of voting for Trump by state income
+ggplot(qi, aes(x = state_median_income, y = pr_trump, label = state_abbr)) +
+  geom_text(size = 3.5) +
+  labs(x = "State median income ($1,000s)",
+       y = "Pr(Trump) for a middle-income voter")
+```
+
+```{r}
+#| fig-asp: 0.6
+#| fig-width: 7
+# the change in the chance by state income; compare with Gelman et al.'s Figure 5
+ggplot(qi, aes(x = state_median_income, y = change, label = state_abbr)) +
+  geom_hline(yintercept = 0, color = "grey70") +
+  geom_text(size = 3.5) +
+  labs(x = "State median income ($1,000s)",
+       y = "Change in Pr(Trump) from the lowest\nto the highest income category")
+```
+
+**Part 3**
+
+- In the first plot, the chance of voting for Trump falls as state income rises. 
+   - The poor states are in the upper left. A middle-income voter in West Virginia or Wyoming has about a 61% chance of voting for Trump. 
+   - The rich states are in the lower right. A middle-income voter in Maryland, Hawaii, Massachusetts, or California has about a 32% chance of voting for Trump.
+- In the second plot, the change (in Pr(Trump) across income levels) also decreases as state income rises. Moving from the lowest (-2) to the highest (+2) income category raises the chance of voting for Trump by about 6 percentage points in Mississippi, West Virginia, Louisiana, and Arkansas, and *lowers* it by about 3 points in Massachusetts, Maryland, California, and Hawaii. So individual income matters more in poor states. But the changes are positive in poor states and negative in rich states.
+- In both plots, the points fall close to a line. This is partly the model. Each state has too little data to pin down its own intercept and slope, so the estimates are pulled toward $\gamma_0 + \gamma_1 z_s$ and $\delta_0 + \delta_1 z_s$. (The Gelman paper makes this point in footnote 11 on p. 357: shrinkage toward the fitted lines "does not mean that we are certain that all 50 states fall along these lines.")
+
+**Part 4**
+
+- **Same:** The slope is steepest in the poorest states and flattest in the richest. Mississippi, West Virginia, Arkansas, and Louisiana are at the top in 2000 and in 2024; Connecticut, Massachusetts, and New Jersey are at the bottom in both.
+- **Different:** In 2000 and 2004, the slope was positive in every state, from about 0 in Connecticut to about 0.4 in Mississippi. In 2024, the slopes are slightly negative in the rich states. Moving from the lowest to the highest income category raises Pr(Trump) from 0.48 to 0.54 in Mississippi and *lowers* it from 0.34 to 0.31 in Massachusetts.
+
+Their second claim still holds. The gap between Mississippi and Massachusetts is 13 points among the poorest voters (0.48 vs. 0.34) and 23 points among the richest (0.54 vs. 0.31). Being in a red or blue state matters more for rich voters than for poor voters.
+:::
+
+## Holland (2015): Four Quantities of Interest {ref="holland-negbin-qi"}
+
+In Weeks 4 and 5, we modeled Holland's [-@Holland2015] \[[pdf](https://pos5747.github.io/notes/readings/Holland2015.pdf)\] enforcement operations in Santiago with a negative binomial regression. The key explanatory variable is `lower`, the percent of a district's residents who are lower class. Holland expects enforcement to drop off as `lower` grows. Now use her data for Lima, where the pattern is much sharper.
+
+```{r holland-fit}
+# load data for lima; 36 districts
+lima <- crdata::holland2015 |>
+  filter(city == "lima")
+
+# model 1 in holland (2015) table 2, for lima
+nb_fit <- MASS::glm.nb(operations ~ lower + vendors + budget + population, data = lima)
+```
+
+Use {marginaleffects} to compute four quantities of interest as `lower` moves from its 25th percentile to its 75th percentile (`variables = list(lower = "iqr")`). Report each with a 90% CI.
+
+1.  The first difference in the expected number of operations for each district, holding the district's other variables at their observed values. Plot the 36 estimates and their CIs, sorted.
+2.  The first difference for a typical district, with the other variables at their means (`datagrid(grid_type = "mean_or_mode")`).
+3.  The average first difference across the 36 districts (`avg_comparisons()`).
+4.  The percent change in the expected number of operations (`comparison = function(hi, lo) hi/lo - 1`, as in [sim-recover-negbin]{.ex-ref}). It's the same in every district. Why?
+
+Which of the four do you prefer? Why?
+
+::: sol
+**Part 1**
+
+```{r}
+#| fig-asp: 0.9
+#| fig-width: 7
+# first difference for each district as lower moves from its 25th to its 75th percentile
+fd_district <- comparisons(nb_fit,
+                           variables = list(lower = "iqr"),
+                           newdata = lima,  # keeps the district names
+                           conf_level = 0.9) |>
+  as_tibble() |>
+  select(district, lower, vendors, population, operations, estimate, conf.low, conf.high) |>
+  arrange(estimate)
+fd_district
+
+ggplot(fd_district, aes(x = estimate, y = reorder(district, -estimate))) +
+  geom_vline(xintercept = 0, color = "grey70") +
+  geom_linerange(aes(xmin = conf.low, xmax = conf.high), color = "grey60") +
+  geom_point() +
+  labs(x = "First difference in expected operations per month\n(lower from its 25th to its 75th percentile; 90% CI)",
+       y = NULL)
+```
+
+**Part 2**
+
+```{r}
+# a typical district: the other variables at their means
+comparisons(nb_fit,
+            variables = list(lower = "iqr"),
+            newdata = datagrid(grid_type = "mean_or_mode"),
+            conf_level = 0.9)
+```
+
+**Part 3**
+
+```{r}
+# the average first difference across the 36 districts
+avg_comparisons(nb_fit,
+                variables = list(lower = "iqr"),
+                conf_level = 0.9)
+```
+
+**Part 4**
+
+```{r}
+# the percent change; the same in every district, so averaging changes nothing
+avg_comparisons(nb_fit,
+                variables = list(lower = "iqr"),
+                comparison = function(hi, lo) hi/lo - 1,
+                conf_level = 0.9)
+```
+
+- Every first difference is negative (though only 34 of the 36 CIs exclude zero). The model has one coefficient for `lower`, but the link is a log, so the first difference is $\mu_{Q1}(e^{\beta \Delta} - 1) \approx -0.9 \mu_{Q1}$. It's about −33 operations per month in the least populous districts (Barranco, Chacalacayo, Magdalena del Mar, and Lince, with populations of 3.4 to 5.5 in the data's units) and −246 in the most populous district (San Juan de Lurigancho, with a population of 89.8, about 16 times Barranco's).
+- The typical district's first difference is −54 (90% CI from −80 to −28). The average first difference is −62 (from −96 to −28). The average is larger because the big districts pull the average up. The percent change is −89% (from −96% to −82%). It's the same in every district because $e^{\beta \Delta} - 1$ doesn't involve the other variables (see [sim-recover-negbin]{.ex-ref}, part 3).
+- Whith a log link and no interactions, the percent change is a natural summary. It's one number, it's the same in every district, and it's what the model estimates directly. The first differences are on the scale of the outcome variable (i.e., the count of operations), and its a *very common* summary to report, so readers might feel more comfortable with some first difference.
+:::
