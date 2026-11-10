@@ -249,7 +249,7 @@ window.Quarto = {
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-11-06T12:00:00-05:00">Complete solutions open <strong>Friday, November 6 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Simulate and Recover; Negative Binomial</h2>
 <p>One important way to test and develop your understanding of statistical models and quantities of interest is to <em>simulate</em> a fake data set with known true quantity of interest (e.g., coefficients or first difference) and then <em>recover</em> that quantity of interest through your estimation procedure.</p>
@@ -282,7 +282,6 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p><code>comparisons()</code> has a <code>comparison</code> argument. <code>comparison = function(hi, lo) hi/lo - 1</code> returns the percent increase (with its CI) in place of the difference <code>hi - lo</code>. This is mathematically equivalent to <code>(hi - lo)/lo</code>.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-11-06T12:00:00-05:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Nov 6, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Simulate</strong></p>
 <p>Your code will differ. Here is one version.</p>
@@ -408,7 +407,6 @@ Comparison: custom</code></pre>
 \]</span></p>
 <p>Notice that the <span class="math inline">\(\beta_2 x_2\)</span> terms cancel. So the percent increase is <span class="math inline">\(e^{\beta_1} - 1\)</span> for <em>every</em> observation, and averaging across the observed values of <code>x2</code> changes nothing. For logit, the first difference <span class="math inline">\(\operatorname{logit}^{-1}(\beta_0 + 0.5\beta_1 + \beta_2 x_2) - \operatorname{logit}^{-1}(\beta_0 - 0.5\beta_1 + \beta_2 x_2)\)</span> does depend on <span class="math inline">\(x_2\)</span>, so the two quantities were different in Week 9. (The first difference in expected counts, <span class="math inline">\(E(y \mid x_{hi}) - E(y \mid x_{lo}) = \mu_{lo}(e^{\beta_1} - 1)\)</span>, depends on <code>x2</code> through <span class="math inline">\(\mu_{lo}\)</span>. We’ll see this in <a href="#ex-3">Exercise 3</a>.)</p>
 </div></details>
-</div>
 </section>
 <section id="ex-2" class="level2 ex-heading page-columns page-full">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> Red State, Blue State: Part 8</h2>
@@ -456,7 +454,6 @@ Comparison: custom</code></pre>
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>For <code>newdata</code> in part 2, use the state-level data set with <code>income</code> added: <code>states |&gt; mutate(income = 0)</code>. (Don’t use <code>datagrid(state_name = unique)</code>. It would set <code>rs_state_median_income</code> to its mean in every state, and each state needs its own value.) For the change, use <code>variables = list(income = "minmax")</code>.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-11-06T12:00:00-05:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Nov 6, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell" data-fit_deps="ces">
@@ -596,7 +593,6 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </ul>
 <p>Their second claim still holds. The gap between Mississippi and Massachusetts is 13 points among the poorest voters (0.48 vs.&nbsp;0.34) and 23 points among the richest (0.54 vs.&nbsp;0.31). Being in a red or blue state matters more for rich voters than for poor voters.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Holland (2015): Four Quantities of Interest</h2>
@@ -617,7 +613,6 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <li>The percent change in the expected number of operations (<code>comparison = function(hi, lo) hi/lo - 1</code>, as in <a href="#ex-1">Exercise 1</a>). It’s the same in every district. Why?</li>
 </ol>
 <p>Which of the four do you prefer? Why?</p>
-<div class="ex-slot ex-pending" data-unlock="2026-11-06T12:00:00-05:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Nov 6, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell">
@@ -716,7 +711,6 @@ Comparison: custom</code></pre>
 <li>Whith a log link and no interactions, the percent change is a natural summary. It’s one number, it’s the same in every district, and it’s what the model estimates directly. The first differences are on the scale of the outcome variable (i.e., the count of operations), and its a <em>very common</em> summary to report, so readers might feel more comfortable with some first difference.</li>
 </ul>
 </div></details>
-</div>
 
 
 

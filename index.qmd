@@ -88,17 +88,17 @@ oct 27 · **hierarchical models, 1** ·
 ------------------------------------------------------------------------
 
 nov 03 · **hierarchical models, 2** ·
-\[[IRT slides](slides/wk11-irt/irt.html)\]
 \[[exercises](exercises/wk11-exercises.html)\]
 [Due: workshop rehearsal]{.remarks}
 
 ------------------------------------------------------------------------
 
-nov 10 · **irt**
+nov 10 · **ate** · \[[slides](slides/wk12-ate/ate.pdf)\]
 
 ------------------------------------------------------------------------
 
-nov 17 · **a final perspective**
+nov 17 · **a final perspective** ·
+\[[IRT slides](slides/wk11-irt/irt.html)\]
 
 ------------------------------------------------------------------------
 
