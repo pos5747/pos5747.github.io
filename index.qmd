@@ -98,8 +98,9 @@ nov 10 · **ate** · \[[slides](slides/wk12-ate/ate.pdf)\]
 
 ------------------------------------------------------------------------
 
-nov 17 · **a final perspective** ·
+nov 17 · **irt** ·
 \[[IRT slides](slides/wk11-irt/irt.html)\]
+\[[exercises](exercises/wk13-exercises.html)\]
 
 ------------------------------------------------------------------------
 
