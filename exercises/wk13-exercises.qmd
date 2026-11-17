@@ -53,17 +53,8 @@ In the [IRT slides](../slides/wk11-irt/irt.html), we fit a Rasch model to hypoth
 - Then I simulated 50 students taking the exam, with abilities $\alpha_j \sim N(0, \sigma_\alpha^2)$. I set $\sigma_\alpha = 0.89$, the estimate from the real exams. (I also centered the 50 abilities so they average exactly zero. Then "a student of average ability" means the same thing in the simulation and in your fit.)
 
 ```{r midterm-data}
-#| eval: false
 # load data; 50 simulated students, 50 questions
 answers <- read_csv("https://pos5747.github.io/files/wk13-midterm-sim.csv")
-```
-
-```{r midterm-data-local}
-#| include: false
-# TEMPORARY: read the local copies until files/wk13-midterm-*.csv are pushed; then
-# delete this chunk and the `eval: false` above and on midterm-truth below
-answers <- read_csv("../files/wk13-midterm-sim.csv")
-truth <- read_csv("../files/wk13-midterm-truth.csv")
 ```
 
 - `student`: the simulated student, 1 to 50.
@@ -117,16 +108,8 @@ ggplot(p, aes(x = estimate, xmin = conf.low, xmax = conf.high,
 @martin2002 \[[doi](https://doi.org/10.1093/pan/10.2.134)\] use an IRT model to estimate the ideology of each Supreme Court justice in each term. Using the exam context as an analogy, we can treat the justices as students and the cases as questions. We treat conservative votes as correct answers.
 
 ```{r scotus-data}
-#| eval: false
 # load data; one row per vote
 votes <- read_csv("https://pos5747.github.io/files/wk13-scotus-votes.csv")
-```
-
-```{r scotus-data-local}
-#| include: false
-# TEMPORARY: read the local copy until files/wk13-scotus-votes.csv is pushed; then
-# delete this chunk and the `eval: false` above
-votes <- read_csv("../files/wk13-scotus-votes.csv")
 ```
 
 - `term`: the Court's term, 1946 to 2023. (A term starts in October. The 2023 term ran from October 2023 to June 2024.)
@@ -298,22 +281,12 @@ ggplot(ideal_points, aes(x = term, y = theta, ymin = .lower, ymax = .upper)) +
 Read @schnakenberg2014 \[[pdf](https://pos5747.github.io/notes/readings/Schnakenberg2014.pdf)\]. They measure each country's respect for physical integrity rights in each year with a dynamic IRT model of the four CIRI items. @fariss2014 builds on their model, as do later versions of the human rights scores.
 
 ```{r ciri-data}
-#| eval: false
 # the data: the four CIRI items, one row per country-year
 ciri <- read_csv("https://pos5747.github.io/files/wk13-ciri.csv")
 
 # the published scores we're trying to reproduce: Schnakenberg and Fariss's
 # estimates, one row per country-year
 sf2014 <- read_csv("https://pos5747.github.io/files/wk13-sf2014-scores.csv")
-```
-
-```{r ciri-data-local}
-#| include: false
-# TEMPORARY: read the local copies until files/wk13-ciri.csv and
-# files/wk13-sf2014-scores.csv are pushed; then delete this chunk and the
-# `eval: false` above
-ciri <- read_csv("../files/wk13-ciri.csv")
-sf2014 <- read_csv("../files/wk13-sf2014-scores.csv")
 ```
 
 `ciri` has `r scales::comma(nrow(ciri))` country-years (`r n_distinct(ciri$country)` countries, 1981 to 2010).
@@ -519,5 +492,5 @@ Bhutan shows why. Its four items are perfect through 1988, then three of them fa
 - The normal model can't take one large step, so it spreads the fall over several years. It starts Bhutan's decline in 1985, years before the items change.
 - The $t$ model holds Bhutan flat through 1988 and puts almost all of the fall in 1990, when the items change.
 
-Afghanistan (where the Taliban fell in 2001), Fiji (with its two coups in 1987), Liberia (where the civil war ended in 2003), and Rwanda (where the civil war started in 1990) show the same pattern. This is Reuning, Kenwick, and Fariss's point. The normal random walk can smooth away sudden changes.The $t$ random walk allows sudden, large changes.
+Afghanistan (where the Taliban fell in 2001), Fiji (with its two coups in 1987), Liberia (where the civil war ended in 2003), and Rwanda (where the civil war started in 1990) show the same pattern. This is Reuning, Kenwick, and Fariss's point. The normal random walk can smooth away sudden changes. The $t$ random walk allows sudden, large changes.
 :::
