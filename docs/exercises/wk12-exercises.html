@@ -230,7 +230,7 @@ window.Quarto = {
 </header>
 
 
-<div class="ex-notice ex-notice-wait" data-unlock="2026-11-15T12:00:00-05:00">Complete solutions open <strong>Sunday, November 15 at 12:00 PM</strong> <span class="ex-countdown"></span></div>
+<div class="ex-notice ex-notice-open">Complete solutions are available. Work each exercise before you open one.</div>
 <section id="ex-1" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-1"><span class="ex-num">Exercise 1</span> Simulate and Recover; Multinomial Logit</h2>
 <p>One important way to test and develop your understanding of statistical models and quantities of interest is to <em>simulate</em> a fake data set with known true quantity of interest (e.g., coefficients or first difference) and then <em>recover</em> that quantity of interest through your estimation procedure.</p>
@@ -255,7 +255,6 @@ window.Quarto = {
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint</span></summary><div class="ex-reveal-body">
 <p>Use the softmax to turn the three linear predictors into probabilities. For each observation, <code>sample(c("A", "B", "C"), size = 1, prob = p[i, ])</code> draws one category, where <code>p</code> is a matrix of probabilities with one row per observation and one column per category.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-11-15T12:00:00-05:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Nov 15, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <p>Your code will differ. Here is one version.</p>
@@ -377,7 +376,6 @@ Comparison: 1 - -1</code></pre>
 <p>The true first differences are about −0.263 (A), 0.057 (B), and 0.207 (C). The estimates are about −0.279, 0.074, and 0.206. All three true values are inside their 90% CIs (A and B only barely).</p>
 <p>Notice that the three first differences add up to zero, because the three probabilities always add up to one.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-2" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-2"><span class="ex-num">Exercise 2</span> The Difference in Means and Neyman’s Variance Estimator</h2>
@@ -430,7 +428,6 @@ s_t^2 = \frac{1}{N_t - 1} \sum_{i:W_i=1} \left( Y^{\text{obs}}_i - \overline{Y}^
 <details class="ex-reveal ex-reveal-hint"><summary class="ex-btn ex-btn-hint"><span class="ex-btn-label">Hint 2</span></summary><div class="ex-reveal-body">
 <p>For Part (b), start by computing <span class="math inline">\(E_W\left[\widehat{\text{Var}}(\widehat{\text{ATE}})\right]\)</span> using the unbiasedness of <span class="math inline">\(s_t^2\)</span> and <span class="math inline">\(s_c^2\)</span>. Compare it with <span class="math inline">\(\text{Var}_W (\widehat{\text{ATE}})\)</span>. The two differ by one term.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-11-15T12:00:00-05:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Nov 15, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part (a)</strong></p>
 <p>The potential outcomes are constants, so we can move the expectation inside the sum and we only need the expected values of the <span class="math inline">\(W_i\)</span>.</p>
@@ -464,7 +461,6 @@ E_W\left[\widehat{\text{Var}}(\widehat{\text{ATE}})\right] - \text{Var}_W (\wide
 <li><span class="math inline">\(S_{tc}^2\)</span> is a sum of squares divided by <span class="math inline">\(N - 1\)</span>, so <span class="math inline">\(S_{tc}^2 \geq 0\)</span> for any potential outcomes. Then the bias <span class="math inline">\(S_{tc}^2/N \geq 0\)</span>, so <span class="math inline">\(E_W\left[\widehat{\text{Var}}(\widehat{\text{ATE}})\right] \geq \text{Var}_W (\widehat{\text{ATE}})\)</span>. The estimator is exactly unbiased only when <span class="math inline">\(S_{tc}^2 = 0\)</span>, which happens only when every unit’s effect equals the ATE (i.e., constant effects). Otherwise it’s conservative. We can’t do better without assumptions, because we never observe both <span class="math inline">\(Y_i(1)\)</span> and <span class="math inline">\(Y_i(0)\)</span> for the same unit, so we can’t estimate <span class="math inline">\(S_{tc}^2\)</span>.</li>
 </ol>
 </div></details>
-</div>
 </section>
 <section id="ex-3" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-3"><span class="ex-num">Exercise 3</span> Making Neyman’s Variance Estimator Go Wrong</h2>
@@ -509,7 +505,6 @@ S_{tc}^2 = S_t^2 + S_c^2 - 2\rho S_t S_c,
 \]</span></p>
 <p>where <span class="math inline">\(\rho\)</span> is the correlation between <span class="math inline">\(Y_i(1)\)</span> and <span class="math inline">\(Y_i(0)\)</span> across the <span class="math inline">\(N\)</span> units, and <span class="math inline">\(S_t\)</span> and <span class="math inline">\(S_c\)</span> are the square roots of <span class="math inline">\(S_t^2\)</span> and <span class="math inline">\(S_c^2\)</span>.</p>
 </div></details>
-<div class="ex-slot ex-pending" data-unlock="2026-11-15T12:00:00-05:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Nov 15, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p>Make <code>y1</code> perfectly negatively correlated with <code>y0</code>, with the same variance. For example, <code>y1 &lt;- 10 - y0</code>.</p>
 <div class="cell">
@@ -535,7 +530,6 @@ S_{tc}^2 = S_t^2 + S_c^2 - 2\rho S_t S_c,
 </div>
 <p>The actual variance is zero. (Every unit has <span class="math inline">\(Y_i(1) + Y_i(0) = 10\)</span> and the two groups are the same size, so every assignment gives the same estimate, the ATE of 4.6.) But Neyman’s estimator is about 1.43 on average, so the ratio is infinite.</p>
 </div></details>
-</div>
 </section>
 <section id="ex-4" class="level2 ex-heading">
 <h2 class="ex-heading anchored" data-anchor-id="ex-4"><span class="ex-num">Exercise 4</span> Red State, Blue State: Part 9</h2>
@@ -589,7 +583,6 @@ S_{tc}^2 = S_t^2 + S_c^2 - 2\rho S_t S_c,
 </figure>
 </div></li>
 </ol>
-<div class="ex-slot ex-pending" data-unlock="2026-11-15T12:00:00-05:00"><button type="button" class="ex-btn ex-btn-locked" disabled="" aria-disabled="true"><svg class="ex-lock" viewbox="0 0 16 16" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 1 1 7 0v2H12a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.5Zm1.5 0h4V5a2 2 0 1 0-4 0v2Z"></path></svg><span class="ex-btn-label">Complete solution</span><span class="ex-btn-when">opens Nov 15, 12pm</span></button>
 <details class="ex-reveal ex-reveal-sol"><summary class="ex-btn ex-btn-sol"><span class="ex-btn-label">Complete solution</span></summary><div class="ex-reveal-body">
 <p><strong>Part 1</strong></p>
 <div class="cell" data-fit_deps="anes">
@@ -737,7 +730,6 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <li>Income still has a more positive (less negative?) effect in poor states. But the change now runs from about zero in the poor states to negative in the rich states, rather than being positive everywhere.</li>
 </ol>
 </div></details>
-</div>
 
 
 </section>

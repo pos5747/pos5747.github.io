@@ -45,6 +45,12 @@ knitr::opts_hooks$set(fit_deps = function(options) {
 })
 ```
 
+::: {.callout-note}
+## Posters
+
+Remember to email me your poster as a 24" by 36" PDF by Tuesday. See [here](https://gist.github.com/carlislerainey/cfd128077ba7bff3350022129bb097c2) for requirements and suggestions.
+:::
+
 ## The Midterm, Question by Question {ref="midterm-irt"}
 
 In the [IRT slides](../slides/wk11-irt/irt.html), we fit a Rasch model to hypothetical students answering the questions on a past exam. Here, the questions are the 50 multiple-choice questions on our midterm. The answers are simulated, but they mimic the real exam.
