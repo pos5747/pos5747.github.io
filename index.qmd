@@ -104,7 +104,9 @@ nov 17 · **irt** ·
 
 ------------------------------------------------------------------------
 
-nov 24 · **wrap** [Due: **second
+nov 24 · **wrap** ·
+\[[slides](slides/wk14-perspective/perspective.html)\]
+[Due: **second
 draft** of research paper.]{.remarks}
 
 ------------------------------------------------------------------------
