@@ -241,7 +241,7 @@
 <li><span class="citation" data-cites="ornstein2023">Ornstein (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span>: “It covers the history of MRP, recent advances, an example analysis with code, and concludes with a discussion of best practices and limitations of the approach.”</li>
 <li><span class="citation" data-cites="lal2024">Lal et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span>: “we replicate 67 articles published in three top political science journals from 2010 to 2022 and identify several concerning patterns… We provide a checklist and software to help researchers avoid these pitfalls and improve their practice.”</li>
 </ul>
-<p>Even (or especially?) in this AI-as-RA era, this kind of thing is valuable, because it depends on substantive judgement.</p>
+<p>Even (or especially?) in this AI-as-RA era, this kind of thing is valuable, because it depends on substantive judgment.</p>
 </section>
 <section class="slide level2">
 
@@ -382,9 +382,9 @@ For example, if <span class="math inline">\(H_r: \theta &gt; 1\)</span>, then <s
 <h2><span class="math inline">\(p\)</span>-Value</h2>
 <p>Given a test statistic <span class="math inline">\(T\)</span> (larger values → more evidence against <span class="math inline">\(H_0\)</span>):</p>
 <div id="def-hypothesis-test" class="defbox theorem definition">
-<p><span class="theorem-title"><strong>Definition 4</strong></span> <span class="math inline">\(p\text{-value} = \max_{\theta \in B^C} P(T(\mathbf{X}) \ge T(\mathbf{x}))\)</span></p>
+<p><span class="theorem-title"><strong>Definition 4</strong></span> <span class="math inline">\(p\text{-value} = \max_{\theta \in B^C} \Pr_\theta(T(\mathbf{X}) \ge T(\mathbf{x}))\)</span></p>
 </div>
-<p>“The probability of obtaining data <em>more extreme</em> than the data we actually obtained if the null hypothesis were true.”</p>
+<p>“The probability of obtaining data <em>at least as extreme</em> as the data we actually obtained if the null hypothesis were true.”</p>
 <p>Reject <span class="math inline">\(H_0\)</span> if and only if <span class="math inline">\(p \le \alpha\)</span> (e.g., <span class="math inline">\(\alpha = 0.05\)</span>).</p>
 
 <aside><div>
@@ -432,7 +432,7 @@ For example, if <span class="math inline">\(H_r: \theta &gt; 1\)</span>, then <s
 <section id="confidence-intervals-and-hypothesis-tests" class="slide level2">
 <h2>Confidence Intervals and Hypothesis Tests</h2>
 <p>One way to create a confidence interval is to invert a hypothesis test.</p>
-<p>For example, suppose a hypothesis <span class="math inline">\(H_r: \theta &gt; m\)</span>.</p>
+<p>For example, suppose a research hypothesis <span class="math inline">\(H_r: \theta &gt; m\)</span>.</p>
 <ul>
 <li>For any particular <span class="math inline">\(m\)</span>, we can compute a <span class="math inline">\(p\)</span>-value and will either reject the null hypothesis or not.</li>
 <li>We can collect the <span class="math inline">\(m\)</span> for which we rejected the null hypothesis into a collection; and collect the <span class="math inline">\(m\)</span> for which we <em>did not</em> reject the null hypothesis into a separate collection.</li>
@@ -477,8 +477,7 @@ For example, if <span class="math inline">\(H_r: \theta &gt; 1\)</span>, then <s
 <ul>
 <li>Can you reject all non-zero effects? (No! Never.)</li>
 <li>Is <span class="math inline">\(L\)</span> in the 90% CI substantively meaningful?</li>
-<li>Is <span class="math inline">\(U\)</span> in the 90% CI substantively meaningful?<br>
-</li>
+<li>Is <span class="math inline">\(U\)</span> in the 90% CI substantively meaningful?</li>
 </ul></li>
 </ul>
 </div>
@@ -502,7 +501,7 @@ For example, if <span class="math inline">\(H_r: \theta &gt; 1\)</span>, then <s
 </div>
 <p>Read <span class="citation" data-cites="rainey2014">Rainey (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span> and <span class="citation" data-cites="mccaskey2015">McCaskey and Rainey (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span>.</p>
 <p><strong>Exam Question</strong></p>
-<p>I like to say: “Only make a claim if the claim holds for the <em>entire</em> confidence interval.” Using the arguments from <span class="citation" data-cites="rainey2014">Rainey (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span> and <span class="citation" data-cites="mccaskey2015">McCaskey and Rainey (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span>, give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two sitations.</p>
+<p>I like to say: “Only make a claim if the claim holds for the <em>entire</em> confidence interval.” Using the arguments from <span class="citation" data-cites="rainey2014">Rainey (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span> and <span class="citation" data-cites="mccaskey2015">McCaskey and Rainey (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span>, give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain how my advice applies to these two situations.</p>
 <p>Examples:</p>
 <ol type="1">
 <li><span class="citation" data-cites="mccaskey2015">McCaskey and Rainey (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span>: Claiming “substantively significant” if the point estimate is meaningful (and statistically significant).</li>
@@ -641,7 +640,7 @@ For example, if <span class="math inline">\(H_r: \theta &gt; 1\)</span>, then <s
 
 <p>When you test with low power, you make three mistakes:</p>
 <ol type="1">
-<li>When you do “get it right” you are guaranteed to have “wildly wrong” estimates.</li>
+<li>When you do “get it right,” you are guaranteed to have “wildly wrong” estimates.</li>
 <li>You often get it “wildly wrong” in the wrong direction.</li>
 <li>You often waste your time.</li>
 </ol>
@@ -649,7 +648,7 @@ For example, if <span class="math inline">\(H_r: \theta &gt; 1\)</span>, then <s
 </section>
 <section id="literatures" class="slide level2">
 <h2>Literatures</h2>
-<p>What are the implications for literatures if we have 100s of researchers conducting poorly-powered studies <em>and</em> authors, editors, and reviewers filtering on statistical significance?</p>
+<p>What are the implications for literatures if we have 100s of researchers conducting poorly powered studies <em>and</em> authors, editors, and reviewers filtering on statistical significance?</p>
 </section></section>
 <section>
 <section id="so-what-is-observed-power-in-political-science" class="title-slide slide level1 center">
@@ -683,7 +682,7 @@ For example, if <span class="math inline">\(H_r: \theta &gt; 1\)</span>, then <s
 <li>Make arguments.</li>
 <li>Make them forcefully.</li>
 </ul>
-<p>“who’s mind are you going to change about what?” → convince someone of something</p>
+<p>“whose mind are you going to change about what?” → convince someone of something</p>
 </section></section>
 <section id="references" class="title-slide slide level1 smaller scrollable">
 <h1>References</h1>

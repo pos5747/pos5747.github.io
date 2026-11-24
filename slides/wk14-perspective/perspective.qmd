@@ -40,7 +40,7 @@ library(tidyverse)
 -   @ornstein2023: "It covers the history of MRP, recent advances, an example analysis with code, and concludes with a discussion of best practices and limitations of the approach."
 -   @lal2024: "we replicate 67 articles published in three top political science journals from 2010 to 2022 and identify several concerning patterns... We provide a checklist and software to help researchers avoid these pitfalls and improve their practice."
 
-Even (or especially?) in this AI-as-RA era, this kind of thing is valuable, because it depends on substantive judgement.
+Even (or especially?) in this AI-as-RA era, this kind of thing is valuable, because it depends on substantive judgment.
 
 ------------------------------------------------------------------------
 
@@ -159,10 +159,10 @@ You make an "error" when you make a claim that is false. When we design procedur
 Given a test statistic $T$ (larger values → more evidence against $H_0$):
 
 ::: {#def-hypothesis-test .defbox}
-$p\text{-value} = \max_{\theta \in B^C} P(T(\mathbf{X}) \ge T(\mathbf{x}))$
+$p\text{-value} = \max_{\theta \in B^C} \Pr_\theta(T(\mathbf{X}) \ge T(\mathbf{x}))$
 :::
 
-"The probability of obtaining data *more extreme* than the data we actually obtained if the null hypothesis were true."
+"The probability of obtaining data *at least as extreme* as the data we actually obtained if the null hypothesis were true."
 
 Reject $H_0$ if and only if $p \le \alpha$ (e.g., $\alpha = 0.05$).
 
@@ -223,7 +223,7 @@ power <- 1 - pnorm(z_alpha - (theta_seq - 1) / se_hat)
 df <- data.frame(theta = theta_seq, power = power, null_region = theta_seq <= 1)
 
 ggplot(df, aes(x = theta, y = power)) +
-  geom_line(size = 1.2) +
+  geom_line(linewidth = 1.2) +
   geom_area(data = subset(df, null_region), aes(x = theta, y = power),
             fill = "gray90", alpha = 0.6) +
   geom_hline(yintercept = alpha, linetype = "dashed", color = "red") +
@@ -241,7 +241,7 @@ ggplot(df, aes(x = theta, y = power)) +
 
 One way to create a confidence interval is to invert a hypothesis test.
 
-For example, suppose a hypothesis $H_r: \theta > m$.
+For example, suppose a research hypothesis $H_r: \theta > m$.
 
 -   For any particular $m$, we can compute a $p$-value and will either reject the null hypothesis or not.
 -   We can collect the $m$ for which we rejected the null hypothesis into a collection; and collect the $m$ for which we *did not* reject the null hypothesis into a separate collection.
@@ -276,7 +276,7 @@ Be careful of your claim!
 -   "$X$ has no effect on $E(Y)$."
     -   Can you reject all non-zero effects? (No! Never.)
     -   Is $L$ in the 90% CI substantively meaningful?
-    -   Is $U$ in the 90% CI substantively meaningful?\
+    -   Is $U$ in the 90% CI substantively meaningful?
 :::
 
 ------------------------------------------------------------------------
@@ -291,7 +291,7 @@ Read @rainey2014 and @mccaskey2015.
 
 **Exam Question**
 
-I like to say: "Only make a claim if the claim holds for the *entire* confidence interval." Using the arguments from @rainey2014 and @mccaskey2015, give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain a how my advice applies to these two sitations.
+I like to say: "Only make a claim if the claim holds for the *entire* confidence interval." Using the arguments from @rainey2014 and @mccaskey2015, give two examples of how current practice deviates from this advice. Explain why these deviations matter. Explain how my advice applies to these two situations.
 
 Examples:
 
@@ -490,7 +490,7 @@ ggplot(gg_df, aes(x = est, fill = sig, alpha = sig)) +
 
 When you test with low power, you make three mistakes:
 
-1.  When you do "get it right" you are guaranteed to have "wildly wrong" estimates.
+1.  When you do "get it right," you are guaranteed to have "wildly wrong" estimates.
 2.  You often get it "wildly wrong" in the wrong direction.
 3.  You often waste your time.
 
@@ -498,7 +498,7 @@ See @gelman2014.
 
 ## Literatures
 
-What are the implications for literatures if we have 100s of researchers conducting poorly-powered studies *and* authors, editors, and reviewers filtering on statistical significance?
+What are the implications for literatures if we have 100s of researchers conducting poorly powered studies *and* authors, editors, and reviewers filtering on statistical significance?
 
 # So what is *observed* power in political science?
 
@@ -534,7 +534,7 @@ There's not a real recipe; you have to figure out *your* way.
 - Make arguments.
 - Make them forcefully.
 
-"who's mind are you going to change about what?" → convince someone of something
+"whose mind are you going to change about what?"^[From Gary King's "Publication, Publication"] → **convince someone of something**
 
 
 # References
